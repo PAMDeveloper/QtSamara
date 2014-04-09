@@ -1,0 +1,13 @@
+INCLUDE_DIRECTORIES(
+  ${CMAKE_SOURCE_DIR}/src)
+
+LINK_DIRECTORIES()
+
+SET(SAMARA_KERNEL_HPP Simulator.hpp Model.hpp)
+
+SET(SAMARA_KERNEL_CPP Simulator.cpp Model.cpp)
+
+ADD_LIBRARY(samara-kernel SHARED ${SAMARA_KERNEL_HPP} ${SAMARA_KERNEL_CPP})
+TARGET_LINK_LIBRARIES(samara-kernel samara-models-samara)
+
+INSTALL(TARGETS samara-kernel DESTINATION lib)

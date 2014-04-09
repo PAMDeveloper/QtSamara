@@ -1,0 +1,12 @@
+INCLUDE_DIRECTORIES(
+  ${CMAKE_SOURCE_DIR}/src)
+
+LINK_DIRECTORIES()
+
+SET(MODEL_SAMARA_HPP Model.hpp Model.cpp)
+SET(MODEL_SAMARA_CPP Risocas.cpp)
+
+ADD_LIBRARY(samara-models-samara SHARED ${MODEL_SAMARA_HPP} ${MODEL_SAMARA_CPP})
+TARGET_LINK_LIBRARIES(samara-models-samara )
+
+INSTALL(TARGETS samara-models-samara DESTINATION lib)
