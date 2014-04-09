@@ -64,7 +64,7 @@ private:
     void EvolSomDegresJourCor();
     void EvalMaximumLai();
     void EvalVitesseRacinaire();
-    void InitiationCulture();
+    void initCrop();
     void EvalRootFront();
     void EvalSDJPhase4();
     void EvalDateGermination();
