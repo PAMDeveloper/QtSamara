@@ -25,6 +25,8 @@
 #ifndef MODEL_KERNEL_MODEL_HPP
 #define MODEL_KERNEL_MODEL_HPP
 
+#include <model/models/ModelParameters.hpp>
+
 #include <model/models/samara/Model.hpp>
 
 #include <map>
@@ -45,8 +47,8 @@ public:
 
     void compute(double t);
 
-    void init()
-    { }
+    void init(const model::models::ModelParameters& parameters)
+    { model->init(parameters); }
 
 private:
 // models

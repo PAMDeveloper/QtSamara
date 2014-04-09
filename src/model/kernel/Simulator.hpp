@@ -25,6 +25,7 @@
 #ifndef MODEL_KERNEL_SIMULATOR_HPP
 #define MODEL_KERNEL_SIMULATOR_HPP
 
+#include <model/models/ModelParameters.hpp>
 #include <model/observer/Observer.hpp>
 
 namespace model { namespace kernel {
@@ -41,9 +42,9 @@ public:
     virtual ~Simulator()
     { delete model; }
 
-    void init()
+    void init(const model::models::ModelParameters& parameters)
     {
-        model->init();
+        model->init(parameters);
 //        observer.init(outputs);
     }
 
