@@ -49,8 +49,7 @@ INCLUDE(CMakeCPack.cmake)
 
 IF (CMAKE_COMPILER_IS_GNUCC AND CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-  # -std=c++1x or -std=c++11 : http://gcc.gnu.org/wiki/C11Status
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pthread -fPIC")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pthread -fPIC")
   IF (UNIX)
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
@@ -135,6 +134,12 @@ SET(SAMARA_PKGCONFIG_LIBDIR "lib")
 
 INSTALL(FILES "README" DESTINATION "${SAMARA_SHARE_DIRS}")
 INSTALL(FILES "COPYING" DESTINATION "${SAMARA_SHARE_DIRS}")
+
+#
+ # Databases
+#
+
+PKG_CHECK_MODULES(PQXX libpqxx)
 
 #
  # Browse the src subdirectory

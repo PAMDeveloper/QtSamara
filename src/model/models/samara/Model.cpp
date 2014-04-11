@@ -28,6 +28,19 @@ namespace model { namespace models { namespace samara {
 
 double Model::NullValue = -999;
 
+void Model::assignClimate(const model::models::meteo::Climate& climate)
+{
+    TMax = climate.TMax;
+    TMin = climate.TMin;
+    TMoy = climate.TMoy;
+    HMax = climate.HMax;
+    HMin = climate.HMin;
+    HMoy = climate.HMoy;
+    Vent = climate.Vt;
+    Ins = climate.Ins;
+    Rg = climate.Rg;
+}
+
 void Model::compute(double t)
 {
     evalDegreeDay();
@@ -126,6 +139,7 @@ void Model::compute(double t)
 
 void Model::init(const model::models::ModelParameters& parameters)
 {
+    Altitude = parameters.get < double >("Altitude");
     ASScstr = parameters.get < double >("ASScstr");
     AttenMitch = parameters.get < double >("AttenMitch");
     BundHeight = parameters.get < double >("BundHeight");
@@ -133,7 +147,6 @@ void Model::init(const model::models::ModelParameters& parameters)
     CO2Cp = parameters.get < double >("CO2Cp");
     CO2Exp = parameters.get < double >("CO2Exp");
     CoeffAssimSla = parameters.get < double >("CoeffAssimSla");
-    CoeffCO2Assim = parameters.get < double >("CoeffCO2Assim");
     CoefficientQ10 = parameters.get < double >("CoefficientQ10");
     CoeffInternodeMass = parameters.get < double >("CoeffInternodeMass");
     CoeffInternodeNum = parameters.get < double >("CoeffInternodeNum");
@@ -176,12 +189,13 @@ void Model::init(const model::models::ModelParameters& parameters)
     KCritStressCold1 = parameters.get < double >("KCritStressCold1");
     KCritStressCold2 = parameters.get < double >("KCritStressCold2");
     Kdf = parameters.get < double >("Kdf");
-    kRespInternode = parameters.get < double >("kRespInternode");
-    kRespMaintLeaf = parameters.get < double >("kRespMaintLeaf");
-    kRespMaintRoot = parameters.get < double >("kRespMaintRoot");
-    kRespMaintSheath = parameters.get < double >("kRespMaintSheath");
-    kRespPanicle = parameters.get < double >("kRespPanicle");
-    kTempMaint = parameters.get < double >("kTempMaint");
+    KRespInternode = parameters.get < double >("KRespInternode");
+    KRespMaintLeaf = parameters.get < double >("KRespMaintLeaf");
+    KRespMaintRoot = parameters.get < double >("KRespMaintRoot");
+    KRespMaintSheath = parameters.get < double >("KRespMaintSheath");
+    KRespPanicle = parameters.get < double >("KRespPanicle");
+    KTempMaint = parameters.get < double >("KTempMaint");
+    Latitude = parameters.get < double >("Latitude");
     LeafLengthMax = parameters.get < double >("LeafLengthMax");
     LifeSavingDrainage = parameters.get < double >("LifeSavingDrainage");
     Mulch = parameters.get < double >("Mulch");
@@ -199,7 +213,6 @@ void Model::init(const model::models::ModelParameters& parameters)
     ProfRacIni = parameters.get < double >("ProfRacIni");
     RankLongestLeaf = parameters.get < double >("RankLongestLeaf");
     RelMobiliInternodeMax = parameters.get < double >("RelMobiliInternodeMax");
-    RelPotLeafLength = parameters.get < double >("RelPotLeafLength");
     RollingBase = parameters.get < double >("RollingBase");
     RollingSens = parameters.get < double >("RollingSens");
     RootCstr = parameters.get < double >("RootCstr");
@@ -220,8 +233,6 @@ void Model::init(const model::models::ModelParameters& parameters)
     TempSla = parameters.get < double >("TempSla");
     TilAbility = parameters.get < double >("TilAbility");
     TLet = parameters.get < double >("TLet");
-    TMax = parameters.get < double >("TMax");
-    TMin = parameters.get < double >("TMin");
     TOpt1 = parameters.get < double >("TOpt1");
     TOpt2 = parameters.get < double >("TOpt2");
     TransplantingDepth = parameters.get < double >("TransplantingDepth");

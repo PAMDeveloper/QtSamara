@@ -9,6 +9,6 @@ ADD_EXECUTABLE(samara main.cpp)
 SET_TARGET_PROPERTIES(samara PROPERTIES ${SAMARA_APP_PROPERTIES})
 
 TARGET_LINK_LIBRARIES(samara samara-kernel samara-models-samara
-  ${Boost_LIBRARIES})
+  samara-models-meteo samara-utils ${Boost_LIBRARIES} pqxx)
 
 INSTALL(TARGETS samara DESTINATION bin)

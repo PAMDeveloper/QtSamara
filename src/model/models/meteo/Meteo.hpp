@@ -30,32 +30,46 @@
 
 namespace model { namespace models { namespace meteo {
 
-class Meteo : public model::models::common::TemporalFileReader
+struct Climate
+{
+    double TMax;
+    double TMin;
+    double TMoy;
+    double HMax;
+    double HMin;
+    double HMoy;
+    double Vt;
+    double Ins;
+    double Rg;
+
+    Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
+            double HMoy, double Vt, double Ins, double Rg) :
+        TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
+        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg)
+    { }
+};
+
+class Meteo
 {
 public:
-    Meteo(const model::models::ModelParameters& parameters);
+    Meteo();
 
     virtual ~Meteo()
     { }
 
-protected:
-    virtual std::string columnSeparator() const
-    { return " \n\t"; }
+    void compute(double t);
 
-    virtual std::string dateFormat() const
-    { return ""; }
+    const Climate& getClimate() const
+    { return *it; }
 
-    virtual int yearColumn() const
-    { return 0; }
+    void init(const model::models::ModelParameters& parameters);
 
-    virtual int monthColumn() const
-    { return 1; }
+private:
+    double begin;
+    double end;
 
-    virtual int weekColumn() const
-    { return -1; }
-
-    virtual int dayColumn() const
-    { return 2; }
+    std::vector < Climate > values;
+    std::vector < Climate >::const_iterator it;
 };
 
 } } }

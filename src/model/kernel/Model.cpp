@@ -28,12 +28,15 @@ namespace model { namespace kernel {
 
 void Model::build()
 {
-    model = new model::models::samara::Model;
+    samara_model = new model::models::samara::Model;
+    meteo_model = new model::models::meteo::Meteo;
 }
 
 void Model::compute(double t)
 {
-    model->compute(t);
+    meteo_model->compute(t);
+    samara_model->assignClimate(meteo_model->getClimate());
+    samara_model->compute(t);
 }
 
 } }

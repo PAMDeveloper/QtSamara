@@ -26,6 +26,7 @@
 #define MODEL_MODELS_SAMARA_MODEL_HPP
 
 #include <model/models/ModelParameters.hpp>
+#include <model/models/meteo/Meteo.hpp>
 
 namespace model { namespace models { namespace samara {
 
@@ -38,9 +39,14 @@ public:
     virtual ~Model()
     { }
 
+    void assignClimate(const model::models::meteo::Climate& climate);
+
     void compute(double time);
 
     void init(const model::models::ModelParameters& parameters);
+
+    double lai() const
+    { return Lai; }
 
 private:
     void evalDegreeDay();
@@ -141,6 +147,7 @@ private:
    static  double NullValue;
 
     // parameters
+    double Altitude;
     double ASScstr;
     double AttenMitch;
     double BundHeight;
@@ -148,7 +155,6 @@ private:
     double CO2Cp;
     double CO2Exp;
     double CoeffAssimSla;
-    double CoeffCO2Assim;
     double CoefficientQ10;
     double CoeffInternodeMass;
     double CoeffInternodeNum;
@@ -188,12 +194,13 @@ private:
     double KCritStressCold1;
     double KCritStressCold2;
     double Kdf;
-    double kRespInternode;
-    double kRespMaintLeaf;
-    double kRespMaintRoot;
-    double kRespMaintSheath;
-    double kRespPanicle;
-    double kTempMaint;
+    double KRespInternode;
+    double KRespMaintLeaf;
+    double KRespMaintRoot;
+    double KRespMaintSheath;
+    double KRespPanicle;
+    double KTempMaint;
+    double Latitude;
     double LeafLengthMax;
     double LifeSavingDrainage;
     double Mulch;
@@ -211,7 +218,6 @@ private:
     double ProfRacIni;
     double RankLongestLeaf;
     double RelMobiliInternodeMax;
-    double RelPotLeafLength;
     double RollingBase;
     double RollingSens;
     double RootCstr;
@@ -232,8 +238,6 @@ private:
     double TempSla;
     double TilAbility;
     double TLet;
-    double TMax;
-    double TMin;
     double TOpt1;
     double TOpt2;
     double TransplantingDepth;
@@ -260,7 +264,6 @@ private:
     double A_GrowthStructLeaf;
     double A_GrowthStructTot;
     double A_IncreaseResInternodePop;
-    double Alt;
     double ApexHeight;
     double ApexHeightGain;
     double A_ResInternodeMobiliDay;
@@ -275,6 +278,7 @@ private:
     double ChangePhase;
     double ChangeSousPhase;
     double CO2SlopeTr;
+    double CoeffCO2Assim;
     double CoeffCO2Tr;
     double CoeffStressLogging;
     double Conversion;
@@ -451,7 +455,6 @@ private:
     double LaiFin;
     double LastLeafLength; // parameter ???
     double LastLeafLengthPot; // parameter ???
-    double Lat;
     double LatRad;
     double LeafDeathPop;
     double LIRkdf;
@@ -488,6 +491,7 @@ private:
     double RayExtra;
     double RayGlobal;
     double RelPhylloPhaseStemElong;
+    double RelPotLeafLength;
     double ResCapacityInternodePop;
     double ReservePopFin;
     double ResInternodeMobiliDay;
@@ -552,7 +556,9 @@ private:
     double TempLai;
     double TillerDeathPop;
     double Tlat;
+    double TMax;
     double TMaxMoy;
+    double TMin;
     double TMinMoy;
     double TMoy;
     double TMoyCalc;

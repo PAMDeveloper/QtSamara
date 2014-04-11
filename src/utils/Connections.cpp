@@ -1,12 +1,12 @@
 /**
- * @file model/observer/View.hpp
+ * @file utils/Connections.hpp
  * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2014 INRA http://www.inra.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,31 +22,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_VIEW_HPP
-#define MODEL_OBSERVER_VIEW_HPP
+#include <utils/Connections.hpp>
 
-#include <model/kernel/Model.hpp>
+namespace utils {
 
-namespace model { namespace observer {
+//Connections::connections_t Connections::mConnections;
+Connections Connections::mConnections;
 
-class View
-{
-public:
-    View() : model(0)
-    { }
+    Connections::Connections(){ }
 
-    virtual ~View()
-    { }
-
-    void attachModel(const model::kernel::Model* m)
-    { model = m; }
-
-    virtual void observe(double time) = 0;
-
-protected:
-    const model::kernel::Model* model;
-};
-
-} }
-
-#endif
+} // namespace utils

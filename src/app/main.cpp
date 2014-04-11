@@ -36,6 +36,7 @@
 #include <model/models/ModelParameters.hpp>
 
 #include <utils/DateTime.hpp>
+#include <utils/ParametersReader.hpp>
 
 #include <iostream>
 
@@ -45,119 +46,13 @@ namespace po = boost::program_options;
 
 typedef std::vector < std::string > CmdArgs;
 
-static void load_parameters(model::models::ModelParameters& parameters)
+static void format_dates(const model::models::ModelParameters& parameters,
+                         std::string& begin, std::string& end)
 {
-    parameters.set < double >("ASScstr", 0.);
-    parameters.set < double >("AttenMitch", 0.);
-    parameters.set < double >("BundHeight", 0.);
-    parameters.set < double >("Ca", 0.);
-    parameters.set < double >("CO2Cp", 0.);
-    parameters.set < double >("CO2Exp", 0.);
-    parameters.set < double >("CoeffAssimSla", 0.);
-    parameters.set < double >("CoeffCO2Assim", 0.);
-    parameters.set < double >("CoefficientQ10", 0.);
-    parameters.set < double >("CoeffInternodeMass", 0.);
-    parameters.set < double >("CoeffInternodeNum", 0.);
-    parameters.set < double >("CoeffLeafDeath", 0.);
-    parameters.set < double >("CoeffLeafWLRatio", 0.);
-    parameters.set < double >("CoeffPanicleMass", 0.);
-    parameters.set < double >("CoeffPanSinkPop", 0.);
-    parameters.set < double >("CoeffResCapacityInternode", 0.);
-    parameters.set < double >("CoeffReserveSink", 0.);
-    parameters.set < double >("CoeffRootMassPerVolMax", 0.);
-    parameters.set < double >("CoeffTillerDeath", 0.);
-    parameters.set < double >("CoeffTransplantingShock", 0.);
-    parameters.set < double >("DensityField", 0.);
-    parameters.set < double >("DensityNursery", 0.);
-    parameters.set < double >("DEVcstr", 0.);
-    parameters.set < double >("DurationNursery", 0.);
-    parameters.set < double >("EpaisseurProf", 0.);
-    parameters.set < double >("EpaisseurSurf", 0.);
-    parameters.set < double >("ExcessAssimToRoot", 0.);
-    parameters.set < double >("FTSWIrrig", 0.);
-    parameters.set < double >("HaunCritTillering", 0.);
-    parameters.set < double >("HumFC", 0.);
-    parameters.set < double >("HumPF", 0.);
-    parameters.set < double >("HumSat", 0.);
-    parameters.set < double >("IcTillering", 0.);
-    parameters.set < double >("InternodeLengthMax", 0.);
-    parameters.set < double >("IrrigAutoResume", 0.);
-    parameters.set < double >("IrrigAutoStop", 0.);
-    parameters.set < double >("IrrigAutoTarget", 0.);
-    parameters.set < double >("KcMax", 0.);
-    parameters.set < double >("KCritSterCold1", 0.);
-    parameters.set < double >("KCritSterCold2", 0.);
-    parameters.set < double >("KCritSterFtsw1", 0.);
-    parameters.set < double >("KCritSterFtsw2", 0.);
-    parameters.set < double >("KCritSterHeat1", 0.);
-    parameters.set < double >("KCritSterHeat2", 0.);
-    parameters.set < double >("KCritStressCold1", 0.);
-    parameters.set < double >("KCritStressCold2", 0.);
-    parameters.set < double >("Kdf", 0.);
-    parameters.set < double >("kRespInternode", 0.);
-    parameters.set < double >("kRespMaintLeaf", 0.);
-    parameters.set < double >("kRespMaintRoot", 0.);
-    parameters.set < double >("kRespMaintSheath", 0.);
-    parameters.set < double >("kRespPanicle", 0.);
-    parameters.set < double >("kTempMaint", 0.);
-    parameters.set < double >("LeafLengthMax", 0.);
-    parameters.set < double >("LifeSavingDrainage", 0.);
-    parameters.set < double >("Mulch", 0.);
-    parameters.set < double >("PanStructMassMax", 0.);
-    parameters.set < double >("PercolationMax", 0.);
-    parameters.set < double >("PFactor", 0.);
-    parameters.set < double >("Phyllo", 0.);
-    parameters.set < double >("PlantsPerHill", 0.);
-    parameters.set < double >("PlotDrainageDAF", 0.);
-    parameters.set < double >("PoidsSecGrain", 0.);
-    parameters.set < double >("PourcRuiss", 0.);
-    parameters.set < double >("PPCrit", 0.);
-    parameters.set < double >("PPExp", 0.);
-    parameters.set < double >("PriorityPan", 0.);
-    parameters.set < double >("ProfRacIni", 0.);
-    parameters.set < double >("RankLongestLeaf", 0.);
-    parameters.set < double >("RelMobiliInternodeMax", 0.);
-    parameters.set < double >("RelPotLeafLength", 0.);
-    parameters.set < double >("RollingBase", 0.);
-    parameters.set < double >("RollingSens", 0.);
-    parameters.set < double >("RootCstr", 0.);
-    parameters.set < double >("RootFrontMax", 0.);
-    parameters.set < double >("RootPartitMax", 0.);
-    parameters.set < double >("SDJBVP", 0.);
-    parameters.set < double >("SDJLevee", 0.);
-    parameters.set < double >("SDJMatu1", 0.);
-    parameters.set < double >("SDJMatu2", 0.);
-    parameters.set < double >("SDJRPR", 0.);
-    parameters.set < double >("SeuilPP", 0.);
-    parameters.set < double >("SeuilRuiss", 0.);
-    parameters.set < double >("SlaMax", 0.);
-    parameters.set < double >("SlaMin", 0.);
-    parameters.set < double >("StockIniProf", 0.);
-    parameters.set < double >("StockIniSurf", 0.);
-    parameters.set < double >("TBase", 0.);
-    parameters.set < double >("TempSla", 0.);
-    parameters.set < double >("TilAbility", 0.);
-    parameters.set < double >("TLet", 0.);
-    parameters.set < double >("TMax", 0.);
-    parameters.set < double >("TMin", 0.);
-    parameters.set < double >("TOpt1", 0.);
-    parameters.set < double >("TOpt2", 0.);
-    parameters.set < double >("TransplantingDepth", 0.);
-    parameters.set < double >("TxAssimBVP", 0.);
-    parameters.set < double >("TxAssimMatu1", 0.);
-    parameters.set < double >("TxAssimMatu2", 0.);
-    parameters.set < double >("TxConversion", 0.);
-    parameters.set < double >("TxResGrain", 0.);
-    parameters.set < double >("VRacBVP", 0.);
-    parameters.set < double >("VRacLevee", 0.);
-    parameters.set < double >("VRacMatu1", 0.);
-    parameters.set < double >("VRacMatu2", 0.);
-    parameters.set < double >("VRacPSP", 0.);
-    parameters.set < double >("VRacRPR", 0.);
-    parameters.set < double >("WaterLoggingSens", 0.);
-    parameters.set < double >("WtRatioLeafSheath", 0.);
-    parameters.set < int >("IrrigAuto", 0);
-    parameters.set < int >("Transplanting", 0);
+    utils::DateTime::format_date(parameters.get < std::string >("BeginDate"),
+                                 begin);
+    utils::DateTime::format_date(parameters.get < std::string >("EndDate"),
+                                 end);
 }
 
 static void run(const std::string& path, int verbose)
@@ -165,11 +60,15 @@ static void run(const std::string& path, int verbose)
     kernel::Model* model = new kernel::Model;
     kernel::Simulator simulator(model);
     model::models::ModelParameters parameters;
+    utils::ParametersReader reader;
+    std::string begin;
+    std::string end;
 
-    load_parameters(parameters);
+    reader.load("06SB15-fev13-D1", parameters);
+    format_dates(parameters, begin, end);
     simulator.init(parameters);
-    simulator.run(utils::DateTime::toJulianDayNumber("2000/01/01"),
-                  utils::DateTime::toJulianDayNumber("2000/01/01") + 300);
+    simulator.run(utils::DateTime::toJulianDayNumber(begin),
+                  utils::DateTime::toJulianDayNumber(end));
 }
 
 static int show_infos()

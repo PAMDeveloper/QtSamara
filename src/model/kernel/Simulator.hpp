@@ -45,16 +45,10 @@ public:
     void init(const model::models::ModelParameters& parameters)
     {
         model->init(parameters);
-//        observer.init(outputs);
+        observer.init();
     }
 
-    void run(double begin, double end)
-    {
-        for (double t = begin; t <= end; t++) {
-            model->compute(t);
-            observer.observe(t);
-        }
-    }
+    void run(double begin, double end);
 
 private:
     model::kernel::Model* model;

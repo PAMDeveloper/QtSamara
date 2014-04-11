@@ -147,6 +147,16 @@ public:
         boost::posix_time::ptime d(boost::gregorian::date(e), td);
         return boost::posix_time::to_simple_string(d);
     }
+
+    static void format_date(const std::string& str, std::string& date)
+    {
+        std::vector < std::string > list;
+
+        boost::split(list, str, boost::is_any_of("-"));
+        date = (boost::format("%1%/%2%/%3%") % list[2] % list[1] %
+                list[0]).str();
+    }
+
 };
 
 }

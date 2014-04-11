@@ -26,6 +26,8 @@
 #define MODEL_OBSERVER_OBSERVER_HPP
 
 #include <model/kernel/Model.hpp>
+
+#include <model/observer/LAIView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -53,6 +55,11 @@ public:
     {
         views.push_back(view);
         view->attachModel(model);
+    }
+
+    void init()
+    {
+        attachView(new LAIView);
     }
 
     void observe(double t)

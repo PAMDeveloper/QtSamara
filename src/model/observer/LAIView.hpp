@@ -1,5 +1,5 @@
 /**
- * @file model/observer/View.hpp
+ * @file model/observer/LAIView.hpp
  * @author The Samara Development Team
  * See the AUTHORS file
  */
@@ -22,29 +22,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_VIEW_HPP
-#define MODEL_OBSERVER_VIEW_HPP
+#ifndef MODEL_OBSERVER_LAIVIEW_HPP
+#define MODEL_OBSERVER_LAIVIEW_HPP
 
-#include <model/kernel/Model.hpp>
+#include <model/observer/View.hpp>
+
+#include <utils/DateTime.hpp>
 
 namespace model { namespace observer {
 
-class View
+class LAIView : public View
 {
 public:
-    View() : model(0)
+    LAIView()
     { }
 
-    virtual ~View()
+    virtual ~LAIView()
     { }
 
-    void attachModel(const model::kernel::Model* m)
-    { model = m; }
-
-    virtual void observe(double time) = 0;
-
-protected:
-    const model::kernel::Model* model;
+    virtual void observe(double t)
+    {
+        std::cout << utils::DateTime::toJulianDay(t)
+                  << " " << model->lai() << std::endl;
+    }
 };
 
 } }

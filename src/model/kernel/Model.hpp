@@ -28,6 +28,7 @@
 #include <model/models/ModelParameters.hpp>
 
 #include <model/models/samara/Model.hpp>
+#include <model/models/meteo/Meteo.hpp>
 
 #include <map>
 #include <vector>
@@ -37,22 +38,32 @@ namespace model { namespace kernel {
 class Model
 {
 public:
-    Model() : model(0)
+    Model() : samara_model(0), meteo_model(0)
     { }
 
     virtual ~Model()
-    { delete model; }
+    {
+        delete samara_model;
+        delete meteo_model;
+    }
 
     void build();
 
     void compute(double t);
 
     void init(const model::models::ModelParameters& parameters)
-    { model->init(parameters); }
+    {
+        samara_model->init(parameters);
+        meteo_model->init(parameters);
+    }
+
+    double lai() const
+    { return samara_model->lai(); }
 
 private:
 // models
-    model::models::samara::Model* model;
+    model::models::samara::Model* samara_model;
+    model::models::meteo::Meteo* meteo_model;
 };
 
 } }

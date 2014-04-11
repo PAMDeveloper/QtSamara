@@ -113,13 +113,13 @@ void Model::EvalRespMaint()
     double RespMaintPaniclePop;
     double CoeffQ10;
 
-    CoeffQ10 = std::pow(CoefficientQ10, (TMoyCalc - kTempMaint) / 10);
-    RespMaintLeafPop = kRespMaintLeaf * DryMatStructLeafPop * CoeffQ10;
-    RespMaintSheathPop = kRespMaintSheath * DryMatStructSheathPop * CoeffQ10;
-    RespMaintRootPop = kRespMaintRoot * DryMatStructRootPop * CoeffQ10;
-    RespMaintInternodePop = kRespInternode * DryMatStructInternodePop *
+    CoeffQ10 = std::pow(CoefficientQ10, (TMoyCalc - KTempMaint) / 10);
+    RespMaintLeafPop = KRespMaintLeaf * DryMatStructLeafPop * CoeffQ10;
+    RespMaintSheathPop = KRespMaintSheath * DryMatStructSheathPop * CoeffQ10;
+    RespMaintRootPop = KRespMaintRoot * DryMatStructRootPop * CoeffQ10;
+    RespMaintInternodePop = KRespInternode * DryMatStructInternodePop *
         CoeffQ10;
-    RespMaintPaniclePop = kRespPanicle * DryMatStructPaniclePop * CoeffQ10;
+    RespMaintPaniclePop = KRespPanicle * DryMatStructPaniclePop * CoeffQ10;
     RespMaintTot = RespMaintLeafPop + RespMaintSheathPop + RespMaintRootPop +
         RespMaintInternodePop + RespMaintPaniclePop;
 }
@@ -1697,7 +1697,7 @@ void Model::KeyResults()
 
 void Model::DegToRad()
 {
-    LatRad = Lat * M_PI / 180;
+    LatRad = Latitude * M_PI / 180;
 }
 
 void Model::AVGTempHum()
@@ -1744,7 +1744,7 @@ void Model::EvalRayExtra()
 
 void Model::EvalRgMax()
 {
-    RgMax = (0.75 + 0.00002 * Alt) * RayExtra;
+    RgMax = (0.75 + 0.00002 * Altitude) * RayExtra;
 }
 
 void Model::InsToRg()
@@ -1797,7 +1797,7 @@ void Model::EToFAO()
         Tlat = 2.501 - 2.361 * std::pow(10, -3) * TMoy;
         delta = 4098 * (0.6108 * std::exp(17.27 * TMoy / (TMoy + 237.3))) /
             std::pow(TMoy + 237.3, 2);
-        Kpsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Alt / 293),
+        Kpsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude / 293),
                                           5.26) / TLat;
         G = 0.38 * (TMoy - TMoyPrec);
         Erad = 0.408 * (Rn - G) * delta / (delta + Kpsy * (1 + 0.34 * Vent));
