@@ -99,15 +99,15 @@ void Model::phyllochron()
     }
 }
 
-void Model::EvalCstrAssim()
+void Model::evalCstrAssim()
 {
     CstrAssim = std::pow(std::max(cstr, 0.00000001), ASScstr);
 }
 
-void Model::EvalRespMaint()
+void Model::evalRespMaint()
 {
     double RespMaintLeafPop;
-    double  RespMaintSheathPop;
+    double RespMaintSheathPop;
     double RespMaintRootPop;
     double RespMaintInternodePop;
     double RespMaintPaniclePop;
@@ -124,7 +124,7 @@ void Model::EvalRespMaint()
         RespMaintInternodePop + RespMaintPaniclePop;
 }
 
-void Model::EvolPlantTilNumTot()
+void Model::evolPlantTilNumTot()
 {
     double TilNewPlant;
 
@@ -152,7 +152,7 @@ void Model::EvolPlantTilNumTot()
     }
 }
 
-void Model::EvolPlantLeafNumTot()
+void Model::evolPlantLeafNumTot()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         PlantLeafNumNew = HaunGain * CulmsPerHill;
@@ -163,7 +163,7 @@ void Model::EvolPlantLeafNumTot()
     }
 }
 
-void Model::EvalRelPotLeafLength()
+void Model::evalRelPotLeafLength()
 {
     if (NumPhase > 1) {
         RelPotLeafLength = std::min((0.1 + 0.9 * HaunIndex / RankLongestLeaf),
@@ -171,7 +171,7 @@ void Model::EvalRelPotLeafLength()
     }
 }
 
-void Model::EvalDemandStructSheath()
+void Model::evalDemandStructSheath()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         DemStructSheathPop = (1 + ((SlaMax - Sla) / (SlaMax - SlaMin))) * 0.5 *
@@ -180,7 +180,7 @@ void Model::EvalDemandStructSheath()
     }
 }
 
-void Model::EvalDemandStructRoot()
+void Model::evalDemandStructRoot()
 {
     RootSystSoilSurfPop = std::min(RootFront * RootFront * Density / 1000000,
                                    10000.);
@@ -200,7 +200,7 @@ void Model::EvalDemandStructRoot()
     }
 }
 
-void Model::EvalDemandStructPanicle()
+void Model::evalDemandStructPanicle()
 {
     if (NumPhase == 4) {
         DemStructPaniclePlant = CoeffPanicleMass * CulmsPerHill *
@@ -215,7 +215,7 @@ void Model::EvalDemandStructPanicle()
     }
 }
 
-void Model::EvolGrowthStructSheathPop()
+void Model::evolGrowthStructSheathPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -227,7 +227,7 @@ void Model::EvolGrowthStructSheathPop()
     }
 }
 
-void Model::EvolGrowthStructRootPop()
+void Model::evolGrowthStructRootPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -239,7 +239,7 @@ void Model::EvolGrowthStructRootPop()
     }
 }
 
-void Model::EvolGrowthStructPanPop()
+void Model::evolGrowthStructPanPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -251,7 +251,7 @@ void Model::EvolGrowthStructPanPop()
     }
 }
 
-void Model::EvalSlaMitch()
+void Model::evalSlaMitch()
 {
     if (NumPhase > 1) {
         SlaMitch = SlaMin + (SlaMax - SlaMin) *
@@ -267,7 +267,7 @@ void Model::EvalSlaMitch()
     }
 }
 
-void Model::EvolKcpKceBilhy()
+void Model::evolKcpKceBilhy()
 {
     Kcp = std::min((1 - LTRkdfcl) * KcMax, KcMax);
     Kcp = std::min(Kcp, KcMax);
@@ -275,7 +275,7 @@ void Model::EvolKcpKceBilhy()
     KcTot = Kcp + Kce;
 }
 
-void Model::EvolConsRes_Flood()
+void Model::evolConsRes_Flood()
 {
     double TrSurf;
     double WaterDeficit;
@@ -347,7 +347,7 @@ void Model::EvolConsRes_Flood()
     }
 }
 
-void Model::EvalConversion()
+void Model::evalConversion()
 {
     double KAssim;
 
@@ -372,7 +372,7 @@ void Model::EvalConversion()
     Conversion = KAssim * TxConversion;
 }
 
-void Model::EvolPSPMVMD()
+void Model::evolPSPMVMD()
 {
     double SDJPSP;
 
@@ -390,7 +390,7 @@ void Model::EvolPSPMVMD()
     }
 }
 
-void Model::EvolSomDegresJourCor()
+void Model::evolSomDegresJourCor()
 {
     if (NumPhase >= 1) {
         SommeDegresJourCor = SommeDegresJourCor + DegresDuJourCor;
@@ -399,7 +399,7 @@ void Model::EvolSomDegresJourCor()
     }
 }
 
-void Model::EvalMaximumLai()
+void Model::evalMaximumLai()
 {
     if (Lai > TempLai) {
         TempLai = Lai;
@@ -411,7 +411,7 @@ void Model::EvalMaximumLai()
     }
 }
 
-void Model::EvalVitesseRacinaire()
+void Model::evalVitesseRacinaire()
 {
     switch ((int)(NumPhase))
     {
@@ -427,21 +427,21 @@ void Model::EvalVitesseRacinaire()
         std::pow(cstr, RootCstr);
 }
 
-void Model::EvalRootFront()
+void Model::evalRootFront()
 {
     if (NumPhase > 0) {
         RootFront = ((1 / ResUtil) * RuRac) * 1000;
     }
 }
 
-void Model::EvalSDJPhase4()
+void Model::evalSDJPhase4()
 {
     if (NumPhase == 4) {
         SDJPhase4 = SDJPhase4 + DegreDuJourCor;
     }
 }
 
-void Model::EvalDateGermination()
+void Model::evalDateGermination()
 {
     if (NumPhase < 1 or (NumPhase == 1 and ChangePhase == 1)) {
         NbDaysSinceGermination = 0;
@@ -450,7 +450,7 @@ void Model::EvalDateGermination()
     }
 }
 
-void Model::EvalSterility()
+void Model::evalSterility()
 {
     if (NumPhase == 5 and ChangePhase == 1) {
         SterilityCold =
@@ -480,7 +480,7 @@ void Model::EvalSterility()
                                         (1 - SterilityDrought)));
 }
 
-void Model::InitParcelle()
+void Model::initParcelle()
 {
     double Stockini2;
     double Stockini1;
@@ -508,7 +508,7 @@ void Model::InitParcelle()
     VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) / 100;
 }
 
-void Model::EvalEvapPot()
+void Model::evalEvapPot()
 {
     EvapPot = Kce * ETP;
 }
@@ -550,7 +550,7 @@ void Model::transplanting()
     }
 }
 
-void Model::TransplantingShock()
+void Model::transplantingShock()
 {
     if (CounterNursery > 0 and CounterNursery < 8) {
         Assim = Assim * CoeffTransplantingShock;
@@ -559,7 +559,7 @@ void Model::TransplantingShock()
     }
 }
 
-void Model::EvalRuiss_FloodDyna()
+void Model::evalRuiss_FloodDyna()
 {
     double CorrectedIrrigation;
     double CorrectedBundHeight;
@@ -636,7 +636,7 @@ void Model::EvalRuiss_FloodDyna()
     }
 }
 
-void Model::EvolRempliResRFE_RDE()
+void Model::evolRempliResRFE_RDE()
 {
     double EauReste;
     double ValRSurfPrec;
@@ -716,13 +716,13 @@ void Model::EvolRempliResRFE_RDE()
     }
 }
 
-void Model::PlantSubmergence()
+void Model::plantSubmergence()
 {
     FractionPlantHeightSubmer = std::min(
         std::max(0., FloodwaterDepth / std::max(PlantHeight, 0.1)), 1.);
 }
 
-void Model::ExcessAssimilToRoot()
+void Model::excessAssimilToRoot()
 {
     if (NumPhase > 1) {
         RootMassPerVol = DryMatStructRootPop / RootSystVolPop;
@@ -737,7 +737,7 @@ void Model::ExcessAssimilToRoot()
     }
 }
 
-void Model::EvolRempliMacropores()
+void Model::evolRempliMacropores()
 {
     if (StockMacropores + FloodwaterDepth > 0) {
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
@@ -753,7 +753,7 @@ void Model::EvolRempliMacropores()
     }
 }
 
-void Model::EvalFTSW()
+void Model::evalFTSW()
 {
     StockRac = std::min(StockRac, (RuRac +
                                    (StockMacropores * RuRac / StRuMax)));
@@ -765,7 +765,7 @@ void Model::EvalFTSW()
     }
 }
 
-void Model::EvalDAF()
+void Model::evalDAF()
 {
     if (NumPhase > 4) {
         DAF = DAF + 1;
@@ -774,49 +774,49 @@ void Model::EvalDAF()
     }
 }
 
-void Model::EvalSimStartGermin()
+void Model::evalSimStartGermin()
 {
     if (NumPhase == 1 and ChangePhase == 1) {
         SimStartGermin = NbJas;
     }
 }
 
-void Model::EvalSimEmergence()
+void Model::evalSimEmergence()
 {
     if (NumPhase == 2 and ChangePhase == 1) {
         SimEmergence = NbJas;
     }
 }
 
-void Model::EvalSimStartPSP()
+void Model::evalSimStartPSP()
 {
     if (NumPhase == 3 and ChangePhase == 1) {
         SimStartPSP = NbJas;
     }
 }
 
-void Model::EvalSimPanIni()
+void Model::evalSimPanIni()
 {
     if (NumPhase == 4 and ChangePhase == 1) {
         SimPanIni = NbJas;
     }
 }
 
-void Model::EvalSimAnthesis50()
+void Model::evalSimAnthesis50()
 {
     if (NumPhase == 5 and ChangePhase == 1) {
         SimAnthesis50 = NbJas;
     }
 }
 
-void Model::EvalSimStartMatu2()
+void Model::evalSimStartMatu2()
 {
     if (NumPhase == 6 and ChangePhase == 1) {
         SimStartMatu2 = NbJas;
     }
 }
 
-void Model::EvalColdStress()
+void Model::evalColdStress()
 {
     StressCold = 1 -
         std::max(0.,
@@ -827,12 +827,12 @@ void Model::EvalColdStress()
     StressCold = std::max(0.00001, StressCold);
 }
 
-void Model::EvalAssim()
+void Model::evalAssim()
 {
     Assim = std::max(AssimPot * CstrAssim, 0.);
 }
 
-void Model::EvolWaterLoggingUpland()
+void Model::evolWaterLoggingUpland()
 {
     if (Dr > PercolationMax and BundHeight == 0) {
         StockMacropores = StockMacropores + (Dr - PercolationMax);
@@ -842,7 +842,7 @@ void Model::EvolWaterLoggingUpland()
     }
 }
 
-void Model::EvalStressWaterLogging()
+void Model::evalStressWaterLogging()
 {
     if (StockMacropores > 0 and RootFront > 0) {
         FractionRootsLogged =
@@ -855,7 +855,7 @@ void Model::EvalStressWaterLogging()
     }
 }
 
-void Model::EvalCstrPFactorFAO()
+void Model::evalCstrPFactorFAO()
 {
     double pFact;
 
@@ -869,7 +869,7 @@ void Model::EvalCstrPFactorFAO()
     }
 }
 
-void Model::EvolHauteur_SDJ_cstr()
+void Model::evolHauteur_SDJ_cstr()
 {
   double CorrectedCstrMean;
 
@@ -895,7 +895,7 @@ void Model::EvolHauteur_SDJ_cstr()
         LeafLengthMax;
 }
 
-void Model::EvalParIntercepte()
+void Model::evalParIntercepte()
 {
     if (Lai > 0 and LIRkdfcl == 0) {
         LIRkdfcl = (1 - std::exp(-Kdf * Lai));
@@ -903,7 +903,7 @@ void Model::EvalParIntercepte()
     PARIntercepte = PAR * LIRkdfcl;
 }
 
-void Model::EvolMobiliTillerDeath()
+void Model::evolMobiliTillerDeath()
 {
     if (NumPhase == 3 or (NumPhase == 4 and SDJCorPhase4 <= 0.7 * SDJRPR
                           and CulmsPerPlant >= 1)) {
@@ -916,7 +916,7 @@ void Model::EvolMobiliTillerDeath()
     }
 }
 
-void Model::EvolMobiliLeafDeath()
+void Model::evolMobiliLeafDeath()
 {
     if (NumPhase > 1) {
         LeafDeathPop = (1 - (std::min(Ic, 1.))) * DryMatStructLeafPop *
@@ -928,7 +928,7 @@ void Model::EvolMobiliLeafDeath()
     }
 }
 
-void Model::EvalSupplyTot()
+void Model::evalSupplyTot()
 {
     SupplyTot = Assim + MobiliLeafDeath - RespMaintTot -
         std::max(0., RespMaintDebt);
@@ -945,7 +945,7 @@ void Model::EvalSupplyTot()
     }
 }
 
-void Model::EvalDemandStructLeaf()
+void Model::evalDemandStructLeaf()
 {
   double CorrectedSla;
 
@@ -964,7 +964,7 @@ void Model::EvalDemandStructLeaf()
     }
 }
 
-void Model::EvalDemandStructIN()
+void Model::evalDemandStructIN()
 {
     if (PhaseStemElongation == 1) {
         DemStructInternodePlant = std::pow(std::min(Ic, 1.), 0.5) *
@@ -977,7 +977,7 @@ void Model::EvalDemandStructIN()
     }
 }
 
-void Model::EvalDemandTotAndIcPreFlow()
+void Model::evalDemandTotAndIcPreFlow()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         DemStructTotPop = DemStructLeafPop + DemStructSheathPop +
@@ -1006,7 +1006,7 @@ void Model::EvalDemandTotAndIcPreFlow()
     }
 }
 
-void Model::EvolGrowthStructLeafPop()
+void Model::evolGrowthStructLeafPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -1021,7 +1021,7 @@ void Model::EvolGrowthStructLeafPop()
     }
 }
 
-void Model::EvolGrowthStructINPop()
+void Model::evolGrowthStructINPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -1036,7 +1036,7 @@ void Model::EvolGrowthStructINPop()
     }
 }
 
-void Model::AddResToGrowthStructPop()
+void Model::addResToGrowthStructPop()
 {
     if (NumPhase > 1) {
         if (Ic < 1 and DemStructTotPop > 0) {
@@ -1064,7 +1064,7 @@ void Model::AddResToGrowthStructPop()
     }
 }
 
-void Model::EvolDemPanFilPopAndIcPFlow()
+void Model::evolDemPanFilPopAndIcPFlow()
 {
     if (NumPhase == 5) {
         PanicleSinkPop = DryMatStructPaniclePop * CoeffPanSinkPop *
@@ -1091,7 +1091,7 @@ void Model::EvolDemPanFilPopAndIcPFlow()
     }
 }
 
-void Model::EvolPanicleFilPop()
+void Model::evolPanicleFilPop()
 {
     if (NumPhase == 5) {
         ResInternodeMobiliDayPot = RelMobiliInternodeMax *
@@ -1137,7 +1137,7 @@ void Model::EvolPanicleFilPop()
     }
 }
 
-void Model::EvolGrowthReserveInternode()
+void Model::evolGrowthReserveInternode()
 {
     if (NumPhase >= 2) {
         DryMatResInternodePopOld = DryMatResInternodePop;
@@ -1158,7 +1158,7 @@ void Model::EvolGrowthReserveInternode()
     }
 }
 
-void Model::EvolGrowthTot()
+void Model::evolGrowthTot()
 {
     if (NumPhase < 5) {
         GrowthStructTotPop = GrowthStructLeafPop + GrowthStructSheathPop +
@@ -1173,7 +1173,7 @@ void Model::EvolGrowthTot()
         (DryMatResInternodePop -  DryMatResInternodePopOld) + PanicleFilPop;
 }
 
-void Model::EvalLai()
+void Model::evalLai()
 {
     double CorrectedSla;
 
@@ -1190,7 +1190,7 @@ void Model::EvalLai()
     Lai = DryMatStructLeafPop * CorrectedSla;
 }
 
-void Model::EvalClumpAndLightInter()
+void Model::evalClumpAndLightInter()
 {
     double RolledLai;
 
@@ -1208,7 +1208,7 @@ void Model::EvalClumpAndLightInter()
     }
 }
 
-void Model::EvalRUE()
+void Model::evalRUE()
 {
     double CorrectedIrrigation;
 
@@ -1256,7 +1256,7 @@ void Model::EvalRUE()
     }
 }
 
-void Model::EvolEvapSurfRFE_RDE()
+void Model::evolEvapSurfRFE_RDE()
 {
     double ValRSurfPrec;
     double EvapRU;
@@ -1346,7 +1346,7 @@ void Model::EvolEvapSurfRFE_RDE()
     }
 }
 
-void Model::EvolDryMatTot()
+void Model::evolDryMatTot()
 {
     CumGrowthPop = CumGrowthPop + GrowthStructLeafPop + GrowthStructSheathPop +
         GrowthStructInternodePop + GrowthStructRootPop +
@@ -1408,7 +1408,7 @@ void Model::EvolDryMatTot()
     }
 }
 
-void Model::EvolGrowthStructTot()
+void Model::evolGrowthStructTot()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         GrowthStructTotPop = GrowthStructLeafPop + GrowthStructSheathPop +
@@ -1429,7 +1429,7 @@ void Model::EvolGrowthStructTot()
     }
 }
 
-void Model::LeafRolling()
+void Model::leafRolling()
 {
     if (NumPhase > 1) {
         KRolling = RollingBase + (1 - RollingBase) *
@@ -1440,7 +1440,7 @@ void Model::LeafRolling()
     }
 }
 
-void Model::EvalAssimPot()
+void Model::evalAssimPot()
 {
     if (-CO2Exp != 0 and CO2Cp != 0) {
         CoeffCO2Assim = (1 - std::exp(-CO2Exp * (Ca - CO2Cp))) /
@@ -1458,7 +1458,7 @@ void Model::EvalAssimPot()
     }
 }
 
-void Model::AutomaticIrrigation()
+void Model::automaticIrrigation()
 {
   double IrrigAutoTargetCor;
   double CorrectedIrrigation;
@@ -1532,7 +1532,7 @@ void Model::AutomaticIrrigation()
     IrrigTotDay = CorrectedIrrigation + IrrigAutoDay;
 }
 
-void Model::EvolRurRFE_RDE()
+void Model::evolRurRFE_RDE()
 {
   double DeltaRur;
 
@@ -1591,7 +1591,7 @@ void Model::EvolRurRFE_RDE()
     }
 }
 
-void Model::EvalSimEndCycle()
+void Model::evalSimEndCycle()
 
 {
     if (NumPhase == 7 and ChangePhase == 1) {
@@ -1599,7 +1599,7 @@ void Model::EvalSimEndCycle()
     }
 }
 
-void Model::Priority2GrowthPanStrctPop()
+void Model::priority2GrowthPanStrctPop()
 {
     double GrowthPanDeficit;
     double GrowthStructPaniclePlus;
@@ -1624,7 +1624,7 @@ void Model::Priority2GrowthPanStrctPop()
     }
 }
 
-void Model::KeyResults()
+void Model::keyResults()
 {
     if (NumPhase > 1 and NumPhase < 7) {
         CulmsPerPlantMax = std::max(CulmsPerPlant, CulmsPerPlantMax);
@@ -1695,12 +1695,12 @@ void Model::KeyResults()
     }
 }
 
-void Model::DegToRad()
+void Model::degToRad()
 {
     LatRad = Latitude * M_PI / 180;
 }
 
-void Model::AVGTempHum()
+void Model::avgTempHum()
 {
     if (TMin != NullValue and TMax != NullValue) {
         TMoyCalc = (TMax + TMin) / 2;
@@ -1714,40 +1714,40 @@ void Model::AVGTempHum()
     }
 }
 
-void Model::EvalDecli(double t)
+void Model::evalDecli(double t)
 {
     Decli = 0.409 * std::sin(0.0172 * utils::DateTime::dayOfYear(t) - 1.39);
 }
 
-void Model::EvalSunPosi()
+void Model::evalSunPosi()
 {
     SunPosi = std::acos(-std::tan(LatRad) * std::tan(Decli));
 }
 
-void Model::EvalDayLength()
+void Model::evalDayLength()
 {
     DayLength = 7.64 * SunPosi;
 }
 
-void Model::EvalSunDistance(double t)
+void Model::evalSunDistance(double t)
 {
     SunDistance = 1 + 0.033 *
         std::cos(2 * M_PI / 365 * utils::DateTime::dayOfYear(t));
 }
 
-void Model::EvalRayExtra()
+void Model::evalRayExtra()
 {
     RayExtra = 24 * 60 * 0.0820 / M_PI * SunDistance *
         (SunPosi * std::sin(Decli) * std::sin(LatRad) +
          std::cos(Decli) * std::cos(LatRad) * std::sin(SunPosi));
 }
 
-void Model::EvalRgMax()
+void Model::evalRgMax()
 {
     RgMax = (0.75 + 0.00002 * Altitude) * RayExtra;
 }
 
-void Model::InsToRg()
+void Model::insToRg()
 {
     if (RGLue == NullValue) {
         RGCalc = (0.25 + 0.50 * std::min(Ins / DayLength, 1.)) * RayExtra;
@@ -1756,12 +1756,12 @@ void Model::InsToRg()
     }
 }
 
-void Model::EvalPAR()
+void Model::evalPAR()
 {
     PAR = KPar * Rg;
 }
 
-void Model::EToFAO()
+void Model::etoFAO()
 {
     double eActual;
     double eSat;
@@ -1810,7 +1810,7 @@ void Model::EToFAO()
     TMoyPrec = TMoy;
 }
 
-void Model::EvolPhenoStress()
+void Model::evolPhenoStress()
 {
     bool ChangementDePhase;
     bool ChangementDeSousPhase;
@@ -1871,25 +1871,25 @@ void Model::EvolPhenoStress()
     }
 }
 
-void Model::DemandePlante()
+void Model::demandePlante()
 {
     TrPot = Kcp * Eto;
     CoeffCO2Tr = Ca * CO2SlopeTr - 400 * CO2SlopeTr + 1;
     TrPot = TrPot * CoeffCO2Tr;
 }
 
-void Model::EvalTranspi()
+void Model::evalTranspi()
 {
     Tr = TrPot * cstr;
 }
 
-void Model::EvalETRETM()
+void Model::evalETRETM()
 {
     ETM = Evap + TrPot;
     ETR = Evap + Tr;
 }
 
-void Model::EvolSomDegresJour()
+void Model::evolSomDegresJour()
 {
     if (NumPhase >= 1) {
         SommeDegresJour = SommeDegresJour + DegresDuJour;
@@ -1898,7 +1898,7 @@ void Model::EvolSomDegresJour()
     }
 }
 
-void Model::Mortality()
+void Model::mortality()
 {
     double MoyenneCstr;
 
@@ -1921,6 +1921,37 @@ void Model::Mortality()
             }
         }
     }
+}
+
+void Model::evalTMaxMoy() {
+  if (NumPhase == 4 and NumSousPhase == 4) {
+    TMaxMoy = calculeLaMoyenne(TMax, MonCompteur, TMaxMoy);
+  } else if (NumPhase < 4) {
+    TMaxMoy = 0;
+  }
+}
+
+void Model::evalTMinMoy() {
+  if (NumPhase == 4 and NumSousPhase == 3) {
+    TMinMoy = calculeLaMoyenne(TMin, MonCompteur, TMinMoy);
+  } else if (NumPhase < 4) {
+    TMinMoy = 0;
+  }
+}
+
+void Model::evalFtswMoy() {
+  if (NumPhase == 4 and NumSousPhase == 4) {
+    FtswMoy = calculeLaMoyenne(FTSW, MonCompteur, FtswMoy);
+  } else if (NumPhase < 4) {
+    FtswMoy = 0;
+  }
+}
+
+double Model::calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne) {
+  double moyenne;
+
+  moyenne = (laMoyenne * (leCompteur - 1) + laValeur) / leCompteur;
+  return moyenne;
 }
 
 } } } // namespace model models samara
