@@ -31,47 +31,62 @@
 
 namespace model { namespace models { namespace samara {
 
-void Model::evalDegreeDay()
+void Model::evalDegreeDay(double t)
 {
-    double V, V1, V3;
-    double S1, S2, S3;
-    double Tn, Tx;
+    if (t >= DateSemis) {
 
-    if (TMax != TMin) {
-        if (TMax <= TBase or TMin >= TLet) {
-            V = 0;
-        } else {
-            Tn = std::max(TMin, TBase);
-            Tx = std::min(TMax, TLet);
-            V1 = ((Tn + std::min(TOpt1, Tx)) / 2 - TBase) / (TOpt1 - TBase);
-            S1 = V1 * std::max(0., std::min(TOpt1, Tx) - Tn);
-            S2 = 1 * std::max(0., std::min(Tx, TOpt2) - std::max(Tn, TOpt1));
-            V3 = (TLet - (std::max(Tx, TOpt2) + std::max(TOpt2, Tn)) / 2) /
-                (TLet - TOpt2);
-            S3 = V3 * std::max(0., Tx - std::max(TOpt2, Tn));
-            V = (S1 + S2 + S3) / (TMax - TMin);
-        }
-    } else {
-        if (TMax < TOpt1) {
-            V = (TMax - TBase) / (TOpt1 - TBase);
-        } else {
-            if (TMax < TOpt2) {
-                V = 1;
+        double V, V1, V3;
+        double S1, S2, S3;
+        double Tn, Tx;
+
+        if (TMax != TMin) {
+            if (TMax <= TBase or TMin >= TLet) {
+                V = 0;
             } else {
-                V = (TLet - TMax) / (TLet - TOpt2);
+                Tn = std::max(TMin, TBase);
+                Tx = std::min(TMax, TLet);
+                V1 = ((Tn + std::min(TOpt1, Tx)) / 2 - TBase) / (TOpt1 - TBase);
+                S1 = V1 * std::max(0., std::min(TOpt1, Tx) - Tn);
+                S2 = 1 * std::max(0., std::min(Tx, TOpt2) - std::max(Tn, TOpt1));
+                V3 = (TLet - (std::max(Tx, TOpt2) + std::max(TOpt2, Tn)) / 2) /
+                    (TLet - TOpt2);
+                S3 = V3 * std::max(0., Tx - std::max(TOpt2, Tn));
+                V = (S1 + S2 + S3) / (TMax - TMin);
+            }
+        } else {
+            if (TMax < TOpt1) {
+                V = (TMax - TBase) / (TOpt1 - TBase);
+            } else {
+                if (TMax < TOpt2) {
+                    V = 1;
+                } else {
+                    V = (TLet - TMax) / (TLet - TOpt2);
+                }
             }
         }
-    }
-    DegresDuJour = V * (TOpt1 - TBase);
-    if (NumPhase > 1 and NumPhase < 5)
-    {
-        DegresDuJourCor = DegresDuJour * std::pow(std::max(cstr, 0.00000001),
-                                                  DEVcstr);
+        DegresDuJour = V * (TOpt1 - TBase);
+        if (NumPhase > 1 and NumPhase < 5)
+        {
+            DegresDuJourCor = DegresDuJour * std::pow(std::max(cstr, 0.00000001),
+                                                      DEVcstr);
+        } else {
+            DegresDuJourCor = DegresDuJour;
+        }
+        DegresDuJourCor = DegresDuJourCor * StressCold;
+        // std::cout << "TMin = " << TMin << std::endl;
+        // std::cout << "TMax = " << TMax << std::endl;
+        // std::cout << "TBase = " << TBase << std::endl;
+        // std::cout << "TLet = " << TLet << std::endl;
+        // std::cout << "TOpt1 = " << TOpt1 << std::endl;
+        // std::cout << "TOpt2 = " << TOpt2 << std::endl;
+        // std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
+        // std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
     } else {
-        DegresDuJourCor = DegresDuJour;
+        DegresDuJour = 0.;
+        DegresDuJourCor = 0.;
     }
-    DegresDuJourCor = DegresDuJourCor * StressCold;
 }
+
 
 void Model::phyllochron()
 {
@@ -97,6 +112,8 @@ void Model::phyllochron()
         HaunGain = 0;
         PhaseStemElongation = 0;
     }
+    // std::cout << "PhaseStemElongation = " << PhaseStemElongation << std::endl;
+    // std::cout << "HaunIndex = " << HaunIndex << std::endl;
 }
 
 void Model::evalCstrAssim()
@@ -372,32 +389,75 @@ void Model::evalConversion()
     Conversion = KAssim * TxConversion;
 }
 
-void Model::evolPSPMVMD()
+void Model::evolPSPMVMD(double t)
 {
-    double SDJPSP;
+    if (t >= DateSemis) {
 
-    if (NumPhase == 3) {
-      if (ChangePhase == 1) {
-          SumPP = 100;
-          SDJPSP = std::max(0.01, DegresDuJourCor);
-      } else {
-          SDJPSP = SommeDegresJourCor - SeuilTempPhasePrec +
-              std::max(0.01, DegresDuJourCor);
-      }
-      SumPP = std::pow((1000 / SDJPSP), PPExp) *
-          std::max(0., (DureeDuJour - PPCrit)) / (SeuilPP - PPCrit);
-      SeuilTempPhaseSuivante = SeuilTempPhasePrec + SDJPSP;
+        /*std::cout << "-----" << std::endl;
+        std::cout << "AVANT" << std::endl;
+        std::cout << "-----" << std::endl;
+        std::cout << "NumPhase = " << NumPhase << std::endl;
+        std::cout << "ChangePhase = " << ChangePhase << std::endl;
+        std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
+        std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
+        std::cout << "DureeDuJour = " << DayLength << std::endl;
+        std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << std::endl;
+        std::cout << "PPExp = " << PPExp << std::endl;
+        std::cout << "SeuilPP = " << SeuilPP << std::endl;
+        std::cout << "PPCrit = " << PPCrit << std::endl;*/
+
+
+
+
+        double SDJPSP;
+
+        if (NumPhase == 3) {
+            if (ChangePhase == 1) {
+                SumPP = 100;
+                SDJPSP = std::max(0.01, DegresDuJourCor);
+                /*std::cout << "Ligne 1" << std::endl;
+                std::cout << "SumPP = " << SumPP << std::endl;
+                std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
+            } else {
+                SDJPSP = SommeDegresJourCor - SeuilTempPhasePrec +
+                    std::max(0.01, DegresDuJourCor);
+                /*std::cout << "Ligne 2" << std::endl;
+                  std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
+            }
+
+            /*std::cout << "std::pow((1000 / SDJPSP), PPExp) = " << std::pow((1000 / SDJPSP), PPExp) << std::endl;
+            std::cout << "DureeDuJour - PPCrit =" << DayLength - PPCrit << std::endl;
+            std::cout <<  "std::max(0., (DureeDuJour - PPCrit)) = " << std::max(0., (DureeDuJour - PPCrit)) << std::endl;*/
+
+
+
+            SumPP = std::pow((1000 / SDJPSP), PPExp) *
+                std::max(0., (DayLength - (double) PPCrit)) / (SeuilPP - PPCrit);
+            SeuilTempPhaseSuivante = SeuilTempPhasePrec + SDJPSP;
+        }
+
+        /*std::cout << "-----" << std::endl;
+        std::cout << "APRES" << std::endl;
+        std::cout << "-----" << std::endl;
+        std::cout << "SDJPSP = " << SDJPSP << std::endl;
+        std::cout << "SumPP = " << SumPP << std::endl;*/
+
+
     }
 }
 
-void Model::evolSomDegresJourCor()
+
+void Model::evolSomDegresJourCor(double t)
 {
-    if (NumPhase >= 1) {
-        SommeDegresJourCor = SommeDegresJourCor + DegresDuJourCor;
-    } else {
-        SommeDegresJourCor = 0;
+    if (t >= DateSemis) {
+        if (NumPhase >= 1) {
+            SommeDegresJourCor = SommeDegresJourCor + DegresDuJourCor;
+        } else {
+            SommeDegresJourCor = 0;
+        }
     }
 }
+
 
 void Model::evalMaximumLai()
 {
@@ -448,6 +508,7 @@ void Model::evalDateGermination()
     } else {
         NbDaysSinceGermination = NbDaysSinceGermination + 1;
     }
+    // std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << std::endl;
 }
 
 void Model::evalSterility()
@@ -516,6 +577,13 @@ void Model::evalEvapPot()
 void Model::transplanting()
 {
     double DensityChange;
+
+    if (Transplanting == 0) {
+        // std::cout << "Transplanting == 0" << std::endl;
+    } else {
+        // std::cout << "Transplanting == 1" << std::endl;
+    }
+
 
     DensityChange = DensityField / (DensityNursery / PlantsPerHill);
     if (Transplanting == 1 and NumPhase >= 1) {
@@ -825,6 +893,7 @@ void Model::evalColdStress()
                                               KCritStressCold2) - TMin /
                           (KCritStressCold1 - KCritStressCold2)));
     StressCold = std::max(0.00001, StressCold);
+    // std::cout << "StressCold = " << StressCold << std::endl;
 }
 
 void Model::evalAssim()
@@ -1698,6 +1767,7 @@ void Model::keyResults()
 void Model::degToRad()
 {
     LatRad = Latitude * M_PI / 180;
+    // std::cout << "LatRad = " << LatRad << std::endl;
 }
 
 void Model::avgTempHum()
@@ -1712,27 +1782,33 @@ void Model::avgTempHum()
     } else {
         HMoyCalc = HMoy;
     }
+    // std::cout << "TMoyCalc = " << TMoyCalc << std::endl;
+    // std::cout << "HMoyCalc = " << HMoyCalc << std::endl;
 }
 
 void Model::evalDecli(double t)
 {
     Decli = 0.409 * std::sin(0.0172 * utils::DateTime::dayOfYear(t) - 1.39);
+    // std::cout << "Decli = " << Decli << std::endl;
 }
 
 void Model::evalSunPosi()
 {
     SunPosi = std::acos(-std::tan(LatRad) * std::tan(Decli));
+    // std::cout << "SunPosi = " << SunPosi << std::endl;
 }
 
 void Model::evalDayLength()
 {
     DayLength = 7.64 * SunPosi;
+    // std::cout << "DayLength = " << DayLength << std::endl;
 }
 
 void Model::evalSunDistance(double t)
 {
     SunDistance = 1 + 0.033 *
         std::cos(2 * M_PI / 365 * utils::DateTime::dayOfYear(t));
+    // std::cout << "SunDistance = " << SunDistance << std::endl;
 }
 
 void Model::evalRayExtra()
@@ -1740,11 +1816,13 @@ void Model::evalRayExtra()
     RayExtra = 24 * 60 * 0.0820 / M_PI * SunDistance *
         (SunPosi * std::sin(Decli) * std::sin(LatRad) +
          std::cos(Decli) * std::cos(LatRad) * std::sin(SunPosi));
+    // std::cout << "RayExtra = " << RayExtra << std::endl;
 }
 
 void Model::evalRgMax()
 {
     RgMax = (0.75 + 0.00002 * Altitude) * RayExtra;
+    // std::cout << "RgMax = " << RgMax << std::endl;
 }
 
 void Model::insToRg()
@@ -1754,11 +1832,13 @@ void Model::insToRg()
     } else {
         RGCalc = RGLue;
     }
+    // std::cout << "RGCalc = " << RGCalc << std::endl;
 }
 
 void Model::evalPAR()
 {
     PAR = KPar * Rg;
+    // std::cout << "PAR = " << PAR << std::endl;
 }
 
 void Model::etoFAO()
@@ -1808,68 +1888,106 @@ void Model::etoFAO()
         Eto = ETP;
     }
     TMoyPrec = TMoy;
+    // std::cout << "Eto = " << Eto << std::endl;
 }
 
-void Model::evolPhenoStress()
+void Model::evolPhenoStress(double t)
 {
-    bool ChangementDePhase;
-    bool ChangementDeSousPhase;
+    if (t >= DateSemis) {
 
-    ChangePhase = 0;
-    ChangeSousPhase = 0;
-    if ((int)(NumPhase) == 0) {
-        if (StockSurface >= PourcRuSurfGermi * RuSurf or StRu > StockSurface) {
-            NumPhase = 1;
-            ChangePhase = 1;
-            SeuilTempPhaseSuivante = SDJLevee;
-        }
-    } else {
-        if ((int)(NumPhase) == 2 and
-            SommeDegresJour >= SeuilTempPhaseSuivante) {
-            ChangementDePhase = true;
+        bool ChangementDePhase = false;
+        bool ChangementDeSousPhase = false;
+
+        std::cout << "-----" << std::endl;
+        std::cout << "DEBUT" << std::endl;
+        std::cout << "-----" << std::endl;
+        std::cout << "NumPhase = " << NumPhase << std::endl;
+        std::cout << "StockSurface = " << StockSurface << std::endl;
+        std::cout << "PourcRuSurfGermi = " << PourcRuSurfGermi << std::endl;
+        std::cout << "RuSurf = " << RuSurf << std::endl;
+        std::cout << "StRu = " << StRu << std::endl;
+
+
+        ChangePhase = 0;
+        ChangeSousPhase = 0;
+        if ((int)(NumPhase) == 0) {
+            if (StockSurface >= PourcRuSurfGermi * RuSurf or StRu > StockSurface) {
+                NumPhase = 1;
+                ChangePhase = 1;
+                SeuilTempPhaseSuivante = SDJLevee;
+
+                std::cout << "Ligne 1" << std::endl;
+
+            }
         } else {
-            if ((int)(NumPhase) != 3) {
-                ChangementDePhase = (SommeDegresJour >= SeuilTempPhaseSuivante);
+            if ((int)(NumPhase) == 2 and
+                SommeDegresJour >= SeuilTempPhaseSuivante) {
+                ChangementDePhase = true;
+
+                std::cout << "Ligne 2" << std::endl;
 
             } else {
-                ChangementDePhase = (SumPP >= SeuilPP);
+                if ((int)(NumPhase) != 3) {
+                    ChangementDePhase = (SommeDegresJour >= SeuilTempPhaseSuivante);
+
+                    std::cout << "Ligne 3" << std::endl;
+
+                } else {
+                    ChangementDePhase = (SumPP >= SeuilPP);
+
+                    std::cout << "SumPP = " << SumPP << std::endl;
+                    std::cout << "SeuilPP = " << SeuilPP << std::endl;
+                    std::cout << "Ligne 4" << std::endl;
+
+                }
             }
         }
-    }
-    if (ChangementDePhase) {
-        ChangePhase = 1;
-        NumPhase = NumPhase + 1;
-        SommeDegresJourPhasePrecedente = SeuilTempPhaseSuivante;
-        switch ((int)(NumPhase)) {
+        if (ChangementDePhase) {
+
+            std::cout << "Ligne 5" << std::endl;
+
+            ChangePhase = 1;
+            NumPhase = NumPhase + 1;
+            SommeDegresJourPhasePrecedente = SeuilTempPhaseSuivante;
+            switch ((int)(NumPhase)) {
             case 2: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante +
-                SDJBVP; break;
-        case 3: SumPP = 0; break;
-        case 4:
-              SeuilTempSousPhaseSuivante = SeuilTempPhaseSuivante + SDJRPR
-                  / 4;
-              NumSousPhase = 1;
-              MonCompteur = 0;
-              ChangeSousPhase = 1;
-              SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJRPR;
-              break;
-        case 5: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJMatu1;
-        case 6: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJMatu2;
-      }
-        if ((int)(NumPhase) == 4) {
-            ChangementDeSousPhase = (SommeDegresJour >=
-                                     SeuilTempSousPhaseSuivante);
-            if (ChangementDeSousPhase) {
-                SeuilTempSousPhaseSuivante = SeuilTempSousPhaseSuivante +
-                    SDJRPR / 4;
-                NumSousPhase = NumSousPhase + 1;
-                MonCompteur = 1;
+                    SDJBVP; break;
+            case 3: SumPP = 0; break;
+            case 4:
+                SeuilTempSousPhaseSuivante = SeuilTempPhaseSuivante + SDJRPR
+                    / 4;
+                NumSousPhase = 1;
+                MonCompteur = 0;
                 ChangeSousPhase = 1;
-            } else {
-                MonCompteur++;
+                SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJRPR;
+                break;
+            case 5: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJMatu1; break;
+            case 6: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SDJMatu2; break;
+            }
+            if ((int)(NumPhase) == 4) {
+                ChangementDeSousPhase = (SommeDegresJour >=
+                                         SeuilTempSousPhaseSuivante);
+                if (ChangementDeSousPhase) {
+                    SeuilTempSousPhaseSuivante = SeuilTempSousPhaseSuivante +
+                        SDJRPR / 4;
+                    NumSousPhase = NumSousPhase + 1;
+                    MonCompteur = 1;
+                    ChangeSousPhase = 1;
+                } else {
+                    MonCompteur++;
+                }
             }
         }
+        std::cout << "---" << std::endl;
+        std::cout << "FIN" << std::endl;
+        std::cout << "---" << std::endl;
+        std::cout << "NumPhase = " << NumPhase << std::endl;
+    } else {
+        NumPhase = 0;
     }
 }
+
+
 
 void Model::demandePlante()
 {

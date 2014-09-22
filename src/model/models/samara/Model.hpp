@@ -28,6 +28,8 @@
 #include <model/models/ModelParameters.hpp>
 #include <model/models/meteo/Meteo.hpp>
 
+#include <utils/DateTime.hpp>
+
 namespace model { namespace models { namespace samara {
 
 class Model
@@ -49,7 +51,7 @@ public:
     { return Lai; }
 
 private:
-    void evalDegreeDay();
+    void evalDegreeDay(double t);
     void phyllochron();
     void evalCstrAssim();
     void evalRespMaint();
@@ -66,8 +68,8 @@ private:
     void evolKcpKceBilhy();
     void evolConsRes_Flood();
     void evalConversion();
-    void evolPSPMVMD();
-    void evolSomDegresJourCor();
+    void evolPSPMVMD(double t);
+    void evolSomDegresJourCor(double t);
     void evalMaximumLai();
     void evalVitesseRacinaire();
     void initCrop();
@@ -136,17 +138,17 @@ private:
     void insToRg();
     void evalPAR();
     void etoFAO();
-    void evolPhenoStress();
+    void evolPhenoStress(double t);
     void demandePlante();
     void evalTranspi();
     void evalETRETM();
     void evolSomDegresJour();
     void mortality();
 
-  void evalTMaxMoy();
-  void evalTMinMoy();
-  void evalFtswMoy();
-  double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
+    void evalTMaxMoy();
+    void evalTMinMoy();
+    void evalFtswMoy();
+    double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
 
     // constantes
    static  double NullValue;
@@ -335,6 +337,7 @@ private:
     double CumWUse;
     double CumWUseFin;
     double DAF;
+    double DateSemis;
     double DayLength;
     double DeadLeafDrywtPop;
     double DeadLeafDryWtPop;

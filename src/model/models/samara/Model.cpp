@@ -43,100 +43,100 @@ void Model::assignClimate(const model::models::meteo::Climate& climate)
 
 void Model::compute(double t)
 {
-  transplanting();
-  degToRad();
-  avgTempHum();
-  evalDecli(t);
-  evalSunPosi();
-  evalDayLength();
-  evalSunDistance(t);
-  evalRayExtra();
-  evalRgMax();
-  insToRg();
-  evalPAR();
-  etoFAO();
-  evolPhenoStress();
-  evalSimAnthesis50();
-  evalDateGermination();
-  evalColdStress();
-  evalSimEmergence();
-  evalSimPanIni();
-  evalSimStartGermin();
-  evalSimStartMatu2();
-  evalSimStartPSP();
-  evalDegreeDay();
-  evalSDJPhase4();
-  evalDAF();
-  phyllochron();
-  evolHauteur_SDJ_cstr();
-  evolKcpKceBilhy();
-  evalEvapPot();  
-  evolEvapSurfRFE_RDE();
-  evalFTSW();
-  evalCstrPFactorFAO();
-  demandePlante();
-  evalTranspi();
-  evalETRETM();
-  evolConsRes_Flood();
-  evalTMaxMoy();
-  evalTMinMoy();
-  evalFtswMoy();
-  evalSterility();
-  evalVitesseRacinaire();
-  evalConversion();
-  evalParIntercepte();
-  evalAssimPot();
-  evalCstrAssim();
-  evalAssim();
-  transplantingShock();
-  evalRespMaint();
-  evalRelPotLeafLength();
-  evolPlantTilNumTot();
-  evolPlantLeafNumTot();
-  evolMobiliTillerDeath();
-  evolMobiliLeafDeath();
-  evalSupplyTot();
-  evalDemandStructLeaf();
-  evalDemandStructSheath();
-  evalDemandStructRoot();
-  evalDemandStructIN();
-  evalDemandStructPanicle();  
-  evalDemandTotAndIcPreFlow();
-  evolGrowthStructLeafPop();
-  evolGrowthStructSheathPop();
-  evolGrowthStructRootPop();
-  evolGrowthStructINPop();
-  evolGrowthStructPanPop();
-  evolGrowthStructTot();
-  priority2GrowthPanStrctPop();
-  addResToGrowthStructPop();
-  evolDemPanFilPopAndIcPFlow();
-  evolPanicleFilPop();
-  evolGrowthReserveInternode();
-  evolGrowthTot();
-  excessAssimilToRoot();
-  evolDryMatTot();
-  evalLai();
-  evalMaximumLai();
-  leafRolling();
-  evalClumpAndLightInter();
-  evalSlaMitch();
-  evalRuiss_FloodDyna();
-  automaticIrrigation();
-  evolRempliResRFE_RDE();
-  evolWaterLoggingUpland();
-  evalStressWaterLogging();
-  evolRempliMacropores();
-  evolRurRFE_RDE();
-  plantSubmergence();
-  evalRootFront();
-  evolPSPMVMD();
-  evolSomDegresJour();
-  evolSomDegresJourCor();
-  evalRUE();
-  mortality();
-  keyResults();
-  evalSimEndCycle();
+    transplanting(); // ok
+    degToRad(); // ok
+    avgTempHum(); // ok
+    evalDecli(t); // ok
+    evalSunPosi(); // ok
+    evalDayLength(); // ok
+    evalSunDistance(t); // ok
+    evalRayExtra(); // ok
+    evalRgMax(); // ok
+    insToRg(); // ok
+    evalPAR(); // ok
+    etoFAO(); // ok
+    evolPhenoStress(t); // ok
+    evalSimAnthesis50(); // ok
+    evalDateGermination(); // ok
+    evalColdStress(); // ok
+    evalSimEmergence();
+    evalSimPanIni();
+    evalSimStartGermin();
+    evalSimStartMatu2();
+    evalSimStartPSP();
+    evalDegreeDay(t); // ok
+    evalSDJPhase4();
+    evalDAF();
+    phyllochron();
+    evolHauteur_SDJ_cstr();
+    evolKcpKceBilhy();
+    evalEvapPot();
+    evolEvapSurfRFE_RDE();
+    evalFTSW();
+    evalCstrPFactorFAO();
+    demandePlante();
+    evalTranspi();
+    evalETRETM();
+    evolConsRes_Flood();
+    evalTMaxMoy();
+    evalTMinMoy();
+    evalFtswMoy();
+    evalSterility();
+    evalVitesseRacinaire();
+    evalConversion();
+    evalParIntercepte();
+    evalAssimPot();
+    evalCstrAssim();
+    evalAssim();
+    transplantingShock();
+    evalRespMaint();
+    evalRelPotLeafLength();
+    evolPlantTilNumTot();
+    evolPlantLeafNumTot();
+    evolMobiliTillerDeath();
+    evolMobiliLeafDeath();
+    evalSupplyTot();
+    evalDemandStructLeaf();
+    evalDemandStructSheath();
+    evalDemandStructRoot();
+    evalDemandStructIN();
+    evalDemandStructPanicle();
+    evalDemandTotAndIcPreFlow();
+    evolGrowthStructLeafPop();
+    evolGrowthStructSheathPop();
+    evolGrowthStructRootPop();
+    evolGrowthStructINPop();
+    evolGrowthStructPanPop();
+    evolGrowthStructTot();
+    priority2GrowthPanStrctPop();
+    addResToGrowthStructPop();
+    evolDemPanFilPopAndIcPFlow();
+    evolPanicleFilPop();
+    evolGrowthReserveInternode();
+    evolGrowthTot();
+    excessAssimilToRoot();
+    evolDryMatTot();
+    evalLai();
+    evalMaximumLai();
+    leafRolling();
+    evalClumpAndLightInter();
+    evalSlaMitch();
+    evalRuiss_FloodDyna();
+    automaticIrrigation();
+    evolRempliResRFE_RDE();
+    evolWaterLoggingUpland();
+    evalStressWaterLogging();
+    evolRempliMacropores();
+    evolRurRFE_RDE();
+    plantSubmergence();
+    evalRootFront();
+    evolPSPMVMD(t);
+    evolSomDegresJour();
+    evolSomDegresJourCor(t);
+    evalRUE();
+    mortality();
+    keyResults();
+    evalSimEndCycle();
 }
 
 void Model::init(const model::models::ModelParameters& parameters)
@@ -164,6 +164,9 @@ void Model::init(const model::models::ModelParameters& parameters)
     CoeffTillerDeath = parameters.get < double >("CoeffTillerDeath");
     CoeffTransplantingShock =
         parameters.get < double >("CoeffTransplantingShock");
+    std::string dSemis;
+    utils::DateTime::format_date(parameters.get < std::string >("DateSemis"), dSemis);
+    DateSemis = utils::DateTime::toJulianDayNumber(dSemis);
     DensityField = parameters.get < double >("DensityField");
     DensityNursery = parameters.get < double >("DensityNursery");
     DEVcstr = parameters.get < double >("DEVcstr");

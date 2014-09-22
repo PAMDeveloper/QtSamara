@@ -58,8 +58,11 @@ void ParametersReader::load(const std::string& id,
               << std::endl;
     std::cout << " - variety = " << parameters.get < std::string >("IdVariety")
               << std::endl;
-    std::cout << " - ititneraire technique = "
+    std::cout << " - itineraire technique = "
               << parameters.get < std::string >("IdItineraireTechnique")
+              << std::endl;
+    std::cout << " - date semis = "
+              << parameters.get < std::string >("DateSemis")
               << std::endl;
     std::cout << " - plot = " << parameters.get < std::string >("IdPlot")
               << std::endl;
@@ -180,8 +183,10 @@ void ParametersReader::load_variety(
         "SeuilPP",
         "SlaMax",
         "SlaMin",
+        "TBase",
         "TempSla",
         "TilAbility",
+        "TLet",
         "TOpt1",
         "TOpt2",
         "TransplantingDepth",
@@ -211,6 +216,7 @@ void ParametersReader::load_itineraire_technique(
     std::vector < std::string > names = {
         "BundHeight",
         "CoeffTransplantingShock",
+        "DateSemis",
         "DensityField",
         "DensityNursery",
         "DurationNursery",
