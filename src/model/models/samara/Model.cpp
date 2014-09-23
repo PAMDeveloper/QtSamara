@@ -39,6 +39,7 @@ void Model::assignClimate(const model::models::meteo::Climate& climate)
     Vent = climate.Vt;
     Ins = climate.Ins;
     Rg = climate.Rg;
+    ETP = climate.ETP;
 }
 
 void Model::compute(double t)
@@ -67,20 +68,20 @@ void Model::compute(double t)
     evalDegreeDay(t); // ok
     evalSDJPhase4();
     evalDAF();
-    phyllochron();
-    evolHauteur_SDJ_cstr();
-    evolKcpKceBilhy();
-    evalEvapPot();
-    evolEvapSurfRFE_RDE();
-    evalFTSW();
-    evalCstrPFactorFAO();
-    demandePlante();
-    evalTranspi();
-    evalETRETM();
-    evolConsRes_Flood();
-    evalTMaxMoy();
-    evalTMinMoy();
-    evalFtswMoy();
+    phyllochron(); // ok
+    evolHauteur_SDJ_cstr(); // ok
+    evolKcpKceBilhy(); // ok
+    evalEvapPot(); // ok
+    evolEvapSurfRFE_RDE(); // ok
+    evalFTSW(); // ok
+    evalCstrPFactorFAO(); // ok
+    demandePlante(); // ok
+    evalTranspi(); // ok
+    evalETRETM(); // ok
+    evolConsRes_Flood(); // bof bof
+    evalTMaxMoy(); // ok
+    evalTMinMoy(); // ok
+    evalFtswMoy(); // ok
     evalSterility();
     evalVitesseRacinaire();
     evalConversion();
@@ -134,7 +135,7 @@ void Model::compute(double t)
     evolSomDegresJour();
     evolSomDegresJourCor(t);
     evalRUE();
-    mortality();
+    //mortality(); //pour l'instant
     keyResults();
     evalSimEndCycle();
 }

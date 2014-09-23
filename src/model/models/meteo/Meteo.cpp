@@ -93,7 +93,8 @@ void Meteo::init(const model::models::ModelParameters& parameters)
                                 boost::lexical_cast < double >(it->at(7)),
                                 boost::lexical_cast < double >(it->at(8)),
                                 boost::lexical_cast < double >(it->at(9)),
-                                boost::lexical_cast < double >(it->at(10))));
+                                boost::lexical_cast < double >(it->at(10)),
+                                boost::lexical_cast < double >(it->at(12))));
                     }
                 }
             }
@@ -105,4 +106,3 @@ void Meteo::init(const model::models::ModelParameters& parameters)
 }
 
 } } }
-

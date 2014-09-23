@@ -290,6 +290,10 @@ void Model::evolKcpKceBilhy()
     Kcp = std::min(Kcp, KcMax);
     Kce = LTRkdfcl * 1 * (Mulch / 100);
     KcTot = Kcp + Kce;
+
+    // std::cout << "Kcp = " << Kcp << std::endl;
+    // std::cout << "Kce = " << Kce << std::endl;
+    // std::cout << "KcTot = " << KcTot << std::endl;
 }
 
 void Model::evolConsRes_Flood()
@@ -300,35 +304,46 @@ void Model::evolConsRes_Flood()
     TrSurf = 0;
     StockSurface = ValRFE + ValRDE;
     if (FloodwaterDepth + StockMacropores == 0 or NumPhase == 0) {
-      if (RuRac != 0) {
-          if (RuRac <= RuSurf) {
-              TrSurf = Tr;
-          } else {
-              if (StockRac != 0) {
-                  TrSurf = Tr * StockSurface / StockRac;
-              }
-          }
-      } else {
-          TrSurf = 0;
-      }
-      ValRDE = std::max(0., ValRSurf - CapaREvap);
-      if (ValRDE + ValRFE < TrSurf) {
-          ValRFE = 0;
-          ValRSurf = ValRSurf - ValRDE;
-          ValRDE = 0;
-      } else {
-          if (ValRFE > TrSurf) {
-              ValRFE = ValRFE - TrSurf;
-          } else {
-              ValRSurf = ValRSurf - (TrSurf - ValRFE);
-              ValRDE = ValRDE - (TrSurf - ValRFE);
-              ValRFE = 0;
-          }
-      }
-      StockSurface = ValRFE + ValRDE;
-      StockRac = std::max(0., StockRac - Tr);
-      StockTotal = std::max(0., StockTotal - Tr);
-      StockRac = std::min(StockRac, StockTotal);
+
+        // std::cout << "On passe par la " << std::endl;
+        // std::cout << "RuRac = " << RuRac << std::endl;
+        // std::cout << "StockRac = " << StockRac << std::endl;
+
+
+
+        if (RuRac != 0) {
+            if (RuRac <= RuSurf) {
+                TrSurf = Tr;
+            } else {
+                if (StockRac != 0) {
+                    TrSurf = Tr * StockSurface / StockRac;
+                }
+            }
+        } else {
+            TrSurf = 0;
+        }
+
+        // std::cout << "TrSurf = " << TrSurf << std::endl;
+
+
+        ValRDE = std::max(0., ValRSurf - CapaREvap);
+        if (ValRDE + ValRFE < TrSurf) {
+            ValRFE = 0;
+            ValRSurf = ValRSurf - ValRDE;
+            ValRDE = 0;
+        } else {
+            if (ValRFE > TrSurf) {
+                ValRFE = ValRFE - TrSurf;
+            } else {
+                ValRSurf = ValRSurf - (TrSurf - ValRFE);
+                ValRDE = ValRDE - (TrSurf - ValRFE);
+                ValRFE = 0;
+            }
+        }
+        StockSurface = ValRFE + ValRDE;
+        StockRac = std::max(0., StockRac - Tr);
+        StockTotal = std::max(0., StockTotal - Tr);
+        StockRac = std::min(StockRac, StockTotal);
     }
     if (StockMacropores + FloodwaterDepth > 0 and
         (StockMacropores + FloodwaterDepth <= Tr + Evap) and NumPhase > 0) {
@@ -404,7 +419,8 @@ void Model::evolPSPMVMD(double t)
         std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << std::endl;
         std::cout << "PPExp = " << PPExp << std::endl;
         std::cout << "SeuilPP = " << SeuilPP << std::endl;
-        std::cout << "PPCrit = " << PPCrit << std::endl;*/
+        std::cout << "PPCrit = " << PPCrit << std::endl;
+        std::cout << "SommeDegresJourPhasePrecedente = " << SommeDegresJourPhasePrecedente << std::endl;*/
 
 
 
@@ -419,7 +435,7 @@ void Model::evolPSPMVMD(double t)
                 std::cout << "SumPP = " << SumPP << std::endl;
                 std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
             } else {
-                SDJPSP = SommeDegresJourCor - SeuilTempPhasePrec +
+                SDJPSP = SommeDegresJourCor - SommeDegresJourPhasePrecedente +
                     std::max(0.01, DegresDuJourCor);
                 /*std::cout << "Ligne 2" << std::endl;
                   std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
@@ -433,14 +449,16 @@ void Model::evolPSPMVMD(double t)
 
             SumPP = std::pow((1000 / SDJPSP), PPExp) *
                 std::max(0., (DayLength - (double) PPCrit)) / (SeuilPP - PPCrit);
-            SeuilTempPhaseSuivante = SeuilTempPhasePrec + SDJPSP;
+            SeuilTempPhaseSuivante = SommeDegresJourPhasePrecedente + SDJPSP;
         }
 
         /*std::cout << "-----" << std::endl;
         std::cout << "APRES" << std::endl;
         std::cout << "-----" << std::endl;
         std::cout << "SDJPSP = " << SDJPSP << std::endl;
-        std::cout << "SumPP = " << SumPP << std::endl;*/
+        std::cout << "SumPP = " << SumPP << std::endl;
+        std::cout << "SeuilTempPhaseSuivante = " << SeuilTempPhaseSuivante << std::endl;*/
+
 
 
     }
@@ -531,10 +549,6 @@ void Model::evalSterility()
                      (std::min(1., KCritSterFtsw1 / (KCritSterFtsw1 -
                                                      KCritSterFtsw2) -
                                FtswMoy / (KCritSterFtsw1 - KCritSterFtsw2))));
-    } else {
-        SterilityCold = SterilityCold;
-        SterilityHeat = SterilityHeat;
-        SterilityDrought = SterilityDrought;
     }
     SterilityTot = std::min(0.999, 1 - ((1 - SterilityCold) *
                                         (1 - SterilityHeat) *
@@ -571,7 +585,9 @@ void Model::initParcelle()
 
 void Model::evalEvapPot()
 {
-    EvapPot = Kce * ETP;
+    EvapPot = Kce * Eto;
+
+    // std::cout << "EvapPot = " << EvapPot << std::endl;
 }
 
 void Model::transplanting()
@@ -831,6 +847,11 @@ void Model::evalFTSW()
     } else {
         FTSW = 0;
     }
+
+    // std::cout << "StockRac = " << StockRac << std::endl;
+    // std::cout << "FTSW = " << FTSW << std::endl;
+
+
 }
 
 void Model::evalDAF()
@@ -936,6 +957,9 @@ void Model::evalCstrPFactorFAO()
     if (StockMacropores > 0) {
         cstr = cstr * CoeffStressLogging;
     }
+
+    // std::cout << "pFact = " << pFact << std::endl;
+    // std::cout << "cstr = " << cstr << std::endl;
 }
 
 void Model::evolHauteur_SDJ_cstr()
@@ -962,6 +986,12 @@ void Model::evolHauteur_SDJ_cstr()
                                                      WtRatioLeafSheath));
     PlantWidth = std::pow(Kdf, 1.5) * 2 * std::sqrt(IcMean) * RelPotLeafLength *
         LeafLengthMax;
+
+
+    // std::cout << "PlantHeight = " << PlantHeight << std::endl;
+    // std::cout << "PlantWidth = " << PlantWidth << std::endl;
+
+
 }
 
 void Model::evalParIntercepte()
@@ -1332,8 +1362,15 @@ void Model::evolEvapSurfRFE_RDE()
     double Evap1;
     double Evap2;
 
+    // std::cout << "StockMacropores = " << StockMacropores << std::endl;
+    // std::cout << "FloodwaterDepth = " << FloodwaterDepth << std::endl;
+
     if (StockMacropores + FloodwaterDepth == 0) {
         ValRSurfPrec = ValRSurf;
+
+        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+        // std::cout << "ValRFE = " << ValRFE << std::endl;
+
         if (ValRFE > 0) {
             if (ValRFE < EvapPot) {
                 Evap1 = ValRFE;
@@ -1348,16 +1385,33 @@ void Model::evolEvapSurfRFE_RDE()
             Evap1 = 0;
             Evap2 = std::max(0., std::min(ValRSurf, EvapPot * ValRSurf /
                                           (CapaREvap + CapaRDE)));
+
+            // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+            // std::cout << "EvapPot = " << EvapPot << std::endl;
+            // std::cout << "Evap1 = " << Evap1 << std::endl;
+            // std::cout << "Evap2 = " << Evap2 << std::endl;
+
+
         }
         Evap = Evap1 + Evap2;
         ValRFE = ValRFE - Evap1;
         ValRSurf = ValRSurf - Evap2;
         ValRDE = std::max(0., ValRSurf - CapaREvap);
+
+        // std::cout << "Evap = " << Evap << std::endl;
+        // std::cout << "ValRFE = " << ValRFE << std::endl;
+        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+        // std::cout << "ValRDE = " << ValRDE << std::endl;
+
+
         if (EvapPot == 0) {
             Kr = 0;
         } else {
             Kr = Evap / EvapPot;
         }
+
+        // std::cout << "Kr = " << Kr << std::endl;
+
         if (ValRSurf >= CapaREvap) {
             EvapRU = Evap;
         } else {
@@ -1367,14 +1421,29 @@ void Model::evolEvapSurfRFE_RDE()
                 EvapRU = Evap1 + ValRSurfPrec - CapaREvap;
             }
         }
+
+        // std::cout << "EvapRU = " << EvapRU << std::endl;
+
         if (RuRac <= RuSurf) {
             StockRac = std::max(0., StockRac - EvapRU * RuRac / RuSurf);
         } else {
             StockRac = std::max(0., StockRac - EvapRU);
         }
+
+        // std::cout << "StockRac = " << StockRac << std::endl;
+
         StockTotal = StockTotal - EvapRU;
+
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
+
         StockRac = std::min(StockRac, StockTotal);
+
+        // std::cout << "StockRac = " << StockRac << std::endl;
+
         KceReal = Kce * Kr;
+
+        // std::cout << "KceReal = " << KceReal << std::endl;
+
     }
     if (StockMacropores + FloodwaterDepth > 0 and NumPhase > 0) {
         Evap = EvapPot;
@@ -1827,10 +1896,10 @@ void Model::evalRgMax()
 
 void Model::insToRg()
 {
-    if (RGLue == NullValue) {
+    if (Rg == NullValue) {
         RGCalc = (0.25 + 0.50 * std::min(Ins / DayLength, 1.)) * RayExtra;
     } else {
-        RGCalc = RGLue;
+        RGCalc = Rg;
     }
     // std::cout << "RGCalc = " << RGCalc << std::endl;
 }
@@ -1846,9 +1915,9 @@ void Model::etoFAO()
     double eActual;
     double eSat;
     double RgRgMax;
-    double TLat;
+    double Tlat;
     double delta;
-    double KPsy;
+    double Kpsy;
     double Eaero;
     double Erad;
     double Rn;
@@ -1857,20 +1926,20 @@ void Model::etoFAO()
     if (ETP == NullValue) {
         eSat = 0.3054 * (std::exp(17.27 * TMax / (TMax + 237.3)) +
                          std::exp(17.27 * TMin / (TMin + 237.3)));
-        if (HrMax == NullValue) {
-            eActual = eSat * HrMoy / 100;
+        if (HMax == NullValue) {
+            eActual = eSat * HMoy / 100;
         } else {
             eActual = 0.3054 * (std::exp(17.27 * TMax / (TMax + 237.3)) *
-                                HrMin / 100 + std::exp(17.27 * TMin /
+                                HMin / 100 + std::exp(17.27 * TMin /
                                                        (TMin + 237.3)) *
-                                HrMax / 100);
+                                HMax / 100);
         }
         VPD = eSat - eActual;
-        RgRgMax = RayGlobal / RgMax;
+        RgRgMax = RGCalc / RgMax;
         if (RgRgMax > 1) {
             RgRgMax = 1;
         }
-        Rn = 0.77 * RayGlobal - (1.35 * RgRgMax - 0.35) *
+        Rn = 0.77 * RGCalc - (1.35 * RgRgMax - 0.35) *
             (0.34 - 0.14 * std::pow(eActual, 0.5)) *
             (std::pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) *
             2.45015 * std::pow(10, -9);
@@ -1878,7 +1947,7 @@ void Model::etoFAO()
         delta = 4098 * (0.6108 * std::exp(17.27 * TMoy / (TMoy + 237.3))) /
             std::pow(TMoy + 237.3, 2);
         Kpsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude / 293),
-                                          5.26) / TLat;
+                                          5.26) / Tlat;
         G = 0.38 * (TMoy - TMoyPrec);
         Erad = 0.408 * (Rn - G) * delta / (delta + Kpsy * (1 + 0.34 * Vent));
         Eaero = (900 / (TMoy + 273.16)) * ((eSat - eActual) * Vent) * Kpsy /
@@ -1888,7 +1957,6 @@ void Model::etoFAO()
         Eto = ETP;
     }
     TMoyPrec = TMoy;
-    // std::cout << "Eto = " << Eto << std::endl;
 }
 
 void Model::evolPhenoStress(double t)
@@ -1898,14 +1966,9 @@ void Model::evolPhenoStress(double t)
         bool ChangementDePhase = false;
         bool ChangementDeSousPhase = false;
 
-        std::cout << "-----" << std::endl;
-        std::cout << "DEBUT" << std::endl;
-        std::cout << "-----" << std::endl;
         std::cout << "NumPhase = " << NumPhase << std::endl;
-        std::cout << "StockSurface = " << StockSurface << std::endl;
-        std::cout << "PourcRuSurfGermi = " << PourcRuSurfGermi << std::endl;
-        std::cout << "RuSurf = " << RuSurf << std::endl;
-        std::cout << "StRu = " << StRu << std::endl;
+        std::cout << "SeuilTempsPahseSuivante = " << SeuilTempPhaseSuivante << std::endl;
+        std::cout << "SommeDegresJour = " << SommeDegresJour << std::endl;
 
 
         ChangePhase = 0;
@@ -1915,37 +1978,20 @@ void Model::evolPhenoStress(double t)
                 NumPhase = 1;
                 ChangePhase = 1;
                 SeuilTempPhaseSuivante = SDJLevee;
-
-                std::cout << "Ligne 1" << std::endl;
-
             }
         } else {
             if ((int)(NumPhase) == 2 and
                 SommeDegresJour >= SeuilTempPhaseSuivante) {
                 ChangementDePhase = true;
-
-                std::cout << "Ligne 2" << std::endl;
-
             } else {
                 if ((int)(NumPhase) != 3) {
                     ChangementDePhase = (SommeDegresJour >= SeuilTempPhaseSuivante);
-
-                    std::cout << "Ligne 3" << std::endl;
-
                 } else {
-                    ChangementDePhase = (SumPP >= SeuilPP);
-
-                    std::cout << "SumPP = " << SumPP << std::endl;
-                    std::cout << "SeuilPP = " << SeuilPP << std::endl;
-                    std::cout << "Ligne 4" << std::endl;
-
+                    ChangementDePhase = (SumPP <= SeuilPP);
                 }
             }
         }
         if (ChangementDePhase) {
-
-            std::cout << "Ligne 5" << std::endl;
-
             ChangePhase = 1;
             NumPhase = NumPhase + 1;
             SommeDegresJourPhasePrecedente = SeuilTempPhaseSuivante;
@@ -1977,13 +2023,9 @@ void Model::evolPhenoStress(double t)
                     MonCompteur++;
                 }
             }
-        }
-        std::cout << "---" << std::endl;
-        std::cout << "FIN" << std::endl;
-        std::cout << "---" << std::endl;
-        std::cout << "NumPhase = " << NumPhase << std::endl;
-    } else {
-        NumPhase = 0;
+        } //else {
+        //NumPhase = 0;
+        //}
     }
 }
 
@@ -1994,17 +2036,33 @@ void Model::demandePlante()
     TrPot = Kcp * Eto;
     CoeffCO2Tr = Ca * CO2SlopeTr - 400 * CO2SlopeTr + 1;
     TrPot = TrPot * CoeffCO2Tr;
+
+    // std::cout << "Kcp = " << Kcp << std::endl;
+    // std::cout << "Eto = " << Eto << std::endl;
+    // std::cout << "Ca = " << Ca << std::endl;
+    // std::cout << "CO2SlopeTr = " << CO2SlopeTr << std::endl;
+    // std::cout << "CoeffCO2Tr = " << CoeffCO2Tr << std::endl;
+    // std::cout << "TrPot = " << TrPot << std::endl;
 }
 
 void Model::evalTranspi()
 {
     Tr = TrPot * cstr;
+
+    // std::cout << "Tr = " << Tr << std::endl;
 }
 
 void Model::evalETRETM()
 {
     ETM = Evap + TrPot;
     ETR = Evap + Tr;
+
+    // std::cout << "TrPot = " << TrPot << std::endl;
+    // std::cout << "Tr = " << Tr << std::endl;
+    // std::cout << "Evap = " << Evap << std::endl;
+    // std::cout << "ETM = " << ETM << std::endl;
+    // std::cout << "ETR = " << ETR << std::endl;
+
 }
 
 void Model::evolSomDegresJour()
@@ -2042,34 +2100,55 @@ void Model::mortality()
 }
 
 void Model::evalTMaxMoy() {
-  if (NumPhase == 4 and NumSousPhase == 4) {
-    TMaxMoy = calculeLaMoyenne(TMax, MonCompteur, TMaxMoy);
-  } else if (NumPhase < 4) {
-    TMaxMoy = 0;
-  }
+
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+
+    if (NumPhase == 4 and NumSousPhase == 4) {
+        TMaxMoy = calculeLaMoyenne(TMax, MonCompteur, TMaxMoy);
+    } else if (NumPhase < 4) {
+        TMaxMoy = 0;
+    }
+
+    // std::cout << "TMaxMoy = " << TMaxMoy << std::endl;
+
 }
 
 void Model::evalTMinMoy() {
-  if (NumPhase == 4 and NumSousPhase == 3) {
-    TMinMoy = calculeLaMoyenne(TMin, MonCompteur, TMinMoy);
-  } else if (NumPhase < 4) {
-    TMinMoy = 0;
-  }
+
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+
+    if (NumPhase == 4 and NumSousPhase == 3) {
+        TMinMoy = calculeLaMoyenne(TMin, MonCompteur, TMinMoy);
+    } else if (NumPhase < 4) {
+        TMinMoy = 0;
+    }
+
+    // std::cout << "TMinMoy = " << TMinMoy << std::endl;
+
 }
 
 void Model::evalFtswMoy() {
-  if (NumPhase == 4 and NumSousPhase == 4) {
-    FtswMoy = calculeLaMoyenne(FTSW, MonCompteur, FtswMoy);
-  } else if (NumPhase < 4) {
-    FtswMoy = 0;
-  }
+
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+
+    if (NumPhase == 4 and NumSousPhase == 4) {
+        FtswMoy = calculeLaMoyenne(FTSW, MonCompteur, FtswMoy);
+    } else if (NumPhase < 4) {
+        FtswMoy = 0;
+    }
+
+    // std::cout << "FtswMoy = " << FtswMoy << std::endl;
+
 }
 
 double Model::calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne) {
-  double moyenne;
+    double moyenne;
 
-  moyenne = (laMoyenne * (leCompteur - 1) + laValeur) / leCompteur;
-  return moyenne;
+    moyenne = (laMoyenne * (leCompteur - 1) + laValeur) / leCompteur;
+    return moyenne;
 }
 
 } } } // namespace model models samara

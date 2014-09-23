@@ -431,9 +431,6 @@ private:
     double HMin;
     double HMoy;
     double HMoyCalc;
-    double HrMax;
-    double HrMin;
-    double HrMoy;
     double Hum;
     double Ic;
     double IcCumul;
@@ -455,7 +452,6 @@ private:
     double Kcp;
     double KcTot;
     double KPar;
-    double Kpsy;
     double Kr;
     double KRolling;
     double Lai;
@@ -497,7 +493,6 @@ private:
     double ProfRu;
     double Rain;
     double RayExtra;
-    double RayGlobal;
     double RelPhylloPhaseStemElong;
     double RelPotLeafLength;
     double ResCapacityInternodePop;
@@ -509,7 +504,6 @@ private:
     double ResUtil;
     double Rg;
     double RGCalc;
-    double RGLue;
     double RgMax;
     double RootFront;
     double RootFrontOld;
@@ -563,7 +557,6 @@ private:
     double tabCstr[5];
     double TempLai;
     double TillerDeathPop;
-    double Tlat;
     double TMax;
     double TMaxMoy;
     double TMin;

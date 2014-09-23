@@ -41,11 +41,12 @@ struct Climate
     double Vt;
     double Ins;
     double Rg;
+    double ETP;
 
     Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
-            double HMoy, double Vt, double Ins, double Rg) :
+            double HMoy, double Vt, double Ins, double Rg, double ETP) :
         TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
-        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg)
+        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(ETP)
     { }
 };
 
