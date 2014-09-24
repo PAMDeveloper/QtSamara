@@ -167,9 +167,11 @@ void ParametersReader::load_variety(
         "PoidsSecGrain",
         "PPCrit",
         "PPExp",
+        "PPSens",
         "PriorityPan",
         "RankLongestLeaf",
         "RelMobiliInternodeMax",
+        "RelPhylloPhaseStemElong",
         "RollingBase",
         "RollingSens",
         "RootCstr",
@@ -195,6 +197,7 @@ void ParametersReader::load_variety(
         "TxAssimMatu2",
         "TxConversion",
         "TxResGrain",
+        "TxRuSurfGermi",
         "VRacBVP",
         "VRacLevee",
         "VRacMatu1",
@@ -290,7 +293,7 @@ void ParametersReader::load_type_soil(
 {
     std::vector < std::string > names = {
         "HumFC", "HumPF", "HumSat", "PercolationMax", "PourcRuiss",
-        "SeuilRuiss"
+        "SeuilRuiss", "PEvap"
     };
 
     load_data(connection, "typeSoil", "Id", id, names, parameters);

@@ -57,87 +57,87 @@ void Model::compute(double t)
     evalPAR(); // ok
     etoFAO(); // ok
     evolPhenoStress(t); // ok
-    evalSimAnthesis50(); // ok
-    evalDateGermination(); // ok
+    // evalSimAnthesis50(); // ok
+    // evalDateGermination(); // ok
     evalColdStress(); // ok
-    evalSimEmergence();
-    evalSimPanIni();
-    evalSimStartGermin();
-    evalSimStartMatu2();
-    evalSimStartPSP();
+    // evalSimEmergence();
+    // evalSimPanIni();
+    // evalSimStartGermin();
+    // evalSimStartMatu2();
+    // evalSimStartPSP();
     evalDegreeDay(t); // ok
-    evalSDJPhase4();
-    evalDAF();
+    // evalSDJPhase4();
+    // evalDAF();
     phyllochron(); // ok
-    evolHauteur_SDJ_cstr(); // ok
+    // evolHauteur_SDJ_cstr(); // ok
     evolKcpKceBilhy(); // ok
     evalEvapPot(); // ok
     evolEvapSurfRFE_RDE(); // ok
-    evalFTSW(); // ok
-    evalCstrPFactorFAO(); // ok
-    demandePlante(); // ok
-    evalTranspi(); // ok
-    evalETRETM(); // ok
-    evolConsRes_Flood(); // bof bof
-    evalTMaxMoy(); // ok
-    evalTMinMoy(); // ok
-    evalFtswMoy(); // ok
-    evalSterility();
-    evalVitesseRacinaire();
-    evalConversion();
-    evalParIntercepte();
-    evalAssimPot();
-    evalCstrAssim();
-    evalAssim();
-    transplantingShock();
-    evalRespMaint();
-    evalRelPotLeafLength();
-    evolPlantTilNumTot();
-    evolPlantLeafNumTot();
-    evolMobiliTillerDeath();
-    evolMobiliLeafDeath();
-    evalSupplyTot();
-    evalDemandStructLeaf();
-    evalDemandStructSheath();
-    evalDemandStructRoot();
-    evalDemandStructIN();
-    evalDemandStructPanicle();
-    evalDemandTotAndIcPreFlow();
-    evolGrowthStructLeafPop();
-    evolGrowthStructSheathPop();
-    evolGrowthStructRootPop();
-    evolGrowthStructINPop();
-    evolGrowthStructPanPop();
-    evolGrowthStructTot();
-    priority2GrowthPanStrctPop();
-    addResToGrowthStructPop();
-    evolDemPanFilPopAndIcPFlow();
-    evolPanicleFilPop();
-    evolGrowthReserveInternode();
-    evolGrowthTot();
-    excessAssimilToRoot();
-    evolDryMatTot();
-    evalLai();
-    evalMaximumLai();
-    leafRolling();
-    evalClumpAndLightInter();
-    evalSlaMitch();
-    evalRuiss_FloodDyna();
-    automaticIrrigation();
-    evolRempliResRFE_RDE();
-    evolWaterLoggingUpland();
-    evalStressWaterLogging();
-    evolRempliMacropores();
-    evolRurRFE_RDE();
-    plantSubmergence();
-    evalRootFront();
+    // evalFTSW(); // ok
+    // evalCstrPFactorFAO(); // ok
+    // demandePlante(); // ok
+    // evalTranspi(); // ok
+    // evalETRETM(); // ok
+    // evolConsRes_Flood(); // bof bof
+    // evalTMaxMoy(); // ok
+    // evalTMinMoy(); // ok
+    // evalFtswMoy(); // ok
+    // evalSterility(); // ok
+    // evalVitesseRacinaire(); // ok
+    // evalConversion(); // ok
+    // evalParIntercepte(); // ok
+    // evalAssimPot(); // ok
+    // evalCstrAssim(); // ok
+    // evalAssim(); // ok
+    // transplantingShock(); // ok
+    // evalRespMaint(); // ok
+    // evalRelPotLeafLength(); // ok
+    // evolPlantTilNumTot(); // ok
+    // evolPlantLeafNumTot(); // ok
+    // evolMobiliTillerDeath(); // bof bof
+    // evolMobiliLeafDeath(); // bof bof
+    // evalSupplyTot(); // bof bof
+    // evalDemandStructLeaf(); // bof bof
+    // evalDemandStructSheath(); // bof bof
+    // evalDemandStructRoot();
+    // evalDemandStructIN();
+    // evalDemandStructPanicle();
+    // evalDemandTotAndIcPreFlow();
+    // evolGrowthStructLeafPop();
+    // evolGrowthStructSheathPop();
+    // evolGrowthStructRootPop();
+    // evolGrowthStructINPop();
+    // evolGrowthStructPanPop();
+    // evolGrowthStructTot();
+    // priority2GrowthPanStrctPop();
+    // addResToGrowthStructPop();
+    // evolDemPanFilPopAndIcPFlow();
+    // evolPanicleFilPop();
+    // evolGrowthReserveInternode();
+    // evolGrowthTot();
+    // excessAssimilToRoot();
+    // evolDryMatTot();
+    // evalLai();
+    // evalMaximumLai();
+    // leafRolling();
+    // evalClumpAndLightInter();
+    // evalSlaMitch();
+    // evalRuiss_FloodDyna();
+    // automaticIrrigation();
+    // evolRempliResRFE_RDE();
+    // evolWaterLoggingUpland();
+    // evalStressWaterLogging();
+    // evolRempliMacropores();
+    // evolRurRFE_RDE();
+    // plantSubmergence();
+    // evalRootFront();
     evolPSPMVMD(t);
     evolSomDegresJour();
-    evolSomDegresJourCor(t);
-    evalRUE();
-    //mortality(); //pour l'instant
-    keyResults();
-    evalSimEndCycle();
+    evolSomDegresJourCor();
+    // evalRUE();
+    // //mortality(); //pour l'instant
+    // keyResults();
+    // evalSimEndCycle();
 }
 
 void Model::init(const model::models::ModelParameters& parameters)
@@ -195,6 +195,7 @@ void Model::init(const model::models::ModelParameters& parameters)
     KCritStressCold1 = parameters.get < double >("KCritStressCold1");
     KCritStressCold2 = parameters.get < double >("KCritStressCold2");
     Kdf = parameters.get < double >("Kdf");
+    KPar = parameters.get < double > ("Kpar");
     KRespInternode = parameters.get < double >("KRespInternode");
     KRespMaintLeaf = parameters.get < double >("KRespMaintLeaf");
     KRespMaintRoot = parameters.get < double >("KRespMaintRoot");
@@ -207,6 +208,7 @@ void Model::init(const model::models::ModelParameters& parameters)
     Mulch = parameters.get < double >("Mulch");
     PanStructMassMax = parameters.get < double >("PanStructMassMax");
     PercolationMax = parameters.get < double >("PercolationMax");
+    PEvap = parameters.get < double >("PEvap");
     PFactor = parameters.get < double >("PFactor");
     Phyllo = parameters.get < double >("Phyllo");
     PlantsPerHill = parameters.get < double >("PlantsPerHill");
@@ -215,10 +217,12 @@ void Model::init(const model::models::ModelParameters& parameters)
     PourcRuiss = parameters.get < double >("PourcRuiss");
     PPCrit = parameters.get < double >("PPCrit");
     PPExp = parameters.get < double >("PPExp");
+    PPSens = parameters.get < double >("PPSens");
     PriorityPan = parameters.get < double >("PriorityPan");
     ProfRacIni = parameters.get < double >("ProfRacIni");
     RankLongestLeaf = parameters.get < double >("RankLongestLeaf");
     RelMobiliInternodeMax = parameters.get < double >("RelMobiliInternodeMax");
+    RelPhylloPhaseStemElong = parameters.get < double >("RelPhylloPhaseStemElong");
     RollingBase = parameters.get < double >("RollingBase");
     RollingSens = parameters.get < double >("RollingSens");
     RootCstr = parameters.get < double >("RootCstr");
@@ -247,6 +251,7 @@ void Model::init(const model::models::ModelParameters& parameters)
     TxAssimMatu2 = parameters.get < double >("TxAssimMatu2");
     TxConversion = parameters.get < double >("TxConversion");
     TxResGrain = parameters.get < double >("TxResGrain");
+    TxRuSurfGermi = parameters.get < double >("TxRuSurfGermi");
     VRacBVP = parameters.get < double >("VRacBVP");
     VRacLevee = parameters.get < double >("VRacLevee");
     VRacMatu1 = parameters.get < double >("VRacMatu1");

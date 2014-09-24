@@ -69,7 +69,7 @@ private:
     void evolConsRes_Flood();
     void evalConversion();
     void evolPSPMVMD(double t);
-    void evolSomDegresJourCor(double t);
+    void evolSomDegresJourCor();
     void evalMaximumLai();
     void evalVitesseRacinaire();
     void initCrop();
@@ -253,6 +253,7 @@ private:
     double TxAssimMatu2;
     double TxConversion;
     double TxResGrain;
+    double TxRuSurfGermi;
     double VRacBVP;
     double VRacLevee;
     double VRacMatu1;
@@ -342,7 +343,6 @@ private:
     double DeadLeafDrywtPop;
     double DeadLeafDryWtPop;
     double Decli;
-    double DegreDuJourCor;
     double DegresDuJour;
     double DegresDuJourCor;
     double DemLeafAreaPlant;
@@ -463,10 +463,8 @@ private:
     double LeafDeathPop;
     double LIRkdf;
     double LIRkdfcl;
-    double LIRKdfcl;
     double Lr;
     double LTRkdf;
-    double LtrKdfcl;
     double LTRkdfcl;
     double MaximumLai;
     double MobiliLeafDeath;
@@ -489,7 +487,7 @@ private:
     double PlantLeafNumNew;
     double PlantLeafNumTot;
     double PlantWidth;
-    double PourcRuSurfGermi;
+    double PPSens;
     double ProfRu;
     double Rain;
     double RayExtra;
