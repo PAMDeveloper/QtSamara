@@ -60,6 +60,9 @@ public:
     double lai() const
     { return samara_model->lai(); }
 
+    double numphase() const
+    { return samara_model->numphase(); }
+
 private:
 // models
     model::models::samara::Model* samara_model;
