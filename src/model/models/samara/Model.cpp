@@ -66,75 +66,75 @@ void Model::compute(double t)
     // evalSimStartMatu2();
     // evalSimStartPSP();
     evalDegreeDay(t); // ok
-    // evalSDJPhase4();
+    evalSDJPhase4();
     // evalDAF();
     phyllochron(); // ok
-    // evolHauteur_SDJ_cstr(); // ok
+    evolHauteur_SDJ_cstr(); // ok
     evolKcpKceBilhy(); // ok
     evalEvapPot(); // ok
     evolEvapSurfRFE_RDE(); // ok
-    // evalFTSW(); // ok
-    // evalCstrPFactorFAO(); // ok
-    // demandePlante(); // ok
-    // evalTranspi(); // ok
-    // evalETRETM(); // ok
-    // evolConsRes_Flood(); // bof bof
-    // evalTMaxMoy(); // ok
-    // evalTMinMoy(); // ok
-    // evalFtswMoy(); // ok
-    // evalSterility(); // ok
-    // evalVitesseRacinaire(); // ok
-    // evalConversion(); // ok
-    // evalParIntercepte(); // ok
-    // evalAssimPot(); // ok
-    // evalCstrAssim(); // ok
-    // evalAssim(); // ok
-    // transplantingShock(); // ok
-    // evalRespMaint(); // ok
-    // evalRelPotLeafLength(); // ok
-    // evolPlantTilNumTot(); // ok
-    // evolPlantLeafNumTot(); // ok
-    // evolMobiliTillerDeath(); // bof bof
-    // evolMobiliLeafDeath(); // bof bof
-    // evalSupplyTot(); // bof bof
-    // evalDemandStructLeaf(); // bof bof
-    // evalDemandStructSheath(); // bof bof
-    // evalDemandStructRoot();
-    // evalDemandStructIN();
-    // evalDemandStructPanicle();
-    // evalDemandTotAndIcPreFlow();
-    // evolGrowthStructLeafPop();
-    // evolGrowthStructSheathPop();
-    // evolGrowthStructRootPop();
-    // evolGrowthStructINPop();
-    // evolGrowthStructPanPop();
-    // evolGrowthStructTot();
-    // priority2GrowthPanStrctPop();
-    // addResToGrowthStructPop();
-    // evolDemPanFilPopAndIcPFlow();
-    // evolPanicleFilPop();
-    // evolGrowthReserveInternode();
-    // evolGrowthTot();
-    // excessAssimilToRoot();
-    // evolDryMatTot();
-    // evalLai();
-    // evalMaximumLai();
-    // leafRolling();
-    // evalClumpAndLightInter();
-    // evalSlaMitch();
-    // evalRuiss_FloodDyna();
-    // automaticIrrigation();
-    // evolRempliResRFE_RDE();
-    // evolWaterLoggingUpland();
-    // evalStressWaterLogging();
-    // evolRempliMacropores();
-    // evolRurRFE_RDE();
-    // plantSubmergence();
-    // evalRootFront();
+    evalFTSW(); // ok
+    evalCstrPFactorFAO(); // ok
+    demandePlante(); // ok
+    evalTranspi(); // ok
+    evalETRETM(); // ok
+    evolConsRes_Flood(); // bof bof
+    evalTMaxMoy(); // ok
+    evalTMinMoy(); // ok
+    evalFtswMoy(); // ok
+    evalSterility(); // ok
+    evalVitesseRacinaire(); // ok
+    evalConversion(); // ok
+    evalParIntercepte(); // ok
+    evalAssimPot(); // ok
+    evalCstrAssim(); // ok
+    evalAssim(); // ok
+    transplantingShock(); // ok
+    evalRespMaint(); // ok
+    evalRelPotLeafLength(); // ok
+    evolPlantTilNumTot(); // ok
+    evolPlantLeafNumTot(); // ok
+    evolMobiliTillerDeath(); // bof bof
+    evolMobiliLeafDeath(); // bof bof
+    evalSupplyTot(); // bof bof
+    evalDemandStructLeaf(); // bof bof
+    evalDemandStructSheath(); // bof bof
+    evalDemandStructRoot();
+    evalDemandStructIN();
+    evalDemandStructPanicle();
+    evalDemandTotAndIcPreFlow();
+    evolGrowthStructLeafPop();
+    evolGrowthStructSheathPop();
+    evolGrowthStructRootPop();
+    evolGrowthStructINPop();
+    evolGrowthStructPanPop();
+    evolGrowthStructTot();
+    priority2GrowthPanStrctPop();
+    addResToGrowthStructPop();
+    evolDemPanFilPopAndIcPFlow();
+    evolPanicleFilPop();
+    evolGrowthReserveInternode();
+    evolGrowthTot();
+    excessAssimilToRoot();
+    evolDryMatTot();
+    evalLai();
+    evalMaximumLai();
+    leafRolling();
+    evalClumpAndLightInter();
+    evalSlaMitch();
+    evalRuiss_FloodDyna();
+    automaticIrrigation();
+    evolRempliResRFE_RDE();
+    evolWaterLoggingUpland();
+    evalStressWaterLogging();
+    evolRempliMacropores();
+    evolRurRFE_RDE();
+    plantSubmergence();
+    evalRootFront();
     evolPSPMVMD(t);
     evolSomDegresJour();
     evolSomDegresJourCor();
-    // evalRUE();
+    evalRUE();
     // //mortality(); //pour l'instant
     // keyResults();
     // evalSimEndCycle();

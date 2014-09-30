@@ -50,6 +50,10 @@ public:
     double lai() const
     { return Lai; }
 
+    double numphase() const
+    { return NumPhase; }
+
+
 private:
     void evalDegreeDay(double t);
     void phyllochron();
@@ -515,7 +519,6 @@ private:
     double RuRac;
     double RuSurf;
     double SDJCorPhase4;
-    double SDJPhase4;
     double SeuilCstrMortality;
     double SeuilTempPhasePrec;
     double SeuilTempPhaseSuivante;

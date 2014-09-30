@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_LAIVIEW_HPP
-#define MODEL_OBSERVER_LAIVIEW_HPP
+#ifndef MODEL_OBSERVER_NUMPHASEVIEW_HPP
+#define MODEL_OBSERVER_NUMPHASEVIEW_HPP
 
 #include <model/observer/View.hpp>
 
@@ -31,19 +31,19 @@
 
 namespace model { namespace observer {
 
-class LAIView : public View
+class NUMPHASEView : public View
 {
 public:
-    LAIView()
+    NUMPHASEView()
     { }
 
-    virtual ~LAIView()
+    virtual ~NUMPHASEView()
     { }
 
     virtual void observe(double t)
     {
         std::cout << utils::DateTime::toJulianDay(t)
-                  << "LAI = " << model->lai() << std::endl;
+                  << "NumPhase = " << model->numphase() << std::endl;
     }
 };
 

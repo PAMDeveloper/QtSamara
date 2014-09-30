@@ -623,15 +623,28 @@ void Model::evalVitesseRacinaire()
 void Model::evalRootFront()
 {
     if (NumPhase > 0) {
+
+        // std::cout << "ResUtil = " << ResUtil << std::endl;
+        // std::cout << "RuRac = " << RuRac << std::endl;
+
         RootFront = ((1 / ResUtil) * RuRac) * 1000;
+
+        // std::cout << "RootFront = " << RootFront << std::endl;
+
     }
 }
 
 void Model::evalSDJPhase4()
 {
+
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
+
     if (NumPhase == 4) {
-        SDJPhase4 = SDJPhase4 + DegresDuJourCor;
+        SDJCorPhase4 = SDJCorPhase4 + DegresDuJourCor;
     }
+
+    // std::cout << "SDJCorPhase4 = " << SDJCorPhase4 << std::endl;
+
 }
 
 void Model::evalDateGermination()
@@ -880,18 +893,31 @@ void Model::evolRempliResRFE_RDE()
     if (StockMacropores + FloodwaterDepth == 0) {
         EauReste = 0;
         ValRFE = ValRFE + EauDispo;
+
+        // std::cout << "ValRFE = " << ValRFE << std::endl;
+        // std::cout << "EauDispo = " << EauDispo << std::endl;
+        // std::cout << "CapaRFE = " << CapaRFE << std::endl;
+
         if (ValRFE > CapaRFE) {
             EauReste = ValRFE - CapaRFE;
             ValRFE = CapaRFE;
         }
         ValRSurfPrec = ValRSurf;
         ValRSurf = ValRSurf + EauReste;
+
+        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+        // std::cout << "ValRSurfPrec = " << ValRSurfPrec << std::endl;
+        // std::cout << "CapaREvap = " << CapaREvap << std::endl;
+
         if (ValRSurfPrec < CapaREvap) {
             EauTranspi = EauDispo - (std::min(CapaREvap, ValRSurf) -
                                      ValRSurfPrec);
         } else {
             EauTranspi = EauDispo;
         }
+
+        // std::cout << "EauTranspi = " << EauTranspi << std::endl;
+
         if (ValRSurf > CapaREvap + CapaRDE) {
             ValRSurf = CapaREvap + CapaRDE;
             ValRDE = CapaRDE;
@@ -903,20 +929,36 @@ void Model::evolRempliResRFE_RDE()
             }
         }
         StockSurface = ValRFE + ValRDE;
+
+        // std::cout << "StockSurface = " << StockSurface << std::endl;
+
         StockTotal = StockTotal + EauTranspi;
+
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
+        // std::cout << "StRuMax = " << StRuMax << std::endl;
+
         if (StockTotal > StRuMax) {
             Dr = StockTotal - StRuMax;
             StockTotal = StRuMax;
         } else {
             Dr = 0;
         }
+
+        // std::cout << "Dr = " << Dr << std::endl;
+
         if (Hum < CapaRFE + CapaRDE) {
             Hum = StockSurface;
         } else {
             Hum = std::max(Hum, StockTotal);
         }
+
+        // std::cout << "Hum = " << Hum << std::endl;
+
     }
     StockRac = std::min(StockRac + EauTranspi, RuRac);
+
+    // std::cout << "StockRac = " << StockRac << std::endl;
+
     // Shifting non-percolating Dr back to macropores & floodwater if plot is bunded
     if (BundHeight > 0) {
         // Shifting non-percolating Dr to Floodwater
@@ -997,13 +1039,11 @@ void Model::evalFTSW()
         FTSW = 0;
     }
 
-    // std::cout << "Debut evalFTSW" << std::endl;
     // std::cout << "StockRac = " << StockRac << std::endl;
     // std::cout << "RuRac = " << RuRac << std::endl;
     // std::cout << "StockMacropores = " << StockMacropores << std::endl;
     // std::cout << "StRuMax = " << StRuMax << std::endl;
     // std::cout << "FTSW = " << FTSW << std::endl;
-    // std::cout << "Fin evalFTSW" << std::endl;
 
 
 }
@@ -1122,17 +1162,33 @@ void Model::evalCstrPFactorFAO()
 
 void Model::evolHauteur_SDJ_cstr()
 {
-  double CorrectedCstrMean;
+    double CorrectedCstrMean;
+
+    // std::cout << "PhaseStemElongation = " << PhaseStemElongation << std::endl;
 
     if (PhaseStemElongation == 1) {
+
+        // std::cout << "HaunGain = " << HaunGain << std::endl;
+        // std::cout << "Ic = " << Ic << std::endl;
+        // std::cout << "cstr = " << cstr << std::endl;
+        // std::cout << "StressCold = " << StressCold << std::endl;
+        // std::cout << "InternodeLengthMax = " << InternodeLengthMax << std::endl;
+        // std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << std::endl;
+
         ApexHeightGain = HaunGain * std::min(std::pow(std::min(Ic, 1.), 0.5),
                                              cstr) * StressCold
             * InternodeLengthMax;
         ApexHeightGain = ApexHeightGain * CoeffInternodeNum;
+
+        // std::cout << "ApexHeightGain = " << ApexHeightGain << std::endl;
+
     } else {
         ApexHeightGain = 0;
     }
     ApexHeight = ApexHeight + ApexHeightGain;
+
+    // std::cout << "ApexHeight = " << ApexHeight << std::endl;
+
     if (CstrMean <= 0) {
         CorrectedCstrMean = 1;
     } else {
@@ -1142,6 +1198,13 @@ void Model::evolHauteur_SDJ_cstr()
                                 LeafLengthMax * std::sqrt(IcMean) *
                                 CorrectedCstrMean * (1 + 1 /
                                                      WtRatioLeafSheath));
+
+    // std::cout << "Kdf = " << Kdf << std::endl;
+    // std::cout << "IcMean = " << IcMean << std::endl;
+    // std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
+    // std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
+
+
     PlantWidth = std::pow(Kdf, 1.5) * 2 * std::sqrt(IcMean) * RelPotLeafLength *
         LeafLengthMax;
 
@@ -1560,14 +1623,14 @@ void Model::evolEvapSurfRFE_RDE()
     double Evap1;
     double Evap2;
 
-    std::cout << "StockMacropores = " << StockMacropores << std::endl;
-    std::cout << "FloodwaterDepth = " << FloodwaterDepth << std::endl;
+    // std::cout << "StockMacropores = " << StockMacropores << std::endl;
+    // std::cout << "FloodwaterDepth = " << FloodwaterDepth << std::endl;
 
     if (StockMacropores + FloodwaterDepth == 0) {
         ValRSurfPrec = ValRSurf;
 
-        std::cout << "ValRSurf = " << ValRSurf << std::endl;
-        std::cout << "ValRFE = " << ValRFE << std::endl;
+        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+        // std::cout << "ValRFE = " << ValRFE << std::endl;
 
         if (ValRFE > 0) {
             if (ValRFE < EvapPot) {
@@ -1584,9 +1647,9 @@ void Model::evolEvapSurfRFE_RDE()
             Evap2 = std::max(0., std::min(ValRSurf, EvapPot * ValRSurf /
                                           (CapaREvap + CapaRDE)));
 
-            std::cout << "EvapPot = " << EvapPot << std::endl;
-            std::cout << "Evap1 = " << Evap1 << std::endl;
-            std::cout << "Evap2 = " << Evap2 << std::endl;
+            // std::cout << "EvapPot = " << EvapPot << std::endl;
+            // std::cout << "Evap1 = " << Evap1 << std::endl;
+            // std::cout << "Evap2 = " << Evap2 << std::endl;
 
 
         }
@@ -1595,11 +1658,11 @@ void Model::evolEvapSurfRFE_RDE()
         ValRSurf = ValRSurf - Evap2;
         ValRDE = std::max(0., ValRSurf - CapaREvap);
 
-        std::cout << "Evap = " << Evap << std::endl;
-        std::cout << "ValRFE = " << ValRFE << std::endl;
-        std::cout << "ValRSurf = " << ValRSurf << std::endl;
-        std::cout << "ValRDE = " << ValRDE << std::endl;
-        std::cout << "CapaREvap = " << CapaREvap << std::endl;
+        // std::cout << "Evap = " << Evap << std::endl;
+        // std::cout << "ValRFE = " << ValRFE << std::endl;
+        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
+        // std::cout << "ValRDE = " << ValRDE << std::endl;
+        // std::cout << "CapaREvap = " << CapaREvap << std::endl;
 
 
         if (EvapPot == 0) {
@@ -1608,7 +1671,7 @@ void Model::evolEvapSurfRFE_RDE()
             Kr = Evap / EvapPot;
         }
 
-        std::cout << "Kr = " << Kr << std::endl;
+        // std::cout << "Kr = " << Kr << std::endl;
 
         if (ValRSurf >= CapaREvap) {
             EvapRU = Evap;
@@ -1620,7 +1683,7 @@ void Model::evolEvapSurfRFE_RDE()
             }
         }
 
-        std::cout << "EvapRU = " << EvapRU << std::endl;
+        // std::cout << "EvapRU = " << EvapRU << std::endl;
 
         if (RuRac <= RuSurf) {
             StockRac = std::max(0., StockRac - EvapRU * RuRac / RuSurf);
@@ -1628,19 +1691,19 @@ void Model::evolEvapSurfRFE_RDE()
             StockRac = std::max(0., StockRac - EvapRU);
         }
 
-        std::cout << "StockRac = " << StockRac << std::endl;
+        // std::cout << "StockRac = " << StockRac << std::endl;
 
         StockTotal = StockTotal - EvapRU;
 
-        std::cout << "StockTotal = " << StockTotal << std::endl;
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
 
         StockRac = std::min(StockRac, StockTotal);
 
-        std::cout << "StockRac = " << StockRac << std::endl;
+        // std::cout << "StockRac = " << StockRac << std::endl;
 
         KceReal = Kce * Kr;
 
-        std::cout << "KceReal = " << KceReal << std::endl;
+        // std::cout << "KceReal = " << KceReal << std::endl;
 
     }
     if (StockMacropores + FloodwaterDepth > 0 and NumPhase > 0) {
@@ -1876,21 +1939,36 @@ void Model::automaticIrrigation()
 
 void Model::evolRurRFE_RDE()
 {
-  double DeltaRur;
+    double DeltaRur;
+
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
 
     if (NumPhase == 0) {
         RuRac = 0;
         StockRac = 0;
     } else {
         if (NumPhase == 1 and ChangePhase == 1) {
+
+            // std::cout << "ResUtil = " << ResUtil << std::endl;
+            // std::cout << "ProfRacIni = " << ProfRacIni << std::endl;
+            // std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
+            // std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
+            // std::cout << "ResUtil = " << ResUtil << std::endl;
+
             RuRac = ResUtil * std::min(ProfRacIni,
                                        (EpaisseurSurf + EpaisseurProf)) / 1000;
+
+            // std::cout << "RuRac = " << RuRac << std::endl;
+
             if (ProfRacIni <= EpaisseurSurf) {
                 StockRac = (ValRDE + ValRFE) * ProfRacIni / EpaisseurSurf;
             } else {
                 StockRac = StockTotal *
                     std::min(ProfRacIni /  (EpaisseurSurf + EpaisseurProf), 1.);
             }
+
+            // std::cout << "StockRac = " << StockRac << std::endl;
+
         } else {
             if (Hum - StockMacropores - RuRac < VitesseRacinaire / 1000 *
                 ResUtil) {
@@ -1906,16 +1984,29 @@ void Model::evolRurRFE_RDE()
                     DeltaRur = 0;
                 }
             }
+
+            // std::cout << "RootFront = " << RootFront << std::endl;
+            // std::cout << "RootFrontMax = " << RootFrontMax << std::endl;
+            // std::cout << "ResUtil = " << ResUtil << std::endl;
+            // std::cout << "VitesseRacinaire = " << VitesseRacinaire << std::endl;
+            // std::cout << "DeltaRur = " << DeltaRur << std::endl;
+
             RuRac = RuRac + DeltaRur;
             if (RuRac > RuSurf) {
                 StockRac = StockRac + DeltaRur;
             } else {
                 StockRac = (ValRDE + ValRFE) * (RuRac / RuSurf);
             }
+
+            // std::cout << "StockRac = " << StockRac << std::endl;
+
         }
     }
     if (NumPhase != 0) {
         RootFront = ((1 / ResUtil) * RuRac) * 1000;
+
+        // std::cout << "RootFront = " << RootFront << std::endl;
+
         if (ChangeNurseryStatus == 1 and Transplanting == 1) {
             RootFront = TransplantingDepth;
             if (RootFront < 40) {
@@ -1926,6 +2017,9 @@ void Model::evolRurRFE_RDE()
             RuRac = RootFront * ResUtil / 1000;
         }
     }
+
+    // std::cout << "RuRac = " << RuRac << std::endl;
+
     if (StockMacropores + FloodwaterDepth > 0) {
         StockRac = RootFront * ResUtil / 1000 +
             (RootFront / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
@@ -2241,6 +2335,9 @@ void Model::evolPhenoStress(double t)
             }
         }
     }
+
+    std::cout << "NumPhase = " << NumPhase << std::endl;
+
 }
 
 
