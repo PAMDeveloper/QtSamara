@@ -271,7 +271,8 @@ void ParametersReader::load_site(
     model::models::ModelParameters& parameters)
 {
     std::vector < std::string > names = { "SeuilPluie", "Kpar",
-                                          "CodeStationMeteo" };
+                                          "CodeStationMeteo",
+                                          "CodeStationPluie" };
 
     load_data(connection, "site", "Id", id, names, parameters);
 }

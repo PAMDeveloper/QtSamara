@@ -29,6 +29,8 @@
 
 #include <model/observer/LAIView.hpp>
 #include <model/observer/NUMPHASEView.hpp>
+#include <model/observer/DEGRESDUJOURView.hpp>
+#include <model/observer/DEGRESDUJOURCORView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -60,8 +62,11 @@ public:
 
     void init()
     {
-        attachView(new LAIView);
+        // attachView(new LAIView);
         attachView(new NUMPHASEView);
+        attachView(new DEGRESDUJOURView);
+        attachView(new DEGRESDUJOURCORView);
+
     }
 
     void observe(double t)

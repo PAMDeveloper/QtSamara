@@ -40,6 +40,7 @@ void Model::assignClimate(const model::models::meteo::Climate& climate)
     Ins = climate.Ins;
     Rg = climate.Rg;
     ETP = climate.ETP;
+    Rain = climate.Rain;
 }
 
 void Model::compute(double t)
@@ -65,7 +66,7 @@ void Model::compute(double t)
     // evalSimStartGermin();
     // evalSimStartMatu2();
     // evalSimStartPSP();
-    evalDegreeDay(t); // ok
+    evalDegreeDay(); // ok
     evalSDJPhase4();
     // evalDAF();
     phyllochron(); // ok

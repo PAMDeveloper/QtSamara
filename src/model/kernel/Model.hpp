@@ -63,6 +63,14 @@ public:
     double numphase() const
     { return samara_model->numphase(); }
 
+    double degresdujour() const
+    { return samara_model->degresdujour(); }
+
+    double degresdujourcor() const
+    { return samara_model->degresdujourcor(); }
+
+
+
 private:
 // models
     model::models::samara::Model* samara_model;

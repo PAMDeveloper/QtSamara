@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_NUMPHASEVIEW_HPP
-#define MODEL_OBSERVER_NUMPHASEVIEW_HPP
+#ifndef MODEL_OBSERVER_DEGRESDUJOURVIEW_HPP
+#define MODEL_OBSERVER_DEGRESDUJOURVIEW_HPP
 
 #include <model/observer/View.hpp>
 
@@ -31,19 +31,18 @@
 
 namespace model { namespace observer {
 
-class NUMPHASEView : public View
+class DEGRESDUJOURView : public View
 {
 public:
-    NUMPHASEView()
+    DEGRESDUJOURView()
     { }
 
-    virtual ~NUMPHASEView()
+    virtual ~DEGRESDUJOURView()
     { }
 
-    virtual void observe(double t)
+    virtual void observe(double /* t */)
     {
-        std::cout << utils::DateTime::toJulianDay(t) << "\t"
-                  << model->numphase();
+        std::cout << "\t" << model->degresdujour();
     }
 };
 

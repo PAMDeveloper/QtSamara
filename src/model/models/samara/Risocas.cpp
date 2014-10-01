@@ -31,60 +31,54 @@
 
 namespace model { namespace models { namespace samara {
 
-void Model::evalDegreeDay(double t)
+void Model::evalDegreeDay()
 {
-    if (t >= DateSemis) {
+    double V, V1, V3;
+    double S1, S2, S3;
+    double Tn, Tx;
 
-        double V, V1, V3;
-        double S1, S2, S3;
-        double Tn, Tx;
-
-        if (TMax != TMin) {
-            if (TMax <= TBase or TMin >= TLet) {
-                V = 0;
-            } else {
-                Tn = std::max(TMin, TBase);
-                Tx = std::min(TMax, TLet);
-                V1 = ((Tn + std::min(TOpt1, Tx)) / 2 - TBase) / (TOpt1 - TBase);
-                S1 = V1 * std::max(0., std::min(TOpt1, Tx) - Tn);
-                S2 = 1 * std::max(0., std::min(Tx, TOpt2) - std::max(Tn, TOpt1));
-                V3 = (TLet - (std::max(Tx, TOpt2) + std::max(TOpt2, Tn)) / 2) /
-                    (TLet - TOpt2);
-                S3 = V3 * std::max(0., Tx - std::max(TOpt2, Tn));
-                V = (S1 + S2 + S3) / (TMax - TMin);
-            }
+    if (TMax != TMin) {
+        if (TMax <= TBase or TMin >= TLet) {
+            V = 0;
         } else {
-            if (TMax < TOpt1) {
-                V = (TMax - TBase) / (TOpt1 - TBase);
-            } else {
-                if (TMax < TOpt2) {
-                    V = 1;
-                } else {
-                    V = (TLet - TMax) / (TLet - TOpt2);
-                }
-            }
+            Tn = std::max(TMin, TBase);
+            Tx = std::min(TMax, TLet);
+            V1 = ((Tn + std::min(TOpt1, Tx)) / 2 - TBase) / (TOpt1 - TBase);
+            S1 = V1 * std::max(0., std::min(TOpt1, Tx) - Tn);
+            S2 = 1 * std::max(0., std::min(Tx, TOpt2) - std::max(Tn, TOpt1));
+            V3 = (TLet - (std::max(Tx, TOpt2) + std::max(TOpt2, Tn)) / 2) /
+                (TLet - TOpt2);
+            S3 = V3 * std::max(0., Tx - std::max(TOpt2, Tn));
+            V = (S1 + S2 + S3) / (TMax - TMin);
         }
-        DegresDuJour = V * (TOpt1 - TBase);
-        if (NumPhase > 1 and NumPhase < 5)
-        {
-            DegresDuJourCor = DegresDuJour * std::pow(std::max(cstr, 0.00000001),
-                                                      DEVcstr);
-        } else {
-            DegresDuJourCor = DegresDuJour;
-        }
-        DegresDuJourCor = DegresDuJourCor * StressCold;
-        // std::cout << "TMin = " << TMin << std::endl;
-        // std::cout << "TMax = " << TMax << std::endl;
-        // std::cout << "TBase = " << TBase << std::endl;
-        // std::cout << "TLet = " << TLet << std::endl;
-        // std::cout << "TOpt1 = " << TOpt1 << std::endl;
-        // std::cout << "TOpt2 = " << TOpt2 << std::endl;
-        // std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
-        // std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
     } else {
-        DegresDuJour = 0.;
-        DegresDuJourCor = 0.;
+        if (TMax < TOpt1) {
+            V = (TMax - TBase) / (TOpt1 - TBase);
+        } else {
+            if (TMax < TOpt2) {
+                V = 1;
+            } else {
+                V = (TLet - TMax) / (TLet - TOpt2);
+            }
+        }
     }
+    DegresDuJour = V * (TOpt1 - TBase);
+    if (NumPhase > 1 and NumPhase < 5)
+    {
+        DegresDuJourCor = DegresDuJour * std::pow(std::max(cstr, 0.00000001),
+                                                  DEVcstr);
+    } else {
+        DegresDuJourCor = DegresDuJour;
+    }
+    DegresDuJourCor = DegresDuJourCor * StressCold;
+    // std::cout << "TMin = " << TMin << std::endl;
+    // std::cout << "TMax = " << TMax << std::endl;
+    // std::cout << "TBase = " << TBase << std::endl;
+    // std::cout << "TLet = " << TLet << std::endl;
+    // std::cout << "TOpt1 = " << TOpt1 << std::endl;
+    // std::cout << "TOpt2 = " << TOpt2 << std::endl;
+    // std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
+    // std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
 }
 
 
@@ -2336,7 +2330,7 @@ void Model::evolPhenoStress(double t)
         }
     }
 
-    std::cout << "NumPhase = " << NumPhase << std::endl;
+    // std::cout << "NumPhase = " << NumPhase << std::endl;
 
 }
 

@@ -53,9 +53,15 @@ public:
     double numphase() const
     { return NumPhase; }
 
+    double degresdujour() const
+    { return DegresDuJour; }
+
+    double degresdujourcor() const
+    { return DegresDuJourCor; }
+
 
 private:
-    void evalDegreeDay(double t);
+    void evalDegreeDay();
     void phyllochron();
     void evalCstrAssim();
     void evalRespMaint();
