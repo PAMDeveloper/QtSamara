@@ -59,6 +59,120 @@ public:
     double degresdujourcor() const
     { return DegresDuJourCor; }
 
+    double ftsw() const
+    { return FTSW; }
+
+    double cstr() const
+    { return Cstr; }
+
+    double rootfront() const
+    { return RootFront; }
+
+    double eto() const
+    { return Eto; }
+
+    double etm() const
+    { return ETM; }
+
+    double etr() const
+    { return ETR; }
+
+    double rue() const
+    { return RUE; }
+
+    double conversioneff() const
+    { return ConversionEff; }
+
+    double ic() const
+    { return Ic; }
+
+    double culmsperplant() const
+    { return CulmsPerPlant; }
+
+    double culmspop() const
+    { return CulmsPop; }
+
+    double culmsperhill() const
+    { return CulmsPerHill; }
+
+    double grainyieldpop() const
+    { return GrainYieldPop; }
+
+    double drymatstructleafpop() const
+    { return DryMatStructLeafPop; }
+
+    double drymatstructsheathpop() const
+    { return DryMatStructSheathPop; }
+
+    double drymatstructrootpop() const
+    { return DryMatStructRootPop; }
+
+    double drymatstructinternodepop() const
+    { return DryMatStructInternodePop; }
+
+    double drymatresinternodepop() const
+    { return DryMatResInternodePop; }
+
+    double drymatstructpaniclepop() const
+    { return DryMatStructPaniclePop; }
+
+    double drymatstructtotpop() const
+    { return DryMatStructTotPop; }
+
+    double drymatvegetotpop() const
+    { return DryMatVegeTotPop; }
+
+    double drymatpanicletotpop() const
+    { return DryMatPanicleTotPop; }
+
+    double drymatstempop() const
+    { return DryMatStemPop; }
+
+    double drymatabovegroundpop() const
+    { return DryMatAboveGroundPop; }
+
+    double drymattotpop() const
+    { return DryMatTotPop; }
+
+    double sterilitycold() const
+    { return SterilityCold; }
+
+    double sterilityheat() const
+    { return SterilityHeat; }
+
+    double sterilitydrought() const
+    { return SterilityDrought; }
+
+    double sterilitytot() const
+    { return SterilityTot; }
+
+    double harvestindex() const
+    { return HarvestIndex; }
+
+    double paniclenumpop() const
+    { return PanicleNumPop; }
+
+    double paniclenumplant() const
+    { return PanicleNumPlant; }
+
+    double grainyieldpanicle() const
+    { return GrainYieldPanicle; }
+
+    double spikenumpop() const
+    { return SpikeNumPop; }
+
+    double spikenumpanicle() const
+    { return SpikeNumPanicle; }
+
+    double fertspikenumpop() const
+    { return FertSpikeNumPop; }
+
+    double grainfillingstatus() const
+    { return GrainFillingStatus; }
+
+    double phasestemelongation() const
+    { return PhaseStemElongation; }
+
 
 private:
     void evalDegreeDay();
@@ -302,7 +416,7 @@ private:
     double Conversion;
     double ConversionEff;
     double CounterNursery;
-    double cstr;
+    double Cstr;
     double CstrAssim;
     double CstrCumul;
     double CstrMean;

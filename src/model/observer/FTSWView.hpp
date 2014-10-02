@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
-#define MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
+#ifndef MODEL_OBSERVER_FTSWVIEW_HPP
+#define MODEL_OBSERVER_FTSWVIEW_HPP
 
 #include <model/observer/View.hpp>
 
@@ -31,18 +31,18 @@
 
 namespace model { namespace observer {
 
-class DEGRESDUJOURCORView : public View
+class FTSWView : public View
 {
 public:
-    DEGRESDUJOURCORView()
+    FTSWView()
     { }
 
-    virtual ~DEGRESDUJOURCORView()
+    virtual ~FTSWView()
     { }
 
     virtual void observe(double /* t */)
     {
-        std::cout << "\t" << model->degresdujourcor();
+        std::cout << "\t" << model->ftsw();
     }
 };
 

@@ -31,6 +31,44 @@
 #include <model/observer/NUMPHASEView.hpp>
 #include <model/observer/DEGRESDUJOURView.hpp>
 #include <model/observer/DEGRESDUJOURCORView.hpp>
+#include <model/observer/FTSWView.hpp>
+#include <model/observer/CSTRView.hpp>
+#include <model/observer/ROOTFRONTView.hpp>
+#include <model/observer/ETOView.hpp>
+#include <model/observer/ETMView.hpp>
+#include <model/observer/ETRView.hpp>
+#include <model/observer/RUEView.hpp>
+#include <model/observer/CONVERSIONEFFView.hpp>
+#include <model/observer/ICView.hpp>
+#include <model/observer/CULMSPERPLANTView.hpp>
+#include <model/observer/CULMSPOPView.hpp>
+#include <model/observer/CULMSPERHILLView.hpp>
+#include <model/observer/GRAINYIELDPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTLEAFPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTSHEATHPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTROOTPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTINTERNODEPOPView.hpp>
+#include <model/observer/DRYMATRESINTERNODEPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTPANICLEPOPView.hpp>
+#include <model/observer/DRYMATSTRUCTTOTPOPView.hpp>
+#include <model/observer/DRYMATVEGETOTPOPView.hpp>
+#include <model/observer/DRYMATPANICLETOTPOPView.hpp>
+#include <model/observer/DRYMATSTEMPOPView.hpp>
+#include <model/observer/DRYMATABOVEGROUNDPOPView.hpp>
+#include <model/observer/DRYMATTOTPOPView.hpp>
+#include <model/observer/STERILITYCOLDView.hpp>
+#include <model/observer/STERILITYHEATView.hpp>
+#include <model/observer/STERILITYDROUGHTView.hpp>
+#include <model/observer/STERILITYTOTView.hpp>
+#include <model/observer/HARVESTINDEXView.hpp>
+#include <model/observer/PANICLENUMPOPView.hpp>
+#include <model/observer/PANICLENUMPLANTView.hpp>
+#include <model/observer/GRAINYIELDPANICLEView.hpp>
+#include <model/observer/SPIKENUMPOPView.hpp>
+#include <model/observer/SPIKENUMPANICLEView.hpp>
+#include <model/observer/FERTSPIKENUMPOPView.hpp>
+#include <model/observer/GRAINFILLINGSTATUSView.hpp>
+#include <model/observer/PHASESTEMELONGATIONView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -62,11 +100,48 @@ public:
 
     void init()
     {
-        // attachView(new LAIView);
         attachView(new NUMPHASEView);
         attachView(new DEGRESDUJOURView);
         attachView(new DEGRESDUJOURCORView);
-
+        attachView(new LAIView);
+        attachView(new FTSWView);
+        attachView(new CSTRView);
+        attachView(new ROOTFRONTView);
+        attachView(new ETOView);
+        attachView(new ETMView);
+        attachView(new ETRView);
+        attachView(new RUEView);
+        attachView(new CONVERSIONEFFView);
+        attachView(new ICView);
+        attachView(new CULMSPERPLANTView);
+        attachView(new CULMSPOPView);
+        attachView(new CULMSPERHILLView);
+        attachView(new GRAINYIELDPOPView);
+        attachView(new DRYMATSTRUCTLEAFPOPView);
+        attachView(new DRYMATSTRUCTSHEATHPOPView);
+        attachView(new DRYMATSTRUCTROOTPOPView);
+        attachView(new DRYMATSTRUCTINTERNODEPOPView);
+        attachView(new DRYMATRESINTERNODEPOPView);
+        attachView(new DRYMATSTRUCTPANICLEPOPView);
+        attachView(new DRYMATSTRUCTTOTPOPView);
+        attachView(new DRYMATVEGETOTPOPView);
+        attachView(new DRYMATPANICLETOTPOPView);
+        attachView(new DRYMATSTEMPOPView);
+        attachView(new DRYMATABOVEGROUNDPOPView);
+        attachView(new DRYMATTOTPOPView);
+        attachView(new STERILITYCOLDView);
+        attachView(new STERILITYHEATView);
+        attachView(new STERILITYDROUGHTView);
+        attachView(new STERILITYTOTView);
+        attachView(new HARVESTINDEXView);
+        attachView(new PANICLENUMPOPView);
+        attachView(new PANICLENUMPLANTView);
+        attachView(new GRAINYIELDPANICLEView);
+        attachView(new SPIKENUMPOPView);
+        attachView(new SPIKENUMPANICLEView);
+        attachView(new FERTSPIKENUMPOPView);
+        attachView(new GRAINFILLINGSTATUSView);
+        attachView(new PHASESTEMELONGATIONView);
     }
 
     void observe(double t)

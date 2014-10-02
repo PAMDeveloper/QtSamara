@@ -40,10 +40,9 @@ public:
     virtual ~LAIView()
     { }
 
-    virtual void observe(double t)
+    virtual void observe(double /* t */)
     {
-        std::cout << utils::DateTime::toJulianDay(t)
-                  << "LAI = " << model->lai() << std::endl;
+        std::cout << "\t" << model->lai();
     }
 };
 

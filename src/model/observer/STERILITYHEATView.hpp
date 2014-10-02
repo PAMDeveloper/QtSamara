@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
-#define MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
+#ifndef MODEL_OBSERVER_STERILITYHEATVIEW_HPP
+#define MODEL_OBSERVER_STERILITYHEATVIEW_HPP
 
 #include <model/observer/View.hpp>
 
@@ -31,18 +31,18 @@
 
 namespace model { namespace observer {
 
-class DEGRESDUJOURCORView : public View
+class STERILITYHEATView : public View
 {
 public:
-    DEGRESDUJOURCORView()
+    STERILITYHEATView()
     { }
 
-    virtual ~DEGRESDUJOURCORView()
+    virtual ~STERILITYHEATView()
     { }
 
     virtual void observe(double /* t */)
     {
-        std::cout << "\t" << model->degresdujourcor();
+        std::cout << "\t" << model->sterilityheat();
     }
 };
 

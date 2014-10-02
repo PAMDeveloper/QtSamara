@@ -67,8 +67,7 @@ void Meteo::init(const model::models::ModelParameters& parameters)
             std::string requestMeteorology =
                 (boost::format("SELECT * FROM \"meteorology\" "         \
                                "WHERE \"CodeStation\"='%1%' AND "       \
-                               "\"Jour\" LIKE \'%%%2%%%\' ORDER BY "    \
-                               "\"Jour\" ASC") %
+                               "\"Jour\" LIKE \'%%%2%%%\'") %
                  parameters.get < std::string >("CodeStationMeteo") %
                  year).str();
 
@@ -77,8 +76,7 @@ void Meteo::init(const model::models::ModelParameters& parameters)
             std::string requestRainfall =
                 (boost::format("SELECT * FROM \"rainfall\" "            \
                                "WHERE \"CodeStation\"='%1%' AND "       \
-                               "\"Jour\" LIKE \'%%%2%%%\' ORDER BY "    \
-                               "\"Jour\" ASC") %
+                               "\"Jour\" LIKE \'%%%2%%%\'") %
                  parameters.get < std::string >("CodeStationPluie") %
                  year).str();
 

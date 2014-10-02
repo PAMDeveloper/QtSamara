@@ -65,7 +65,7 @@ void Model::evalDegreeDay()
     DegresDuJour = V * (TOpt1 - TBase);
     if (NumPhase > 1 and NumPhase < 5)
     {
-        DegresDuJourCor = DegresDuJour * std::pow(std::max(cstr, 0.00000001),
+        DegresDuJourCor = DegresDuJour * std::pow(std::max(Cstr, 0.00000001),
                                                   DEVcstr);
     } else {
         DegresDuJourCor = DegresDuJour;
@@ -119,7 +119,7 @@ void Model::phyllochron()
 
 void Model::evalCstrAssim()
 {
-    CstrAssim = std::pow(std::max(cstr, 0.00000001), ASScstr);
+    CstrAssim = std::pow(std::max(Cstr, 0.00000001), ASScstr);
 
     // std::cout << "cstr = " << cstr << std::endl;
     // std::cout << "ASScstr = " << ASScstr << std::endl;
@@ -177,7 +177,7 @@ void Model::evolPlantTilNumTot()
         } else {
             if (NumPhase > 1 and NumPhase < 4 and
                                             HaunIndex > HaunCritTillering) {
-                TilNewPlant = cstr * std::min(std::max(0., (Ic - IcTillering) *
+                TilNewPlant = Cstr * std::min(std::max(0., (Ic - IcTillering) *
                                                        TilAbility) *
                                               std::sqrt(LTRkdfcl), 2.);
                 CulmsPerPlant = CulmsPerPlant + TilNewPlant;
@@ -604,7 +604,7 @@ void Model::evalVitesseRacinaire()
         VitesseRacinaire = 0;
     }
     VitesseRacinaireDay = VitesseRacinaire * DegresDuJourCor *
-        std::pow(cstr, RootCstr);
+        std::pow(Cstr, RootCstr);
 
     // std::cout << "VitesseRacinaire = " << VitesseRacinaire << std::endl;
     // std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
@@ -1143,15 +1143,15 @@ void Model::evalCstrPFactorFAO()
     pFact = PFactor + 0.04 * (5 - KcTot * Eto);
     pFact = std::max(0., pFact);
     pFact = std::min(0.8, pFact);
-    cstr = std::min((FTSW / (1 - pFact)), 1.);
-    cstr = std::max(0., cstr);
+    Cstr = std::min((FTSW / (1 - pFact)), 1.);
+    Cstr = std::max(0., Cstr);
     if (StockMacropores > 0) {
-        cstr = cstr * CoeffStressLogging;
+        Cstr = Cstr * CoeffStressLogging;
     }
 
     // std::cout << "pFact = " << pFact << std::endl;
     // std::cout << "FTSW = " << FTSW << std::endl;
-    // std::cout << "cstr = " << cstr << std::endl;
+    // std::cout << "Cstr = " << Cstr << std::endl;
 }
 
 void Model::evolHauteur_SDJ_cstr()
@@ -1164,13 +1164,13 @@ void Model::evolHauteur_SDJ_cstr()
 
         // std::cout << "HaunGain = " << HaunGain << std::endl;
         // std::cout << "Ic = " << Ic << std::endl;
-        // std::cout << "cstr = " << cstr << std::endl;
+        // std::cout << "Cstr = " << Cstr << std::endl;
         // std::cout << "StressCold = " << StressCold << std::endl;
         // std::cout << "InternodeLengthMax = " << InternodeLengthMax << std::endl;
         // std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << std::endl;
 
         ApexHeightGain = HaunGain * std::min(std::pow(std::min(Ic, 1.), 0.5),
-                                             cstr) * StressCold
+                                             Cstr) * StressCold
             * InternodeLengthMax;
         ApexHeightGain = ApexHeightGain * CoeffInternodeNum;
 
@@ -1292,7 +1292,7 @@ void Model::evalDemandStructLeaf()
     if (NumPhase > 1 and NumPhase < 5) {
         DemLeafAreaPlant = (std::pow((RelPotLeafLength * LeafLengthMax), 2) *
                             CoeffLeafWLRatio * 0.725 * PlantLeafNumNew /
-                            1000000) * std::min(cstr, StressCold);
+                            1000000) * std::min(Cstr, StressCold);
         if (SlaNew == 0) {
             CorrectedSla = SlaMax;
         } else {
@@ -1306,7 +1306,7 @@ void Model::evalDemandStructLeaf()
         // std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
         // std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << std::endl;
         // std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << std::endl;
-        // std::cout << "cstr = " << cstr << std::endl;
+        // std::cout << "Cstr = " << Cstr << std::endl;
         // std::cout << "StressCold = " << StressCold << std::endl;
         // std::cout << "DemLeafAreaPlant = " << DemLeafAreaPlant << std::endl;
 
@@ -1349,13 +1349,13 @@ void Model::evalDemandTotAndIcPreFlow()
       }
       IcCumul = IcCumul + std::min(Ic, 1.);
       IcMean = IcCumul / NbDaysSinceGermination;
-      CstrCumul = CstrCumul + cstr;
+      CstrCumul = CstrCumul + Cstr;
       CstrMean = CstrCumul / NbDaysSinceGermination;
     }
     if (NumPhase == 5 or NumPhase == 6) {
         IcCumul = IcCumul + std::min(Ic, 1.);
         IcMean = IcCumul / NbDaysSinceGermination;
-        CstrCumul = CstrCumul + cstr;
+        CstrCumul = CstrCumul + Cstr;
         CstrMean = CstrCumul / NbDaysSinceGermination;
     }
 }
@@ -1605,7 +1605,7 @@ void Model::evalRUE()
             TrEff = DryMatTotPop / (CumTr * 10000);
             WueEt = DryMatTotPop / (CumEt * 10000);
             WueTot = DryMatTotPop / (CumWuse * 10000);
-            RUE = ( DryMatAboveGroundTotPop / std::max(CumPar, 0.00001)) / 10;
+            RUE = (DryMatAboveGroundTotPop / std::max(CumPar, 0.00001)) / 10;
         }
     }
 }
@@ -2065,31 +2065,31 @@ void Model::keyResults()
     }
     if (NumPhase == 2) {
         DurPhase2 = DurPhase2 + 1;
-        CumCstrPhase2 = CumCstrPhase2 + cstr;
+        CumCstrPhase2 = CumCstrPhase2 + Cstr;
         CumFtswPhase2 = CumFtswPhase2 + FTSW;
         CumIcPhase2 = CumIcPhase2 + Ic;
     }
     if (NumPhase == 3) {
         DurPhase3 = DurPhase3 + 1;
-        CumCstrPhase3 = CumCstrPhase3 + cstr;
+        CumCstrPhase3 = CumCstrPhase3 + Cstr;
         CumFtswPhase3 = CumFtswPhase3 + FTSW;
         CumIcPhase3 = CumIcPhase3 + Ic;
     }
     if (NumPhase == 4) {
         DurPhase4 = DurPhase4 + 1;
-        CumCstrPhase4 = CumCstrPhase4 + cstr;
+        CumCstrPhase4 = CumCstrPhase4 + Cstr;
         CumFtswPhase4 = CumFtswPhase4 + FTSW;
         CumIcPhase4 = CumIcPhase4 + Ic;
     }
     if (NumPhase == 5) {
         DurPhase5 = DurPhase5 + 1;
-        CumCstrPhase5 = CumCstrPhase5 + cstr;
+        CumCstrPhase5 = CumCstrPhase5 + Cstr;
         CumFtswPhase5 = CumFtswPhase5 + FTSW;
         CumIcPhase5 = CumIcPhase5 + Ic;
     }
     if (NumPhase == 6) {
         DurPhase6 = DurPhase6 + 1;
-        CumCstrPhase6 = CumCstrPhase6 + cstr;
+        CumCstrPhase6 = CumCstrPhase6 + Cstr;
         CumFtswPhase6 = CumFtswPhase6 + FTSW;
         CumIcPhase6 = CumIcPhase6 + Ic;
     }
@@ -2237,20 +2237,20 @@ void Model::etoFAO()
             (0.34 - 0.14 * std::pow(eActual, 0.5)) *
             (std::pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) *
             2.45015 * std::pow(10, -9);
-        Tlat = 2.501 - 2.361 * std::pow(10, -3) * TMoy;
-        delta = 4098 * (0.6108 * std::exp(17.27 * TMoy / (TMoy + 237.3))) /
-            std::pow(TMoy + 237.3, 2);
+        Tlat = 2.501 - 2.361 * std::pow(10, -3) * TMoyCalc;
+        delta = 4098 * (0.6108 * std::exp(17.27 * TMoyCalc / (TMoyCalc + 237.3))) /
+            std::pow(TMoyCalc + 237.3, 2);
         Kpsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude / 293),
                                           5.26) / Tlat;
-        G = 0.38 * (TMoy - TMoyPrec);
+        G = 0.38 * (TMoyCalc - TMoyPrec);
         Erad = 0.408 * (Rn - G) * delta / (delta + Kpsy * (1 + 0.34 * Vent));
-        Eaero = (900 / (TMoy + 273.16)) * ((eSat - eActual) * Vent) * Kpsy /
+        Eaero = (900 / (TMoyCalc + 273.16)) * ((eSat - eActual) * Vent) * Kpsy /
             (delta + Kpsy * (1 + 0.34 * Vent));
         Eto = Erad + Eaero;
     } else {
         Eto = ETP;
     }
-    TMoyPrec = TMoy;
+    TMoyPrec = TMoyCalc;
 }
 
 void Model::evolPhenoStress(double t)
@@ -2352,7 +2352,7 @@ void Model::demandePlante()
 
 void Model::evalTranspi()
 {
-    Tr = TrPot * cstr;
+    Tr = TrPot * Cstr;
 
     // std::cout << "Tr = " << Tr << std::endl;
 }
@@ -2392,10 +2392,10 @@ void Model::mortality()
         NbJourCompte = NbJourCompte + 1;
         if (tabCstrIndiceCourant == 5) {
             tabCstrIndiceCourant = 1;
-            tabCstr[tabCstrIndiceCourant] = cstr;
+            tabCstr[tabCstrIndiceCourant] = Cstr;
         } else {
             tabCstrIndiceCourant = tabCstrIndiceCourant + 1;
-            tabCstr[tabCstrIndiceCourant] = cstr;
+            tabCstr[tabCstrIndiceCourant] = Cstr;
         }
         if (NbJourCompte >= 5) {
             MoyenneCstr = 0;

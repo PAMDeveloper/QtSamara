@@ -69,7 +69,119 @@ public:
     double degresdujourcor() const
     { return samara_model->degresdujourcor(); }
 
+    double ftsw() const
+    { return samara_model->ftsw(); }
 
+    double cstr() const
+    { return samara_model->cstr(); }
+
+    double rootfront() const
+    { return samara_model->rootfront(); }
+
+    double eto() const
+    { return samara_model->eto(); }
+
+    double etm() const
+    { return samara_model->etm(); }
+
+    double etr() const
+    { return samara_model->etr(); }
+
+    double rue() const
+    { return samara_model->rue(); }
+
+    double conversioneff() const
+    { return samara_model->conversioneff(); }
+
+    double ic() const
+    { return samara_model->ic(); }
+
+    double culmsperplant() const
+    { return samara_model->culmsperplant(); }
+
+    double culmspop() const
+    { return samara_model->culmspop(); }
+
+    double culmsperhill() const
+    { return samara_model->culmsperhill(); }
+
+    double grainyieldpop() const
+    { return samara_model->grainyieldpop(); }
+
+    double drymatstructleafpop() const
+    { return samara_model->drymatstructleafpop(); }
+
+    double drymatstructsheathpop() const
+    { return samara_model->drymatstructsheathpop(); }
+
+    double drymatstructrootpop() const
+    { return samara_model->drymatstructrootpop(); }
+
+    double drymatstructinternodepop() const
+    { return samara_model->drymatstructinternodepop(); }
+
+    double drymatresinternodepop() const
+    { return samara_model->drymatresinternodepop(); }
+
+    double drymatstructpaniclepop() const
+    { return samara_model->drymatstructpaniclepop(); }
+
+    double drymatstructtotpop() const
+    { return samara_model->drymatstructtotpop(); }
+
+    double drymatvegetotpop() const
+    { return samara_model->drymatvegetotpop(); }
+
+    double drymatpanicletotpop() const
+    { return samara_model->drymatpanicletotpop(); }
+
+    double drymatstempop() const
+    { return samara_model->drymatstempop(); }
+
+    double drymatabovegroundpop() const
+    { return samara_model->drymatabovegroundpop(); }
+
+    double drymattotpop() const
+    { return samara_model->drymattotpop(); }
+
+    double sterilitycold() const
+    { return samara_model->sterilitycold(); }
+
+    double sterilityheat() const
+    { return samara_model->sterilityheat(); }
+
+    double sterilitydrought() const
+    { return samara_model->sterilitydrought(); }
+
+    double sterilitytot() const
+    { return samara_model->sterilitytot(); }
+
+    double harvestindex() const
+    { return samara_model->harvestindex(); }
+
+    double paniclenumpop() const
+    { return samara_model->paniclenumpop(); }
+
+    double paniclenumplant() const
+    { return samara_model->paniclenumplant(); }
+
+    double grainyieldpanicle() const
+    { return samara_model->grainyieldpanicle(); }
+
+    double spikenumpop() const
+    { return samara_model->spikenumpop(); }
+
+    double spikenumpanicle() const
+    { return samara_model->spikenumpanicle(); }
+
+    double fertspikenumpop() const
+    { return samara_model->fertspikenumpop(); }
+
+    double grainfillingstatus() const
+    { return samara_model->grainfillingstatus(); }
+
+    double phasestemelongation() const
+    { return samara_model->phasestemelongation(); }
 
 private:
 // models

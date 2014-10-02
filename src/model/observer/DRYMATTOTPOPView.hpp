@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
-#define MODEL_OBSERVER_DEGRESDUJOURCORVIEW_HPP
+#ifndef MODEL_OBSERVER_DRYMATTOTPOPVIEW_HPP
+#define MODEL_OBSERVER_DRYMATTOTPOPVIEW_HPP
 
 #include <model/observer/View.hpp>
 
@@ -31,18 +31,19 @@
 
 namespace model { namespace observer {
 
-class DEGRESDUJOURCORView : public View
+class DRYMATTOTPOPView : public View
 {
 public:
-    DEGRESDUJOURCORView()
+    DRYMATTOTPOPView()
     { }
 
-    virtual ~DEGRESDUJOURCORView()
+    virtual ~DRYMATTOTPOPView()
     { }
 
     virtual void observe(double /* t */)
     {
-        std::cout << "\t" << model->degresdujourcor();
+        std::cout << "\t" << model->drymattotpop();
+
     }
 };
 

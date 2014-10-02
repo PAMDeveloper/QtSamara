@@ -278,7 +278,7 @@ void Model::initCrop()
     Lai = 0;
     IcCumul = 0;
     FTSW = 1;
-    cstr = 1;
+    Cstr = 1;
     DurPhase1 = 0;
     DurPhase2 = 0;
     DurPhase3 = 0;
