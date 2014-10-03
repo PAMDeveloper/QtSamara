@@ -183,6 +183,83 @@ public:
     double phasestemelongation() const
     { return samara_model->phasestemelongation(); }
 
+    double sla() const
+    { return samara_model->sla(); }
+
+    double haunindex() const
+    { return samara_model->haunindex(); }
+
+    double apexheight() const
+    { return samara_model->apexheight(); }
+
+    double plantheight() const
+    { return samara_model->plantheight(); }
+
+    double plantwidth() const
+    { return samara_model->plantwidth(); }
+
+    double krolling() const
+    { return samara_model->krolling(); }
+
+    double lirkdfcl() const
+    { return samara_model->lirkdfcl(); }
+
+    double ltrkdfcl() const
+    { return samara_model->ltrkdfcl(); }
+
+    double assimpot() const
+    { return samara_model->assimpot(); }
+
+    double assim() const
+    { return samara_model->assim(); }
+
+    double respmainttot() const
+    { return samara_model->respmainttot(); }
+
+    double supplytot() const
+    { return samara_model->supplytot(); }
+
+    double assimsurplus() const
+    { return samara_model->assimsurplus(); }
+
+    double assimnotused() const
+    { return samara_model->assimnotused(); }
+
+    double tillerdeathpop() const
+    { return samara_model->tillerdeathpop(); }
+
+    double plantleafnumtot() const
+    { return samara_model->plantleafnumtot(); }
+
+    double deadleafdrywtpop() const
+    { return samara_model->deadleafdrywtpop(); }
+
+    double laidead() const
+    { return samara_model->laidead(); }
+
+    double rescapacityinternodepop() const
+    { return samara_model->rescapacityinternodepop(); }
+
+    double internoderesstatus() const
+    { return samara_model->internoderesstatus(); }
+
+    double daylength() const
+    { return samara_model->daylength(); }
+
+    double par() const
+    { return samara_model->par(); }
+
+    double rgcalc() const
+    { return samara_model->rgcalc(); }
+
+    double vpdcalc() const
+    { return samara_model->vpdcalc(); }
+
+    double tmoycalc() const
+    { return samara_model->tmoycalc(); }
+
+
+
 private:
 // models
     model::models::samara::Model* samara_model;

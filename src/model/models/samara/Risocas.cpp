@@ -1771,11 +1771,11 @@ void Model::evolDryMatTot()
                 DryMatStructRootPop + DryMatStructInternodePop +
                 DryMatStructPaniclePop;
             DryMatVegeTotPop = DryMatStemPop + DryMatStructLeafPop +
-                DryMatStructRootPop + DeadLeafDryWtPop;
+                DryMatStructRootPop + DeadLeafDrywtPop;
             DryMatPanicleTotPop = DryMatStructPaniclePop + GrainYieldPop;
             DryMatTotPop = DryMatVegeTotPop + DryMatPanicleTotPop;
             DryMatAboveGroundPop = DryMatTotPop - DryMatStructRootPop -
-                DeadLeafDryWtPop;
+                DeadLeafDrywtPop;
             DryMatAboveGroundTotPop = DryMatAboveGroundPop + DeadLeafDrywtPop;
             CumCarbonUsedPop = DryMatTotPop + AssimNotUsedCum;
             RootShootRatio = DryMatStructRootPop / DryMatAboveGroundPop;
@@ -2189,18 +2189,18 @@ void Model::evalRgMax()
 void Model::insToRg()
 {
     if (Rg == NullValue) {
-        RGCalc = (0.25 + 0.50 * std::min(Ins / DayLength, 1.)) * RayExtra;
+        RgCalc = (0.25 + 0.50 * std::min(Ins / DayLength, 1.)) * RayExtra;
     } else {
-        RGCalc = Rg;
+        RgCalc = Rg;
     }
     // std::cout << "RGCalc = " << RGCalc << std::endl;
 }
 
 void Model::evalPAR()
 {
-    PAR = KPar * Rg;
+    PAR = KPar * RgCalc;
     // std::cout << "KPar = " << KPar << std::endl;
-    // std::cout << "Rg = " << Rg << std::endl;
+    // std::cout << "RgCalc = " << RgCalc << std::endl;
     // std::cout << "PAR = " << PAR << std::endl;
 }
 
@@ -2229,11 +2229,11 @@ void Model::etoFAO()
                                 HMax / 100);
         }
         VPD = eSat - eActual;
-        RgRgMax = RGCalc / RgMax;
+        RgRgMax = RgCalc / RgMax;
         if (RgRgMax > 1) {
             RgRgMax = 1;
         }
-        Rn = 0.77 * RGCalc - (1.35 * RgRgMax - 0.35) *
+        Rn = 0.77 * RgCalc - (1.35 * RgRgMax - 0.35) *
             (0.34 - 0.14 * std::pow(eActual, 0.5)) *
             (std::pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) *
             2.45015 * std::pow(10, -9);

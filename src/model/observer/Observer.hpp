@@ -26,7 +26,6 @@
 #define MODEL_OBSERVER_OBSERVER_HPP
 
 #include <model/kernel/Model.hpp>
-
 #include <model/observer/LAIView.hpp>
 #include <model/observer/NUMPHASEView.hpp>
 #include <model/observer/DEGRESDUJOURView.hpp>
@@ -69,6 +68,31 @@
 #include <model/observer/FERTSPIKENUMPOPView.hpp>
 #include <model/observer/GRAINFILLINGSTATUSView.hpp>
 #include <model/observer/PHASESTEMELONGATIONView.hpp>
+#include <model/observer/SLAView.hpp>
+#include <model/observer/HAUNINDEXView.hpp>
+#include <model/observer/APEXHEIGHTView.hpp>
+#include <model/observer/PLANTHEIGHTView.hpp>
+#include <model/observer/PLANTWIDTHView.hpp>
+#include <model/observer/KROLLINGView.hpp>
+#include <model/observer/LIRKDFCLView.hpp>
+#include <model/observer/LTRKDFCLView.hpp>
+#include <model/observer/ASSIMPOTView.hpp>
+#include <model/observer/ASSIMView.hpp>
+#include <model/observer/RESPMAINTTOTView.hpp>
+#include <model/observer/SUPPLYTOTView.hpp>
+#include <model/observer/ASSIMSURPLUSView.hpp>
+#include <model/observer/ASSIMNOTUSEDView.hpp>
+#include <model/observer/TILLERDEATHPOPView.hpp>
+#include <model/observer/PLANTLEAFNUMTOTView.hpp>
+#include <model/observer/DEADLEAFDRYWTPOPView.hpp>
+#include <model/observer/LAIDEADView.hpp>
+#include <model/observer/RESCAPACITYINTERNODEPOPView.hpp>
+#include <model/observer/INTERNODERESSTATUSView.hpp>
+#include <model/observer/DAYLENGTHView.hpp>
+#include <model/observer/PARView.hpp>
+#include <model/observer/RGCALCView.hpp>
+#include <model/observer/VPDCALCView.hpp>
+#include <model/observer/TMOYCALCView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -142,6 +166,34 @@ public:
         attachView(new FERTSPIKENUMPOPView);
         attachView(new GRAINFILLINGSTATUSView);
         attachView(new PHASESTEMELONGATIONView);
+        attachView(new SLAView);
+        attachView(new HAUNINDEXView);
+        attachView(new APEXHEIGHTView);
+        attachView(new PLANTHEIGHTView);
+        attachView(new PLANTWIDTHView);
+        attachView(new KROLLINGView);
+        attachView(new LIRKDFCLView);
+        attachView(new LTRKDFCLView);
+        attachView(new ASSIMPOTView);
+        attachView(new ASSIMView);
+        attachView(new RESPMAINTTOTView);
+        attachView(new SUPPLYTOTView);
+        attachView(new ASSIMSURPLUSView);
+        attachView(new ASSIMNOTUSEDView);
+        attachView(new TILLERDEATHPOPView);
+        attachView(new PLANTLEAFNUMTOTView);
+        attachView(new DEADLEAFDRYWTPOPView);
+        attachView(new LAIDEADView);
+        attachView(new RESCAPACITYINTERNODEPOPView);
+        attachView(new INTERNODERESSTATUSView);
+        attachView(new DAYLENGTHView);
+        attachView(new PARView);
+        attachView(new RGCALCView);
+        attachView(new VPDCALCView);
+        attachView(new TMOYCALCView);
+
+
+
     }
 
     void observe(double t)

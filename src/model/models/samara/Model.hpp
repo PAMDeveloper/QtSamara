@@ -173,6 +173,81 @@ public:
     double phasestemelongation() const
     { return PhaseStemElongation; }
 
+    double sla() const
+    { return Sla; }
+
+    double haunindex() const
+    { return HaunIndex; }
+
+    double apexheight() const
+    { return ApexHeight; }
+
+    double plantheight() const
+    { return PlantHeight; }
+
+    double plantwidth() const
+    { return PlantWidth; }
+
+    double krolling() const
+    { return KRolling; }
+
+    double lirkdfcl() const
+    { return LIRkdfcl; }
+
+    double ltrkdfcl() const
+    { return LTRkdfcl; }
+
+    double assimpot() const
+    { return AssimPot; }
+
+    double assim() const
+    { return Assim; }
+
+    double respmainttot() const
+    { return RespMaintTot; }
+
+    double supplytot() const
+    { return SupplyTot; }
+
+    double assimsurplus() const
+    { return AssimSurplus; }
+
+    double assimnotused() const
+    { return AssimNotUsed; }
+
+    double tillerdeathpop() const
+    { return TillerDeathPop; }
+
+    double plantleafnumtot() const
+    { return PlantLeafNumTot; }
+
+    double deadleafdrywtpop() const
+    { return DeadLeafDrywtPop; }
+
+    double laidead() const
+    { return LaiDead; }
+
+    double rescapacityinternodepop() const
+    { return ResCapacityInternodePop; }
+
+    double internoderesstatus() const
+    { return InternodeResStatus; }
+
+    double daylength() const
+    { return DayLength; }
+
+    double par() const
+    { return PAR; }
+
+    double rgcalc() const
+    { return RgCalc; }
+
+    double vpdcalc() const
+    { return VPD; }
+
+    double tmoycalc() const
+    { return TMoyCalc; }
+
 
 private:
     void evalDegreeDay();
@@ -465,7 +540,6 @@ private:
     double DateSemis;
     double DayLength;
     double DeadLeafDrywtPop;
-    double DeadLeafDryWtPop;
     double Decli;
     double DegresDuJour;
     double DegresDuJourCor;
@@ -625,7 +699,7 @@ private:
     double RespMaintTot;
     double ResUtil;
     double Rg;
-    double RGCalc;
+    double RgCalc;
     double RgMax;
     double RootFront;
     double RootFrontOld;
