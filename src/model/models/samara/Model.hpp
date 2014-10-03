@@ -248,6 +248,43 @@ public:
     double tmoycalc() const
     { return TMoyCalc; }
 
+    double hmoycalc() const
+    { return HMoyCalc; }
+
+    double kcereal() const
+    { return KceReal; }
+
+    double stocktotal() const
+    { return StockTotal; }
+
+    double eaudispo() const
+    { return EauDispo; }
+
+    double stocksurface() const
+    { return StockSurface; }
+
+    double stockrac() const
+    { return StockRac; }
+
+    double rurac() const
+    { return RuRac; }
+
+    double kcp() const
+    { return Kcp; }
+
+    double kce() const
+    { return Kce; }
+
+    double evappot() const
+    { return EvapPot; }
+
+    double evap() const
+    { return Evap; }
+
+
+
+
+
 
 private:
     void evalDegreeDay();

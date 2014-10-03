@@ -93,6 +93,17 @@
 #include <model/observer/RGCALCView.hpp>
 #include <model/observer/VPDCALCView.hpp>
 #include <model/observer/TMOYCALCView.hpp>
+#include <model/observer/HMOYCALCView.hpp>
+#include <model/observer/KCEREALView.hpp>
+#include <model/observer/STOCKTOTALView.hpp>
+#include <model/observer/EAUDISPOView.hpp>
+#include <model/observer/STOCKSURFACEView.hpp>
+#include <model/observer/STOCKRACView.hpp>
+#include <model/observer/RURACView.hpp>
+#include <model/observer/KCPView.hpp>
+#include <model/observer/KCEView.hpp>
+#include <model/observer/EVAPPOTView.hpp>
+#include <model/observer/EVAPView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -191,6 +202,19 @@ public:
         attachView(new RGCALCView);
         attachView(new VPDCALCView);
         attachView(new TMOYCALCView);
+        attachView(new HMOYCALCView);
+        attachView(new KCEREALView);
+        attachView(new STOCKTOTALView);
+        attachView(new EAUDISPOView);
+        attachView(new STOCKSURFACEView);
+        attachView(new STOCKRACView);
+        attachView(new RURACView);
+        attachView(new KCPView);
+        attachView(new KCEView);
+        attachView(new EVAPPOTView);
+        attachView(new EVAPView);
+
+
 
 
 

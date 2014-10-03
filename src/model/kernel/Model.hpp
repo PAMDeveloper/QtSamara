@@ -258,6 +258,39 @@ public:
     double tmoycalc() const
     { return samara_model->tmoycalc(); }
 
+    double hmoycalc() const
+    { return samara_model->hmoycalc(); }
+
+    double kcereal() const
+    { return samara_model->kcereal(); }
+
+    double stocktotal() const
+    { return samara_model->stocktotal(); }
+
+    double eaudispo() const
+    { return samara_model->eaudispo(); }
+
+    double stocksurface() const
+    { return samara_model->stocksurface(); }
+
+    double stockrac() const
+    { return samara_model->stockrac(); }
+
+    double rurac() const
+    { return samara_model->rurac(); }
+
+    double kcp() const
+    { return samara_model->kcp(); }
+
+    double kce() const
+    { return samara_model->kce(); }
+
+    double evappot() const
+    { return samara_model->evappot(); }
+
+    double evap() const
+    { return samara_model->evap(); }
+
 
 
 private:
