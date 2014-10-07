@@ -291,6 +291,105 @@ public:
     double evap() const
     { return samara_model->evap(); }
 
+    double trpot() const
+    { return samara_model->trpot(); }
+
+    double tr() const
+    { return samara_model->tr(); }
+
+    double lr() const
+    { return samara_model->lr(); }
+
+    double dr() const
+    { return samara_model->dr(); }
+
+    double parintercepte() const
+    { return samara_model->parintercepte(); }
+
+    double sommedegresjour() const
+    { return samara_model->sommedegresjour(); }
+
+    double vitesseracinaire() const
+    { return samara_model->vitesseracinaire(); }
+
+    double cstrassim() const
+    { return samara_model->cstrassim(); }
+
+    double rayextra() const
+    { return samara_model->rayextra(); }
+
+    double cumpar() const
+    { return samara_model->cumpar(); }
+
+    double sommedegresjourcor() const
+    { return samara_model->sommedegresjourcor(); }
+
+    double sumpp() const
+    { return samara_model->sumpp(); }
+
+    double sommedegresjourphaseprecedente() const
+    { return samara_model->sommedegresjourphaseprecedente(); }
+
+    double respmaintdebt() const
+    { return samara_model->respmaintdebt(); }
+
+    double tminmoy() const
+    { return samara_model->tminmoy(); }
+
+    double tmaxmoy() const
+    { return samara_model->tmaxmoy(); }
+
+    double ftswmoy() const
+    { return samara_model->ftswmoy(); }
+
+    double rootshootratio() const
+    { return samara_model->rootshootratio(); }
+
+    double treffinst() const
+    { return samara_model->treffinst(); }
+
+    double treff() const
+    { return samara_model->treff(); }
+
+    double wueet() const
+    { return samara_model->wueet(); }
+
+    double wuetot() const
+    { return samara_model->wuetot(); }
+
+    double floodwaterdepth() const
+    { return samara_model->floodwaterdepth(); }
+
+    double irrigautoday() const
+    { return samara_model->irrigautoday(); }
+
+    double irrigtotday() const
+    { return samara_model->irrigtotday(); }
+
+    double fractionplantheightsubmer() const
+    { return samara_model->fractionplantheightsubmer(); }
+
+    double density() const
+    { return samara_model->density(); }
+
+    double rootmasspervol() const
+    { return samara_model->rootmasspervol(); }
+
+    double volmacropores() const
+    { return samara_model->volmacropores(); }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 private:

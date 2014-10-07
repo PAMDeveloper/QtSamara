@@ -281,6 +281,115 @@ public:
     double evap() const
     { return Evap; }
 
+    double trpot() const
+    { return TrPot; }
+
+    double tr() const
+    { return Tr; }
+
+    double lr() const
+    { return Lr; }
+
+    double dr() const
+    { return Dr; }
+
+    double parintercepte() const
+    { return PARIntercepte; }
+
+    double sommedegresjour() const
+    { return SommeDegresJour; }
+
+    double vitesseracinaire() const
+    { return VitesseRacinaire; }
+
+    double cstrassim() const
+    { return CstrAssim; }
+
+    double rayextra() const
+    { return RayExtra; }
+
+    double cumpar() const
+    { return CumPar; }
+
+    double sommedegresjourcor() const
+    { return SommeDegresJourCor; }
+
+    double sumpp() const
+    { return SumPP; }
+
+    double sommedegresjourphaseprecedente() const
+    { return SommeDegresJourPhasePrecedente; }
+
+    double respmaintdebt() const
+    { return RespMaintDebt; }
+
+    double tminmoy() const
+    { return TMinMoy; }
+
+    double tmaxmoy() const
+    { return TMaxMoy; }
+
+    double ftswmoy() const
+    { return FtswMoy; }
+
+    double rootshootratio() const
+    { return RootShootRatio; }
+
+    double treffinst() const
+    { return TrEffInst; }
+
+    double treff() const
+    { return TrEff; }
+
+    double wueet() const
+    { return WueEt; }
+
+    double wuetot() const
+    { return WueTot; }
+
+    double floodwaterdepth() const
+    { return FloodwaterDepth; }
+
+    double irrigautoday() const
+    { return IrrigAutoDay; }
+
+    double irrigtotday() const
+    { return IrrigTotDay; }
+
+    double fractionplantheightsubmer() const
+    { return FractionPlantHeightSubmer; }
+
+    double density() const
+    { return Density; }
+
+    double rootmasspervol() const
+    { return RootMassPerVol; }
+
+    double volmacropores() const
+    { return VolMacropores; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -631,7 +740,6 @@ private:
     double FertSpikeNumPop;
     double FertSpikePop;
     double FloodwaterDepth;
-    double FloodWaterDepth;
     double FloodWaterGain;
     double FractionPlantHeightSubmer;
     double FractionRootsLogged;

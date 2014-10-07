@@ -821,7 +821,7 @@ void Model::evalRuiss_FloodDyna()
         BundHeight > 0) {
         CorrectedBundHeight = 0;
         Lr = Lr + FloodwaterDepth;
-        FloodWaterDepth = 0;
+        FloodwaterDepth = 0;
         if (FloodwaterDepth + StockMacropores > 0) {
             EauDispo = StockMacropores;
         } else {
@@ -959,7 +959,7 @@ void Model::evolRempliResRFE_RDE()
         StockMacropores = StockMacropores + std::max(0., Dr - PercolationMax);
         Dr = std::min(Dr, PercolationMax);
         if (StockMacropores > VolMacropores) {
-            FloodWaterDepth = FloodWaterDepth +
+            FloodwaterDepth = FloodwaterDepth +
                 (StockMacropores - VolMacropores);
             StockMacropores = VolMacropores;
         }

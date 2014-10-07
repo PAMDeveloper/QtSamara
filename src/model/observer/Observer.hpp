@@ -104,6 +104,35 @@
 #include <model/observer/KCEView.hpp>
 #include <model/observer/EVAPPOTView.hpp>
 #include <model/observer/EVAPView.hpp>
+#include <model/observer/TRPOTView.hpp>
+#include <model/observer/TRView.hpp>
+#include <model/observer/LRView.hpp>
+#include <model/observer/DRView.hpp>
+#include <model/observer/PARINTERCEPTEView.hpp>
+#include <model/observer/SOMMEDEGRESJOURView.hpp>
+#include <model/observer/VITESSERACINAIREView.hpp>
+#include <model/observer/CSTRASSIMView.hpp>
+#include <model/observer/RAYEXTRAView.hpp>
+#include <model/observer/CUMPARView.hpp>
+#include <model/observer/SOMMEDEGRESJOURCORView.hpp>
+#include <model/observer/SUMPPView.hpp>
+#include <model/observer/SOMMEDEGRESJOURPHASEPRECEDENTEView.hpp>
+#include <model/observer/RESPMAINTDEBTView.hpp>
+#include <model/observer/TMINMOYView.hpp>
+#include <model/observer/TMAXMOYView.hpp>
+#include <model/observer/FTSWMOYView.hpp>
+#include <model/observer/ROOTSHOOTRATIOView.hpp>
+#include <model/observer/TREFFINSTView.hpp>
+#include <model/observer/TREFFView.hpp>
+#include <model/observer/WUEETView.hpp>
+#include <model/observer/WUETOTView.hpp>
+#include <model/observer/FLOODWATERDEPTHView.hpp>
+#include <model/observer/IRRIGAUTODAYView.hpp>
+#include <model/observer/IRRIGTOTDAYView.hpp>
+#include <model/observer/FRACTIONPLANTHEIGHTSUBMERView.hpp>
+#include <model/observer/DENSITYView.hpp>
+#include <model/observer/ROOTMASSPERVOLView.hpp>
+#include <model/observer/VOLMACROPORESView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -213,6 +242,40 @@ public:
         attachView(new KCEView);
         attachView(new EVAPPOTView);
         attachView(new EVAPView);
+        attachView(new TRPOTView);
+        attachView(new TRView);
+        attachView(new LRView);
+        attachView(new DRView);
+        attachView(new PARINTERCEPTEView);
+        attachView(new SOMMEDEGRESJOURView);
+        attachView(new VITESSERACINAIREView);
+        attachView(new CSTRASSIMView);
+        attachView(new RAYEXTRAView);
+        attachView(new CUMPARView);
+        attachView(new SOMMEDEGRESJOURCORView);
+        attachView(new SUMPPView);
+        attachView(new SOMMEDEGRESJOURPHASEPRECEDENTEView);
+        attachView(new RESPMAINTDEBTView);
+        attachView(new TMINMOYView);
+        attachView(new TMAXMOYView);
+        attachView(new FTSWMOYView);
+        attachView(new ROOTSHOOTRATIOView);
+        attachView(new TREFFINSTView);
+        attachView(new TREFFView);
+        attachView(new WUEETView);
+        attachView(new WUETOTView);
+        attachView(new FLOODWATERDEPTHView);
+        attachView(new IRRIGAUTODAYView);
+        attachView(new IRRIGTOTDAYView);
+        attachView(new FRACTIONPLANTHEIGHTSUBMERView);
+        attachView(new DENSITYView);
+        attachView(new ROOTMASSPERVOLView);
+        attachView(new VOLMACROPORESView);
+
+
+
+
+
 
 
 
