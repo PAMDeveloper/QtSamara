@@ -133,6 +133,16 @@
 #include <model/observer/DENSITYView.hpp>
 #include <model/observer/ROOTMASSPERVOLView.hpp>
 #include <model/observer/VOLMACROPORESView.hpp>
+#include <model/observer/STOCKMACROPORESView.hpp>
+#include <model/observer/RELPOTLEAFLENGTHView.hpp>
+#include <model/observer/APEXHEIGHTGAINView.hpp>
+#include <model/observer/HAUNGAINView.hpp>
+#include <model/observer/CONVERSIONView.hpp>
+#include <model/observer/STRESSCOLDView.hpp>
+#include <model/observer/FRACTIONROOTSLOGGEDView.hpp>
+#include <model/observer/RESUTILView.hpp>
+#include <model/observer/KCTOTView.hpp>
+#include <model/observer/ENDLView.hpp>
 #include <model/observer/View.hpp>
 
 #include <vector>
@@ -271,16 +281,16 @@ public:
         attachView(new DENSITYView);
         attachView(new ROOTMASSPERVOLView);
         attachView(new VOLMACROPORESView);
-
-
-
-
-
-
-
-
-
-
+        attachView(new STOCKMACROPORESView);
+        attachView(new RELPOTLEAFLENGTHView);
+        attachView(new APEXHEIGHTGAINView);
+        attachView(new HAUNGAINView);
+        attachView(new CONVERSIONView);
+        attachView(new STRESSCOLDView);
+        attachView(new FRACTIONROOTSLOGGEDView);
+        attachView(new RESUTILView);
+        attachView(new KCTOTView);
+        attachView(new ENDLView);
     }
 
     void observe(double t)

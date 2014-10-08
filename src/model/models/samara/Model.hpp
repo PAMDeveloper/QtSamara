@@ -368,29 +368,32 @@ public:
     double volmacropores() const
     { return VolMacropores; }
 
+    double stockmacropores() const
+    { return StockMacropores; }
 
+    double relpotleaflength() const
+    { return RelPotLeafLength; }
 
+    double apexheightgain() const
+    { return ApexHeightGain; }
 
+    double haungain() const
+    { return HaunGain; }
 
+    double conversion() const
+    { return Conversion; }
 
+    double stresscold() const
+    { return StressCold; }
 
+    double fractionrootslogged() const
+    { return FractionRootsLogged; }
 
+    double resutil() const
+    { return ResUtil; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    double kctot() const
+    { return KcTot; }
 
 
 

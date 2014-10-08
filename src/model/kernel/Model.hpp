@@ -378,16 +378,32 @@ public:
     double volmacropores() const
     { return samara_model->volmacropores(); }
 
+    double stockmacropores() const
+    { return samara_model->stockmacropores(); }
 
+    double relpotleaflength() const
+    { return samara_model->relpotleaflength(); }
 
+    double apexheightgain() const
+    { return samara_model->apexheightgain(); }
 
+    double haungain() const
+    { return samara_model->haungain(); }
 
+    double conversion() const
+    { return samara_model->conversion(); }
 
+    double stresscold() const
+    { return samara_model->stresscold(); }
 
+    double fractionrootslogged() const
+    { return samara_model->fractionrootslogged(); }
 
+    double resutil() const
+    { return samara_model->resutil(); }
 
-
-
+    double kctot() const
+    { return samara_model->kctot(); }
 
 
 
