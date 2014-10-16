@@ -45,6 +45,7 @@ void Model::assignClimate(const model::models::meteo::Climate& climate)
 
 void Model::compute(double t)
 {
+    evalNbJas(t);
     transplanting(); // ok
     degToRad(); // ok
     avgTempHum(); // ok

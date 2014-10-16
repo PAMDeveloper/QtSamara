@@ -395,7 +395,8 @@ public:
     double kctot() const
     { return KcTot; }
 
-
+    double nbjas() const
+    { return NbJas; }
 
 
 private:
@@ -492,6 +493,8 @@ private:
     void evalETRETM();
     void evolSomDegresJour();
     void mortality();
+
+    void evalNbJas(double t);
 
     void evalTMaxMoy();
     void evalTMinMoy();

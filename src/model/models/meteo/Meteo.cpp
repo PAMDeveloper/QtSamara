@@ -82,10 +82,21 @@ void Meteo::init(const model::models::ModelParameters& parameters)
 
             pqxx::result resultRainfall = action.exec(requestRainfall);
 
-            if (not resultMeteorology.empty() and not resultRainfall.empty()) {
+            std::string requestPersonalData =
+                (boost::format("SELECT * FROM \"personalData\" "        \
+                               "WHERE \"CodeStation\"='%1%' AND "       \
+                               "\"Jour\" LIKE \'%%%2%%%\'") %
+                 parameters.get < std::string >("CodeStationMeteo") %
+                 year).str();
+
+            pqxx::result resultPersonalData = action.exec(requestPersonalData);
+
+            if (not resultMeteorology.empty() and not resultRainfall.empty()
+                and not resultPersonalData.empty()) {
 
                 pqxx::result::const_iterator itMeteorology = resultMeteorology.begin();
                 pqxx::result::const_iterator itRainfall = resultRainfall.begin();
+                pqxx::result::const_iterator itPersonalData = resultPersonalData.begin();
                 bool finished = false;
 
                 while (not finished) {
@@ -108,10 +119,11 @@ void Meteo::init(const model::models::ModelParameters& parameters)
                                 boost::lexical_cast < double >(itMeteorology->at(8)),
                                 boost::lexical_cast < double >(itMeteorology->at(9)),
                                 boost::lexical_cast < double >(itMeteorology->at(10)),
-                                boost::lexical_cast < double >(itMeteorology->at(12)),
+                                boost::lexical_cast < double >(itPersonalData->at(2)),
                                 boost::lexical_cast < double >(itRainfall->at(2))));
                     }
-                    if (++itMeteorology == resultMeteorology.end() or ++itRainfall == resultRainfall.end()) {
+                    if (++itMeteorology == resultMeteorology.end() or ++itRainfall == resultRainfall.end()
+                        or ++itPersonalData == resultPersonalData.end()) {
                         finished = true;
                     }
                 }

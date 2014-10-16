@@ -64,7 +64,7 @@ static void run(const std::string& /* path */, int /* verbose */)
     std::string begin;
     std::string end;
 
-    reader.load("06SB15-fev13-D1", parameters);
+    reader.load("06SB15-fev13-D1_SV21", parameters);
     format_dates(parameters, begin, end);
     simulator.init(parameters);
     simulator.run(utils::DateTime::toJulianDayNumber(begin),

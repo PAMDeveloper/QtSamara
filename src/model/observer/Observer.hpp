@@ -142,6 +142,7 @@
 #include <model/observer/FRACTIONROOTSLOGGEDView.hpp>
 #include <model/observer/RESUTILView.hpp>
 #include <model/observer/KCTOTView.hpp>
+#include <model/observer/NBJASView.hpp>
 #include <model/observer/ENDLView.hpp>
 #include <model/observer/View.hpp>
 
@@ -175,7 +176,8 @@ public:
     void init()
     {
         attachView(new NUMPHASEView);
-        attachView(new DEGRESDUJOURView);
+        attachView(new NBJASView);
+        /*attachView(new DEGRESDUJOURView);
         attachView(new DEGRESDUJOURCORView);
         attachView(new LAIView);
         attachView(new FTSWView);
@@ -183,9 +185,9 @@ public:
         attachView(new ROOTFRONTView);
         attachView(new ETOView);
         attachView(new ETMView);
-        attachView(new ETRView);
+        attachView(new ETRView);*/
         attachView(new RUEView);
-        attachView(new CONVERSIONEFFView);
+        /*attachView(new CONVERSIONEFFView);
         attachView(new ICView);
         attachView(new CULMSPERPLANTView);
         attachView(new CULMSPOPView);
@@ -289,7 +291,7 @@ public:
         attachView(new STRESSCOLDView);
         attachView(new FRACTIONROOTSLOGGEDView);
         attachView(new RESUTILView);
-        attachView(new KCTOTView);
+        attachView(new KCTOTView);*/
         attachView(new ENDLView);
     }
 

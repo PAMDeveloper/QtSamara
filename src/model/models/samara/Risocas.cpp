@@ -414,6 +414,10 @@ void Model::evolConsRes_Flood()
         StockSurface = ValRFE + ValRDE;
         StockRac = std::max(0., StockRac - Tr);
         StockTotal = std::max(0., StockTotal - Tr);
+
+        // std::cout << "evolConsRes_Flood()" << std::endl;
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
+
         StockRac = std::min(StockRac, StockTotal);
     }
     if (StockMacropores + FloodwaterDepth > 0 and
@@ -928,12 +932,21 @@ void Model::evolRempliResRFE_RDE()
 
         StockTotal = StockTotal + EauTranspi;
 
+        // std::cout << "evolRempliResRFE_RDE()" << std::endl;
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
+
+
         // std::cout << "StockTotal = " << StockTotal << std::endl;
         // std::cout << "StRuMax = " << StRuMax << std::endl;
 
         if (StockTotal > StRuMax) {
             Dr = StockTotal - StRuMax;
             StockTotal = StRuMax;
+
+            // std::cout << "evolRempliResRFE_RDE()" << std::endl;
+            // std::cout << "StockTotal = " << StockTotal << std::endl;
+
+
         } else {
             Dr = 0;
         }
@@ -1600,12 +1613,21 @@ void Model::evalRUE()
             ConversionEff = Conversion * Assim /
                 (PARIntercepte * Conversion * 10);
         }
+
+        // std::cout << "Tr = " << Tr << std::endl;
+        // std::cout << "NbJas = " << NbJas << std::endl;
+        // std::cout << "NumPhase = " << NumPhase << std::endl;
+
         if (Tr > 0 and NbJas > 20 and NumPhase > 1) {
             TrEffInst = (SupplyTot - AssimNotUsed) / (Tr * 10000);
             TrEff = DryMatTotPop / (CumTr * 10000);
             WueEt = DryMatTotPop / (CumEt * 10000);
             WueTot = DryMatTotPop / (CumWuse * 10000);
             RUE = (DryMatAboveGroundTotPop / std::max(CumPar, 0.00001)) / 10;
+
+            // std::cout << "CumPAR = " << CumPar << std::endl;
+            // std::cout << "RUE = " << RUE << std::endl;
+
         }
     }
 }
@@ -1688,6 +1710,10 @@ void Model::evolEvapSurfRFE_RDE()
         // std::cout << "StockRac = " << StockRac << std::endl;
 
         StockTotal = StockTotal - EvapRU;
+
+        // std::cout << "evolEvapSurfRFE_RDE()" << std::endl;
+        // std::cout << "StockTotal = " << StockTotal << std::endl;
+
 
         // std::cout << "StockTotal = " << StockTotal << std::endl;
 
@@ -1859,12 +1885,12 @@ void Model::evalAssimPot()
 
 void Model::automaticIrrigation()
 {
-  double IrrigAutoTargetCor;
-  double CorrectedIrrigation;
-  double CorrectedBundHeight;
-  double StressPeriod;
+    double IrrigAutoTargetCor;
+    double CorrectedIrrigation;
+    double CorrectedBundHeight;
+    double StressPeriod;
 
-  CorrectedBundHeight = BundHeight;
+    CorrectedBundHeight = BundHeight;
     if (Irrigation == NullValue) {
         CorrectedIrrigation = 0;
     } else {
@@ -2460,5 +2486,13 @@ double Model::calculeLaMoyenne(double laValeur, double leCompteur, double laMoye
     moyenne = (laMoyenne * (leCompteur - 1) + laValeur) / leCompteur;
     return moyenne;
 }
+
+void Model::evalNbJas(double t) {
+
+    NbJas = t - DateSemis;
+
+    // std::cout << "NbJas (calcule) = " << NbJas << std::endl;
+}
+
 
 } } } // namespace model models samara

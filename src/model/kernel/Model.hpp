@@ -405,6 +405,8 @@ public:
     double kctot() const
     { return samara_model->kctot(); }
 
+    double nbjas() const
+    { return samara_model->nbjas(); }
 
 
 
