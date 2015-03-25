@@ -58,7 +58,8 @@ static void format_dates(const model::models::ModelParameters& parameters,
 static void run(const std::string& /* path */, int /* verbose */)
 {
     kernel::Model* model = new kernel::Model;
-    kernel::Simulator simulator(model);
+    //kernel::Simulator simulator(model);
+    //kernel::Simulator* simulator = new kernel::Simulator(model);
     model::models::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string begin;
@@ -66,6 +67,9 @@ static void run(const std::string& /* path */, int /* verbose */)
 
     reader.load("06SB15-fev13-D1_SV21", parameters);
     format_dates(parameters, begin, end);
+
+    kernel::Simulator simulator(model, parameters.get < std::string >("IdModele"));
+
     simulator.init(parameters);
     simulator.run(utils::DateTime::toJulianDayNumber(begin),
                   utils::DateTime::toJulianDayNumber(end));

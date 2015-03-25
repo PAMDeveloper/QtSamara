@@ -74,6 +74,9 @@ void ParametersReader::load(const std::string& id,
     std::cout << " - type_soil = "
               << parameters.get < std::string >("IdTypeSol")
               << std::endl;
+    std::cout << " - model = "
+              << parameters.get < std::string >("IdModele")
+              << std::endl;
 
 }
 
@@ -125,6 +128,7 @@ void ParametersReader::load_variety(
         "Ca",
         "CO2Cp",
         "CO2Exp",
+        "CO2SlopeTr",
         "CoeffAssimSla",
         "CoefficientQ10",
         "CoeffInternodeMass",
@@ -150,6 +154,7 @@ void ParametersReader::load_variety(
         "KCritSterCold2",
         "KCritSterFtsw1",
         "KCritSterFtsw2",
+        "KCritSterHeat1",
         "KCritSterHeat2",
         "KCritStressCold1",
         "KCritStressCold2",
@@ -259,7 +264,7 @@ void ParametersReader::load_simulation(
     model::models::ModelParameters& parameters)
 {
     std::vector < std::string > names = { "IdSite","IdPlot", "IdVariety",
-                                          "IdItineraireTechnique",
+                                          "IdItineraireTechnique", "IdModele",
                                           "BeginDate", "EndDate" };
 
     load_data(connection, "simulation", "Id", id, names, parameters);

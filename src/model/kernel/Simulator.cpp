@@ -26,12 +26,12 @@
 
 namespace model { namespace kernel {
 
-void Simulator::run(double begin, double end)
-{
-    for (double t = begin; t <= end; t++) {
-        model->compute(t);
-        observer.observe(t);
-    }
-}
+        void Simulator::run(double begin, double end)
+        {
+            for (double t = begin; t <= end; t++) {
+                model->compute(t);
+                observer.observe(t);
+            }
+        }
 
-} } // namespace model kernel
+    } } // namespace model kernel

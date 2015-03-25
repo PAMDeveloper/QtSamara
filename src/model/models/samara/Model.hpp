@@ -43,9 +43,9 @@ public:
 
     void assignClimate(const model::models::meteo::Climate& climate);
 
-    void compute(double time);
+    virtual void compute(double time) = 0;
 
-    void init(const model::models::ModelParameters& parameters);
+    virtual void init(const model::models::ModelParameters& parameters) = 0;
 
     double lai() const
     { return Lai; }
@@ -398,111 +398,8 @@ public:
     double nbjas() const
     { return NbJas; }
 
+    double NullValue;
 
-private:
-    void evalDegreeDay();
-    void phyllochron();
-    void evalCstrAssim();
-    void evalRespMaint();
-    void evolPlantTilNumTot();
-    void evolPlantLeafNumTot();
-    void evalRelPotLeafLength();
-    void evalDemandStructSheath();
-    void evalDemandStructRoot();
-    void evalDemandStructPanicle();
-    void evolGrowthStructSheathPop();
-    void evolGrowthStructRootPop();
-    void evolGrowthStructPanPop();
-    void evalSlaMitch();
-    void evolKcpKceBilhy();
-    void evolConsRes_Flood();
-    void evalConversion();
-    void evolPSPMVMD(double t);
-    void evolSomDegresJourCor();
-    void evalMaximumLai();
-    void evalVitesseRacinaire();
-    void initCrop();
-    void evalRootFront();
-    void evalSDJPhase4();
-    void evalDateGermination();
-    void evalSterility();
-    void initParcelle();
-    void evalEvapPot();
-    void transplanting();
-    void transplantingShock();
-    void evalRuiss_FloodDyna();
-    void evolRempliResRFE_RDE();
-    void plantSubmergence();
-    void excessAssimilToRoot();
-    void evolRempliMacropores();
-    void evalFTSW();
-    void evalDAF();
-    void evalSimStartGermin();
-    void evalSimEmergence();
-    void evalSimStartPSP();
-    void evalSimPanIni();
-    void evalSimAnthesis50();
-    void evalSimStartMatu2();
-    void evalColdStress();
-    void evalAssim();
-    void evolWaterLoggingUpland();
-    void evalStressWaterLogging();
-    void evalCstrPFactorFAO();
-    void evolHauteur_SDJ_cstr();
-    void evalParIntercepte();
-    void evolMobiliTillerDeath();
-    void evolMobiliLeafDeath();
-    void evalSupplyTot();
-    void evalDemandStructLeaf();
-    void evalDemandStructIN();
-    void evalDemandTotAndIcPreFlow();
-    void evolGrowthStructLeafPop();
-    void evolGrowthStructINPop();
-    void addResToGrowthStructPop();
-    void evolDemPanFilPopAndIcPFlow();
-    void evolPanicleFilPop();
-    void evolGrowthReserveInternode();
-    void evolGrowthTot();
-    void evalLai();
-    void evalClumpAndLightInter();
-    void evalRUE();
-    void evolEvapSurfRFE_RDE();
-    void evolDryMatTot();
-    void evolGrowthStructTot();
-    void leafRolling();
-    void evalAssimPot();
-    void automaticIrrigation();
-    void evolRurRFE_RDE();
-    void evalSimEndCycle();
-    void priority2GrowthPanStrctPop();
-    void keyResults();
-    void degToRad();
-    void avgTempHum();
-    void evalDecli(double t);
-    void evalSunPosi();
-    void evalDayLength();
-    void evalSunDistance(double t);
-    void evalRayExtra();
-    void evalRgMax();
-    void insToRg();
-    void evalPAR();
-    void etoFAO();
-    void evolPhenoStress(double t);
-    void demandePlante();
-    void evalTranspi();
-    void evalETRETM();
-    void evolSomDegresJour();
-    void mortality();
-
-    void evalNbJas(double t);
-
-    void evalTMaxMoy();
-    void evalTMinMoy();
-    void evalFtswMoy();
-    double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
-
-    // constantes
-   static  double NullValue;
 
     // parameters
     double Altitude;

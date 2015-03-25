@@ -26,9 +26,15 @@
 
 namespace model { namespace kernel {
 
-void Model::build()
+void Model::build(std::string modelVersion)
 {
-    samara_model = new model::models::samara::Model;
+    if (modelVersion.compare("SamaraV2_1") == 0) {
+        samara_model = new model::models::samara::Model2_1;
+    } else if (modelVersion.compare("SamaraV2_2")) {
+    }
+
+
+    //samara_model = new model::models::samara::Model;
     meteo_model = new model::models::meteo::Meteo;
 }
 

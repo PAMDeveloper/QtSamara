@@ -28,6 +28,7 @@
 #include <model/models/ModelParameters.hpp>
 
 #include <model/models/samara/Model.hpp>
+#include <model/models/samara/Model2_1.hpp>
 #include <model/models/meteo/Meteo.hpp>
 
 #include <map>
@@ -47,7 +48,7 @@ public:
         delete meteo_model;
     }
 
-    void build();
+    void build(std::string modelVersion);
 
     void compute(double t);
 

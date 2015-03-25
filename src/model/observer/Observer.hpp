@@ -160,7 +160,7 @@ public:
     { }
 
     virtual ~Observer()
-    {
+   {
         for (typename Views::iterator it = views.begin(); it != views.end();
              ++it) {
             delete (*it);
@@ -176,25 +176,25 @@ public:
     void init()
     {
         attachView(new NUMPHASEView);
-        attachView(new NBJASView);
-        /*attachView(new DEGRESDUJOURView);
-        attachView(new DEGRESDUJOURCORView);
-        attachView(new LAIView);
-        attachView(new FTSWView);
-        attachView(new CSTRView);
-        attachView(new ROOTFRONTView);
-        attachView(new ETOView);
-        attachView(new ETMView);
-        attachView(new ETRView);*/
-        attachView(new RUEView);
-        /*attachView(new CONVERSIONEFFView);
-        attachView(new ICView);
-        attachView(new CULMSPERPLANTView);
+        /*attachView(new NBJASView);*/
+        /*attachView(new DEGRESDUJOURView);*/
+        /*attachView(new DEGRESDUJOURCORView);*/
+        /*attachView(new LAIView);*/
+        /*attachView(new FTSWView);*/
+        //attachView(new CSTRView);
+        //attachView(new ROOTFRONTView);
+        /*attachView(new ETOView);*/
+        /*attachView(new ETMView);*/
+        /*attachView(new ETRView);
+        attachView(new RUEView);*/
+        //attachView(new CONVERSIONEFFView);
+        /*attachView(new ICView);*/
+        /*attachView(new CULMSPERPLANTView);
         attachView(new CULMSPOPView);
-        attachView(new CULMSPERHILLView);
-        attachView(new GRAINYIELDPOPView);
-        attachView(new DRYMATSTRUCTLEAFPOPView);
-        attachView(new DRYMATSTRUCTSHEATHPOPView);
+        attachView(new CULMSPERHILLView);*/
+        //attachView(new GRAINYIELDPOPView);
+        /*attachView(new DRYMATSTRUCTLEAFPOPView);*/
+        /*attachView(new DRYMATSTRUCTSHEATHPOPView);
         attachView(new DRYMATSTRUCTROOTPOPView);
         attachView(new DRYMATSTRUCTINTERNODEPOPView);
         attachView(new DRYMATRESINTERNODEPOPView);
@@ -206,27 +206,27 @@ public:
         attachView(new DRYMATABOVEGROUNDPOPView);
         attachView(new DRYMATTOTPOPView);
         attachView(new STERILITYCOLDView);
-        attachView(new STERILITYHEATView);
-        attachView(new STERILITYDROUGHTView);
-        attachView(new STERILITYTOTView);
-        attachView(new HARVESTINDEXView);
+        attachView(new STERILITYHEATView);*/
+        //attachView(new STERILITYDROUGHTView);
+        //attachView(new STERILITYTOTView);
+        /*attachView(new HARVESTINDEXView);
         attachView(new PANICLENUMPOPView);
         attachView(new PANICLENUMPLANTView);
         attachView(new GRAINYIELDPANICLEView);
         attachView(new SPIKENUMPOPView);
         attachView(new SPIKENUMPANICLEView);
         attachView(new FERTSPIKENUMPOPView);
-        attachView(new GRAINFILLINGSTATUSView);
-        attachView(new PHASESTEMELONGATIONView);
-        attachView(new SLAView);
-        attachView(new HAUNINDEXView);
-        attachView(new APEXHEIGHTView);
-        attachView(new PLANTHEIGHTView);
-        attachView(new PLANTWIDTHView);
-        attachView(new KROLLINGView);
-        attachView(new LIRKDFCLView);
-        attachView(new LTRKDFCLView);
-        attachView(new ASSIMPOTView);
+        attachView(new GRAINFILLINGSTATUSView);*/
+        /*attachView(new PHASESTEMELONGATIONView);*/
+        /*attachView(new SLAView);*/
+        /*attachView(new HAUNINDEXView);*/
+        /*attachView(new APEXHEIGHTView);*/
+        /*attachView(new PLANTHEIGHTView);*/
+        /*attachView(new PLANTWIDTHView);*/
+        /*attachView(new KROLLINGView);
+        attachView(new LIRKDFCLView);*/
+        /*attachView(new LTRKDFCLView);*/
+        /*attachView(new ASSIMPOTView);
         attachView(new ASSIMView);
         attachView(new RESPMAINTTOTView);
         attachView(new SUPPLYTOTView);
@@ -243,20 +243,20 @@ public:
         attachView(new RGCALCView);
         attachView(new VPDCALCView);
         attachView(new TMOYCALCView);
-        attachView(new HMOYCALCView);
-        attachView(new KCEREALView);
-        attachView(new STOCKTOTALView);
-        attachView(new EAUDISPOView);
-        attachView(new STOCKSURFACEView);
-        attachView(new STOCKRACView);
-        attachView(new RURACView);
-        attachView(new KCPView);
-        attachView(new KCEView);
-        attachView(new EVAPPOTView);
-        attachView(new EVAPView);
-        attachView(new TRPOTView);
-        attachView(new TRView);
-        attachView(new LRView);
+        attachView(new HMOYCALCView);*/
+        /*attachView(new KCEREALView);*/
+        /*attachView(new STOCKTOTALView);*/
+        /*attachView(new EAUDISPOView);*/
+        /*attachView(new STOCKSURFACEView);*/
+        //attachView(new STOCKRACView);
+        //attachView(new RURACView);
+        /*attachView(new KCPView);*/
+        /*attachView(new KCEView);*/
+        /*attachView(new EVAPPOTView);*/
+        /*attachView(new EVAPView);*/
+        /*attachView(new TRPOTView);*/
+        /*attachView(new TRView);*/
+        /*attachView(new LRView);
         attachView(new DRView);
         attachView(new PARINTERCEPTEView);
         attachView(new SOMMEDEGRESJOURView);
@@ -269,9 +269,9 @@ public:
         attachView(new SOMMEDEGRESJOURPHASEPRECEDENTEView);
         attachView(new RESPMAINTDEBTView);
         attachView(new TMINMOYView);
-        attachView(new TMAXMOYView);
-        attachView(new FTSWMOYView);
-        attachView(new ROOTSHOOTRATIOView);
+        attachView(new TMAXMOYView);*/
+        /*attachView(new FTSWMOYView);*/
+        /*attachView(new ROOTSHOOTRATIOView);
         attachView(new TREFFINSTView);
         attachView(new TREFFView);
         attachView(new WUEETView);
@@ -286,9 +286,9 @@ public:
         attachView(new STOCKMACROPORESView);
         attachView(new RELPOTLEAFLENGTHView);
         attachView(new APEXHEIGHTGAINView);
-        attachView(new HAUNGAINView);
-        attachView(new CONVERSIONView);
-        attachView(new STRESSCOLDView);
+        attachView(new HAUNGAINView);*/
+        //attachView(new CONVERSIONView);
+        /*attachView(new STRESSCOLDView);
         attachView(new FRACTIONROOTSLOGGEDView);
         attachView(new RESUTILView);
         attachView(new KCTOTView);*/

@@ -3,7 +3,7 @@ INCLUDE_DIRECTORIES(
 
 LINK_DIRECTORIES()
 
-SET(MODEL_SAMARA_HPP Model.hpp Model.cpp)
+SET(MODEL_SAMARA_HPP Model.hpp Model.cpp Model2_1.hpp Model2_1.cpp)
 SET(MODEL_SAMARA_CPP Risocas.cpp)
 
 ADD_LIBRARY(samara-models-samara SHARED ${MODEL_SAMARA_HPP} ${MODEL_SAMARA_CPP})

@@ -27,13 +27,17 @@
 
 #include <model/kernel/Model.hpp>
 
+#include <limits>
+
+using std::numeric_limits;
+
 namespace model { namespace observer {
 
 class View
 {
 public:
     View() : model(0)
-    { }
+    { std::cout.precision(numeric_limits<double>::digits10 + 1); }
 
     virtual ~View()
     { }

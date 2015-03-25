@@ -33,10 +33,10 @@ namespace model { namespace kernel {
 class Simulator
 {
 public:
-    Simulator(model::kernel::Model* model)
+    Simulator(model::kernel::Model* model, std::string modelVersion)
         : model(model), observer(model)
     {
-        model->build();
+        model->build(modelVersion);
     }
 
     virtual ~Simulator()
