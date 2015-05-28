@@ -22,23 +22,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_MODELS_SAMARA_MODEL2_1_HPP
-#define MODEL_MODELS_SAMARA_MODEL2_1_HPP
+#ifndef MODEL_MODELS_SAMARA_MODEL2_2_HPP
+#define MODEL_MODELS_SAMARA_MODEL2_2_HPP
 
 #include <model/models/ModelParameters.hpp>
+#include <model/models/meteo/Meteo.hpp>
 #include <model/models/samara/Model2.hpp>
 
 #include <utils/DateTime.hpp>
 
 namespace model { namespace models { namespace samara {
 
-class Model2_1 : public Model2
+class Model2_2 : public Model2
 {
 public:
-    Model2_1()
+    Model2_2()
     { }
 
-    virtual ~Model2_1()
+    virtual ~Model2_2()
     { }
 
     void compute(double time);
@@ -47,35 +48,13 @@ public:
 
 protected:
 
-    void evolHauteur_SDJ_cstr();
-    void evolEvapSurfRFE_RDE();
-    void demandePlante();
-    void evalParIntercepte();
-    void evalAssimPot();
+    void transplanting();
+    void evalRespMaint();
+    void evalRelPotLeafLength();
+    void evolPlantTilNumTot();
     void evolMobiliTillerDeath();
-    void evolMobiliLeafDeath();
-    void evalSupplyTot();
-    void evalDemandStructLeaf();
-    void evalDemandStructIN();
-    void evalDemandTotAndIcPreFlow();
-    void evolGrowthStructLeafPop();
-    void evolGrowthStructINPop();
-    void priority2GrowthPanStrctPop();
-    void evolGrowthStructTot();
-    void addResToGrowthStructPop();
-    void evolDemPanFilPopAndIcPFlow();
-    void evolPanicleFilPop();
-    void evolGrowthReserveInternode();
-    void evolGrowthTot();
-    void evolDryMatTot();
-    void evalLai();
-    void leafRolling();
-    void evalClumpAndLightInter();
-    void automaticIrrigation();
-    void evolRurRFE_RDE();
+    void evalSlaMitch();
     void evalRUE();
-    void evalSimEndCycle();
-
 
     static double NullValue;
 

@@ -22,7 +22,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <model/models/samara/Model.hpp>
+#include <model/models/samara/Model2.hpp>
 #include <model/models/samara/Model2_1.hpp>
+#include <model/models/samara/Model2_2.hpp>
 
 #include <utils/DateTime.hpp>
 
@@ -31,7 +34,7 @@
 
 namespace model { namespace models { namespace samara {
 
-void Model2_1::evalDegreeDay()
+void Model::evalDegreeDay()
 {
     double V, V1, V3;
     double S1, S2, S3;
@@ -82,7 +85,7 @@ void Model2_1::evalDegreeDay()
 }
 
 
-void Model2_1::phyllochron()
+void Model::phyllochron()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if ((NumPhase > 3 or HaunIndex > 20) and NumPhase < 5) {
@@ -119,7 +122,7 @@ void Model2_1::phyllochron()
 
 }
 
-void Model2_1::evalCstrAssim()
+void Model::evalCstrAssim()
 {
     CstrAssim = std::pow(std::max(Cstr, 0.00000001), ASScstr);
 
@@ -128,7 +131,7 @@ void Model2_1::evalCstrAssim()
     // std::cout << "CstrAssim = " << CstrAssim << std::endl;
 }
 
-void Model2_1::evalRespMaint()
+void Model::evalRespMaint()
 {
     double RespMaintLeafPop;
     double RespMaintSheathPop;
@@ -166,7 +169,7 @@ void Model2_1::evalRespMaint()
 
 }
 
-void Model2_1::evolPlantTilNumTot()
+void Model2::evolPlantTilNumTot()
 {
     double TilNewPlant;
 
@@ -211,7 +214,7 @@ void Model2_1::evolPlantTilNumTot()
 
 }
 
-void Model2_1::evolPlantLeafNumTot()
+void Model::evolPlantLeafNumTot()
 {
     if (NumPhase == 0) {
         PlantLeafNumNew = 0.;
@@ -234,7 +237,7 @@ void Model2_1::evolPlantLeafNumTot()
 
 }
 
-void Model2_1::evalRelPotLeafLength()
+void Model::evalRelPotLeafLength()
 {
     if (NumPhase > 1) {
         RelPotLeafLength = std::min((0.1 + 0.9 * HaunIndex / RankLongestLeaf),
@@ -248,7 +251,7 @@ void Model2_1::evalRelPotLeafLength()
 
 }
 
-void Model2_1::evalDemandStructSheath()
+void Model::evalDemandStructSheath()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         DemStructSheathPop = (1 + ((SlaMax - Sla) / (SlaMax - SlaMin))) * 0.5 *
@@ -266,7 +269,7 @@ void Model2_1::evalDemandStructSheath()
     }
 }
 
-void Model2_1::evalDemandStructRoot()
+void Model2::evalDemandStructRoot()
 {
     RootSystSoilSurfPop = std::min(RootFront * RootFront * Density / 1000000,
                                    10000.);
@@ -286,7 +289,7 @@ void Model2_1::evalDemandStructRoot()
     }
 }
 
-void Model2_1::evalDemandStructPanicle()
+void Model2::evalDemandStructPanicle()
 {
     if (NumPhase == 4) {
         DemStructPaniclePlant = CoeffPanicleMass * CulmsPerHill *
@@ -301,7 +304,7 @@ void Model2_1::evalDemandStructPanicle()
     }
 }
 
-void Model2_1::evolGrowthStructSheathPop()
+void Model::evolGrowthStructSheathPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -313,7 +316,7 @@ void Model2_1::evolGrowthStructSheathPop()
     }
 }
 
-void Model2_1::evolGrowthStructRootPop()
+void Model::evolGrowthStructRootPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -325,7 +328,7 @@ void Model2_1::evolGrowthStructRootPop()
     }
 }
 
-void Model2_1::evolGrowthStructPanPop()
+void Model::evolGrowthStructPanPop()
 {
     if (NumPhase > 1 and NumPhase < 5) {
         if (Ic < 1) {
@@ -337,7 +340,7 @@ void Model2_1::evolGrowthStructPanPop()
     }
 }
 
-void Model2_1::evalSlaMitch()
+void Model::evalSlaMitch()
 {
     if (NumPhase > 1) {
         SlaMitch = SlaMin + (SlaMax - SlaMin) *
@@ -353,7 +356,7 @@ void Model2_1::evalSlaMitch()
     }
 }
 
-void Model2_1::evolKcpKceBilhy()
+void Model::evolKcpKceBilhy()
 {
     Kcp = std::min((1 - LTRkdfcl) * KcMax, KcMax);
     Kcp = std::min(Kcp, KcMax);
@@ -369,7 +372,7 @@ void Model2_1::evolKcpKceBilhy()
 
 }
 
-void Model2_1::evolConsRes_Flood()
+void Model2::evolConsRes_Flood()
 {
     double TrSurf;
     double WaterDeficit;
@@ -456,7 +459,7 @@ void Model2_1::evolConsRes_Flood()
     }
 }
 
-void Model2_1::evalConversion()
+void Model::evalConversion()
 {
     double KAssim;
 
@@ -492,7 +495,7 @@ void Model2_1::evalConversion()
 
 }
 
-void Model2_1::evolPSPMVMD(double t)
+void Model::evolPSPMVMD(double t)
 {
     if (t >= DateSemis) {
 
@@ -553,7 +556,7 @@ void Model2_1::evolPSPMVMD(double t)
 }
 
 
-void Model2_1::evolSomDegresJourCor()
+void Model::evolSomDegresJourCor()
 {
     if (NumPhase >= 1) {
         SommeDegresJourCor = SommeDegresJourCor + DegresDuJourCor;
@@ -568,7 +571,7 @@ void Model2_1::evolSomDegresJourCor()
 }
 
 
-void Model2_1::evalMaximumLai()
+void Model::evalMaximumLai()
 {
     if (Lai > TempLai) {
         TempLai = Lai;
@@ -580,7 +583,7 @@ void Model2_1::evalMaximumLai()
     }
 }
 
-void Model2_1::evalVitesseRacinaire()
+void Model::evalVitesseRacinaire()
 {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
@@ -619,8 +622,7 @@ void Model2_1::evalVitesseRacinaire()
 
 
 }
-
-void Model2_1::evalRootFront()
+void Model::evalRootFront()
 {
     if (NumPhase > 0) {
 
@@ -634,7 +636,7 @@ void Model2_1::evalRootFront()
     }
 }
 
-void Model2_1::evalSDJPhase4()
+void Model::evalSDJPhase4()
 {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
@@ -647,7 +649,7 @@ void Model2_1::evalSDJPhase4()
 
 }
 
-void Model2_1::evalDateGermination()
+void Model::evalDateGermination()
 {
     if (NumPhase < 1 or (NumPhase == 1 and ChangePhase == 1)) {
         NbDaysSinceGermination = 0;
@@ -658,7 +660,7 @@ void Model2_1::evalDateGermination()
     // std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << std::endl;
 }
 
-void Model2_1::evalSterility()
+void Model::evalSterility()
 {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
@@ -707,7 +709,7 @@ void Model2_1::evalSterility()
 
 }
 
-void Model2_1::initParcelle()
+void Model2::initParcelle()
 {
     double Stockini2;
     double Stockini1;
@@ -743,7 +745,43 @@ void Model2_1::initParcelle()
     VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) / 100;
 }
 
-void Model2_1::evalEvapPot()
+void Model2_2::initParcelle()
+{
+    double Stockini2;
+    double Stockini1;
+
+    // std::cout << "HumSat = " << HumSat << std::endl;
+    // std::cout << "HumFC = " << HumFC << std::endl;
+    // std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
+    // std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
+    // std::cout << "PEvap = " << PEvap << std::endl;
+    // std::cout << "StockIniSurf = " << StockIniSurf << std::endl;
+    // std::cout << "StockIniProf = " << StockIniProf << std::endl;
+
+    VolRelMacropores = 100 * (HumSat - HumFC);
+    ResUtil = (HumFC - HumPF) * 1000;
+    ProfRu = EpaisseurSurf + EpaisseurProf;
+    RuSurf = ResUtil * EpaisseurSurf / 1000;
+    CapaREvap = 0.5 * EpaisseurSurf * HumPF;
+    CapaRFE = PEvap * (CapaREvap + RuSurf);
+    CapaRDE = RuSurf - CapaRFE;
+    StRuMax = ResUtil * ProfRu / 1000;
+    Stockini1 = std::min(StockIniSurf, CapaREvap + RuSurf);
+    Stockini2 = std::min(StockIniProf, ResUtil * EpaisseurProf / 1000);
+    ValRSurf = std::min(Stockini1, CapaREvap + CapaRDE);
+    ValRDE = std::max(0., ValRSurf - CapaREvap);
+    ValRFE = std::max(0., Stockini1 - (CapaREvap + CapaRDE));
+    StockSurface = ValRDE + ValRFE;
+    StockTotal = StockSurface + Stockini2; //transpirable
+    Hum = StockTotal;
+    LTRkdfcl = 1;
+    LIRkdf = 0;
+    LTRkdf = 0;
+    CounterNursery = 0;
+    VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) / 100;
+}
+
+void Model::evalEvapPot()
 {
     EvapPot = Kce * Eto;
 
@@ -752,7 +790,7 @@ void Model2_1::evalEvapPot()
     // std::cout << "EvapPot = " << EvapPot << std::endl;
 }
 
-void Model2_1::transplanting()
+void Model2::transplanting()
 {
     double DensityChange;
 
@@ -796,7 +834,7 @@ void Model2_1::transplanting()
     }
 }
 
-void Model2_1::transplantingShock()
+void Model2::transplantingShock()
 {
     if (CounterNursery > 0 and CounterNursery < 8) {
         Assim = Assim * CoeffTransplantingShock;
@@ -808,7 +846,7 @@ void Model2_1::transplantingShock()
 
 }
 
-void Model2_1::evalRuiss_FloodDyna()
+void Model2::evalRuiss_FloodDyna()
 {
     double CorrectedIrrigation;
     double CorrectedBundHeight;
@@ -885,7 +923,7 @@ void Model2_1::evalRuiss_FloodDyna()
     }
 }
 
-void Model2_1::evolRempliResRFE_RDE()
+void Model2::evolRempliResRFE_RDE()
 {
     double EauReste;
     double ValRSurfPrec;
@@ -1003,13 +1041,13 @@ void Model2_1::evolRempliResRFE_RDE()
     }
 }
 
-void Model2_1::plantSubmergence()
+void Model2::plantSubmergence()
 {
     FractionPlantHeightSubmer = std::min(
         std::max(0., FloodwaterDepth / std::max(PlantHeight, 0.1)), 1.);
 }
 
-void Model2_1::excessAssimilToRoot()
+void Model2::excessAssimilToRoot()
 {
     if (NumPhase > 1) {
         RootMassPerVol = DryMatStructRootPop / RootSystVolPop;
@@ -1024,7 +1062,7 @@ void Model2_1::excessAssimilToRoot()
     }
 }
 
-void Model2_1::evolRempliMacropores()
+void Model2::evolRempliMacropores()
 {
     if (StockMacropores + FloodwaterDepth > 0) {
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
@@ -1040,7 +1078,7 @@ void Model2_1::evolRempliMacropores()
     }
 }
 
-void Model2_1::evalFTSW()
+void Model2::evalFTSW()
 {
     // std::cout << "StockRac (avant) = " << StockRac << std::endl;
 
@@ -1060,7 +1098,7 @@ void Model2_1::evalFTSW()
     // std::cout << "FTSW = " << FTSW << std::endl;
 }
 
-void Model2_1::evalDAF()
+void Model2::evalDAF()
 {
     if (NumPhase > 4) {
         DAF = DAF + 1;
@@ -1069,49 +1107,49 @@ void Model2_1::evalDAF()
     }
 }
 
-void Model2_1::evalSimStartGermin()
+void Model::evalSimStartGermin()
 {
     if (NumPhase == 1 and ChangePhase == 1) {
         SimStartGermin = NbJas;
     }
 }
 
-void Model2_1::evalSimEmergence()
+void Model::evalSimEmergence()
 {
     if (NumPhase == 2 and ChangePhase == 1) {
         SimEmergence = NbJas;
     }
 }
 
-void Model2_1::evalSimStartPSP()
+void Model::evalSimStartPSP()
 {
     if (NumPhase == 3 and ChangePhase == 1) {
         SimStartPSP = NbJas;
     }
 }
 
-void Model2_1::evalSimPanIni()
+void Model::evalSimPanIni()
 {
     if (NumPhase == 4 and ChangePhase == 1) {
         SimPanIni = NbJas;
     }
 }
 
-void Model2_1::evalSimAnthesis50()
+void Model::evalSimAnthesis50()
 {
     if (NumPhase == 5 and ChangePhase == 1) {
         SimAnthesis50 = NbJas;
     }
 }
 
-void Model2_1::evalSimStartMatu2()
+void Model::evalSimStartMatu2()
 {
     if (NumPhase == 6 and ChangePhase == 1) {
         SimStartMatu2 = NbJas;
     }
 }
 
-void Model2_1::evalColdStress()
+void Model::evalColdStress()
 {
     StressCold = 1 -
         std::max(0.,
@@ -1123,7 +1161,7 @@ void Model2_1::evalColdStress()
     //std::cout << "StressCold = " << StressCold << std::endl;
 }
 
-void Model2_1::evalAssim()
+void Model::evalAssim()
 {
     Assim = std::max(AssimPot * CstrAssim, 0.);
 
@@ -1133,7 +1171,7 @@ void Model2_1::evalAssim()
 
 }
 
-void Model2_1::evolWaterLoggingUpland()
+void Model2::evolWaterLoggingUpland()
 {
     if (Dr > PercolationMax and BundHeight == 0) {
         StockMacropores = StockMacropores + (Dr - PercolationMax);
@@ -1143,7 +1181,7 @@ void Model2_1::evolWaterLoggingUpland()
     }
 }
 
-void Model2_1::evalStressWaterLogging()
+void Model2::evalStressWaterLogging()
 {
     if (StockMacropores > 0 and RootFront > 0) {
         FractionRootsLogged =
@@ -1156,7 +1194,7 @@ void Model2_1::evalStressWaterLogging()
     }
 }
 
-void Model2_1::evalCstrPFactorFAO()
+void Model2::evalCstrPFactorFAO()
 {
     double pFact;
 
@@ -2228,13 +2266,13 @@ void Model2_1::keyResults()
     }
 }
 
-void Model2_1::degToRad()
+void Model::degToRad()
 {
     LatRad = Latitude * M_PI / 180;
     // std::cout << "LatRad = " << LatRad << std::endl;
 }
 
-void Model2_1::avgTempHum()
+void Model::avgTempHum()
 {
     if (TMin != NullValue and TMax != NullValue) {
         TMoyCalc = (TMax + TMin) / 2;
@@ -2250,32 +2288,32 @@ void Model2_1::avgTempHum()
     // std::cout << "HMoyCalc = " << HMoyCalc << std::endl;
 }
 
-void Model2_1::evalDecli(double t)
+void Model::evalDecli(double t)
 {
     Decli = 0.409 * std::sin(0.0172 * utils::DateTime::dayOfYear(t) - 1.39);
     // std::cout << "Decli = " << Decli << std::endl;
 }
 
-void Model2_1::evalSunPosi()
+void Model::evalSunPosi()
 {
     SunPosi = std::acos(-std::tan(LatRad) * std::tan(Decli));
     // std::cout << "SunPosi = " << SunPosi << std::endl;
 }
 
-void Model2_1::evalDayLength()
+void Model::evalDayLength()
 {
     DayLength = 7.64 * SunPosi;
     // std::cout << "DayLength = " << DayLength << std::endl;
 }
 
-void Model2_1::evalSunDistance(double t)
+void Model::evalSunDistance(double t)
 {
     SunDistance = 1 + 0.033 *
         std::cos(2 * M_PI / 365 * utils::DateTime::dayOfYear(t));
     // std::cout << "SunDistance = " << SunDistance << std::endl;
 }
 
-void Model2_1::evalRayExtra()
+void Model::evalRayExtra()
 {
     RayExtra = 24 * 60 * 0.0820 / M_PI * SunDistance *
         (SunPosi * std::sin(Decli) * std::sin(LatRad) +
@@ -2283,13 +2321,13 @@ void Model2_1::evalRayExtra()
     // std::cout << "RayExtra = " << RayExtra << std::endl;
 }
 
-void Model2_1::evalRgMax()
+void Model::evalRgMax()
 {
     RgMax = (0.75 + 0.00002 * Altitude) * RayExtra;
     // std::cout << "RgMax = " << RgMax << std::endl;
 }
 
-void Model2_1::insToRg()
+void Model::insToRg()
 {
     if (Rg == NullValue) {
         RgCalc = (0.25 + 0.50 * std::min(Ins / DayLength, 1.)) * RayExtra;
@@ -2299,7 +2337,7 @@ void Model2_1::insToRg()
     // std::cout << "RGCalc = " << RGCalc << std::endl;
 }
 
-void Model2_1::evalPAR()
+void Model::evalPAR()
 {
     PAR = KPar * RgCalc;
     // std::cout << "KPar = " << KPar << std::endl;
@@ -2307,7 +2345,7 @@ void Model2_1::evalPAR()
     // std::cout << "PAR = " << PAR << std::endl;
 }
 
-void Model2_1::etoFAO()
+void Model::etoFAO()
 {
     double eActual;
     double eSat;
@@ -2356,7 +2394,7 @@ void Model2_1::etoFAO()
     TMoyPrec = TMoyCalc;
 }
 
-void Model2_1::evolPhenoStress(double t)
+void Model::evolPhenoStress(double t)
 {
 
     if (t >= DateSemis) {
@@ -2459,14 +2497,14 @@ void Model2_1::demandePlante()
      // std::cout << "TrPot = " << TrPot << std::endl;
 }
 
-void Model2_1::evalTranspi()
+void Model::evalTranspi()
 {
     Tr = TrPot * Cstr;
 
     // std::cout << "Tr = " << Tr << std::endl;
 }
 
-void Model2_1::evalETRETM()
+void Model::evalETRETM()
 {
     ETM = Evap + TrPot;
     ETR = Evap + Tr;
@@ -2479,7 +2517,7 @@ void Model2_1::evalETRETM()
 
 }
 
-void Model2_1::evolSomDegresJour()
+void Model::evolSomDegresJour()
 {
     if (NumPhase >= 1) {
         SommeDegresJour = SommeDegresJour + DegresDuJour;
@@ -2493,7 +2531,7 @@ void Model2_1::evolSomDegresJour()
 
 }
 
-void Model2_1::mortality()
+void Model::mortality()
 {
     double MoyenneCstr;
 
@@ -2518,7 +2556,7 @@ void Model2_1::mortality()
     }
 }
 
-void Model2_1::evalTMaxMoy() {
+void Model::evalTMaxMoy() {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
     // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
@@ -2533,7 +2571,7 @@ void Model2_1::evalTMaxMoy() {
 
 }
 
-void Model2_1::evalTMinMoy() {
+void Model::evalTMinMoy() {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
     // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
@@ -2548,7 +2586,7 @@ void Model2_1::evalTMinMoy() {
 
 }
 
-void Model2_1::evalFtswMoy() {
+void Model::evalFtswMoy() {
 
     // std::cout << "NumPhase = " << NumPhase << std::endl;
     // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
@@ -2563,7 +2601,7 @@ void Model2_1::evalFtswMoy() {
 
 }
 
-double Model2_1::calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne) {
+double Model::calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne) {
     double moyenne;
 
     moyenne = (laMoyenne * (leCompteur - 1) + laValeur) / leCompteur;

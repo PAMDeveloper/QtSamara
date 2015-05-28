@@ -22,60 +22,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_MODELS_SAMARA_MODEL2_1_HPP
-#define MODEL_MODELS_SAMARA_MODEL2_1_HPP
+#ifndef MODEL_MODELS_SAMARA_MODEL2_HPP
+#define MODEL_MODELS_SAMARA_MODEL2_HPP
 
 #include <model/models/ModelParameters.hpp>
-#include <model/models/samara/Model2.hpp>
+#include <model/models/meteo/Meteo.hpp>
+#include <model/models/samara/Model.hpp>
 
 #include <utils/DateTime.hpp>
 
 namespace model { namespace models { namespace samara {
 
-class Model2_1 : public Model2
+class Model2 : public Model
 {
 public:
-    Model2_1()
+    Model2()
     { }
 
-    virtual ~Model2_1()
+    virtual ~Model2()
     { }
 
-    void compute(double time);
+    virtual void compute(double time) = 0;
 
     void init(const model::models::ModelParameters& parameters);
 
 protected:
 
-    void evolHauteur_SDJ_cstr();
-    void evolEvapSurfRFE_RDE();
-    void demandePlante();
-    void evalParIntercepte();
-    void evalAssimPot();
-    void evolMobiliTillerDeath();
-    void evolMobiliLeafDeath();
-    void evalSupplyTot();
-    void evalDemandStructLeaf();
-    void evalDemandStructIN();
-    void evalDemandTotAndIcPreFlow();
-    void evolGrowthStructLeafPop();
-    void evolGrowthStructINPop();
-    void priority2GrowthPanStrctPop();
-    void evolGrowthStructTot();
-    void addResToGrowthStructPop();
-    void evolDemPanFilPopAndIcPFlow();
-    void evolPanicleFilPop();
-    void evolGrowthReserveInternode();
-    void evolGrowthTot();
-    void evolDryMatTot();
-    void evalLai();
-    void leafRolling();
-    void evalClumpAndLightInter();
-    void automaticIrrigation();
-    void evolRurRFE_RDE();
-    void evalRUE();
-    void evalSimEndCycle();
-
+    void initParcelle();
+    void transplanting();
+    void evalDegreeDay();
+    void evalDAF();
+    void evalFTSW();
+    void evalCstrPFactorFAO();
+    void evolConsRes_Flood();
+    void transplantingShock();
+    void evolPlantTilNumTot();
+    void evalDemandStructRoot();
+    void evalDemandStructPanicle();
+    void excessAssimilToRoot();
+    void evalRuiss_FloodDyna();
+    void evolRempliResRFE_RDE();
+    void evolWaterLoggingUpland();
+    void evalStressWaterLogging();
+    void evolRempliMacropores();
+    void plantSubmergence();
 
     static double NullValue;
 

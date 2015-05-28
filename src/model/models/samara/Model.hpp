@@ -45,7 +45,7 @@ public:
 
     virtual void compute(double time) = 0;
 
-    virtual void init(const model::models::ModelParameters& parameters) = 0;
+    void init(const model::models::ModelParameters& parameters);
 
     double lai() const
     { return Lai; }
@@ -827,6 +827,60 @@ public:
     int NbJourCompte;
     int NurseryStatus;
     int tabCstrIndiceCourant;
+
+protected:
+    void initCrop();
+    void degToRad();
+    void avgTempHum();
+    void evalDecli(double t);
+    void evalSunPosi();
+    void evalDayLength();
+    void evalSunDistance(double t);
+    void evalRayExtra();
+    void evalRgMax();
+    void insToRg();
+    void evalPAR();
+    void etoFAO();
+    void evolPhenoStress(double t);
+    void evalTranspi();
+    void evalETRETM();
+    void evalConversion();
+    void evolSomDegresJour();
+    void mortality();
+    void evalSimAnthesis50();
+    void evalDateGermination();
+    void evalColdStress();
+    void evalSimEmergence();
+    void evalSimPanIni();
+    void evalSimStartGermin();
+    void evalSimStartMatu2();
+    void evalSimStartPSP();
+    void evalSDJPhase4();
+    void phyllochron();
+    void evolKcpKceBilhy();
+    void evalEvapPot();
+    void evalTMaxMoy();
+    void evalTMinMoy();
+    void evalFtswMoy();
+    void evalSterility();
+    void evalVitesseRacinaire();
+    void evalCstrAssim();
+    void evalAssim();
+    void evalRespMaint();
+    void evalRelPotLeafLength();
+    void evolPlantLeafNumTot();
+    void evalDemandStructSheath();
+    void evolGrowthStructSheathPop();
+    void evolGrowthStructRootPop();
+    void evolGrowthStructPanPop();
+    void evalMaximumLai();
+    void evalSlaMitch();
+    void evalRootFront();
+    void evolPSPMVMD(double t);
+    void evolSomDegresJourCor();
+
+    double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
+
 };
 
 } } } // namespace model models samara
