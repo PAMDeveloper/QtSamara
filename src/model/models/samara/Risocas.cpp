@@ -34,7 +34,7 @@
 
 namespace model { namespace models { namespace samara {
 
-void Model::evalDegreeDay()
+void Model2::evalDegreeDay()
 {
     double V, V1, V3;
     double S1, S2, S3;
@@ -165,8 +165,33 @@ void Model::evalRespMaint()
     // std::cout << "DryMatStructInternodePop = " << DryMatStructInternodePop << std:: endl;
     // std::cout << "DryMatStructPaniclePop = " << DryMatStructPaniclePop << std:: endl;
     // std::cout << "RespMaintTot = " << RespMaintTot << std::endl;
+}
 
+void Model2_2::evalRespMaint()
+{
+    double RespMaintLeafPop;
+    double RespMaintSheathPop;
+    double RespMaintRootPop;
+    double RespMaintInternodePop;
+    double RespMaintPaniclePop;
+    double CoeffQ10;
+    double correction;
 
+    CoeffQ10 = std::pow(CoefficientQ10, (TMoyCalc - KTempMaint) / 10);
+    correction = (0.3 + 0.7 * std::min(PAR, 5.) / 5);
+
+    RespMaintLeafPop = KRespMaintLeaf * DryMatStructLeafPop *
+        CoeffQ10 * correction;
+    RespMaintSheathPop = KRespMaintSheath * DryMatStructSheathPop *
+        CoeffQ10 * correction;
+    RespMaintRootPop = KRespMaintRoot * DryMatStructRootPop *
+        CoeffQ10 * correction;
+    RespMaintInternodePop = KRespInternode * DryMatStructInternodePop *
+        CoeffQ10 * correction;
+    RespMaintPaniclePop = KRespPanicle * DryMatStructPaniclePop *
+        CoeffQ10 * correction;
+    RespMaintTot = RespMaintLeafPop + RespMaintSheathPop + RespMaintRootPop +
+      RespMaintInternodePop + RespMaintPaniclePop;
 }
 
 void Model2::evolPlantTilNumTot()
@@ -214,6 +239,34 @@ void Model2::evolPlantTilNumTot()
 
 }
 
+void Model2_2::evolPlantTilNumTot()
+{
+
+    double TilNewPlant;
+
+    if (NumPhase == 1 and ChangePhase == 1) {
+        CulmsPerHill = PlantsPerHill;
+    } else {
+        if (NumPhase == 2 and ChangePhase == 1) {
+            CulmsPerPlant = 1;
+            CulmsPop = CulmsPerPlant * Density * PlantsPerHill;
+            CulmsPerHill = CulmsPerPlant * PlantsPerHill;
+        } else {
+            if (NumPhase > 1 and NumPhase < 4 and HaunIndex > HaunCritTillering) {
+                TilNewPlant = Cstr * std::min(std::max(0., (Ic - IcTillering) * TilAbility) *
+                                              LTRkdfcl, CulmsPerPlant * 0.1);
+                CulmsPerPlant = CulmsPerPlant + TilNewPlant;
+                CulmsPerHill = CulmsPerPlant * PlantsPerHill;
+                CulmsPop = CulmsPerHill * Density;
+            } else {
+                CulmsPerPlant = CulmsPerPlant;
+                CulmsPop = CulmsPop;
+                CulmsPerHill = CulmsPerHill;
+            }
+        }
+    }
+}
+
 void Model::evolPlantLeafNumTot()
 {
     if (NumPhase == 0) {
@@ -250,6 +303,15 @@ void Model::evalRelPotLeafLength()
     // std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
 
 }
+
+void Model2_2::evalRelPotLeafLength()
+{
+    if (NumPhase > 1) {
+        RelPotLeafLength = std::min((0.10 + 0.90 * HaunIndex / RankLongestLeaf),
+                                    1.);
+    }
+}
+
 
 void Model::evalDemandStructSheath()
 {
@@ -347,6 +409,23 @@ void Model::evalSlaMitch()
             std::pow(AttenMitch, (SommeDegresJour - SDJLevee));
         SlaNew = SlaMin + (SlaMitch - SlaMin) *
             std::pow(DegresDuJour / (TOpt1 - TBase), TempSla);
+        Sla = ((Sla * DryMatStructLeafPop) + (SlaNew * GrowthStructLeafPop)) /
+            (DryMatStructLeafPop + GrowthStructLeafPop);
+    } else {
+        SlaMitch = 0;
+        SlaNew = 0;
+        Sla = SlaMax;
+    }
+}
+
+void Model2_2::evalSlaMitch()
+{
+    if (NumPhase > 1) {
+        SlaMitch = SlaMin + (SlaMax - SlaMin) * std::pow(AttenMitch, (SommeDegresJour -
+                                                                      SDJLevee));
+        SlaNew = SlaMin + (SlaMitch - SlaMin) * std::pow(DegresDuJour / (TOpt1 -
+                                                                         TBase), TempSla);
+        SlaNew = SlaNew + (SlaNew * 0.8 * (1 - std::min(PAR / 6, 1.)));
         Sla = ((Sla * DryMatStructLeafPop) + (SlaNew * GrowthStructLeafPop)) /
             (DryMatStructLeafPop + GrowthStructLeafPop);
     } else {
@@ -831,6 +910,46 @@ void Model2::transplanting()
         DryMatStructInternodePop = DryMatStructInternodePop * DensityChange;
         DryMatStructPaniclePop = DryMatStructPaniclePop * DensityChange;
         DryMatResInternodePop = DryMatResInternodePop * DensityChange;
+    }
+}
+
+void Model2_2::transplanting()
+{
+
+    double DensityChange;
+
+    DensityChange = DensityField / (DensityNursery / PlantsPerHill);
+    if (Transplanting == 1 and NumPhase >= 1) {
+        CounterNursery = CounterNursery + 1;
+    }
+    if (Transplanting == 1 and CounterNursery < DurationNursery and
+        ChangeNurseryStatus == 0) {
+        NurseryStatus = 0;
+        ChangeNurseryStatus = 0;
+    } else {
+        if (Transplanting == 1 and CounterNursery >= DurationNursery and
+            ChangeNurseryStatus == 0 and NurseryStatus == 0) {
+            NurseryStatus = 1;
+            ChangeNurseryStatus = 1;
+        } else {
+            NurseryStatus = 1;
+            ChangeNurseryStatus = 0;
+        }
+    }
+    if (NurseryStatus == 1) {
+        Density = DensityField;
+    } else {
+        Density = DensityNursery / PlantsPerHill;
+    }
+    if (ChangeNurseryStatus == 1) {
+        DryMatStructLeafPop = DryMatStructLeafPop * DensityChange;
+        DryMatStructSheathPop = DryMatStructSheathPop * DensityChange;
+        DryMatStructRootPop = DryMatStructRootPop * DensityChange;
+        DryMatStructInternodePop = DryMatStructInternodePop * DensityChange;
+        DryMatStructPaniclePop = DryMatStructPaniclePop * DensityChange;
+        DryMatResInternodePop = DryMatResInternodePop * DensityChange;
+        DeadLeafDrywtPop = DeadLeafDrywtPop * DensityChange;
+        ResCapacityInternodePop = ResCapacityInternodePop * DensityChange;
     }
 }
 
@@ -1320,6 +1439,20 @@ void Model2_1::evolMobiliTillerDeath()
     }
 }
 
+void Model2_2::evolMobiliTillerDeath()
+{
+    if (NumPhase == 3 or (NumPhase == 4 and SDJCorPhase4 <= 0.7 * SDJRPR
+                          and CulmsPerPlant >= 1)) {
+
+        TillerDeathPop = std::min(((1 - (std::min(Ic, 1.))) * CoeffTillerDeath * CulmsPop), 0.06 * CulmsPop);
+        CulmsPop = CulmsPop - TillerDeathPop;
+        CulmsPerPlant = CulmsPop / (Density * PlantsPerHill);
+        CulmsPerHill = CulmsPerPlant * PlantsPerHill;
+        DryMatStructPaniclePop = DryMatStructPaniclePop * std::max(0., CulmsPop) /
+            (CulmsPop + TillerDeathPop);
+    }
+}
+
 void Model2_1::evolMobiliLeafDeath()
 {
     if (NumPhase > 1) {
@@ -1719,6 +1852,53 @@ void Model2_1::evalRUE()
             // std::cout << "CumPAR = " << CumPar << std::endl;
             // std::cout << "RUE = " << RUE << std::endl;
 
+        }
+    }
+}
+
+void Model2_2::evalRUE()
+{
+
+    double CorrectedIrrigation;
+
+    if (NumPhase < 1 or (NumPhase == 1 and ChangePhase == 1) or Density == DensityNursery) {
+        CumPar = 0;
+        RUE = 0;
+        CumTr = 0.00001;
+        CumEt = 0.00001;
+        CumWUse = 0.00001;
+        CumWReceived = 0;
+        CumIrrig = 0;
+        CumDr = 0;
+        CumLr = 0;
+    } else {
+        if (Transplanting == 0 or NurseryStatus == 1) {
+            CumPar = CumPar + PARIntercepte;
+            CumTr = CumTr + Tr;
+            CumEt = CumEt + Tr + Evap;
+            CumWUse = CumWUse + Tr + Evap + Dr + Lr;
+        }
+        if (Irrigation == NullValue) {
+            CorrectedIrrigation = 0;
+        } else {
+            CorrectedIrrigation = Irrigation;
+        }
+        if (Transplanting == 0 or NurseryStatus == 1) {
+            CumWReceived = CumWReceived + Rain + CorrectedIrrigation + IrrigAutoDay;
+            CumIrrig = CumIrrig + CorrectedIrrigation + IrrigAutoDay;
+            CumDr = CumDr + Dr;
+            CumLr = CumLr + Lr;
+        }
+        if (AssimPot !=  0) {
+            ConversionEff = Conversion * Assim / (PARIntercepte * Conversion * 10);
+        }
+        if (Tr > 0 and NbJas > 20 and NumPhase > 1) {
+            TrEffInst = (SupplyTot - AssimNotUsed) / (Tr * 10000);
+            TrEff = DryMatTotPop / (CumTr * 10000);
+            WueEt = DryMatTotPop / (CumEt * 10000);
+            WueTot = DryMatTotPop / (CumWuse * 10000);
+            RUE = (DryMatAboveGroundTotPop / std::max(CumPar, 0.00001)) / 10;
+            RUEgreen = (DryMatAboveGroundPop / std::max(CumPar, 0.00001)) / 10;
         }
     }
 }
@@ -2608,7 +2788,7 @@ double Model::calculeLaMoyenne(double laValeur, double leCompteur, double laMoye
     return moyenne;
 }
 
-void Model2_1::evalNbJas(double t) {
+void Model::evalNbJas(double t) {
 
     NbJas = t - DateSemis;
 

@@ -75,7 +75,7 @@ protected:
     void evolRurRFE_RDE();
     void evalRUE();
     void evalSimEndCycle();
-
+    void keyResults();
 
     static double NullValue;
 

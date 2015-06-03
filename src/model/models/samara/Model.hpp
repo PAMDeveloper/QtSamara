@@ -758,6 +758,7 @@ public:
     double RootSystVolPop;
     double RootSystVolPopOld;
     double RUE;
+    double RUEgreen;
     double RuRac;
     double RuSurf;
     double SDJCorPhase4;
@@ -878,6 +879,7 @@ protected:
     void evalRootFront();
     void evolPSPMVMD(double t);
     void evolSomDegresJourCor();
+    void evalNbJas(double t);
 
     double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
 

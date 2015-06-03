@@ -27,13 +27,13 @@
 
 #include <model/models/ModelParameters.hpp>
 #include <model/models/meteo/Meteo.hpp>
-#include <model/models/samara/Model2.hpp>
+#include <model/models/samara/Model2_1.hpp>
 
 #include <utils/DateTime.hpp>
 
 namespace model { namespace models { namespace samara {
 
-class Model2_2 : public Model2
+class Model2_2 : public Model2_1
 {
 public:
     Model2_2()
@@ -55,6 +55,7 @@ protected:
     void evolMobiliTillerDeath();
     void evalSlaMitch();
     void evalRUE();
+    void initParcelle();
 
     static double NullValue;
 
