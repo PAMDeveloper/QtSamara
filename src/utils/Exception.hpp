@@ -1,12 +1,12 @@
 /**
  * @file Exception.hpp
- * @author The TNT Development Team
+ * @author The Samara Development Team
  * See the AUTHORS or Authors.txt file
  */
 
 /*
- * Copyright (C) 2012-2013 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2012-2013 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TNT_EXCEPTION_HPP
-#define TNT_EXCEPTION_HPP 1
+#ifndef SAMARA_EXCEPTION_HPP
+#define SAMARA_EXCEPTION_HPP 1
 
 #include <boost/format.hpp>
 #include <stdexcept>
@@ -42,14 +42,14 @@ public:
     { }
 };
 
-class FileError : public BaseError
+class InvalidGet : public BaseError
 {
 public:
-    explicit FileError(const std::string& argv = std::string())
+    explicit InvalidGet(const std::string& argv = std::string())
         : BaseError(argv)
     { }
 
-    explicit FileError(const boost::format& argv)
+    explicit InvalidGet(const boost::format& argv)
         : BaseError(argv)
     { }
 };
@@ -62,6 +62,18 @@ public:
     { }
 
     explicit ParseError(const boost::format& argv)
+        : BaseError(argv)
+    { }
+};
+
+class FileError : public BaseError
+{
+public:
+    explicit FileError(const std::string& argv = std::string())
+        : BaseError(argv)
+    { }
+
+    explicit FileError(const boost::format& argv)
         : BaseError(argv)
     { }
 };

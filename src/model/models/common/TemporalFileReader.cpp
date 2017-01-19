@@ -1,12 +1,12 @@
 /**
  * @file TemporalFileReader.cpp
- * @author The TNT Development Team
+ * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,11 @@ namespace model { namespace models { namespace common {
 TemporalFileReader::TemporalFileReader(
     const model::models::ModelParameters& params)
 {
-    // model::kernel::ContextData* cd = model::kernel::ContextData::instance();
-
     std::string date = params.get < std::string > ("begin_date");
+
     if (not date.empty()) {
         mBeginTime = utils::DateTime::toJulianDayNumber(date);
     }
-
-    // mFilePath = cd->getAbsolutePath(params.get<std::string>("file"));
     mFile.open(getFilePath().c_str());
     if (not mFile) {
         throw utils::FileError(
@@ -187,4 +184,3 @@ void TemporalFileReader::readLine(double time)
 }
 
 } } }
-

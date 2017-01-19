@@ -1,9 +1,10 @@
 INCLUDE_DIRECTORIES(
-  ${CMAKE_SOURCE_DIR}/src)
+  ${CMAKE_SOURCE_DIR}/src ${ARTIS_INCLUDE_DIRS})
 
-LINK_DIRECTORIES()
+LINK_DIRECTORIES(${ARTIS_LIBRARY_DIRS})
 
-SET(MODEL_SAMARA_HPP Model.hpp Model.cpp Model2.hpp Model2.cpp Model2_1.hpp Model2_1.cpp Model2_2.hpp Model2_2.cpp)
+SET(MODEL_SAMARA_HPP Model.hpp Model.cpp Model2.hpp Model2.cpp Model2_1.hpp
+  Model2_1.cpp Model2_2.hpp Model2_2.cpp)
 SET(MODEL_SAMARA_CPP Risocas.cpp)
 
 ADD_LIBRARY(samara-models-samara SHARED ${MODEL_SAMARA_HPP} ${MODEL_SAMARA_CPP})

@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 INRA http://www.inra.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ void ParametersReader::load(const std::string& id,
     load_type_soil(parameters.get < std::string >("IdTypeSol"), connection,
                    parameters);
 
-    std::cout << "Simulation " << id << ":" << std::endl;
+/*    std::cout << "Simulation " << id << ":" << std::endl;
     std::cout << " - begin = " << parameters.get < std::string >("BeginDate")
               << std::endl;
     std::cout << " - end = " << parameters.get < std::string >("EndDate")
@@ -76,7 +76,7 @@ void ParametersReader::load(const std::string& id,
               << std::endl;
     std::cout << " - model = "
               << parameters.get < std::string >("IdModele")
-              << std::endl;
+              << std::endl; */
 
 }
 

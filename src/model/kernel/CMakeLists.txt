@@ -1,9 +1,10 @@
 INCLUDE_DIRECTORIES(
-  ${CMAKE_SOURCE_DIR}/src)
+  ${CMAKE_SOURCE_DIR}/src ${ARTIS_INCLUDE_DIRS})
 
-LINK_DIRECTORIES()
+LINK_DIRECTORIES(${ARTIS_LIBRARY_DIRS})
 
-SET(SAMARA_KERNEL_HPP Simulator.hpp Model.hpp)
+SET(SAMARA_KERNEL_HPP AbstractAtomicModel.hpp AbstractCoupledModel.hpp
+  Simulator.hpp Model.hpp)
 
 SET(SAMARA_KERNEL_CPP Simulator.cpp Model.cpp)
 

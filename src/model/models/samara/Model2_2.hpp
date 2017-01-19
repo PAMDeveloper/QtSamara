@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,23 +31,21 @@
 
 #include <utils/DateTime.hpp>
 
-namespace model { namespace models { namespace samara {
+namespace samara {
 
 class Model2_2 : public Model2_1
 {
 public:
-    Model2_2()
+    Model2_2(const samara::AbstractModel* parent) : Model2_1(parent)
     { }
 
     virtual ~Model2_2()
     { }
 
-    void compute(double time);
-
-    void init(const model::models::ModelParameters& parameters);
+    void compute(double t, bool update);
+    void init(double t, const model::models::ModelParameters& parameters);
 
 protected:
-
     void transplanting();
     void evalRespMaint();
     void evalRelPotLeafLength();
@@ -58,9 +56,8 @@ protected:
     void initParcelle();
 
     static double NullValue;
-
 };
 
-} } } // namespace model models samara
+} // namespace samara
 
 #endif

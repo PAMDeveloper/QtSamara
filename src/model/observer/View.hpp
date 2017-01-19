@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,31 +25,14 @@
 #ifndef MODEL_OBSERVER_VIEW_HPP
 #define MODEL_OBSERVER_VIEW_HPP
 
-#include <model/kernel/Model.hpp>
-
-#include <limits>
-
-using std::numeric_limits;
+#include <artis/observer/View.hpp>
+#include <artis/utils/DoubleTime.hpp>
+#include <model/models/ModelParameters.hpp>
 
 namespace model { namespace observer {
 
-class View
-{
-public:
-    View() : model(0)
-    { std::cout.precision(numeric_limits<double>::digits10 + 1); }
-
-    virtual ~View()
-    { }
-
-    void attachModel(const model::kernel::Model* m)
-    { model = m; }
-
-    virtual void observe(double time) = 0;
-
-protected:
-    const model::kernel::Model* model;
-};
+typedef artis::observer::View < artis::utils::DoubleTime,
+                                model::models::ModelParameters > View;
 
 } }
 

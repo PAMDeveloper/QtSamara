@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,23 +26,32 @@
 
 namespace model { namespace kernel {
 
-void Model::build(std::string modelVersion)
+void Model::compute(double t, bool /* update */)
 {
-    if (modelVersion.compare("SamaraV2_1") == 0) {
-        samara_model = new model::models::samara::Model2_1;
-    } else if (modelVersion.compare("SamaraV2_2")) {
-    }
-
-
-    //samara_model = new model::models::samara::Model;
-    meteo_model = new model::models::meteo::Meteo;
-}
-
-void Model::compute(double t)
-{
-    meteo_model->compute(t);
-    samara_model->assignClimate(meteo_model->getClimate());
-    samara_model->compute(t);
+    (*meteo_model)(t);
+    samara_model->put < double >(t, samara::Model::TMAX,
+                                 meteo_model->get().TMax);
+    samara_model->put < double >(t, samara::Model::TMIN,
+                                 meteo_model->get().TMin);
+    samara_model->put < double >(t, samara::Model::TMOY,
+                                 meteo_model->get().TMoy);
+    samara_model->put < double >(t, samara::Model::HMAX,
+                                 meteo_model->get().HMax);
+    samara_model->put < double >(t, samara::Model::HMIN,
+                                 meteo_model->get().HMin);
+    samara_model->put < double >(t, samara::Model::HMOY,
+                                 meteo_model->get().HMoy);
+    samara_model->put < double >(t, samara::Model::WIND,
+                                 meteo_model->get().Vt);
+    samara_model->put < double >(t, samara::Model::INS,
+                                 meteo_model->get().Ins);
+    samara_model->put < double >(t, samara::Model::RG,
+                                 meteo_model->get().Rg);
+    samara_model->put < double >(t, samara::Model::Etp,
+                                 meteo_model->get().ETP);
+    samara_model->put < double >(t, samara::Model::RAIN,
+                                 meteo_model->get().Rain);
+    (*samara_model)(t);
 }
 
 } }

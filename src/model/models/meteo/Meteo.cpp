@@ -1,12 +1,12 @@
 /**
  * @file model/models/meteo/Meteo.cpp
- * @author The TNT Development Team
+ * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +25,11 @@
 #include <model/models/meteo/Meteo.hpp>
 
 #include <utils/Connections.hpp>
+#include <utils/DateTime.hpp>
 
-namespace model { namespace models { namespace meteo {
+namespace meteo {
 
-Meteo::Meteo()
-{
-}
-
-void Meteo::compute(double /* t */)
+void Model::compute(double /* t */, bool /* update */)
 {
     if (it == values.end()) {
         it = values.begin();
@@ -41,11 +38,13 @@ void Meteo::compute(double /* t */)
     }
 }
 
-void Meteo::init(const model::models::ModelParameters& parameters)
+void Model::init(double /* t */,
+                 const model::models::ModelParameters& parameters)
 {
     pqxx::connection& connection(
         utils::Connections::connection(
             "samara", "dbname=samara user=user_samara password=toto"));
+
     std::string beginDate;
     std::string endDate;
     double begin;
@@ -63,6 +62,7 @@ void Meteo::init(const model::models::ModelParameters& parameters)
     endYear = utils::DateTime::year(end);
     try {
         pqxx::work action(connection);
+
         for (unsigned int year = beginYear; year <= endYear; year++) {
             std::string requestMeteorology =
                 (boost::format("SELECT * FROM \"meteorology\" "         \
@@ -93,10 +93,12 @@ void Meteo::init(const model::models::ModelParameters& parameters)
 
             if (not resultMeteorology.empty() and not resultRainfall.empty()
                 and not resultPersonalData.empty()) {
-
-                pqxx::result::const_iterator itMeteorology = resultMeteorology.begin();
-                pqxx::result::const_iterator itRainfall = resultRainfall.begin();
-                pqxx::result::const_iterator itPersonalData = resultPersonalData.begin();
+                pqxx::result::const_iterator itMeteorology =
+                    resultMeteorology.begin();
+                pqxx::result::const_iterator itRainfall =
+                    resultRainfall.begin();
+                pqxx::result::const_iterator itPersonalData =
+                    resultPersonalData.begin();
                 bool finished = false;
 
                 while (not finished) {
@@ -104,25 +106,38 @@ void Meteo::init(const model::models::ModelParameters& parameters)
                     double t;
 
                     utils::DateTime::format_date(
-                        boost::lexical_cast <std::string >(itMeteorology->at(1)), day);
+                        boost::lexical_cast <std::string >(
+                            itMeteorology->at(1)), day);
                     t = utils::DateTime::toJulianDayNumber(day);
 
                     if (t >= begin and t <= end) {
                         values.push_back(
                             Climate(
-                                boost::lexical_cast < double >(itMeteorology->at(2)),
-                                boost::lexical_cast < double >(itMeteorology->at(3)),
-                                boost::lexical_cast < double >(itMeteorology->at(4)),
-                                boost::lexical_cast < double >(itMeteorology->at(5)),
-                                boost::lexical_cast < double >(itMeteorology->at(6)),
-                                boost::lexical_cast < double >(itMeteorology->at(7)),
-                                boost::lexical_cast < double >(itMeteorology->at(8)),
-                                boost::lexical_cast < double >(itMeteorology->at(9)),
-                                boost::lexical_cast < double >(itMeteorology->at(10)),
-                                boost::lexical_cast < double >(itPersonalData->at(2)),
-                                boost::lexical_cast < double >(itRainfall->at(2))));
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(2)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(3)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(4)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(5)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(6)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(7)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(8)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(9)),
+                                boost::lexical_cast < double >(
+                                    itMeteorology->at(10)),
+                                boost::lexical_cast < double >(
+                                    itPersonalData->at(2)),
+                                boost::lexical_cast < double >(
+                                    itRainfall->at(2))));
                     }
-                    if (++itMeteorology == resultMeteorology.end() or ++itRainfall == resultRainfall.end()
+                    if (++itMeteorology == resultMeteorology.end() or
+                        ++itRainfall == resultRainfall.end()
                         or ++itPersonalData == resultPersonalData.end()) {
                         finished = true;
                     }
@@ -135,4 +150,4 @@ void Meteo::init(const model::models::ModelParameters& parameters)
     it = values.end();
 }
 
-} } }
+}

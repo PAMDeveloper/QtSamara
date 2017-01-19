@@ -1,12 +1,12 @@
 /**
  * @file DateTime.hpp
- * @author The TNT Development Team
+ * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TNT_DATE_TIME_HPP
-#define TNT_DATE_TIME_HPP 1
+#ifndef SAMARA_DATE_TIME_HPP
+#define SAMARA_DATE_TIME_HPP 1
 
 #include <ostream>
 #include <string>
@@ -152,7 +152,7 @@ public:
     {
         std::vector < std::string > list;
 
-        boost::split(list, str, boost::is_any_of("-"));
+        boost::split(list, str, boost::is_any_of("-/"));
         date = (boost::format("%1%/%2%/%3%") % list[2] % list[1] %
                 list[0]).str();
     }

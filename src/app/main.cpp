@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <artis/observer/Output.hpp>
+
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -32,8 +34,8 @@
 
 #include <model/kernel/Model.hpp>
 #include <model/kernel/Simulator.hpp>
-
 #include <model/models/ModelParameters.hpp>
+#include <model/observer/GlobalView.hpp>
 
 #include <utils/DateTime.hpp>
 #include <utils/ParametersReader.hpp>
@@ -55,11 +57,13 @@ static void format_dates(const model::models::ModelParameters& parameters,
                                  end);
 }
 
+typedef artis::observer::Output < artis::utils::DoubleTime,
+                                  model::models::ModelParameters > AnOutput;
+
 static void run(const std::string& /* path */, int /* verbose */)
 {
-    kernel::Model* model = new kernel::Model;
-    //kernel::Simulator simulator(model);
-    //kernel::Simulator* simulator = new kernel::Simulator(model);
+    samara::GlobalParameters globalParameters;
+    model::kernel::Model* model = new model::kernel::Model;
     model::models::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string begin;
@@ -68,18 +72,24 @@ static void run(const std::string& /* path */, int /* verbose */)
     reader.load("06SB15-fev13-D1_SV21", parameters);
     format_dates(parameters, begin, end);
 
-    kernel::Simulator simulator(model, parameters.get < std::string >("IdModele"));
+    globalParameters.modelVersion = parameters.get < std::string >("IdModele");
+    kernel::Simulator simulator(model, globalParameters);
 
-    simulator.init(parameters);
+    simulator.attachView("global", new model::observer::GlobalView);
+    simulator.init(utils::DateTime::toJulianDayNumber(begin), parameters);
     simulator.run(utils::DateTime::toJulianDayNumber(begin),
                   utils::DateTime::toJulianDayNumber(end));
+
+    AnOutput output(simulator.observer());
+
+    output();
 }
 
 static int show_infos()
 {
     std::cout << boost::format(
         "Samara - %1%\n"
-        "Copyright (C) 2013 - 2014 The Samara Development Team.\n"
+        "Copyright (C) 2013 - 2017 The Samara Development Team.\n"
         "Samara comes with ABSOLUTELY NO WARRANTY.\n"
         "You may redistribute copies of Samara\n"
         "under the terms of the GNU General Public License.\n"

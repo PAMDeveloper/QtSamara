@@ -1,12 +1,12 @@
 /**
  * @file TemporalFileReader.hpp
- * @author The TNT Development Team
+ * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ namespace BOOST_SPIRIT = BOOST_SPIRIT_CLASSIC_NS;
 
 namespace model { namespace models { namespace common {
 
-            class TemporalFileReader // : public model::models::IModel
+class TemporalFileReader
 {
 public:
     TemporalFileReader(const model::models::ModelParameters& parameters);

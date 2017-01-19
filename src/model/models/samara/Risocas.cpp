@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace model { namespace models { namespace samara {
+namespace samara {
 
 void Model2::evalDegreeDay()
 {
@@ -2796,4 +2796,4 @@ void Model::evalNbJas(double t) {
 }
 
 
-} } } // namespace model models samara
+} // namespace samara

@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,13 @@
 
 #include <model/models/samara/Model2.hpp>
 
-namespace model { namespace models { namespace samara {
+namespace samara {
 
 double Model2::NullValue = -999;
 
-void Model2::init(const model::models::ModelParameters& parameters)
+void Model2::init(double t, const model::models::ModelParameters& parameters)
 {
-    Model::init(parameters);
+    Model::init(t, parameters);
 }
 
-
-} } } // namespace model models samara
+} // namespace samara

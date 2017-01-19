@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 #ifndef MODEL_KERNEL_MODEL_HPP
 #define MODEL_KERNEL_MODEL_HPP
 
+#include <model/kernel/AbstractCoupledModel.hpp>
 #include <model/models/ModelParameters.hpp>
-
 #include <model/models/samara/Model.hpp>
 #include <model/models/samara/Model2_1.hpp>
 #include <model/models/meteo/Meteo.hpp>
@@ -36,11 +36,23 @@
 
 namespace model { namespace kernel {
 
-class Model
+class Model : public samara::AbstractCoupledModel < Model >
 {
 public:
+    enum submodels { SAMARA, CLIMATE };
+
     Model() : samara_model(0), meteo_model(0)
-    { }
+    {
+        // TODO: if (modelVersion.compare("SamaraV2_1") == 0) {
+        samara_model = new samara::Model2_1(this);
+            // TODO: } else if (modelVersion.compare("SamaraV2_2")) {
+            //
+            // }
+        meteo_model = new meteo::Model(this);
+
+        submodel(SAMARA, samara_model);
+        submodel(CLIMATE, meteo_model);
+    }
 
     virtual ~Model()
     {
@@ -48,17 +60,15 @@ public:
         delete meteo_model;
     }
 
-    void build(std::string modelVersion);
+    void compute(double t, bool update);
 
-    void compute(double t);
-
-    void init(const model::models::ModelParameters& parameters)
+    void init(double t, const model::models::ModelParameters& parameters)
     {
-        samara_model->init(parameters);
-        meteo_model->init(parameters);
+        samara_model->init(t, parameters);
+        meteo_model->init(t, parameters);
     }
 
-    double lai() const
+/*    double lai() const
     { return samara_model->lai(); }
 
     double numphase() const
@@ -408,13 +418,12 @@ public:
 
     double nbjas() const
     { return samara_model->nbjas(); }
-
-
+*/
 
 private:
-// models
-    model::models::samara::Model* samara_model;
-    model::models::meteo::Meteo* meteo_model;
+// submodels
+    samara::Model* samara_model;
+    meteo::Model* meteo_model;
 };
 
 } }

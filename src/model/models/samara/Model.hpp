@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,381 +25,187 @@
 #ifndef MODEL_MODELS_SAMARA_MODEL_HPP
 #define MODEL_MODELS_SAMARA_MODEL_HPP
 
-#include <model/models/ModelParameters.hpp>
-#include <model/models/meteo/Meteo.hpp>
+#include <model/kernel/AbstractAtomicModel.hpp>
 
-#include <utils/DateTime.hpp>
+namespace samara {
 
-namespace model { namespace models { namespace samara {
-
-class Model
+class Model : public samara::AbstractAtomicModel < Model >
 {
 public:
-    Model()
-    { }
+    enum internals { LAI, NUMPHASE, DEGRESDUJOUR, DEGRESDUJOURCOR, Ftsw,
+                     CSTR, ROOTFRONT, ETO, Etm, Etr, Rue, CONVERSIONEFF, IC,
+                     CULMSPERPLANT, CULMSPOP, CULMSPERHILL, GRAINYIELDPOP,
+                     DRYMATSTRUCTLEAFPOP, DRYMATSTRUCTSHEATHPOP,
+                     DRYMATSTRUCTROOTPOP, DRYMATSTRUCTINTERNODEPOP,
+                     DRYMATRESINTERNODEPOP, DRYMATSTRUCTPANICLEPOP,
+                     DRYMATSTRUCTTOTPOP, DRYMATVEGETOTPOP, DRYMATPANICLETOTPOP,
+                     DRYMATSTEMPOP, DRYMATABOVEGROUNDPOP,
+                     DRYMATTOTPOP, STERILITYCOLD, STERILITYHEAT,
+                     STERILITYDROUGHT, STERILITYTOT, HARVESTINDEX,
+                     PANICLENUMPOP, PANICLENUMPLANT, GRAINYIELDPANICLE,
+                     SPIKENUMPOP, SPIKENUMPANICLE, FERTSPIKENUMPOP,
+                     GRAINFILLINGSTATUS, PHASESTEMELONGATION, SLA,
+                     HAUNINDEX, APEXHEIGHT, PLANTHEIGHT, PLANTWIDTH, KROLLING,
+                     LIRKDFCL, LTRKDFCL, ASSIMPOT, ASSIM, RESPMAINTTOT,
+                     SUPPLYTOT, ASSIMSURPLUS, ASSIMNOTUSED, TILLERDEATHPOP,
+                     PLANTLEAFNUMTOT, DEADLEAFDRYWTPOP, LAIDEAD,
+                     RESCAPACITYINTERNODEPOP, INTERNODERESSTATUS,
+                     DAYLENGTH, Par, RGCALC, VPDCALC, TMOYCALC, HMOYCALC,
+                     KCEREAL, STOCKTOTAL, EAUDISPO, STOCKSURFACE, STOCKRAC,
+                     RURAC, KCP, KCE, EVAPPOT, EVAP, TRPOT, TR, LR, DR,
+                     PARINTERCEPTE, SOMMEDEGRESJOUR, VITESSERACINAIRE,
+                     CSTRASSIM, RAYEXTRA, CUMPAR, SOMMEDEGRESJOURCOR,
+                     SUMPP, SOMMEDEGRESJOURPHASEPRECEDENTE, RESPMAINTDEBT,
+                     TMINMOY, TMAXMOY, FTSWMOY, ROOTSHOOTRATIO, TREFFINST,
+                     TREFF, WUEET, WUETOT, FLOODWATERDEPTH, IRRIGAUTODAY,
+                     IRRIGTOTDAY, FRACTIONPLANTHEIGHTSUBMER, DENSITY,
+                     ROOTMASSPERVOL, VOLMACROPORES, STOCKMACROPORES,
+                     RELPOTLEAFLENGTH, APEXHEIGHTGAIN, HAUNGAIN, CONVERSION,
+                     STRESSCOLD, FRACTIONROOTSLOGGED, RESUTIL, KCTOT, NBJAS };
+    enum externals { TMAX, TMIN, TMOY, HMAX, HMIN, HMOY, WIND, INS, RG, Etp,
+                     RAIN };
+
+    Model(const samara::AbstractModel* parent) :
+        AbstractAtomicModel < Model >(parent)
+    {
+        internal(LAI, &Model::Lai);
+        internal(NUMPHASE, &Model::NumPhase);
+        internal(DEGRESDUJOUR, &Model::DegresDuJour);
+        internal(DEGRESDUJOURCOR, &Model::DegresDuJourCor);
+        internal(Ftsw, &Model::FTSW);
+        internal(CSTR, &Model::Cstr);
+        internal(ROOTFRONT, &Model::RootFront);
+        internal(ETO, &Model::Eto);
+        internal(Etm, &Model::ETM);
+        internal(Etr, &Model::ETR);
+        internal(Rue, &Model::RUE);
+        internal(CONVERSIONEFF, &Model::ConversionEff);
+        internal(IC, &Model::Ic);
+        internal(CULMSPERPLANT, &Model::CulmsPerPlant);
+        internal(CULMSPOP, &Model::CulmsPop);
+        internal(CULMSPERHILL, &Model::CulmsPerHill);
+        internal(GRAINYIELDPOP, &Model::GrainYieldPop);
+        internal(DRYMATSTRUCTLEAFPOP, &Model::DryMatStructLeafPop);
+        internal(DRYMATSTRUCTSHEATHPOP, &Model::DryMatStructSheathPop);
+        internal(DRYMATSTRUCTROOTPOP, &Model::DryMatStructRootPop);
+        internal(DRYMATSTRUCTINTERNODEPOP, &Model::DryMatStructInternodePop);
+        internal(DRYMATRESINTERNODEPOP, &Model::DryMatResInternodePop);
+        internal(DRYMATSTRUCTPANICLEPOP, &Model::DryMatStructPaniclePop);
+        internal(DRYMATSTRUCTTOTPOP, &Model::DryMatStructTotPop);
+        internal(DRYMATVEGETOTPOP, &Model::DryMatVegeTotPop);
+        internal(DRYMATPANICLETOTPOP, &Model::DryMatPanicleTotPop);
+        internal(DRYMATSTEMPOP, &Model::DryMatStemPop);
+        internal(DRYMATABOVEGROUNDPOP, &Model::DryMatAboveGroundPop);
+        internal(DRYMATTOTPOP, &Model::DryMatTotPop);
+        internal(STERILITYCOLD, &Model::SterilityCold);
+        internal(STERILITYHEAT, &Model::SterilityHeat);
+        internal(STERILITYDROUGHT, &Model::SterilityDrought);
+        internal(STERILITYTOT, &Model::SterilityTot);
+        internal(HARVESTINDEX, &Model::HarvestIndex);
+        internal(PANICLENUMPOP, &Model::PanicleNumPop);
+        internal(PANICLENUMPLANT, &Model::PanicleNumPlant);
+        internal(GRAINYIELDPANICLE, &Model::GrainYieldPanicle);
+        internal(SPIKENUMPOP, &Model::SpikeNumPop);
+        internal(SPIKENUMPANICLE, &Model::SpikeNumPanicle);
+        internal(FERTSPIKENUMPOP, &Model::FertSpikeNumPop);
+        internal(GRAINFILLINGSTATUS, &Model::GrainFillingStatus);
+        internal(PHASESTEMELONGATION, &Model::PhaseStemElongation);
+        internal(SLA, &Model::Sla);
+        internal(HAUNINDEX, &Model::HaunIndex);
+        internal(APEXHEIGHT, &Model::ApexHeight);
+        internal(PLANTHEIGHT, &Model::PlantHeight);
+        internal(PLANTWIDTH, &Model::PlantWidth);
+        internal(KROLLING, &Model::KRolling);
+        internal(LIRKDFCL, &Model::LIRkdfcl);
+        internal(LTRKDFCL, &Model::LTRkdfcl);
+        internal(ASSIMPOT, &Model::AssimPot);
+        internal(ASSIM, &Model::Assim);
+        internal(RESPMAINTTOT, &Model::RespMaintTot);
+        internal(SUPPLYTOT, &Model::SupplyTot);
+        internal(ASSIMSURPLUS, &Model::AssimSurplus);
+        internal(ASSIMNOTUSED, &Model::AssimNotUsed);
+        internal(TILLERDEATHPOP, &Model::TillerDeathPop);
+        internal(PLANTLEAFNUMTOT, &Model::PlantLeafNumTot);
+        internal(DEADLEAFDRYWTPOP, &Model::DeadLeafDrywtPop);
+        internal(LAIDEAD, &Model::LaiDead);
+        internal(RESCAPACITYINTERNODEPOP, &Model::ResCapacityInternodePop);
+        internal(INTERNODERESSTATUS, &Model::InternodeResStatus);
+        internal(DAYLENGTH, &Model::DayLength);
+        internal(Par, &Model::PAR);
+        internal(RGCALC, &Model::RgCalc);
+        internal(VPDCALC, &Model::VPD);
+        internal(TMOYCALC, &Model::TMoyCalc);
+        internal(HMOYCALC, &Model::HMoyCalc);
+        internal(KCEREAL, &Model::KceReal);
+        internal(STOCKTOTAL, &Model::StockTotal);
+        internal(EAUDISPO, &Model::EauDispo);
+        internal(STOCKSURFACE, &Model::StockSurface);
+        internal(STOCKRAC, &Model::StockRac);
+        internal(RURAC, &Model::RuRac);
+        internal(KCP, &Model::Kcp);
+        internal(KCE, &Model::Kce);
+        internal(EVAPPOT, &Model::EvapPot);
+        internal(EVAP, &Model::Evap);
+        internal(TRPOT, &Model::TrPot);
+        internal(TR, &Model::Tr);
+        internal(LR, &Model::Lr);
+        internal(DR, &Model::Dr);
+        internal(PARINTERCEPTE, &Model::PARIntercepte);
+        internal(SOMMEDEGRESJOUR, &Model::SommeDegresJour);
+        internal(VITESSERACINAIRE, &Model::VitesseRacinaire);
+        internal(CSTRASSIM, &Model::CstrAssim);
+        internal(RAYEXTRA, &Model::RayExtra);
+        internal(CUMPAR, &Model::CumPar);
+        internal(SOMMEDEGRESJOURCOR, &Model::SommeDegresJourCor);
+        internal(SUMPP, &Model::SumPP);
+        internal(SOMMEDEGRESJOURPHASEPRECEDENTE,
+                 &Model::SommeDegresJourPhasePrecedente);
+        internal(RESPMAINTDEBT, &Model::RespMaintDebt);
+        internal(TMINMOY, &Model::TMinMoy);
+        internal(TMAXMOY, &Model::TMaxMoy);
+        internal(FTSWMOY, &Model::FtswMoy);
+        internal(ROOTSHOOTRATIO, &Model::RootShootRatio);
+        internal(TREFFINST, &Model::TrEffInst);
+        internal(TREFF, &Model::TrEff);
+        internal(WUEET, &Model::WueEt);
+        internal(WUETOT, &Model::WueTot);
+        internal(FLOODWATERDEPTH, &Model::FloodwaterDepth);
+        internal(IRRIGAUTODAY, &Model::IrrigAutoDay);
+        internal(IRRIGTOTDAY, &Model::IrrigTotDay);
+        internal(FRACTIONPLANTHEIGHTSUBMER, &Model::FractionPlantHeightSubmer);
+        internal(DENSITY, &Model::Density);
+        internal(ROOTMASSPERVOL, &Model::RootMassPerVol);
+        internal(VOLMACROPORES, &Model::VolMacropores);
+        internal(STOCKMACROPORES, &Model::StockMacropores);
+        internal(RELPOTLEAFLENGTH, &Model::RelPotLeafLength);
+        internal(APEXHEIGHTGAIN, &Model::ApexHeightGain);
+        internal(HAUNGAIN, &Model::HaunGain);
+        internal(CONVERSION, &Model::Conversion);
+        internal(STRESSCOLD, &Model::StressCold);
+        internal(FRACTIONROOTSLOGGED, &Model::FractionRootsLogged);
+        internal(RESUTIL, &Model::ResUtil);
+        internal(KCTOT, &Model::KcTot);
+        internal(NBJAS, &Model::NbJas);
+
+        external(TMAX, &Model::TMax);
+        external(TMIN, &Model::TMin);
+        external(TMOY, &Model::TMoy);
+        external(HMAX, &Model::HMax);
+        external(HMIN, &Model::HMin);
+        external(HMOY, &Model::HMoy);
+        external(WIND, &Model::Vent);
+        external(INS, &Model::Ins);
+        external(RG, &Model::Rg);
+        external(Etp, &Model::ETP);
+        external(RAIN, &Model::Rain);
+    }
 
     virtual ~Model()
     { }
 
-    void assignClimate(const model::models::meteo::Climate& climate);
-
-    virtual void compute(double time) = 0;
-
-    void init(const model::models::ModelParameters& parameters);
-
-    double lai() const
-    { return Lai; }
-
-    double numphase() const
-    { return NumPhase; }
-
-    double degresdujour() const
-    { return DegresDuJour; }
-
-    double degresdujourcor() const
-    { return DegresDuJourCor; }
-
-    double ftsw() const
-    { return FTSW; }
-
-    double cstr() const
-    { return Cstr; }
-
-    double rootfront() const
-    { return RootFront; }
-
-    double eto() const
-    { return Eto; }
-
-    double etm() const
-    { return ETM; }
-
-    double etr() const
-    { return ETR; }
-
-    double rue() const
-    { return RUE; }
-
-    double conversioneff() const
-    { return ConversionEff; }
-
-    double ic() const
-    { return Ic; }
-
-    double culmsperplant() const
-    { return CulmsPerPlant; }
-
-    double culmspop() const
-    { return CulmsPop; }
-
-    double culmsperhill() const
-    { return CulmsPerHill; }
-
-    double grainyieldpop() const
-    { return GrainYieldPop; }
-
-    double drymatstructleafpop() const
-    { return DryMatStructLeafPop; }
-
-    double drymatstructsheathpop() const
-    { return DryMatStructSheathPop; }
-
-    double drymatstructrootpop() const
-    { return DryMatStructRootPop; }
-
-    double drymatstructinternodepop() const
-    { return DryMatStructInternodePop; }
-
-    double drymatresinternodepop() const
-    { return DryMatResInternodePop; }
-
-    double drymatstructpaniclepop() const
-    { return DryMatStructPaniclePop; }
-
-    double drymatstructtotpop() const
-    { return DryMatStructTotPop; }
-
-    double drymatvegetotpop() const
-    { return DryMatVegeTotPop; }
-
-    double drymatpanicletotpop() const
-    { return DryMatPanicleTotPop; }
-
-    double drymatstempop() const
-    { return DryMatStemPop; }
-
-    double drymatabovegroundpop() const
-    { return DryMatAboveGroundPop; }
-
-    double drymattotpop() const
-    { return DryMatTotPop; }
-
-    double sterilitycold() const
-    { return SterilityCold; }
-
-    double sterilityheat() const
-    { return SterilityHeat; }
-
-    double sterilitydrought() const
-    { return SterilityDrought; }
-
-    double sterilitytot() const
-    { return SterilityTot; }
-
-    double harvestindex() const
-    { return HarvestIndex; }
-
-    double paniclenumpop() const
-    { return PanicleNumPop; }
-
-    double paniclenumplant() const
-    { return PanicleNumPlant; }
-
-    double grainyieldpanicle() const
-    { return GrainYieldPanicle; }
-
-    double spikenumpop() const
-    { return SpikeNumPop; }
-
-    double spikenumpanicle() const
-    { return SpikeNumPanicle; }
-
-    double fertspikenumpop() const
-    { return FertSpikeNumPop; }
-
-    double grainfillingstatus() const
-    { return GrainFillingStatus; }
-
-    double phasestemelongation() const
-    { return PhaseStemElongation; }
-
-    double sla() const
-    { return Sla; }
-
-    double haunindex() const
-    { return HaunIndex; }
-
-    double apexheight() const
-    { return ApexHeight; }
-
-    double plantheight() const
-    { return PlantHeight; }
-
-    double plantwidth() const
-    { return PlantWidth; }
-
-    double krolling() const
-    { return KRolling; }
-
-    double lirkdfcl() const
-    { return LIRkdfcl; }
-
-    double ltrkdfcl() const
-    { return LTRkdfcl; }
-
-    double assimpot() const
-    { return AssimPot; }
-
-    double assim() const
-    { return Assim; }
-
-    double respmainttot() const
-    { return RespMaintTot; }
-
-    double supplytot() const
-    { return SupplyTot; }
-
-    double assimsurplus() const
-    { return AssimSurplus; }
-
-    double assimnotused() const
-    { return AssimNotUsed; }
-
-    double tillerdeathpop() const
-    { return TillerDeathPop; }
-
-    double plantleafnumtot() const
-    { return PlantLeafNumTot; }
-
-    double deadleafdrywtpop() const
-    { return DeadLeafDrywtPop; }
-
-    double laidead() const
-    { return LaiDead; }
-
-    double rescapacityinternodepop() const
-    { return ResCapacityInternodePop; }
-
-    double internoderesstatus() const
-    { return InternodeResStatus; }
-
-    double daylength() const
-    { return DayLength; }
-
-    double par() const
-    { return PAR; }
-
-    double rgcalc() const
-    { return RgCalc; }
-
-    double vpdcalc() const
-    { return VPD; }
-
-    double tmoycalc() const
-    { return TMoyCalc; }
-
-    double hmoycalc() const
-    { return HMoyCalc; }
-
-    double kcereal() const
-    { return KceReal; }
-
-    double stocktotal() const
-    { return StockTotal; }
-
-    double eaudispo() const
-    { return EauDispo; }
-
-    double stocksurface() const
-    { return StockSurface; }
-
-    double stockrac() const
-    { return StockRac; }
-
-    double rurac() const
-    { return RuRac; }
-
-    double kcp() const
-    { return Kcp; }
-
-    double kce() const
-    { return Kce; }
-
-    double evappot() const
-    { return EvapPot; }
-
-    double evap() const
-    { return Evap; }
-
-    double trpot() const
-    { return TrPot; }
-
-    double tr() const
-    { return Tr; }
-
-    double lr() const
-    { return Lr; }
-
-    double dr() const
-    { return Dr; }
-
-    double parintercepte() const
-    { return PARIntercepte; }
-
-    double sommedegresjour() const
-    { return SommeDegresJour; }
-
-    double vitesseracinaire() const
-    { return VitesseRacinaire; }
-
-    double cstrassim() const
-    { return CstrAssim; }
-
-    double rayextra() const
-    { return RayExtra; }
-
-    double cumpar() const
-    { return CumPar; }
-
-    double sommedegresjourcor() const
-    { return SommeDegresJourCor; }
-
-    double sumpp() const
-    { return SumPP; }
-
-    double sommedegresjourphaseprecedente() const
-    { return SommeDegresJourPhasePrecedente; }
-
-    double respmaintdebt() const
-    { return RespMaintDebt; }
-
-    double tminmoy() const
-    { return TMinMoy; }
-
-    double tmaxmoy() const
-    { return TMaxMoy; }
-
-    double ftswmoy() const
-    { return FtswMoy; }
-
-    double rootshootratio() const
-    { return RootShootRatio; }
-
-    double treffinst() const
-    { return TrEffInst; }
-
-    double treff() const
-    { return TrEff; }
-
-    double wueet() const
-    { return WueEt; }
-
-    double wuetot() const
-    { return WueTot; }
-
-    double floodwaterdepth() const
-    { return FloodwaterDepth; }
-
-    double irrigautoday() const
-    { return IrrigAutoDay; }
-
-    double irrigtotday() const
-    { return IrrigTotDay; }
-
-    double fractionplantheightsubmer() const
-    { return FractionPlantHeightSubmer; }
-
-    double density() const
-    { return Density; }
-
-    double rootmasspervol() const
-    { return RootMassPerVol; }
-
-    double volmacropores() const
-    { return VolMacropores; }
-
-    double stockmacropores() const
-    { return StockMacropores; }
-
-    double relpotleaflength() const
-    { return RelPotLeafLength; }
-
-    double apexheightgain() const
-    { return ApexHeightGain; }
-
-    double haungain() const
-    { return HaunGain; }
-
-    double conversion() const
-    { return Conversion; }
-
-    double stresscold() const
-    { return StressCold; }
-
-    double fractionrootslogged() const
-    { return FractionRootsLogged; }
-
-    double resutil() const
-    { return ResUtil; }
-
-    double kctot() const
-    { return KcTot; }
-
-    double nbjas() const
-    { return NbJas; }
+    void init(double t, const model::models::ModelParameters& parameters);
 
     double NullValue;
-
 
     // parameters
     double Altitude;
@@ -881,10 +687,11 @@ protected:
     void evolSomDegresJourCor();
     void evalNbJas(double t);
 
-    double calculeLaMoyenne(double laValeur, double leCompteur, double laMoyenne);
+    double calculeLaMoyenne(double laValeur, double leCompteur,
+                            double laMoyenne);
 
 };
 
-} } } // namespace model models samara
+} // namespace samara
 
 #endif

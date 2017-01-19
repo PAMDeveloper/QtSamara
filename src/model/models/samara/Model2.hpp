@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,28 +26,24 @@
 #define MODEL_MODELS_SAMARA_MODEL2_HPP
 
 #include <model/models/ModelParameters.hpp>
-#include <model/models/meteo/Meteo.hpp>
 #include <model/models/samara/Model.hpp>
 
 #include <utils/DateTime.hpp>
 
-namespace model { namespace models { namespace samara {
+namespace samara {
 
 class Model2 : public Model
 {
 public:
-    Model2()
+    Model2(const samara::AbstractModel* parent) : Model(parent)
     { }
 
     virtual ~Model2()
     { }
 
-    virtual void compute(double time) = 0;
-
-    void init(const model::models::ModelParameters& parameters);
+    void init(double t, const model::models::ModelParameters& parameters);
 
 protected:
-
     void initParcelle();
     void transplanting();
     void evalDegreeDay();
@@ -68,9 +64,8 @@ protected:
     void plantSubmergence();
 
     static double NullValue;
-
 };
 
-} } } // namespace model models samara
+} // namespace samara
 
 #endif

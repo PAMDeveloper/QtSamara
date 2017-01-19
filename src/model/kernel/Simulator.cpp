@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,4 @@
 
 namespace model { namespace kernel {
 
-        void Simulator::run(double begin, double end)
-        {
-            for (double t = begin; t <= end; t++) {
-                model->compute(t);
-                observer.observe(t);
-            }
-        }
-
-    } } // namespace model kernel
+} } // namespace model kernel

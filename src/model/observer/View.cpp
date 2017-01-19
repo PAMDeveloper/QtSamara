@@ -1,12 +1,12 @@
 /**
- * @file ModelParameters.cpp
- * @author The TNT Development Team
+ * @file model/observer/View.cpp
+ * @author The Samara Development Team
  * See the AUTHORS file
  */
 
 /*
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2017 INRA http://www.inra.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,4 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <model/models/ModelParameters.hpp>
+#include <model/observer/View.hpp>
+
+namespace model { namespace observer {
+
+} }

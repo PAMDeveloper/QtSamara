@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2013-2014 ULCO http://www.univ-littoral.fr
- * Copyright (C) 2013-2014 INRA http://www.inra.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_PARAMETERS_READER_HPP
-#define UTILS_PARAMETERS_READER_HPP
+#ifndef SAMARA_UTILS_PARAMETERS_READER_HPP
+#define SAMARA_UTILS_PARAMETERS_READER_HPP
 
 #include <model/models/ModelParameters.hpp>
 

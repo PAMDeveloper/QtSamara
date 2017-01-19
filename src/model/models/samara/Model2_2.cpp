@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,11 @@
 
 #include <model/models/samara/Model2_2.hpp>
 
-namespace model { namespace models { namespace samara {
+namespace samara {
 
 double Model2_2::NullValue = -999;
 
-void Model2_2::compute(double t)
+void Model2_2::compute(double t, bool /* update */)
 {
     Model::evalNbJas(t);
     Model2_2::transplanting(); // ok
@@ -127,12 +127,11 @@ void Model2_2::compute(double t)
     // Model2_1::evalSimEndCycle();
 }
 
-void Model2_2::init(const model::models::ModelParameters& parameters)
+void Model2_2::init(double t, const model::models::ModelParameters& parameters)
 {
-    Model2::init(parameters);
-
+    Model2::init(t, parameters);
     initCrop();
     initParcelle();
 }
 
-} } } // namespace model models samara
+} // namespace samara

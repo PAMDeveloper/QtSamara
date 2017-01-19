@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,35 +25,18 @@
 #ifndef MODEL_KERNEL_SIMULATOR_HPP
 #define MODEL_KERNEL_SIMULATOR_HPP
 
+#include <model/kernel/Model.hpp>
+#include <model/kernel/AbstractCoupledModel.hpp>
 #include <model/models/ModelParameters.hpp>
-#include <model/observer/Observer.hpp>
+
+#include <artis/kernel/Simulator.hpp>
 
 namespace model { namespace kernel {
 
-class Simulator
-{
-public:
-    Simulator(model::kernel::Model* model, std::string modelVersion)
-        : model(model), observer(model)
-    {
-        model->build(modelVersion);
-    }
-
-    virtual ~Simulator()
-    { delete model; }
-
-    void init(const model::models::ModelParameters& parameters)
-    {
-        model->init(parameters);
-        observer.init();
-    }
-
-    void run(double begin, double end);
-
-private:
-    model::kernel::Model* model;
-    observer::Observer observer;
-};
+typedef artis::kernel::Simulator < model::kernel::Model,
+                                   artis::utils::DoubleTime,
+                                   model::models::ModelParameters,
+                                   samara::GlobalParameters > Simulator;
 
 } } // namespace model kernel
 

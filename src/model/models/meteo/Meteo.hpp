@@ -5,8 +5,8 @@
  */
 
 /*
- * Copyright (C) 2010-2014 Cirad http://www.cirad.fr
- * Copyright (C) 2014 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
+ * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,11 @@
 #ifndef MODEL_MODELS_METEO_METEO_HPP
 #define MODEL_MODELS_METEO_METEO_HPP
 
+#include <model/kernel/AbstractAtomicModel.hpp>
 #include <model/models/ModelParameters.hpp>
 #include <model/models/common/TemporalFileReader.hpp>
 
-namespace model { namespace models { namespace meteo {
+namespace meteo {
 
 struct Climate
 {
@@ -45,26 +46,29 @@ struct Climate
     double Rain;
 
     Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
-            double HMoy, double Vt, double Ins, double Rg, double ETP, double Rain) :
+            double HMoy, double Vt, double Ins, double Rg, double ETP,
+            double Rain) :
         TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
         HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(ETP), Rain(Rain)
     { }
 };
 
-class Meteo
+class Model : public samara::AbstractAtomicModel < Model >
 {
 public:
-    Meteo();
-
-    virtual ~Meteo()
+    Model(const samara::AbstractModel* parent)  :
+        samara::AbstractAtomicModel < Model >(parent)
     { }
 
-    void compute(double t);
+    virtual ~Model()
+    { }
 
-    const Climate& getClimate() const
+    void compute(double t, bool update);
+
+    const Climate& get() const
     { return *it; }
 
-    void init(const model::models::ModelParameters& parameters);
+    void init(double t, const model::models::ModelParameters& parameters);
 
 private:
     double begin;
@@ -74,6 +78,6 @@ private:
     std::vector < Climate >::const_iterator it;
 };
 
-} } }
+}
 
 #endif
