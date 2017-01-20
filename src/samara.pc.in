@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 Name: Samara
 Description: Crop simulator
-Requires:
+Requires: artis-1.0
 Version: @SAMARA_VERSION@
 Libs:	-L${libdir} \
     -lsamara-@SAMARA_VERSION_SHORT@

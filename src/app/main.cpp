@@ -32,13 +32,13 @@
 
 #include <samara/version.hpp>
 
-#include <model/kernel/Model.hpp>
-#include <model/kernel/Simulator.hpp>
-#include <model/models/ModelParameters.hpp>
-#include <model/observer/GlobalView.hpp>
+#include <samara/model/kernel/Model.hpp>
+#include <samara/model/kernel/Simulator.hpp>
+#include <samara/model/models/ModelParameters.hpp>
+#include <samara/model/observer/GlobalView.hpp>
 
-#include <utils/DateTime.hpp>
-#include <utils/ParametersReader.hpp>
+#include <samara/utils/DateTime.hpp>
+#include <samara/utils/ParametersReader.hpp>
 
 #include <iostream>
 
