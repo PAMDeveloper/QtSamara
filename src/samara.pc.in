@@ -1,0 +1,12 @@
+prefix=@SAMARA_PKGCONFIG_PREFIXPATH@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/@SAMARA_PKGCONFIG_LIBDIR@
+includedir=${prefix}/include
+
+Name: Samara
+Description: Crop simulator
+Requires:
+Version: @SAMARA_VERSION@
+Libs:	-L${libdir} \
+    -lsamara-@SAMARA_VERSION_SHORT@
+Cflags: -I${includedir}/samara-@SAMARA_VERSION_SHORT@ -I@SAMARA_PKGCONFIG_BOOSTINCLUDE_DIRS@
