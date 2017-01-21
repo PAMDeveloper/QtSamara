@@ -26,8 +26,9 @@
 #define SAMARA_UTILS_PARAMETERS_READER_HPP
 
 #include <samara/model/models/ModelParameters.hpp>
-
 #include <samara/utils/Connections.hpp>
+
+#include <boost/property_tree/ptree.hpp>
 
 namespace utils {
 
@@ -40,10 +41,13 @@ public:
     virtual ~ParametersReader()
     { }
 
-    void load(const std::string& id,
-              model::models::ModelParameters& parameters);
+    void loadFromDatabase(const std::string& id,
+                          model::models::ModelParameters& parameters);
+    void loadFromJSON(const std::string& json,
+                      model::models::ModelParameters& parameters);
 
 private:
+    // database
     void load_data(pqxx::connection& connection,
                    const std::string& table,
                    const std::string& key,
@@ -70,6 +74,26 @@ private:
                         model::models::ModelParameters& parameters);
     void load_variety(const std::string& id,
                       pqxx::connection& connection,
+                      model::models::ModelParameters& parameters);
+
+    // json
+    void load_data(boost::property_tree::ptree::const_iterator& it,
+                   const std::vector < std::string >& names,
+                   model::models::ModelParameters& parameters);
+    void load_itineraire_technique(
+        boost::property_tree::ptree::const_iterator& it,
+        model::models::ModelParameters& parameters);
+    void load_plot(boost::property_tree::ptree::const_iterator& it,
+                   model::models::ModelParameters& parameters);
+    void load_simulation(boost::property_tree::ptree::const_iterator& it,
+                         model::models::ModelParameters& parameters);
+    void load_site(boost::property_tree::ptree::const_iterator& it,
+                   model::models::ModelParameters& parameters);
+    void load_station(boost::property_tree::ptree::const_iterator& it,
+                      model::models::ModelParameters& parameters);
+    void load_type_soil(boost::property_tree::ptree::const_iterator& it,
+                        model::models::ModelParameters& parameters);
+    void load_variety(boost::property_tree::ptree::const_iterator& it,
                       model::models::ModelParameters& parameters);
 };
 

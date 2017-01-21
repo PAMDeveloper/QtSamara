@@ -23,6 +23,7 @@
  */
 
 #include <boost/format.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <samara/utils/ParametersReader.hpp>
 
@@ -30,8 +31,8 @@
 
 namespace utils {
 
-void ParametersReader::load(const std::string& id,
-                            model::models::ModelParameters& parameters)
+void ParametersReader::loadFromDatabase(
+    const std::string& id, model::models::ModelParameters& parameters)
 {
     pqxx::connection& connection(
         utils::Connections::connection(
@@ -79,6 +80,53 @@ void ParametersReader::load(const std::string& id,
               << std::endl; */
 
 }
+
+void ParametersReader::loadFromJSON(
+    const std::string& json, model::models::ModelParameters& parameters)
+{
+    using boost::property_tree::ptree;
+
+    ptree tree;
+    std::stringstream ss;
+
+    ss << json;
+    read_json(ss, tree);
+
+    ptree::const_iterator it_simulation = tree.end();
+    ptree::const_iterator it_variety = tree.end();
+    ptree::const_iterator it_itineraire_technique = tree.end();
+    ptree::const_iterator it_plot = tree.end();
+    ptree::const_iterator it_site = tree.end();
+    ptree::const_iterator it_station = tree.end();
+    ptree::const_iterator it_type_soil = tree.end();
+
+    for (ptree::const_iterator it = tree.begin(); it != tree.end(); ++it) {
+        if (it->first == "simulation") {
+            it_simulation = it;
+        } else if (it->first == "variety") {
+            it_variety = it;
+        } else if (it->first == "itineraire_technique") {
+            it_itineraire_technique = it;
+        } else if (it->first == "plot") {
+            it_plot = it;
+        } else if (it->first == "site") {
+            it_site = it;
+        } else if (it->first == "station") {
+            it_station = it;
+        } else if (it->first == "type_soil") {
+            it_type_soil = it;
+        }
+    }
+    load_simulation(it_simulation, parameters);
+    load_variety(it_variety, parameters);
+    load_itineraire_technique(it_itineraire_technique, parameters);
+    load_plot(it_plot, parameters);
+    load_site(it_site, parameters);
+    load_station(it_station, parameters);
+    load_type_soil(it_type_soil, parameters);
+}
+
+// Database
 
 void ParametersReader::load_data(pqxx::connection& connection,
                                  const std::string& table,
@@ -303,6 +351,213 @@ void ParametersReader::load_type_soil(
     };
 
     load_data(connection, "typeSoil", "Id", id, names, parameters);
+}
+
+// JSON
+
+void ParametersReader::load_data(
+    boost::property_tree::ptree::const_iterator& it,
+    const std::vector < std::string >& names,
+    model::models::ModelParameters& parameters)
+{
+    using boost::property_tree::ptree;
+
+    for (ptree::const_iterator it2 = it->second.begin();
+         it2 != it->second.end(); ++it2) {
+        std::vector < std::string >::const_iterator itv =
+            std::find(names.begin(), names.end(), it2->first);
+
+        if (itv != names.end()) {
+            try {
+                parameters.set < double >(
+                    *itv, it2->second.get_value < double >());
+            } catch (...) {
+                parameters.set < std::string >(
+                    *itv, it2->second.get_value < std::string >());
+            }
+        }
+    }
+}
+
+void ParametersReader::load_variety(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = {
+        "ASScstr",
+        "AttenMitch",
+        "Ca",
+        "CO2Cp",
+        "CO2Exp",
+        "CO2SlopeTr",
+        "CoeffAssimSla",
+        "CoefficientQ10",
+        "CoeffInternodeMass",
+        "CoeffInternodeNum",
+        "CoeffLeafDeath",
+        "CoeffLeafWLRatio",
+        "CoeffPanicleMass",
+        "CoeffPanSinkPop",
+        "CoeffResCapacityInternode",
+        "CoeffReserveSink",
+        "CoeffRootMassPerVolMax",
+        "CoeffTillerDeath",
+        "DEVcstr",
+        "ExcessAssimToRoot",
+        "FTSWIrrig",
+        "HaunCritTillering",
+        "IcTillering",
+        "InternodeLengthMax",
+        "IrrigAutoResume",
+        "IrrigAutoStop",
+        "KcMax",
+        "KCritSterCold1",
+        "KCritSterCold2",
+        "KCritSterFtsw1",
+        "KCritSterFtsw2",
+        "KCritSterHeat1",
+        "KCritSterHeat2",
+        "KCritStressCold1",
+        "KCritStressCold2",
+        "Kdf",
+        "KRespInternode",
+        "KRespMaintLeaf",
+        "KRespMaintRoot",
+        "KRespMaintSheath",
+        "KRespPanicle",
+        "KTempMaint",
+        "LeafLengthMax",
+        "PanStructMassMax",
+        "PFactor",
+        "Phyllo",
+        "PoidsSecGrain",
+        "PPCrit",
+        "PPExp",
+        "PPSens",
+        "PriorityPan",
+        "RankLongestLeaf",
+        "RelMobiliInternodeMax",
+        "RelPhylloPhaseStemElong",
+        "RollingBase",
+        "RollingSens",
+        "RootCstr",
+        "RootFrontMax",
+        "RootPartitMax",
+        "SDJBVP",
+        "SDJLevee",
+        "SDJMatu1",
+        "SDJMatu2",
+        "SDJRPR",
+        "SeuilPP",
+        "SlaMax",
+        "SlaMin",
+        "TBase",
+        "TempSla",
+        "TilAbility",
+        "TLet",
+        "TOpt1",
+        "TOpt2",
+        "TransplantingDepth",
+        "TxAssimBVP",
+        "TxAssimMatu1",
+        "TxAssimMatu2",
+        "TxConversion",
+        "TxResGrain",
+        "TxRuSurfGermi",
+        "VRacBVP",
+        "VRacLevee",
+        "VRacMatu1",
+        "VRacMatu2",
+        "VRacPSP",
+        "VRacRPR",
+        "WaterLoggingSens",
+        "WtRatioLeafSheath"
+    };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_itineraire_technique(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = {
+        "BundHeight",
+        "CoeffTransplantingShock",
+        "DateSemis",
+        "DensityField",
+        "DensityNursery",
+        "DurationNursery",
+        "FTSWIrrig",
+        "IrrigAuto",
+        "IrrigAutoResume",
+        "IrrigAutoStop",
+        "IrrigAutoTarget",
+        "LifeSavingDrainage",
+        "Mulch",
+        "PlantsPerHill",
+        "PlotDrainageDAF",
+        "ProfRacIni",
+        "Transplanting",
+        "TransplantingDepth"
+    };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_plot(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = {
+        "Ca", "EpaisseurProf", "EpaisseurSurf", "StockIniProf", "StockIniSurf",
+        "IdTypeSol"
+    };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_simulation(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = { "IdSite","IdPlot", "IdVariety",
+                                          "IdItineraireTechnique", "IdModele",
+                                          "BeginDate", "EndDate" };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_site(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = { "SeuilPluie", "Kpar",
+                                          "CodeStationMeteo",
+                                          "CodeStationPluie" };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_station(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = { "Altitude", "Latitude" };
+
+    load_data(it, names, parameters);
+}
+
+void ParametersReader::load_type_soil(
+    boost::property_tree::ptree::const_iterator& it,
+    model::models::ModelParameters& parameters)
+{
+    std::vector < std::string > names = {
+        "HumFC", "HumPF", "HumSat", "PercolationMax", "PourcRuiss",
+        "SeuilRuiss", "PEvap"
+    };
+
+    load_data(it, names, parameters);
 }
 
 } // namespace utils
