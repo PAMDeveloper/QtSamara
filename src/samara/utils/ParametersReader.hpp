@@ -45,6 +45,8 @@ public:
                           model::models::ModelParameters& parameters);
     void loadFromJSON(const std::string& json,
                       model::models::ModelParameters& parameters);
+    void loadFromTree(const boost::property_tree::ptree& tree,
+                      model::models::ModelParameters& parameters);
 
 private:
     // database

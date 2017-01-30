@@ -81,16 +81,11 @@ void ParametersReader::loadFromDatabase(
 
 }
 
-void ParametersReader::loadFromJSON(
-    const std::string& json, model::models::ModelParameters& parameters)
+void ParametersReader::loadFromTree(
+    const boost::property_tree::ptree& tree,
+    model::models::ModelParameters& parameters)
 {
     using boost::property_tree::ptree;
-
-    ptree tree;
-    std::stringstream ss;
-
-    ss << json;
-    read_json(ss, tree);
 
     ptree::const_iterator it_simulation = tree.end();
     ptree::const_iterator it_variety = tree.end();
@@ -124,6 +119,19 @@ void ParametersReader::loadFromJSON(
     load_site(it_site, parameters);
     load_station(it_station, parameters);
     load_type_soil(it_type_soil, parameters);
+}
+
+void ParametersReader::loadFromJSON(
+    const std::string& json, model::models::ModelParameters& parameters)
+{
+    using boost::property_tree::ptree;
+
+    ptree tree;
+    std::stringstream ss;
+
+    ss << json;
+    read_json(ss, tree);
+    loadFromTree(tree, parameters);
 }
 
 // Database
@@ -376,6 +384,8 @@ void ParametersReader::load_data(
                     *itv, it2->second.get_value < std::string >());
             }
         }
+
+
     }
 }
 
