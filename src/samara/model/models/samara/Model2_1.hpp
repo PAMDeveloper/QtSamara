@@ -40,7 +40,6 @@ public:
 
     virtual ~SamaraModel2_1()
     { }
-
     void compute(double t, bool update);
     void init(double t, const model::models::ModelParameters& parameters);
 

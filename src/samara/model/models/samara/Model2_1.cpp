@@ -28,6 +28,7 @@ namespace samara {
 
 double SamaraModel2_1::NullValue = -999;
 
+
 void SamaraModel2_1::compute(double t, bool /* update */)
 {
     SamaraModel::evalNbJas(t);

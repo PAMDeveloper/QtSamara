@@ -30,481 +30,453 @@ namespace samara {
 void SamaraModel::init(double /* t */,
                  const model::models::ModelParameters& parameters)
 {
-    Altitude = parameters.get < double >("Altitude");
+    
+    Ca = parameters.get<double>("ca");
 
-    // std::cout << "Altitude = " << Altitude << std::endl;
+    //std::cout << "Ca = " << Ca << std::endl;
 
-    ASScstr = parameters.get < double >("ASScstr");
+    CO2Cp = parameters.get<double>("co2cp");
 
-    // std::cout << "ASScstr = " << ASScstr << std::endl;
+    //std::cout << "CO2Cp = " << CO2Cp << std::endl;
 
-    AttenMitch = parameters.get < double >("AttenMitch");
+    CO2Exp = parameters.get<double>("co2exp");
 
-    // std::cout << "AttendMitch = " << AttenMitch << std::endl;
+    //std::cout << "CO2Exp = " << CO2Exp << std::endl;
 
-    BundHeight = parameters.get < double >("BundHeight");
+    CO2SlopeTr = parameters.get<double>("co2slopetr");
 
-    // std::cout << "BundHeight = " << BundHeight << std::endl;
+    //std::cout << "CO2SlopeTr = " << CO2SlopeTr << std::endl;
 
-    Ca = parameters.get < double >("Ca");
+   CoeffAssimSla = parameters.get<double>("coeffassimsla");
 
-    // std::cout << "Ca = " << Ca << std::endl;
+    //std::cout << "CoeffAssimSla = " << CoeffAssimSla << std::endl;
 
-    CO2Cp = parameters.get < double >("CO2Cp");
+    CoefficientQ10 = parameters.get<double>("coefficientq10");
 
-    // std::cout << "CO2Cp = " << CO2Cp << std::endl;
+    //std::cout << "CoefficientQ10 = " << CoefficientQ10 << std::endl;
 
-    CO2Exp = parameters.get < double >("CO2Exp");
+    CoeffInternodeMass = parameters.get<double>("coeffinternodemass");
 
-    // std::cout << "CO2Exp = " << CO2Exp << std::endl;
+    //std::cout << "CoeffInternodeMass = " << CoeffInternodeMass << std::endl;
 
-    CO2SlopeTr = parameters.get < double >("CO2SlopeTr");
+    CoeffInternodeNum = parameters.get<double>("coeffinternodenum");
 
-    // std::cout << "CO2SlopeTr = " << CO2SlopeTr << std::endl;
+    //std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << std::endl;
 
-    CoeffAssimSla = parameters.get < double >("CoeffAssimSla");
+    CoeffLeafDeath = parameters.get<double>("coeffleafdeath");
 
-    // std::cout << "CoeffAssimSla = " << CoeffAssimSla << std::endl;
+    //std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << std::endl;
 
-    CoefficientQ10 = parameters.get < double >("CoefficientQ10");
+    CoeffLeafWLRatio = parameters.get<double>("coeffleafwlratio");
 
-    // std::cout << "CoefficientQ10 = " << CoefficientQ10 << std::endl;
+    //std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << std::endl;
 
-    CoeffInternodeMass = parameters.get < double >("CoeffInternodeMass");
+    CoeffPanicleMass = parameters.get<double>("coeffpaniclemass");
 
-    // std::cout << "CoeffInternodeMass = " << CoeffInternodeMass << std::endl;
+    //std::cout << "CoeffPanicleMass = " << CoeffPanicleMass << std::endl;
 
-    CoeffInternodeNum = parameters.get < double >("CoeffInternodeNum");
+    CoeffPanSinkPop = parameters.get<double>("coeffpansinkpop");
 
-    // std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << std::endl;
+    //std::cout << "CoeffPanSinkPop = " << CoeffPanSinkPop << std::endl;
 
-    CoeffLeafDeath = parameters.get < double >("CoeffLeafDeath");
+    CoeffResCapacityInternode = parameters.get<double>("coeffrescapacityinternode");
 
-    // std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << std::endl;
+    //std::cout << "CoeffResCapacityInternode = " << CoeffResCapacityInternode << std::endl;
 
-    CoeffLeafWLRatio = parameters.get < double >("CoeffLeafWLRatio");
+    CoeffReserveSink = parameters.get<double>("coeffreservesink");
 
-    // std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << std::endl;
+    //std::cout << "CoeffReserveSink = " << CoeffReserveSink << std::endl;
 
-    CoeffPanicleMass = parameters.get < double >("CoeffPanicleMass");
+    CoeffRootMassPerVolMax = parameters.get<double>("coeffrootmasspervolmax");
 
-    // std::cout << "CoeffPanicleMass = " << CoeffPanicleMass << std::endl;
+    //std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax << std::endl;
 
-    CoeffPanSinkPop = parameters.get < double >("CoeffPanSinkPop");
+    CoeffTillerDeath = parameters.get<double>("coefftillerdeath");
 
-    // std::cout << "CoeffPanSinkPop = " << CoeffPanSinkPop << std::endl;
+    //std::cout << "CoeffTillerDeath = " << CoeffTillerDeath << std::endl;
 
-    CoeffResCapacityInternode =
-        parameters.get < double >("CoeffResCapacityInternode");
+    CoeffTransplantingShock = parameters.get<double>("coefftransplantingshock");
 
-    // std::cout << "CoeffResCapacityInternode = " << CoeffResCapacityInternode
-              // << std::endl;
+    //std::cout << "CoeffTransplantingShock = " << CoeffTransplantingShock << std::endl;
+    //std::string dateuu = parameters.getStringVal("datesemis");//
+    DateSemis = utils::DateTime::toJulianDayNumber(parameters.get<std::string>("datesemis"));
 
-    CoeffReserveSink = parameters.get < double >("CoeffReserveSink");
+    //std::cout << "DateSemis = " << DateSemis << std::endl;
 
-    // std::cout << "CoeffReserveSink = " << CoeffReserveSink << std::endl;
+    DensityField = parameters.get<double>("densityfield");
 
-    CoeffRootMassPerVolMax =
-        parameters.get < double >("CoeffRootMassPerVolMax");
+    //std::cout << "DensityField = " << DensityField << std::endl;
 
-    // std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax
-              // << std::endl;
+    DensityNursery = parameters.get<double>("densitynursery");
 
-    CoeffTillerDeath = parameters.get < double >("CoeffTillerDeath");
+    //std::cout << "DensityNursery = " << DensityNursery << std::endl;
 
-    // std::cout << "CoeffTillerDeath = " << CoeffTillerDeath << std::endl;
+    DEVcstr = parameters.get<double>("devcstr");
 
-    CoeffTransplantingShock =
-        parameters.get < double >("CoeffTransplantingShock");
+    //std::cout << "DEVcstr = " << DEVcstr << std::endl;
 
-    // std::cout << "CoeffTransplantingShock = " << CoeffTransplantingShock
-              // << std::endl;
+    DurationNursery = parameters.get<double>("durationnursery");
 
-    std::string dSemis;
-    utils::DateTime::format_date(parameters.get < std::string >("DateSemis"),
-                                 dSemis);
-    DateSemis = utils::DateTime::toJulianDayNumber(dSemis);
+    //std::cout << "DurationNursery = " << DurationNursery << std::endl;
 
-    // std::cout << "DateSemis = " << DateSemis << std::endl;
+    EpaisseurProf = parameters.get<double>("epaisseurprof");
 
-    DensityField = parameters.get < double >("DensityField");
+    //std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
 
-    // std::cout << "DensityField = " << DensityField << std::endl;
+    EpaisseurSurf = parameters.get<double>("epaisseursurf");
 
-    DensityNursery = parameters.get < double >("DensityNursery");
+    //std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
 
-    // std::cout << "DensityNursery = " << DensityNursery << std::endl;
+    ExcessAssimToRoot = parameters.get<double>("excessassimtoroot");
 
-    DEVcstr = parameters.get < double >("DEVcstr");
+    //std::cout << "ExcessAssimToRoot = " << ExcessAssimToRoot << std::endl;
 
-    // std::cout << "DEVcstr = " << DEVcstr << std::endl;
+    FTSWIrrig = parameters.get<double>("ftswirrig");
 
-    DurationNursery = parameters.get < double >("DurationNursery");
+    //std::cout << "FTSWIrrig = " << FTSWIrrig << std::endl;
 
-    // std::cout << "DurationNursery = " << DurationNursery << std::endl;
+    HaunCritTillering = parameters.get<double>("hauncrittillering");
 
-    EpaisseurProf = parameters.get < double >("EpaisseurProf");
+    //std::cout << "HaunCritTillering = " << HaunCritTillering << std::endl;
 
-    // std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
+    HumFC = parameters.get<double>("humfc");
 
-    EpaisseurSurf = parameters.get < double >("EpaisseurSurf");
+    //std::cout << "HumFC = " << HumFC << std::endl;
 
-    // std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
+    HumPF = parameters.get<double>("humpf");
 
-    ExcessAssimToRoot = parameters.get < double >("ExcessAssimToRoot");
+    //std::cout << "HumPF = " << HumPF << std::endl;
 
-    // std::cout << "ExcessAssimToRoot = " << ExcessAssimToRoot << std::endl;
+    HumSat = parameters.get<double>("humsat");
 
-    FTSWIrrig = parameters.get < double >("FTSWIrrig");
+    //std::cout << "HumSat = " << HumSat << std::endl;
 
-    // std::cout << "FTSWIrrig = " << FTSWIrrig << std::endl;
+    IcTillering = parameters.get<double>("ictillering");
 
-    HaunCritTillering = parameters.get < double >("HaunCritTillering");
+    //std::cout << "IcTillering = " << IcTillering << std::endl;
 
-    // std::cout << "HaunCritTillering = " << HaunCritTillering << std::endl;
+    InternodeLengthMax = parameters.get<double>("internodelengthmax");
 
-    HumFC = parameters.get < double >("HumFC");
+    //std::cout << "InternodeLengthMax = " << InternodeLengthMax << std::endl;
 
-    // std::cout << "HumFC = " << HumFC << std::endl;
+    IrrigAuto = parameters.get<int>("irrigauto");
 
-    HumPF = parameters.get < double >("HumPF");
+    //std::cout << "IrrigAuto = " << IrrigAuto << std::endl;
 
-    // std::cout << "HumPF = " << HumPF << std::endl;
+    IrrigAutoResume = parameters.get<double>("irrigautoresume");
 
-    HumSat = parameters.get < double >("HumSat");
+    //std::cout << "IrrigAutoResume = " << IrrigAutoResume << std::endl;
 
-    // std::cout << "HumSat = " << HumSat << std::endl;
+    IrrigAutoStop = parameters.get<double>("irrigautostop");
 
-    IcTillering = parameters.get < double >("IcTillering");
+    //std::cout << "IrrigAutoStop = " << IrrigAutoStop << std::endl;
 
-    // std::cout << "IcTillering = " << IcTillering << std::endl;
+    IrrigAutoTarget = parameters.get<double>("irrigautotarget");
 
-    InternodeLengthMax = parameters.get < double >("InternodeLengthMax");
+    //std::cout << "IrrigAutoTarget = " << IrrigAutoTarget << std::endl;
 
-    // std::cout << "InternodeLengthMax = " << InternodeLengthMax << std::endl;
+    KcMax = parameters.get<double>("kcmax");
 
-    IrrigAuto = parameters.get < int >("IrrigAuto");
+    //std::cout << "KcMax = " << KcMax << std::endl;
 
-    // std::cout << "IrrigAuto = " << IrrigAuto << std::endl;
+    KCritSterCold1 = parameters.get<double>("kcritstercold1");
 
-    IrrigAutoResume = parameters.get < double >("IrrigAutoResume");
+    //std::cout << "KCritSterCold1 = " << KCritSterCold1 << std::endl;
 
-    // std::cout << "IrrigAutoResume = " << IrrigAutoResume << std::endl;
+    KCritSterCold2 = parameters.get<double>("kcritstercold2");
 
-    IrrigAutoStop = parameters.get < double >("IrrigAutoStop");
+    //std::cout << "KCritSterCold2 = " << KCritSterCold2 << std::endl;
 
-    // std::cout << "IrrigAutoStop = " << IrrigAutoStop << std::endl;
+    KCritSterFtsw1 = parameters.get<double>("kcritsterftsw1");
 
-    IrrigAutoTarget = parameters.get < double >("IrrigAutoTarget");
+    //std::cout << "KCritSterFtsw1 = " << KCritSterFtsw1 << std::endl;
 
-    // std::cout << "IrrigAutoTarget = " << IrrigAutoTarget << std::endl;
+    KCritSterFtsw2 = parameters.get<double>("kcritsterftsw2");
 
-    KcMax = parameters.get < double >("KcMax");
+    //std::cout << "KCritSterFtsw2 = " << KCritSterFtsw2 << std::endl;
 
-    // std::cout << "KcMax = " << KcMax << std::endl;
+    KCritSterHeat1 = parameters.get<double>("kcritsterheat1"
+                                               );
 
-    KCritSterCold1 = parameters.get < double >("KCritSterCold1");
+    //std::cout << "KCritSterHeat1 = " << KCritSterHeat1 << std::endl;
 
-    // std::cout << "KCritSterCold1 = " << KCritSterCold1 << std::endl;
+    KCritSterHeat2 = parameters.get<double>("kcritsterheat2");
 
-    KCritSterCold2 = parameters.get < double >("KCritSterCold2");
+    //std::cout << "KCritSterHeat2 = " << KCritSterHeat2 << std::endl;
 
-    // std::cout << "KCritSterCold2 = " << KCritSterCold2 << std::endl;
+    KCritStressCold1 = parameters.get<double>("kcritstresscold1");
 
-    KCritSterFtsw1 = parameters.get < double >("KCritSterFtsw1");
+    //std::cout << "KCritStressCold1 = " << KCritStressCold1 << std::endl;
 
-    // std::cout << "KCritSterFtsw1 = " << KCritSterFtsw1 << std::endl;
+    KCritStressCold2 = parameters.get<double>("kcritstresscold2");
 
-    KCritSterFtsw2 = parameters.get < double >("KCritSterFtsw2");
+    //std::cout << "KCritStressCold2 = " << KCritStressCold2 << std::endl;
 
-    // std::cout << "KCritSterFtsw2 = " << KCritSterFtsw2 << std::endl;
+    Kdf = parameters.get<double>("kdf");
 
-    KCritSterHeat1 = parameters.get < double >("KCritSterHeat1");
+    //std::cout << "Kdf = " << Kdf << std::endl;
 
-    // std::cout << "KCritSterHeat1 = " << KCritSterHeat1 << std::endl;
+    KPar = parameters.get<double> ("kpar");
 
-    KCritSterHeat2 = parameters.get < double >("KCritSterHeat2");
+    //std::cout << "KPar = " << KPar << std::endl;
 
-    // std::cout << "KCritSterHeat2 = " << KCritSterHeat2 << std::endl;
+    KRespInternode = parameters.get<double>("krespinternode");
 
-    KCritStressCold1 = parameters.get < double >("KCritStressCold1");
+    //std::cout << "KRespInternode = " << KRespInternode << std::endl;
 
-    // std::cout << "KCritStressCold1 = " << KCritStressCold1 << std::endl;
+    KRespMaintLeaf = parameters.get<double>("krespmaintleaf");
 
-    KCritStressCold2 = parameters.get < double >("KCritStressCold2");
+    //std::cout << "KRespMaintLeaf = " << KRespMaintLeaf << std::endl;
 
-    // std::cout << "KCritStressCold2 = " << KCritStressCold2 << std::endl;
+    KRespMaintRoot = parameters.get<double>("krespmaintroot");
 
-    Kdf = parameters.get < double >("Kdf");
+    //std::cout << "KRespMaintRoot = " << KRespMaintRoot << std::endl;
 
-    // std::cout << "Kdf = " << Kdf << std::endl;
+    KRespMaintSheath = parameters.get<double>("krespmaintsheath");
 
-    KPar = parameters.get < double > ("Kpar");
+    //std::cout << "KRespMaintSheath = " << KRespMaintSheath << std::endl;
 
-    // std::cout << "KPar = " << KPar << std::endl;
+    KRespPanicle = parameters.get<double>("kresppanicle");
 
-    KRespInternode = parameters.get < double >("KRespInternode");
+    //std::cout << "KRespPanicle = " << KRespPanicle << std::endl;
 
-    // std::cout << "KRespInternode = " << KRespInternode << std::endl;
+    KTempMaint = parameters.get<double>("ktempmaint");
 
-    KRespMaintLeaf = parameters.get < double >("KRespMaintLeaf");
+    //std::cout << "KTempMaint = " << KTempMaint << std::endl;
 
-    // std::cout << "KRespMaintLeaf = " << KRespMaintLeaf << std::endl;
+    Latitude = parameters.get<double>("latitude");
 
-    KRespMaintRoot = parameters.get < double >("KRespMaintRoot");
+    //std::cout << "Latitude = " << Latitude << std::endl;
 
-    // std::cout << "KRespMaintRoot = " << KRespMaintRoot << std::endl;
+    LeafLengthMax = parameters.get<double>("leaflengthmax");
 
-    KRespMaintSheath = parameters.get < double >("KRespMaintSheath");
+    //std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
 
-    // std::cout << "KRespMaintSheath = " << KRespMaintSheath << std::endl;
+    LifeSavingDrainage = parameters.get<double>("lifesavingdrainage");
 
-    KRespPanicle = parameters.get < double >("KRespPanicle");
+    //std::cout << "LifeSavingDrainage = " << LifeSavingDrainage << std::endl;
 
-    // std::cout << "KRespPanicle = " << KRespPanicle << std::endl;
+    Mulch = parameters.get<double>("mulch");
 
-    KTempMaint = parameters.get < double >("KTempMaint");
+    //std::cout << "Mulch = " << Mulch << std::endl;
 
-    // std::cout << "KTempMaint = " << KTempMaint << std::endl;
+    PanStructMassMax = parameters.get<double>("panstructmassmax");
 
-    Latitude = parameters.get < double >("Latitude");
+    //std::cout << "PanStructMassMax = " << PanStructMassMax << std::endl;
 
-    // std::cout << "Latitude = " << Latitude << std::endl;
+    PercolationMax = parameters.get<double>("percolationmax");
 
-    LeafLengthMax = parameters.get < double >("LeafLengthMax");
+    //std::cout << "PercolationMax = " << PercolationMax << std::endl;
 
-    // std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
+    PEvap = parameters.get<double>("pevap");
 
-    LifeSavingDrainage = parameters.get < double >("LifeSavingDrainage");
+    //std::cout << "PEvap = " << PEvap << std::endl;
 
-    // std::cout << "LifeSavingDrainage = " << LifeSavingDrainage << std::endl;
+    PFactor = parameters.get<double>("pfactor");
 
-    Mulch = parameters.get < double >("Mulch");
+    //std::cout << "PFactor = " << PFactor << std::endl;
 
-    // std::cout << "Mulch = " << Mulch << std::endl;
+    Phyllo = parameters.get<double>("phyllo");
 
-    PanStructMassMax = parameters.get < double >("PanStructMassMax");
+    //std::cout << "Phyllo = " << Phyllo << std::endl;
 
-    // std::cout << "PanStructMassMax = " << PanStructMassMax << std::endl;
+    PlantsPerHill = parameters.get<double>("plantsperhill");
 
-    PercolationMax = parameters.get < double >("PercolationMax");
+    //std::cout << "PlantsPerHill = " << PlantsPerHill << std::endl;
 
-    // std::cout << "PercolationMax = " << PercolationMax << std::endl;
+    PlotDrainageDAF = parameters.get<double>("plotdrainagedaf");
 
-    PEvap = parameters.get < double >("PEvap");
+    //std::cout << "PlotDrainageDAF = " << PlotDrainageDAF << std::endl;
 
-    // std::cout << "PEvap = " << PEvap << std::endl;
+    PoidsSecGrain = parameters.get<double>("poidssecgrain");
 
-    PFactor = parameters.get < double >("PFactor");
+    //std::cout << "PoidsSecGrain = " << PoidsSecGrain << std::endl;
 
-    // std::cout << "PFactor = " << PFactor << std::endl;
+    PourcRuiss = parameters.get<double>("pourcruiss");
 
-    Phyllo = parameters.get < double >("Phyllo");
+    //std::cout << "PourcRuiss = " << PourcRuiss << std::endl;
 
-    // std::cout << "Phyllo = " << Phyllo << std::endl;
+    PPCrit = parameters.get<double>("ppcrit");
 
-    PlantsPerHill = parameters.get < double >("PlantsPerHill");
+    //std::cout << "PPCrit = " << PPCrit << std::endl;
 
-    // std::cout << "PlantsPerHill = " << PlantsPerHill << std::endl;
+    PPExp = parameters.get<double>("ppexp");
 
-    PlotDrainageDAF = parameters.get < double >("PlotDrainageDAF");
+    //std::cout << "PPExp = " << PPExp << std::endl;
 
-    // std::cout << "PlotDrainageDAF = " << PlotDrainageDAF << std::endl;
+    PPSens = parameters.get<double>("ppsens");
 
-    PoidsSecGrain = parameters.get < double >("PoidsSecGrain");
+    //std::cout << "PPSens = " << PPSens << std::endl;
 
-    // std::cout << "PoidsSecGrain = " << PoidsSecGrain << std::endl;
+    PriorityPan = parameters.get<double>("prioritypan");
 
-    PourcRuiss = parameters.get < double >("PourcRuiss");
+    //std::cout << "PriorityPan = " << PriorityPan << std::endl;
 
-    // std::cout << "PourcRuiss = " << PourcRuiss << std::endl;
+    ProfRacIni = parameters.get<double>("profracini");
 
-    PPCrit = parameters.get < double >("PPCrit");
+    //std::cout << "ProfRacIni = " << ProfRacIni << std::endl;
 
-    // std::cout << "PPCrit = " << PPCrit << std::endl;
+    RankLongestLeaf = parameters.get<double>("ranklongestleaf");
 
-    PPExp = parameters.get < double >("PPExp");
+    //std::cout << "RankLongestLeaf = " << RankLongestLeaf << std::endl;
 
-    // std::cout << "PPExp = " << PPExp << std::endl;
+    RelMobiliInternodeMax = parameters.get<double>("relmobiliinternodemax");
 
-    PPSens = parameters.get < double >("PPSens");
+    //std::cout << "RemMobiliInternodeMax = " << RelMobiliInternodeMax << std::endl;
 
-    // std::cout << "PPSens = " << PPSens << std::endl;
+    RelPhylloPhaseStemElong = parameters.get<double>("relphyllophasestemelong");
 
-    PriorityPan = parameters.get < double >("PriorityPan");
+    //std::cout << "RelPhylloPhaseStemElong = " << RelPhylloPhaseStemElong << std::endl;
 
-    // std::cout << "PriorityPan = " << PriorityPan << std::endl;
+    RollingBase = parameters.get<double>("rollingbase");
 
-    ProfRacIni = parameters.get < double >("ProfRacIni");
+    //std::cout << "RollingBase = " << RollingBase << std::endl;
 
-    // std::cout << "ProfRacIni = " << ProfRacIni << std::endl;
+    RollingSens = parameters.get<double>("rollingsens");
 
-    RankLongestLeaf = parameters.get < double >("RankLongestLeaf");
+    //std::cout << "RollingSens = " << RollingSens << std::endl;
 
-    // std::cout << "RankLongestLeaf = " << RankLongestLeaf << std::endl;
+    RootCstr = parameters.get<double>("rootcstr");
 
-    RelMobiliInternodeMax = parameters.get < double >("RelMobiliInternodeMax");
+    //std::cout << "RootCstr = " << RootCstr << std::endl;
 
-    // std::cout << "RemMobiliInternodeMax = " << RelMobiliInternodeMax
-              // << std::endl;
+    RootFrontMax = parameters.get<double>("rootfrontmax");
 
-    RelPhylloPhaseStemElong = parameters.get < double >(
-        "RelPhylloPhaseStemElong");
+    //std::cout << "RootFrontMax = " << RootFrontMax << std::endl;
 
-    // std::cout << "RelPhylloPhaseStemElong = " << RelPhylloPhaseStemElong
-              // << std::endl;
+    RootPartitMax = parameters.get<double>("rootpartitmax");
 
-    RollingBase = parameters.get < double >("RollingBase");
+    //std::cout << "RootPartitMax = " << RootPartitMax << std::endl;
 
-    // std::cout << "RollingBase = " << RollingBase << std::endl;
+    SDJBVP = parameters.get<double>("sdjbvp");
 
-    RollingSens = parameters.get < double >("RollingSens");
+    //std::cout << "SDJBVP = " << SDJBVP << std::endl;
 
-    // std::cout << "RollingSens = " << RollingSens << std::endl;
+    SDJLevee = parameters.get<double>("sdjlevee");
 
-    RootCstr = parameters.get < double >("RootCstr");
+    //std::cout << "SDJLevee = " << SDJLevee << std::endl;
 
-    // std::cout << "RootCstr = " << RootCstr << std::endl;
+    SDJMatu1 = parameters.get<double>("sdjmatu1");
 
-    RootFrontMax = parameters.get < double >("RootFrontMax");
+    //std::cout << "SDJMatu1 = " << SDJMatu1 << std::endl;
 
-    // std::cout << "RootFrontMax = " << RootFrontMax << std::endl;
+    SDJMatu2 = parameters.get<double>("sdjmatu2");
 
-    RootPartitMax = parameters.get < double >("RootPartitMax");
+    //std::cout << "SDJMatu2 = " << SDJMatu2 << std::endl;
 
-    // std::cout << "RootPartitMax = " << RootPartitMax << std::endl;
+    SDJRPR = parameters.get<double>("sdjrpr");
 
-    SDJBVP = parameters.get < double >("SDJBVP");
+    //std::cout << "SDJRPR = " << SDJRPR << std::endl;
 
-    // std::cout << "SDJBVP = " << SDJBVP << std::endl;
+    SeuilPP = parameters.get<double>("seuilpp");
 
-    SDJLevee = parameters.get < double >("SDJLevee");
+    //std::cout << "SeuilPP = " << SeuilPP << std::endl;
 
-    // std::cout << "SDJLevee = " << SDJLevee << std::endl;
+    SeuilRuiss = parameters.get<double>("seuilruiss");
 
-    SDJMatu1 = parameters.get < double >("SDJMatu1");
+    //std::cout << "SeuilRuiss = " << SeuilRuiss << std::endl;
 
-    // std::cout << "SDJMatu1 = " << SDJMatu1 << std::endl;
+    SlaMax = parameters.get<double>("slamax");
 
-    SDJMatu2 = parameters.get < double >("SDJMatu2");
+    //std::cout << "SlaMax = " << SlaMax << std::endl;
 
-    // std::cout << "SDJMatu2 = " << SDJMatu2 << std::endl;
+    SlaMin = parameters.get<double>("slamin");
 
-    SDJRPR = parameters.get < double >("SDJRPR");
+    //std::cout << "SlaMin = " << SlaMin << std::endl;
 
-    // std::cout << "SDJRPR = " << SDJRPR << std::endl;
+    StockIniProf = parameters.get<double>("stockiniprof");
 
-    SeuilPP = parameters.get < double >("SeuilPP");
+    //std::cout << "StockIniProf = " << StockIniProf << std::endl;
 
-    // std::cout << "SeuilPP = " << SeuilPP << std::endl;
+    StockIniSurf = parameters.get<double>("stockinisurf");
 
-    SeuilRuiss = parameters.get < double >("SeuilRuiss");
+    //std::cout << "StockIniSurf = " << StockIniSurf << std::endl;
 
-    // std::cout << "SeuilRuiss = " << SeuilRuiss << std::endl;
+    TBase = parameters.get<double>("tbase");
 
-    SlaMax = parameters.get < double >("SlaMax");
+    //std::cout << "TBase = " << TBase << std::endl;
 
-    // std::cout << "SlaMax = " << SlaMax << std::endl;
+    TempSla = parameters.get<double>("tempsla");
 
-    SlaMin = parameters.get < double >("SlaMin");
+    //std::cout << "TempSla = " << TempSla << std::endl;
 
-    // std::cout << "SlaMin = " << SlaMin << std::endl;
+    TilAbility = parameters.get<double>("tilability");
 
-    StockIniProf = parameters.get < double >("StockIniProf");
+    //std::cout << "TilAbility = " << TilAbility << std::endl;
 
-    // std::cout << "StockIniProf = " << StockIniProf << std::endl;
+    TLet = parameters.get<double>("tlim");
 
-    StockIniSurf = parameters.get < double >("StockIniSurf");
+    //std::cout << "TLet = " << TLet << std::endl;
 
-    // std::cout << "StockIniSurf = " << StockIniSurf << std::endl;
+    TOpt1 = parameters.get<double>("topt1");
 
-    TBase = parameters.get < double >("TBase");
+    //std::cout << "TOpt1 = " << TOpt1 << std::endl;
 
-    // std::cout << "TBase = " << TBase << std::endl;
+    TOpt2 = parameters.get<double>("topt2");
 
-    TempSla = parameters.get < double >("TempSla");
+    //std::cout << "TOpt2 = " << TOpt2 << std::endl;
 
-    // std::cout << "TempSla = " << TempSla << std::endl;
+    Transplanting = parameters.get<double>("transplanting");
 
-    TilAbility = parameters.get < double >("TilAbility");
+    //std::cout << "Transplanting = " << Transplanting << std::endl;
 
-    // std::cout << "TilAbility = " << TilAbility << std::endl;
+    TransplantingDepth = parameters.get<double>("transplantingdepth");
 
-    TLet = parameters.get < double >("TLet");
+    //std::cout << "TransplantingDepth = " << TransplantingDepth << std::endl;
 
-    // std::cout << "TLet = " << TLet << std::endl;
+    TxAssimBVP = parameters.get<double>("txassimbvp");
 
-    TOpt1 = parameters.get < double >("TOpt1");
+    //std::cout << "TxAssimBVP = " << TxAssimBVP << std::endl;
 
-    // std::cout << "TOpt1 = " << TOpt1 << std::endl;
+    TxAssimMatu1 = parameters.get<double>("txassimmatu1");
 
-    TOpt2 = parameters.get < double >("TOpt2");
+    //std::cout << "TxAssimMatu1 = " << TxAssimMatu1 << std::endl;
 
-    // std::cout << "TOpt2 = " << TOpt2 << std::endl;
+    TxAssimMatu2 = parameters.get<double>("txassimmatu2");
 
-    Transplanting = parameters.get < double >("Transplanting");
+    //std::cout << "TxAssimMatu2 = " << TxAssimMatu2 << std::endl;
 
-    // std::cout << "Transplanting = " << Transplanting << std::endl;
+    TxConversion = parameters.get<double>("txconversion");
 
-    TransplantingDepth = parameters.get < double >("TransplantingDepth");
+    //std::cout << "TxConversion = " << TxConversion << std::endl;
 
-    // std::cout << "TransplantingDepth = " << TransplantingDepth << std::endl;
+    TxResGrain = parameters.get<double>("txresgrain");
 
-    TxAssimBVP = parameters.get < double >("TxAssimBVP");
+    //std::cout << "TxResGrain = " << TxResGrain << std::endl;
 
-    // std::cout << "TxAssimBVP = " << TxAssimBVP << std::endl;
+    TxRuSurfGermi = parameters.get<double>("txrusurfgermi");
 
-    TxAssimMatu1 = parameters.get < double >("TxAssimMatu1");
+    //std::cout << "TxRuSurfGermi = " << TxRuSurfGermi << std::endl;
 
-    // std::cout << "TxAssimMatu1 = " << TxAssimMatu1 << std::endl;
+    VRacBVP = parameters.get<double>("vracbvp");
 
-    TxAssimMatu2 = parameters.get < double >("TxAssimMatu2");
+    //std::cout << "VRacBVP = " << VRacBVP << std::endl;
 
-    // std::cout << "TxAssimMatu2 = " << TxAssimMatu2 << std::endl;
+    VRacLevee = parameters.get<double>("vraclevee");
 
-    TxConversion = parameters.get < double >("TxConversion");
+    //std::cout << "VRacLevee = " << VRacLevee << std::endl;
 
-    // std::cout << "TxConversion = " << TxConversion << std::endl;
+    VRacMatu1 = parameters.get<double>("vracmatu1");
 
-    TxResGrain = parameters.get < double >("TxResGrain");
+    //std::cout << "VRacMatu1 = " << VRacMatu1 << std::endl;
 
-    // std::cout << "TxResGrain = " << TxResGrain << std::endl;
+    VRacMatu2 = parameters.get<double>("vracmatu2");
 
-    TxRuSurfGermi = parameters.get < double >("TxRuSurfGermi");
+    //std::cout << "VRacMatu2 = " << VRacMatu2 << std::endl;
 
-    // std::cout << "TxRuSurfGermi = " << TxRuSurfGermi << std::endl;
+    VRacPSP = parameters.get<double>("vracpsp");
 
-    VRacBVP = parameters.get < double >("VRacBVP");
+    //std::cout << "VRacPSP = " << VRacPSP << std::endl;
 
-    // std::cout << "VRacBVP = " << VRacBVP << std::endl;
+    VRacRPR = parameters.get<double>("vracrpr");
 
-    VRacLevee = parameters.get < double >("VRacLevee");
+    //std::cout << "VRacRPR = " << VRacRPR << std::endl;
 
-    // std::cout << "VRacLevee = " << VRacLevee << std::endl;
+    WaterLoggingSens = parameters.get<double>("waterloggingsens");
 
-    VRacMatu1 = parameters.get < double >("VRacMatu1");
+    //std::cout << "WaterLoggingSens = " << WaterLoggingSens << std::endl;
 
-    // std::cout << "VRacMatu1 = " << VRacMatu1 << std::endl;
-
-    VRacMatu2 = parameters.get < double >("VRacMatu2");
-
-    // std::cout << "VRacMatu2 = " << VRacMatu2 << std::endl;
-
-    VRacPSP = parameters.get < double >("VRacPSP");
-
-    // std::cout << "VRacPSP = " << VRacPSP << std::endl;
-
-    VRacRPR = parameters.get < double >("VRacRPR");
-
-    // std::cout << "VRacRPR = " << VRacRPR << std::endl;
-
-    WaterLoggingSens = parameters.get < double >("WaterLoggingSens");
-
-    // std::cout << "WaterLoggingSens = " << WaterLoggingSens << std::endl;
-
-    WtRatioLeafSheath = parameters.get < double >("WtRatioLeafSheath");
-
-    // std::cout << "WtRatioLeafSheath = " << WtRatioLeafSheath << std::endl;
+    WtRatioLeafSheath = parameters.get<double>("wtratioleafsheath");
 }
 
 void SamaraModel::initCrop()
