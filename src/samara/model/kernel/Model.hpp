@@ -27,7 +27,7 @@
 
 #include <samara/model/kernel/AbstractCoupledModel.hpp>
 #include <samara/model/models/ModelParameters.hpp>
-#include <samara/model/models/samara/Model.hpp>
+#include <samara/model/models/samara/SamaraModel.hpp>
 #include <samara/model/models/samara/Model2_1.hpp>
 #include <samara/model/models/meteo/Meteo.hpp>
 
@@ -36,25 +36,25 @@
 
 namespace model { namespace kernel {
 
-class Model : public samara::AbstractCoupledModel < Model >
+class KernelModel : public samara::AbstractCoupledModel < KernelModel >
 {
 public:
     enum submodels { SAMARA, CLIMATE };
 
-    Model() : samara_model(0), meteo_model(0)
+    KernelModel()
     {
         // TODO: if (modelVersion.compare("SamaraV2_1") == 0) {
-        samara_model = new samara::Model2_1(this);
+        samara_model = new samara::SamaraModel2_1(this);
             // TODO: } else if (modelVersion.compare("SamaraV2_2")) {
             //
             // }
-        meteo_model = new meteo::Model(this);
+
 
         submodel(SAMARA, samara_model);
         submodel(CLIMATE, meteo_model);
     }
 
-    virtual ~Model()
+    virtual ~KernelModel()
     {
         delete samara_model;
         delete meteo_model;
@@ -65,8 +65,21 @@ public:
     void init(double t, const model::models::ModelParameters& parameters)
     {
         samara_model->init(t, parameters);
+        meteo_model = new meteo::MeteoModel(this);
         meteo_model->init(t, parameters);
     }
+
+
+private:
+// submodels
+    meteo::MeteoModel* meteo_model = 0;
+    samara::SamaraModel* samara_model = 0;
+};
+
+} }
+
+#endif
+
 
 /*    double lai() const
     { return samara_model->lai(); }
@@ -419,13 +432,3 @@ public:
     double nbjas() const
     { return samara_model->nbjas(); }
 */
-
-private:
-// submodels
-    samara::Model* samara_model;
-    meteo::Model* meteo_model;
-};
-
-} }
-
-#endif

@@ -8,7 +8,7 @@ SET(SAMARA_COMMON_HPP TemporalFileReader.hpp)
 SET(SAMARA_COMMON_CPP TemporalFileReader.cpp)
 
 ADD_LIBRARY(samara-models-common SHARED ${SAMARA_COMMON_HPP} ${SAMARA_COMMON_CPP})
-TARGET_LINK_LIBRARIES(samara-models-common)
+TARGET_LINK_LIBRARIES(samara-models-common ${Boost_LIBRARIES})
 
 INSTALL(FILES ${SAMARA_COMMON_HPP} DESTINATION
   ${SAMARA_INCLUDE_DIRS}/model/models/common)

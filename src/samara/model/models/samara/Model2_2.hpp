@@ -33,13 +33,13 @@
 
 namespace samara {
 
-class Model2_2 : public Model2_1
+class SamaraModel2_2 : public SamaraModel2_1
 {
 public:
-    Model2_2(const samara::AbstractModel* parent) : Model2_1(parent)
+    SamaraModel2_2(const samara::AbstractModel* parent) : SamaraModel2_1(parent)
     { }
 
-    virtual ~Model2_2()
+    virtual ~SamaraModel2_2()
     { }
 
     void compute(double t, bool update);

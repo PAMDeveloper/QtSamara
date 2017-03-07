@@ -26,19 +26,19 @@
 #define MODEL_MODELS_SAMARA_MODEL2_HPP
 
 #include <samara/model/models/ModelParameters.hpp>
-#include <samara/model/models/samara/Model.hpp>
+#include <samara/model/models/samara/SamaraModel.hpp>
 
 #include <samara/utils/DateTime.hpp>
 
 namespace samara {
 
-class Model2 : public Model
+class SamaraModel2 : public SamaraModel
 {
 public:
-    Model2(const samara::AbstractModel* parent) : Model(parent)
+    SamaraModel2(const samara::AbstractModel* parent) : SamaraModel(parent)
     { }
 
-    virtual ~Model2()
+    virtual ~SamaraModel2()
     { }
 
     void init(double t, const model::models::ModelParameters& parameters);

@@ -25,11 +25,38 @@
 #ifndef MODELPARAMETERS_HPP
 #define MODELPARAMETERS_HPP 1
 
+//#define OPTIM_NO_LEXCAST
+
 #include <map>
 #include <string>
+#include <vector>
 #include <boost/lexical_cast.hpp>
-
+#include <iso646.h>
 namespace model { namespace models {
+
+
+struct Climate
+{
+    double TMax;
+    double TMin;
+    double TMoy;
+    double HMax;
+    double HMin;
+    double HMoy;
+    double Vt;
+    double Ins;
+    double Rg;
+    double ETP;
+    double Rain;
+
+    Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
+            double HMoy, double Vt, double Ins, double Rg, double ETP,
+            double Rain) :
+        TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
+        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(ETP), Rain(Rain)
+    { }
+};
+
 
 class ModelParameters
 {
@@ -60,6 +87,33 @@ public:
         return boost::lexical_cast<T>((it == mParams.end() ) ? "" : it->second);
     }
 
+#ifdef OPTIM_NO_LEXCAST
+  template <>
+  double get( const std::string &paramName ) const
+  {
+     std::map < std::string, std::string >::const_iterator it;
+     it = mParams.find( paramName );
+
+     if( it == mParams.end() )
+        std::cout << "Warning: no value for " << paramName << std::endl;
+
+     return (it == mParams.end()) ? 0. : std::stod(it->second.c_str());
+  }
+
+  template <>
+  int get( const std::string &paramName ) const
+  {
+     std::map < std::string, std::string >::const_iterator it;
+     it = mParams.find( paramName );
+
+     if( it == mParams.end() )
+        std::cout << "Warning: no value for " << paramName << std::endl;
+
+     return ( it == mParams.end() ) ? 0. : atoi( it->second.c_str() );
+  }
+  #endif
+
+
     /**
      * Set (update or create) the given parameter/
      * @param[in] key   The parameter name.
@@ -76,8 +130,14 @@ public:
      * @return void.
      */
     inline void clear()
-    { mParams.clear(); }
+    {
+        mParams.clear();
+        meteoValues.clear();
+    }
 
+    std::map < std::string, std::string > * getRawParameters() { return &mParams; }
+    const std::vector < Climate > getMeteoValues() const { return meteoValues; }
+    std::vector < Climate > meteoValues;
 private:
     /*
      * We could use std::map < std::string, boost::any > params; but it doesn't

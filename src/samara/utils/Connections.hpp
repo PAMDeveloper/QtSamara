@@ -25,8 +25,54 @@
 #ifndef UTILS_CONNECTIONS_HPP
 #define UTILS_CONNECTIONS_HPP
 
-#include <pqxx/pqxx>
+#if 1
 
+#include <libpq-fe.h>
+#include <map>
+#include <string>
+#include <iostream>
+
+namespace utils {
+
+    class Connections
+    {
+        typedef std::map < std::string, PGconn* > connections_t;
+
+    public:
+        inline static PGconn* connection(const std::string& database,
+            const std::string& request)
+        {
+            connections_t::const_iterator it =
+                mConnections.connections.find(database);
+
+            if (it == mConnections.connections.end()) {
+                mConnections.connections[database] = PQconnectdb(request.c_str());
+                it = mConnections.connections.find(database);
+            }
+            return it->second;
+        }
+
+    private:
+        Connections();
+
+        virtual ~Connections()
+        {
+            for (connections_t::const_iterator it =
+                mConnections.connections.begin();
+                it != mConnections.connections.end(); ++it) {
+                // delete it->second;
+            }
+            mConnections.connections.clear();
+        }
+
+        static Connections mConnections;
+
+        connections_t connections;
+    };
+
+} // namespace utils
+#else
+#include <pqxx/pqxx>
 namespace utils {
 
 class Connections
@@ -67,4 +113,5 @@ private:
 
 } // namespace utils
 
+#endif
 #endif

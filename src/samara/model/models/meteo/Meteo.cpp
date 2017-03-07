@@ -28,7 +28,12 @@
 
 namespace meteo {
 
-void Model::compute(double /* t */, bool /* update */)
+MeteoModel::MeteoModel (const samara::AbstractModel* parent)  :
+    samara::AbstractAtomicModel < MeteoModel >(parent)
+{ }
+
+
+void MeteoModel::compute(double /* t */, bool /* update */)
 {
     if (it == values.end()) {
         it = values.begin();
@@ -36,116 +41,13 @@ void Model::compute(double /* t */, bool /* update */)
         ++it;
     }
 }
+const model::models::Climate& MeteoModel::get() const
+{ return *it; }
 
-void Model::init(double /* t */,
+void MeteoModel::init(double /* t */,
                  const model::models::ModelParameters& parameters)
 {
-    pqxx::connection& connection(
-        utils::Connections::connection(
-            "samara", "dbname=samara user=user_samara password=toto"));
-
-    std::string beginDate;
-    std::string endDate;
-    double begin;
-    double end;
-    unsigned int beginYear;
-    unsigned int endYear;
-
-    utils::DateTime::format_date(parameters.get < std::string >("BeginDate"),
-                                 beginDate);
-    utils::DateTime::format_date(parameters.get < std::string >("EndDate"),
-                                 endDate);
-    begin = utils::DateTime::toJulianDayNumber(beginDate);
-    end = utils::DateTime::toJulianDayNumber(endDate);
-    beginYear = utils::DateTime::year(begin);
-    endYear = utils::DateTime::year(end);
-    try {
-        pqxx::work action(connection);
-
-        for (unsigned int year = beginYear; year <= endYear; year++) {
-            std::string requestMeteorology =
-                (boost::format("SELECT * FROM \"meteorology\" "         \
-                               "WHERE \"CodeStation\"='%1%' AND "       \
-                               "\"Jour\" LIKE \'%%%2%%%\'") %
-                 parameters.get < std::string >("CodeStationMeteo") %
-                 year).str();
-
-            pqxx::result resultMeteorology = action.exec(requestMeteorology);
-
-            std::string requestRainfall =
-                (boost::format("SELECT * FROM \"rainfall\" "            \
-                               "WHERE \"CodeStation\"='%1%' AND "       \
-                               "\"Jour\" LIKE \'%%%2%%%\'") %
-                 parameters.get < std::string >("CodeStationPluie") %
-                 year).str();
-
-            pqxx::result resultRainfall = action.exec(requestRainfall);
-
-            std::string requestPersonalData =
-                (boost::format("SELECT * FROM \"personalData\" "        \
-                               "WHERE \"CodeStation\"='%1%' AND "       \
-                               "\"Jour\" LIKE \'%%%2%%%\'") %
-                 parameters.get < std::string >("CodeStationMeteo") %
-                 year).str();
-
-            pqxx::result resultPersonalData = action.exec(requestPersonalData);
-
-            if (not resultMeteorology.empty() and not resultRainfall.empty()
-                and not resultPersonalData.empty()) {
-                pqxx::result::const_iterator itMeteorology =
-                    resultMeteorology.begin();
-                pqxx::result::const_iterator itRainfall =
-                    resultRainfall.begin();
-                pqxx::result::const_iterator itPersonalData =
-                    resultPersonalData.begin();
-                bool finished = false;
-
-                while (not finished) {
-                    std::string day;
-                    double t;
-
-                    utils::DateTime::format_date(
-                        boost::lexical_cast <std::string >(
-                            itMeteorology->at(1)), day);
-                    t = utils::DateTime::toJulianDayNumber(day);
-
-                    if (t >= begin and t <= end) {
-                        values.push_back(
-                            Climate(
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(2)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(3)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(4)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(5)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(6)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(7)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(8)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(9)),
-                                boost::lexical_cast < double >(
-                                    itMeteorology->at(10)),
-                                boost::lexical_cast < double >(
-                                    itPersonalData->at(2)),
-                                boost::lexical_cast < double >(
-                                    itRainfall->at(2))));
-                    }
-                    if (++itMeteorology == resultMeteorology.end() or
-                        ++itRainfall == resultRainfall.end()
-                        or ++itPersonalData == resultPersonalData.end()) {
-                        finished = true;
-                    }
-                }
-            }
-        }
-    } catch (pqxx::sql_error e) {
-        std::cout << "Error: " << e.query() << std::endl;
-    }
+    this->values = parameters.getMeteoValues();
     it = values.end();
 }
 

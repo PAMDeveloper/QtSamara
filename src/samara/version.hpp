@@ -1,12 +1,13 @@
 /**
- * @file samara/model/kernel/Simulator.hpp
- * @author The Samara Development Team
+ * @file Element.hpp
+
+ * @author The TNT Development Team
  * See the AUTHORS file
  */
 
 /*
- * Copyright (C) 2013-2017 Cirad http://www.cirad.fr
  * Copyright (C) 2013-2017 ULCO http://www.univ-littoral.fr
+ * Copyright (C) 2013-2017 INRA http://www.inra.fr
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +23,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_KERNEL_SIMULATOR_HPP
-#define MODEL_KERNEL_SIMULATOR_HPP
+#ifndef SAMARA_VERSION_HPP
+#define SAMARA_VERSION_HPP 1
 
-#include <samara/model/kernel/Model.hpp>
-#include <samara/model/kernel/AbstractCoupledModel.hpp>
-#include <samara/model/models/ModelParameters.hpp>
-
-#include <artis/kernel/Simulator.hpp>
-
-namespace model { namespace kernel {
-
-typedef artis::kernel::Simulator < model::kernel::KernelModel,
-                                   artis::utils::DoubleTime,
-                                   model::models::ModelParameters,
-                                   samara::GlobalParameters > Simulator;
-
-} } // namespace model kernel
+#define SAMARA_MAJOR_VERSION   (2)
+#define SAMARA_MINOR_VERSION   (1)
+#define SAMARA_PATCH_VERSION   (0)
+#define SAMARA_EXTRA_VERSION   ""
+#define SAMARA_VERSION         "2.1.0"
+#define SAMARA_ABI_VERSION     "2.1"
+#define SAMARA_NAME_COMPLETE   "samara-2.1.0"
+#define SAMARA_LOCALE_NAME     "samara-2-1"
 
 #endif

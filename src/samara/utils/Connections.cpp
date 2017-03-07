@@ -26,9 +26,7 @@
 
 namespace utils {
 
-//Connections::connections_t Connections::mConnections;
-Connections Connections::mConnections;
-
+    Connections Connections::mConnections;
     Connections::Connections(){ }
 
 } // namespace utils

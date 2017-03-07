@@ -31,42 +31,17 @@
 
 namespace meteo {
 
-struct Climate
-{
-    double TMax;
-    double TMin;
-    double TMoy;
-    double HMax;
-    double HMin;
-    double HMoy;
-    double Vt;
-    double Ins;
-    double Rg;
-    double ETP;
-    double Rain;
-
-    Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
-            double HMoy, double Vt, double Ins, double Rg, double ETP,
-            double Rain) :
-        TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
-        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(ETP), Rain(Rain)
-    { }
-};
-
-class Model : public samara::AbstractAtomicModel < Model >
+class MeteoModel : public samara::AbstractAtomicModel < MeteoModel >
 {
 public:
-    Model(const samara::AbstractModel* parent)  :
-        samara::AbstractAtomicModel < Model >(parent)
-    { }
+    MeteoModel (const samara::AbstractModel* parent);
 
-    virtual ~Model()
+    virtual ~MeteoModel()
     { }
 
     void compute(double t, bool update);
 
-    const Climate& get() const
-    { return *it; }
+    const model::models::Climate& get() const;
 
     void init(double t, const model::models::ModelParameters& parameters);
 
@@ -74,8 +49,8 @@ private:
     double begin;
     double end;
 
-    std::vector < Climate > values;
-    std::vector < Climate >::const_iterator it;
+    std::vector < model::models::Climate > values;
+    std::vector < model::models::Climate >::const_iterator it;
 };
 
 }

@@ -30,10 +30,18 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include <libpq-fe.h>
+#if 1
+typedef PGconn* PQConnector;
+#else
+typedef pqxx::connection& PQConnector;
+#endif
+
 namespace utils {
 
 class ParametersReader
 {
+
 public:
     ParametersReader()
     { }
@@ -47,35 +55,39 @@ public:
                       model::models::ModelParameters& parameters);
     void loadFromTree(const boost::property_tree::ptree& tree,
                       model::models::ModelParameters& parameters);
-
+//    void loadParametersFromFiles(const std::string &folder,
+//                model::models::ModelParameters &parameters);
 private:
     // database
-    void load_data(pqxx::connection& connection,
+    void load_meteo(PQConnector connection, model::models::ModelParameters &parameters);
+
+    void load_data(PQConnector connection,
                    const std::string& table,
                    const std::string& key,
                    const std::string& value,
                    const std::vector < std::string >& names,
                    model::models::ModelParameters& parameters);
+
     void load_itineraire_technique(const std::string& id,
-                                   pqxx::connection& connection,
+                                   PQConnector connection,
                                    model::models::ModelParameters& parameters);
     void load_plot(const std::string& id,
-                   pqxx::connection& connection,
+                   PQConnector connection,
                    model::models::ModelParameters& parameters);
     void load_simulation(const std::string& id,
-                         pqxx::connection& connection,
+                         PQConnector connection,
                          model::models::ModelParameters& parameters);
     void load_site(const std::string& id,
-                   pqxx::connection& connection,
+                   PQConnector connection,
                    model::models::ModelParameters& parameters);
     void load_station(const std::string& id,
-                      pqxx::connection& connection,
+                      PQConnector connection,
                       model::models::ModelParameters& parameters);
     void load_type_soil(const std::string& id,
-                        pqxx::connection& connection,
+                        PQConnector connection,
                         model::models::ModelParameters& parameters);
     void load_variety(const std::string& id,
-                      pqxx::connection& connection,
+                      PQConnector connection,
                       model::models::ModelParameters& parameters);
 
     // json

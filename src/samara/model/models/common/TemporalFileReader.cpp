@@ -23,7 +23,7 @@
  */
 
 #include <samara/model/models/common/TemporalFileReader.hpp>
-
+#include "iso646.h"
 using namespace BOOST_SPIRIT;
 
 namespace model { namespace models { namespace common {

@@ -26,11 +26,11 @@
 
 namespace samara {
 
-double Model2::NullValue = -999;
+double SamaraModel2::NullValue = -999;
 
-void Model2::init(double t, const model::models::ModelParameters& parameters)
+void SamaraModel2::init(double t, const model::models::ModelParameters& parameters)
 {
-    Model::init(t, parameters);
+    SamaraModel::init(t, parameters);
 }
 
 } // namespace samara

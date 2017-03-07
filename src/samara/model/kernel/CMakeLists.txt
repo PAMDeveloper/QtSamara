@@ -9,7 +9,7 @@ SET(SAMARA_KERNEL_HPP AbstractAtomicModel.hpp AbstractModel.hpp
 SET(SAMARA_KERNEL_CPP Simulator.cpp Model.cpp)
 
 ADD_LIBRARY(samara-kernel SHARED ${SAMARA_KERNEL_HPP} ${SAMARA_KERNEL_CPP})
-TARGET_LINK_LIBRARIES(samara-kernel samara-models-samara)
+TARGET_LINK_LIBRARIES(samara-kernel samara-models-samara samara-models-meteo)
 
 INSTALL(FILES ${SAMARA_KERNEL_HPP} DESTINATION
   ${SAMARA_INCLUDE_DIRS}/model/kernel)

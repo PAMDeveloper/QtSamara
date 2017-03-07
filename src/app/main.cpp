@@ -30,7 +30,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-#include <samara/version.hpp>
+//#include <samara/version.hpp>
 
 #include <samara/model/kernel/Model.hpp>
 #include <samara/model/kernel/Simulator.hpp>
@@ -63,7 +63,6 @@ typedef artis::observer::Output < artis::utils::DoubleTime,
 static void run(const std::string& /* path */, int /* verbose */)
 {
     samara::GlobalParameters globalParameters;
-    model::kernel::Model* model = new model::kernel::Model;
     model::models::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string begin;
@@ -73,6 +72,7 @@ static void run(const std::string& /* path */, int /* verbose */)
     format_dates(parameters, begin, end);
 
     globalParameters.modelVersion = parameters.get < std::string >("IdModele");
+    model::kernel::KernelModel* model = new model::kernel::KernelModel;
     kernel::Simulator simulator(model, globalParameters);
 
     simulator.attachView("global", new model::observer::GlobalView);
@@ -94,7 +94,7 @@ static int show_infos()
         "You may redistribute copies of Samara\n"
         "under the terms of the GNU General Public License.\n"
         "For more information about these matters, see the file named "
-        "COPYING.\n") % SAMARA_NAME_COMPLETE << std::endl;
+        "COPYING.\n") % "Samara" << std::endl;
 
     return EXIT_SUCCESS;
 }
@@ -108,7 +108,7 @@ static int show_help(const po::options_description &desc)
 
 static int show_version()
 {
-    std::cout << boost::format("%1%\n") % SAMARA_NAME_COMPLETE << std::endl;
+    std::cout << boost::format("%1%\n") % "Samara" << std::endl;
 
     return EXIT_SUCCESS;
 }

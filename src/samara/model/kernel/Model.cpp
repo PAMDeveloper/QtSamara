@@ -26,30 +26,30 @@
 
 namespace model { namespace kernel {
 
-void Model::compute(double t, bool /* update */)
+void KernelModel::compute(double t, bool /* update */)
 {
     (*meteo_model)(t);
-    samara_model->put < double >(t, samara::Model::TMAX,
+    samara_model->put < double >(t, samara::SamaraModel::TMAX,
                                  meteo_model->get().TMax);
-    samara_model->put < double >(t, samara::Model::TMIN,
+    samara_model->put < double >(t, samara::SamaraModel::TMIN,
                                  meteo_model->get().TMin);
-    samara_model->put < double >(t, samara::Model::TMOY,
+    samara_model->put < double >(t, samara::SamaraModel::TMOY,
                                  meteo_model->get().TMoy);
-    samara_model->put < double >(t, samara::Model::HMAX,
+    samara_model->put < double >(t, samara::SamaraModel::HMAX,
                                  meteo_model->get().HMax);
-    samara_model->put < double >(t, samara::Model::HMIN,
+    samara_model->put < double >(t, samara::SamaraModel::HMIN,
                                  meteo_model->get().HMin);
-    samara_model->put < double >(t, samara::Model::HMOY,
+    samara_model->put < double >(t, samara::SamaraModel::HMOY,
                                  meteo_model->get().HMoy);
-    samara_model->put < double >(t, samara::Model::WIND,
+    samara_model->put < double >(t, samara::SamaraModel::WIND,
                                  meteo_model->get().Vt);
-    samara_model->put < double >(t, samara::Model::INS,
+    samara_model->put < double >(t, samara::SamaraModel::INS,
                                  meteo_model->get().Ins);
-    samara_model->put < double >(t, samara::Model::RG,
+    samara_model->put < double >(t, samara::SamaraModel::RG,
                                  meteo_model->get().Rg);
-    samara_model->put < double >(t, samara::Model::Etp,
+    samara_model->put < double >(t, samara::SamaraModel::Etp,
                                  meteo_model->get().ETP);
-    samara_model->put < double >(t, samara::Model::RAIN,
+    samara_model->put < double >(t, samara::SamaraModel::RAIN,
                                  meteo_model->get().Rain);
     (*samara_model)(t);
 }

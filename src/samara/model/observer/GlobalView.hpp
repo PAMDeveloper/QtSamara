@@ -28,7 +28,7 @@
 #include <artis/kernel/Value.hpp>
 
 #include <samara/model/kernel/Model.hpp>
-#include <samara/model/models/samara/Model.hpp>
+#include <samara/model/models/samara/SamaraModel.hpp>
 #include <samara/model/observer/View.hpp>
 
 namespace model { namespace observer {
@@ -39,247 +39,247 @@ public:
     GlobalView()
     {
         selector("LAI", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::LAI });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::LAI });
         selector("NumPhase", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::NUMPHASE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::NUMPHASE });
         selector("DegresDuJour", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DEGRESDUJOUR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DEGRESDUJOUR });
         selector("DegresDuJourCor", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DEGRESDUJOURCOR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DEGRESDUJOURCOR });
         selector("FTSW", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::Ftsw });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::Ftsw });
         selector("Cstr", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CSTR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CSTR });
         selector("RootFront", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ROOTFRONT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ROOTFRONT });
         selector("Eto", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ETO });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ETO });
         selector("ETM", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::Etm });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::Etm });
         selector("ETR", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::Etr });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::Etr });
         selector("RUE", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::Rue });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::Rue });
         selector("ConversionEff", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CONVERSIONEFF });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CONVERSIONEFF });
         selector("Ic", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::IC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::IC });
         selector("CulmsPerPlant", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CULMSPERPLANT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CULMSPERPLANT });
         selector("CulmsPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CULMSPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CULMSPOP });
         selector("CulmsPerHill", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CULMSPERHILL });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CULMSPERHILL });
         selector("GrainYieldPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::GRAINYIELDPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::GRAINYIELDPOP });
         selector("DryMatStructLeafPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATSTRUCTLEAFPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATSTRUCTLEAFPOP });
         selector("DryMatStructSheathPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::DRYMATSTRUCTSHEATHPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::DRYMATSTRUCTSHEATHPOP });
         selector("DryMatStructRootPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATSTRUCTROOTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATSTRUCTROOTPOP });
         selector("DryMatStructInternodePop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::DRYMATSTRUCTINTERNODEPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::DRYMATSTRUCTINTERNODEPOP });
         selector("DryMatResInternodePop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::DRYMATRESINTERNODEPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::DRYMATRESINTERNODEPOP });
         selector("DryMatStructPaniclePop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::DRYMATSTRUCTPANICLEPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::DRYMATSTRUCTPANICLEPOP });
         selector("DryMatStructTotPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATSTRUCTTOTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATSTRUCTTOTPOP });
         selector("DryMatVegeTotPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATVEGETOTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATVEGETOTPOP });
         selector("DryMatPanicleTotPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATPANICLETOTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATPANICLETOTPOP });
         selector("DryMatStemPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATSTEMPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATSTEMPOP });
         selector("DryMatAboveGroundPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::DRYMATABOVEGROUNDPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::DRYMATABOVEGROUNDPOP });
         selector("DryMatTotPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DRYMATTOTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DRYMATTOTPOP });
         selector("SterilityCold", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STERILITYCOLD });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STERILITYCOLD });
         selector("SterilityHeat", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STERILITYHEAT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STERILITYHEAT });
         selector("SterilityDrought", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STERILITYDROUGHT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STERILITYDROUGHT });
         selector("SterilityTot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STERILITYTOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STERILITYTOT });
         selector("HarvestIndex", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::HARVESTINDEX });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::HARVESTINDEX });
         selector("PanicleNumPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PANICLENUMPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PANICLENUMPOP });
         selector("PanicleNumPlant", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PANICLENUMPLANT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PANICLENUMPLANT });
         selector("GrainYieldPanicle", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::GRAINYIELDPANICLE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::GRAINYIELDPANICLE });
         selector("SpikeNumPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SPIKENUMPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SPIKENUMPOP });
         selector("SpikeNumPanicle", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SPIKENUMPANICLE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SPIKENUMPANICLE });
         selector("FertSpikeNumPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::FERTSPIKENUMPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::FERTSPIKENUMPOP });
         selector("GrainFillingStatus", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::GRAINFILLINGSTATUS });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::GRAINFILLINGSTATUS });
         selector("PhaseStemElongation", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PHASESTEMELONGATION });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PHASESTEMELONGATION });
         selector("Sla", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SLA });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SLA });
         selector("HaunIndex", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::HAUNINDEX });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::HAUNINDEX });
         selector("ApexHeight", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::APEXHEIGHT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::APEXHEIGHT });
         selector("PlantHeight", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PLANTHEIGHT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PLANTHEIGHT });
         selector("PlantWidth", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PLANTWIDTH });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PLANTWIDTH });
         selector("KRolling", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::KROLLING });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::KROLLING });
         selector("LIRkdfcl", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::LIRKDFCL });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::LIRKDFCL });
         selector("LTRkdfcl", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::LTRKDFCL });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::LTRKDFCL });
         selector("AssimPot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ASSIMPOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ASSIMPOT });
         selector("Assim", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ASSIM });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ASSIM });
         selector("RespMaintTot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::RESPMAINTTOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::RESPMAINTTOT });
         selector("SupplyTot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SUPPLYTOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SUPPLYTOT });
         selector("AssimSurplus", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ASSIMSURPLUS });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ASSIMSURPLUS });
         selector("AssimNotUsed", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::ASSIMNOTUSED });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::ASSIMNOTUSED });
         selector("TillerDeathPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::TILLERDEATHPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::TILLERDEATHPOP });
         selector("PlantLeafNumTot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PLANTLEAFNUMTOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PLANTLEAFNUMTOT });
         selector("DeadLeafDrywtPop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DEADLEAFDRYWTPOP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DEADLEAFDRYWTPOP });
         selector("LaiDead", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::LAIDEAD });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::LAIDEAD });
         selector("ResCapacityInternodePop", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::RESCAPACITYINTERNODEPOP });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::RESCAPACITYINTERNODEPOP });
         selector("InternodeResStatus", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::INTERNODERESSTATUS });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::INTERNODERESSTATUS });
         selector("DayLength", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DAYLENGTH });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DAYLENGTH });
         selector("PAR", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::Par });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::Par });
         selector("RgCalc", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::RGCALC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::RGCALC });
         selector("VPD", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::VPDCALC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::VPDCALC });
         selector("TMoyCalc", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::TMOYCALC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::TMOYCALC });
         selector("HMoyCalc", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::HMOYCALC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::HMOYCALC });
         selector("KceReal", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::KCEREAL });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::KCEREAL });
         selector("StockTotal", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STOCKTOTAL });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STOCKTOTAL });
         selector("EauDispo", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::EAUDISPO });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::EAUDISPO });
         selector("StockSurface", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STOCKSURFACE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STOCKSURFACE });
         selector("StockRac", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::STOCKRAC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::STOCKRAC });
         selector("RuRac", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::RURAC });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::RURAC });
         selector("Kcp", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::KCP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::KCP });
         selector("Kce", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::KCE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::KCE });
         selector("EvapPot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::EVAPPOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::EVAPPOT });
         selector("Evap", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::EVAP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::EVAP });
         selector("TrPot", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::TRPOT });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::TRPOT });
         selector("Tr", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::TR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::TR });
         selector("Lr", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::LR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::LR });
         selector("Dr", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::DR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::DR });
         selector("PARIntercepte", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::PARINTERCEPTE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::PARINTERCEPTE });
         selector("SommeDegresJour", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SOMMEDEGRESJOUR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SOMMEDEGRESJOUR });
         selector("VitesseRacinaire", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::VITESSERACINAIRE });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::VITESSERACINAIRE });
         selector("CstrAssim", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CSTRASSIM });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CSTRASSIM });
         selector("RayExtra", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::RAYEXTRA });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::RAYEXTRA });
         selector("CumPar", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::CUMPAR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::CUMPAR });
         selector("SommeDegresJourCor", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SOMMEDEGRESJOURCOR });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SOMMEDEGRESJOURCOR });
         selector("SumPP", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA, samara::Model::SUMPP });
+                 { kernel::KernelModel::SAMARA, samara::SamaraModel::SUMPP });
         selector("SommeDegresJourPhasePrecedente", artis::kernel::DOUBLE,
-                 { kernel::Model::SAMARA,
-                         samara::Model::SOMMEDEGRESJOURPHASEPRECEDENTE });
+                 { kernel::KernelModel::SAMARA,
+                         samara::SamaraModel::SOMMEDEGRESJOURPHASEPRECEDENTE });
     selector("RespMaintDebt", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::RESPMAINTDEBT });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::RESPMAINTDEBT });
     selector("TMinMoy", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::TMINMOY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::TMINMOY });
     selector("TMaxMoy", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::TMAXMOY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::TMAXMOY });
     selector("FtswMoy", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::FTSWMOY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::FTSWMOY });
     selector("RootShootRatio", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::ROOTSHOOTRATIO });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::ROOTSHOOTRATIO });
     selector("TrEffInst", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::TREFFINST });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::TREFFINST });
     selector("TrEff", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::TREFF });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::TREFF });
     selector("WueEt", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::WUEET });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::WUEET });
     selector("WueTot", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::WUETOT });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::WUETOT });
     selector("FloodwaterDepth", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::FLOODWATERDEPTH });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::FLOODWATERDEPTH });
     selector("IrrigAutoDay", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::IRRIGAUTODAY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::IRRIGAUTODAY });
     selector("IrrigTotDay", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::IRRIGTOTDAY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::IRRIGTOTDAY });
     selector("FractionPlantHeightSubmer", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA,
-                     samara::Model::FRACTIONPLANTHEIGHTSUBMER });
+             { kernel::KernelModel::SAMARA,
+                     samara::SamaraModel::FRACTIONPLANTHEIGHTSUBMER });
     selector("Density", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::DENSITY });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::DENSITY });
     selector("RootMassPerVol", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::ROOTMASSPERVOL });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::ROOTMASSPERVOL });
     selector("VolMacropores", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::VOLMACROPORES });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::VOLMACROPORES });
     selector("StockMacropores", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::STOCKMACROPORES });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::STOCKMACROPORES });
     selector("RelPotLeafLength", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::RELPOTLEAFLENGTH });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::RELPOTLEAFLENGTH });
     selector("ApexHeightGain", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::APEXHEIGHTGAIN });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::APEXHEIGHTGAIN });
     selector("HaunGain", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::HAUNGAIN });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::HAUNGAIN });
     selector("Conversion", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::CONVERSION });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::CONVERSION });
     selector("StressCold", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::STRESSCOLD });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::STRESSCOLD });
     selector("FractionRootsLogged", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::FRACTIONROOTSLOGGED });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::FRACTIONROOTSLOGGED });
     selector("ResUtil", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::RESUTIL });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::RESUTIL });
     selector("KcTot", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::KCTOT });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::KCTOT });
     selector("NbJas", artis::kernel::DOUBLE,
-             { kernel::Model::SAMARA, samara::Model::NBJAS });
+             { kernel::KernelModel::SAMARA, samara::SamaraModel::NBJAS });
     }
 
     virtual ~GlobalView()
