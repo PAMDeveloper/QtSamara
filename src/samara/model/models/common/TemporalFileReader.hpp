@@ -26,6 +26,8 @@
 #define SAMARA_CLIMATE_FILE_READER_HPP
 
 #include <samara/utils/DateTime.hpp>
+#include <boost/date_time.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <fstream>
 #include <map>

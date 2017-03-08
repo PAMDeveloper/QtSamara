@@ -59,8 +59,6 @@ public:
 //                model::models::ModelParameters &parameters);
 private:
     // database
-    void load_meteo(PQConnector connection, model::models::ModelParameters &parameters);
-
     void load_data(PQConnector connection,
                    const std::string& table,
                    const std::string& key,
@@ -89,6 +87,8 @@ private:
     void load_variety(const std::string& id,
                       PQConnector connection,
                       model::models::ModelParameters& parameters);
+
+    void load_meteo(PQConnector connection, model::models::ModelParameters &parameters);
 
     // json
     void load_data(boost::property_tree::ptree::const_iterator& it,

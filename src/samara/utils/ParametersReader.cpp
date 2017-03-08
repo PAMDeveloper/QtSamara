@@ -52,7 +52,7 @@ void ParametersReader::loadFromDatabase(const std::string& id,
     load_itineraire_technique( parameters.get < std::string >("iditinerairetechnique"), connection, parameters);
     load_plot(parameters.get < std::string >("idparcelle"), connection, parameters);
     load_station(parameters.get < std::string >("codestationmeteo"), connection, parameters);
-
+    load_meteo(connection, parameters);
     std::cout << "Simulation " << id << ":" << std::endl;
     std::cout << " - begin = " << parameters.get < std::string >("datedebut")
               << std::endl;
@@ -79,10 +79,13 @@ void ParametersReader::loadFromDatabase(const std::string& id,
     std::cout << " - model = "
               << parameters.get < std::string >("idmodele")
               << std::endl;
+    std::cout << " - meteo = "
+              << parameters.meteoValues.size() << " values"
+              << std::endl;
 
 }
 
-void load_meteo(PQConnector connection, model::models::ModelParameters &parameters){
+void ParametersReader::load_meteo(PQConnector connection, model::models::ModelParameters &parameters){
     std::string beginDate;
     std::string endDate;
     double begin;
@@ -137,9 +140,20 @@ void load_meteo(PQConnector connection, model::models::ModelParameters &paramete
                 }
 
                 t = utils::DateTime::toJulianDayNumber(day);
-
                 if (t >= begin && t <= end) {
                     try {
+//                        std::cout << "*********** day " << day << "*************" << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,2) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,3) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,4) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,5) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,6) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,7) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,8) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,9) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,10) << std::endl;
+//                        std::cout << PQgetvalue(resultMeteorology,compteurLigneResult,11) << std::endl;
+//                        std::cout << PQgetvalue(resultRainfall,compteurLigneResult,2) << std::endl;
                         parameters.meteoValues.push_back(
                                     model::models::Climate(
                                         boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,2)),
@@ -151,12 +165,15 @@ void load_meteo(PQConnector connection, model::models::ModelParameters &paramete
                                         boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,8)),
                                         boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,9)),
                                         boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,10)),
-                                        boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,11)),
-                                        boost::lexical_cast < double >(PQgetvalue(resultRainfall,compteurLigneResult,2))));
+//                                        boost::lexical_cast < double >(PQgetvalue(resultMeteorology,compteurLigneResult,11)),
+                                        boost::lexical_cast < double >(PQgetvalue(resultRainfall,compteurLigneResult,2))
+                                        ));
 
                     }
                     catch(boost::bad_lexical_cast const& e)
                     {
+                        std::cout << "Error meteo init recup valeur: " << e.source_type().name() << "\n";
+                        std::cout << "Error meteo init recup valeur: " << e.target_type().name() << "\n";
                         std::cout << "Error meteo init recup valeur: " << e.what() << "\n";
                     }
                 }
