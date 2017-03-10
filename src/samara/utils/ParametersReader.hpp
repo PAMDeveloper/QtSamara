@@ -22,6 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
+
 #ifndef SAMARA_UTILS_PARAMETERS_READER_HPP
 #define SAMARA_UTILS_PARAMETERS_READER_HPP
 
@@ -48,6 +51,11 @@ public:
 
     virtual ~ParametersReader()
     { }
+
+//    //SQL
+//    std::map < std::string, std::string > loadDBParameters(const std::string& id);
+
+
 
     void loadFromDatabase(const std::string& id,
                           model::models::ModelParameters& parameters);

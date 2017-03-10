@@ -107,7 +107,7 @@ void ParametersReader::load_meteo(PQConnector connection, model::models::ModelPa
         yearString = convertisseurAnnee.str();
         std::string requestMeteorology = "SELECT * FROM meteo WHERE codestation='" +
                 parameters.get < std::string >("codestationmeteo") + "' AND jour >='" + yearString
-                + "-01-01' AND jour <='" + yearString + "-12-31'";
+                + "-01-01' AND jour <='" + yearString + "-12-31' ORDER BY jour";
 
         PGresult *resultMeteorology = PQexec(connection,requestMeteorology.c_str());
         if (PQresultStatus(resultMeteorology) != PGRES_TUPLES_OK){
@@ -116,7 +116,7 @@ void ParametersReader::load_meteo(PQConnector connection, model::models::ModelPa
 
         std::string requestRainfall = "SELECT * FROM precipitation WHERE codestation='" +
                 parameters.get < std::string >("codestationpluie") +"' AND jour >='" + yearString
-                + "-01-01' AND jour <='" + yearString + "-12-31'";
+                + "-01-01' AND jour <='" + yearString + "-12-31' ORDER BY jour";
 
         PGresult *resultRainfall = PQexec(connection,requestRainfall.c_str());
         if (PQresultStatus(resultRainfall) != PGRES_TUPLES_OK){
