@@ -27,6 +27,1047 @@
 
 namespace samara {
 
+
+//void SamaraModel::writeResultInDB(const std::string idsimu,double jour)
+//{
+//    std::map < std::string,std::string > occurrenceResult;
+//    std::map < std::string,std::string >::iterator itOccurrRes;
+//    std::string requete,requeteInsert,requeteUpdate,requeteSetUpdate,requeteTest,requete_nom_colonne="",requete_valeur_colonne="",nomVar,valeurVar;
+//    PGconn* connection(utils::Connections::connection(
+//                        "samara", "host=localhost port=5432 dbname=samara user=user_samara password=samarapassword"));
+
+//    std::ostringstream strs;
+//    PGresult* result;
+
+
+//    occurrenceResult["idsimulation"] = idsimu;
+//    occurrenceResult["jour"] = utils::DateTime::toJulianDay(jour);
+
+//    strs << nbjas();
+//    occurrenceResult["nbjas"] = strs.str();
+//    strs.str("");
+
+//    strs << numphase();
+//    occurrenceResult["numphase"] = strs.str();
+//    strs.str("");
+
+//    strs << degresdujour();
+//    occurrenceResult["degresdujour"] = strs.str();
+//    strs.str("");
+
+//    strs << degresdujourcor();
+//    occurrenceResult["degresdujourcor"] = strs.str();
+//    strs.str("");
+
+//    strs << lai();
+//    occurrenceResult["lai"] = strs.str();
+//    strs.str("");
+
+//    strs << ftsw();
+//    occurrenceResult["ftsw"] = strs.str();
+//    strs.str("");
+
+//    strs << cstr();
+//    occurrenceResult["cstr"] = strs.str();
+//    strs.str("");
+
+//    strs << rootfront();
+//    occurrenceResult["rootfront"] = strs.str();
+//    strs.str("");
+
+//    strs << eto();
+//    occurrenceResult["eto"] = strs.str();
+//    strs.str("");
+
+//    strs << etm();
+//    occurrenceResult["etm"] = strs.str();
+//    strs.str("");
+
+//    strs << etr();
+//    occurrenceResult["etr"] = strs.str();
+//    strs.str("");
+
+//    strs << rue();
+//    occurrenceResult["rue"] = strs.str();
+//    strs.str("");
+
+//    strs << conversioneff();
+//    occurrenceResult["conversioneff"] = strs.str();
+//    strs.str("");
+
+//    strs << ic();
+//    occurrenceResult["ic"] = strs.str();
+//    strs.str("");
+
+//    strs << culmsperplant();
+//    occurrenceResult["culmsperplant"] = strs.str();
+//    strs.str("");
+
+//    strs << culmspop();
+//    occurrenceResult["culmspop"] = strs.str();
+//    strs.str("");
+
+//    strs << culmsperhill();
+//    occurrenceResult["culmsperhill"] = strs.str();
+//    strs.str("");
+
+//    strs << grainyieldpop();
+//    occurrenceResult["grainyieldpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructleafpop();
+//    occurrenceResult["drymatstructleafpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructsheathpop();
+//    occurrenceResult["drymatstructsheathpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructrootpop();
+//    occurrenceResult["drymatstructrootpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructinternodepop();
+//    occurrenceResult["drymatstructinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatresinternodepop();
+//    occurrenceResult["drymatresinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructpaniclepop();
+//    occurrenceResult["drymatstructpaniclepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructtotpop();
+//    occurrenceResult["drymatstructtotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatvegetotpop();
+//    occurrenceResult["drymatvegetotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatpanicletotpop();
+//    occurrenceResult["drymatpanicletotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstempop();
+//    occurrenceResult["drymatstempop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatabovegroundpop();
+//    occurrenceResult["drymatabovegroundpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymattotpop();
+//    occurrenceResult["drymattotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitycold();
+//    occurrenceResult["sterilitycold"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilityheat();
+//    occurrenceResult["sterilityheat"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitydrought();
+//    occurrenceResult["sterilitydrought"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitytot();
+//    occurrenceResult["sterilitytot"] = strs.str();
+//    strs.str("");
+
+//    strs << harvestindex();
+//    occurrenceResult["harvestindex"] = strs.str();
+//    strs.str("");
+
+//    strs << paniclenumpop();
+//    occurrenceResult["paniclenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << paniclenumplant();
+//    occurrenceResult["paniclenumplant"] = strs.str();
+//    strs.str("");
+
+//    strs << grainyieldpanicle();
+//    occurrenceResult["grainyieldpanicle"] = strs.str();
+//    strs.str("");
+
+//    strs << spikenumpop();
+//    occurrenceResult["spikenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << spikenumpanicle();
+//    occurrenceResult["spikenumpanicle"] = strs.str();
+//    strs.str("");
+
+//    strs << fertspikenumpop();
+//    occurrenceResult["fertspikenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << grainfillingstatus();
+//    occurrenceResult["grainfillingstatus"] = strs.str();
+//    strs.str("");
+
+//    strs << phasestemelongation();
+//    occurrenceResult["phasestemelongation"] = strs.str();
+//    strs.str("");
+
+//    strs << sla();
+//    occurrenceResult["sla"] = strs.str();
+//    strs.str("");
+
+//    strs << haunindex();
+//    occurrenceResult["haunindex"] = strs.str();
+//    strs.str("");
+
+//    strs << apexheight();
+//    occurrenceResult["apexheight"] = strs.str();
+//    strs.str("");
+
+//    strs << plantheight();
+//    occurrenceResult["plantheight"] = strs.str();
+//    strs.str("");
+
+//    strs << plantwidth();
+//    occurrenceResult["plantwidth"] = strs.str();
+//    strs.str("");
+
+//    strs << krolling();
+//    occurrenceResult["krolling"] = strs.str();
+//    strs.str("");
+
+//    strs << lirkdfcl();
+//    occurrenceResult["lirkdfcl"] = strs.str();
+//    strs.str("");
+
+//    strs << ltrkdfcl();
+//    occurrenceResult["ltrkdfcl"] = strs.str();
+//    strs.str("");
+
+//    strs << assimpot();
+//    occurrenceResult["assimpot"] = strs.str();
+//    strs.str("");
+
+//    strs << assim();
+//    occurrenceResult["assim"] = strs.str();
+//    strs.str("");
+
+//    strs << respmainttot();
+//    occurrenceResult["respmainttot"] = strs.str();
+//    strs.str("");
+
+//    strs << supplytot();
+//    occurrenceResult["supplytot"] = strs.str();
+//    strs.str("");
+
+//    strs << assimsurplus();
+//    occurrenceResult["assimsurplus"] = strs.str();
+//    strs.str("");
+
+//    strs << assimnotused();
+//    occurrenceResult["assimnotused"] = strs.str();
+//    strs.str("");
+
+//    strs << tillerdeathpop();
+//    occurrenceResult["tillerdeathpop"] = strs.str();
+//    strs.str("");
+
+//    strs << plantleafnumtot();
+//    occurrenceResult["plantleafnumtot"] = strs.str();
+//    strs.str("");
+
+//    strs << deadleafdrywtpop();
+//    occurrenceResult["deadleafdrywtpop"] = strs.str();
+//    strs.str("");
+
+//    strs << laidead();
+//    occurrenceResult["laidead"] = strs.str();
+//    strs.str("");
+
+//    strs << rescapacityinternodepop();
+//    occurrenceResult["rescapacityinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << internoderesstatus();
+//    occurrenceResult["internoderesstatus"] = strs.str();
+//    strs.str("");
+
+//    strs << daylength();
+//    occurrenceResult["daylength"] = strs.str();
+//    strs.str("");
+
+//    strs << par();
+//    occurrenceResult["par"] = strs.str();
+//    strs.str("");
+
+//    strs << rgcalc();
+//    occurrenceResult["rgcalc"] = strs.str();
+//    strs.str("");
+
+//    strs << vpdcalc();
+//    occurrenceResult["vpdcalc"] = strs.str();
+//    strs.str("");
+
+//    strs << tmoycalc();
+//    occurrenceResult["tmoycalc"] = strs.str();
+//    strs.str("");
+
+//    strs << hmoycalc();
+//    occurrenceResult["hmoycalc"] = strs.str();
+//    strs.str("");
+
+//    strs << kcereal();
+//    occurrenceResult["kcereal"] = strs.str();
+//    strs.str("");
+
+//    strs << stocktotal();
+//    occurrenceResult["stocktotal"] = strs.str();
+//    strs.str("");
+
+//    strs << eaudispo();
+//    occurrenceResult["eaudispo"] = strs.str();
+//    strs.str("");
+
+//    strs << stocksurface();
+//    occurrenceResult["stocksurface"] = strs.str();
+//    strs.str("");
+
+//    strs << stockrac();
+//    occurrenceResult["stockrac"] = strs.str();
+//    strs.str("");
+
+//    strs << rurac();
+//    occurrenceResult["rurac"] = strs.str();
+//    strs.str("");
+
+//    strs << kcp();
+//    occurrenceResult["kcp"] = strs.str();
+//    strs.str("");
+
+//    strs << kce();
+//    occurrenceResult["kce"] = strs.str();
+//    strs.str("");
+
+//    strs << evappot();
+//    occurrenceResult["evappot"] = strs.str();
+//    strs.str("");
+
+//    strs << evap();
+//    occurrenceResult["evap"] = strs.str();
+//    strs.str("");
+
+//    strs << trpot();
+//    occurrenceResult["trpot"] = strs.str();
+//    strs.str("");
+
+//    strs << tr();
+//    occurrenceResult["tr"] = strs.str();
+//    strs.str("");
+
+//    strs << lr();
+//    occurrenceResult["lr"] = strs.str();
+//    strs.str("");
+
+//    strs << dr();
+//    occurrenceResult["dr"] = strs.str();
+//    strs.str("");
+
+//    strs << parintercepte();
+//    occurrenceResult["parintercepte"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjour();
+//    occurrenceResult["sumdegresday"] = strs.str();
+//    strs.str("");
+
+//    strs << vitesseracinaire();
+//    occurrenceResult["vitesseracinaire"] = strs.str();
+//    strs.str("");
+
+//    strs << cstrassim();
+//    occurrenceResult["cstrassim"] = strs.str();
+//    strs.str("");
+
+//    strs << rayextra();
+//    occurrenceResult["rayextra"] = strs.str();
+//    strs.str("");
+
+//    strs << cumpar();
+//    occurrenceResult["cumpar"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjourcor();
+//    occurrenceResult["sumdegredaycor"] = strs.str();
+//    strs.str("");
+
+//    strs << sumpp();
+//    occurrenceResult["sumpp"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjourphaseprecedente();
+//    occurrenceResult["sumddphaseprec"] = strs.str();
+//    strs.str("");
+
+//    strs << respmaintdebt();
+//    occurrenceResult["respmaintdebt"] = strs.str();
+//    strs.str("");
+
+//    strs << tminmoy();
+//    occurrenceResult["tminmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << tmaxmoy();
+//    occurrenceResult["tmaxmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << ftswmoy();
+//    occurrenceResult["ftswmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << rootshootratio();
+//    occurrenceResult["rootshootratio"] = strs.str();
+//    strs.str("");
+
+//    strs << treffinst();
+//    occurrenceResult["treffinst"] = strs.str();
+//    strs.str("");
+
+//    strs << treff();
+//    occurrenceResult["treff"] = strs.str();
+//    strs.str("");
+
+//    strs << wueet();
+//    occurrenceResult["wueet"] = strs.str();
+//    strs.str("");
+
+//    strs << wuetot();
+//    occurrenceResult["wuetot"] = strs.str();
+//    strs.str("");
+
+//    strs << floodwaterdepth();
+//    occurrenceResult["floodwaterdepth"] = strs.str();
+//    strs.str("");
+
+//    strs << irrigautoday();
+//    occurrenceResult["irrigautoday"] = strs.str();
+//    strs.str("");
+
+//    strs << irrigtotday();
+//    occurrenceResult["irrigtotday"] = strs.str();
+//    strs.str("");
+
+//    strs << fractionplantheightsubmer();
+//    occurrenceResult["fractionplantheightsubmer"] = strs.str();
+//    strs.str("");
+
+//    strs << density();
+//    occurrenceResult["density"] = strs.str();
+//    strs.str("");
+
+//    strs << rootmasspervol();
+//    occurrenceResult["rootmasspervol"] = strs.str();
+//    strs.str("");
+
+//    strs << volmacropores();
+//    occurrenceResult["volmacropores"] = strs.str();
+//    strs.str("");
+
+//    strs << stockmacropores();
+//    occurrenceResult["stockmacropores"] = strs.str();
+//    strs.str("");
+
+//    strs << relpotleaflength();
+//    occurrenceResult["relpotleaflength"] = strs.str();
+//    strs.str("");
+
+//    strs << apexheightgain();
+//    occurrenceResult["apexheightgain"] = strs.str();
+//    strs.str("");
+
+//    strs << haungain();
+//    occurrenceResult["haungain"] = strs.str();
+//    strs.str("");
+
+//    strs << conversion();
+//    occurrenceResult["conversion"] = strs.str();
+//    strs.str("");
+
+//    strs << stresscold();
+//    occurrenceResult["stresscold"] = strs.str();
+//    strs.str("");
+
+//    strs << fractionrootslogged();
+//    occurrenceResult["fractionrootslogged"] = strs.str();
+//    strs.str("");
+
+//    strs << resutil();
+//    occurrenceResult["resutil"] = strs.str();
+//    strs.str("");
+
+//    strs << kctot();
+//    occurrenceResult["kctot"] = strs.str();
+//    strs.str("");
+
+
+//    requeteInsert ="INSERT INTO resultat(";
+//    requeteUpdate = "UPDATE resultat SET ";
+//    for(itOccurrRes = occurrenceResult.begin();itOccurrRes != occurrenceResult.end();itOccurrRes++){
+//        nomVar = itOccurrRes->first;
+//        valeurVar = itOccurrRes->second;
+
+//        if (valeurVar.find("nan") != std::string::npos || valeurVar.find("inf") != std::string::npos)
+//            valeurVar = "NULL";
+//        if ((nomVar.compare("idsimulation") ==0) || (nomVar.compare("jour") ==0))
+//            valeurVar = "'" + valeurVar + "'";
+
+//        requeteSetUpdate = requeteSetUpdate + nomVar + "=" + valeurVar + ",";
+//        requete_nom_colonne = requete_nom_colonne + nomVar + ",";
+//        requete_valeur_colonne = requete_valeur_colonne + valeurVar + ",";
+//    }
+
+//    requeteTest = "SELECT idsimulation,jour FROM resultat WHERE idsimulation ='" +
+//                        occurrenceResult["idsimulation"] + "' AND jour='" + occurrenceResult["jour"] + "'";
+
+//    result = PQexec(connection,requeteTest.c_str());
+//    if (PQresultStatus(result) != PGRES_TUPLES_OK){
+//            std::cout << "Error: " << PQerrorMessage(connection) << std::endl;
+//    }
+//    if (PQntuples(result) > 0){
+//        requeteSetUpdate = requeteSetUpdate.substr(0,requeteSetUpdate.length()-1);
+//        requeteUpdate = requeteUpdate + requeteSetUpdate + " WHERE idsimulation='" + occurrenceResult["idsimulation"]
+//                        + "' AND jour='" + occurrenceResult["jour"] + "'";
+//        requete = requeteUpdate;
+//    }
+//    else {
+//        requete_nom_colonne = requete_nom_colonne.substr(0,requete_nom_colonne.length()-1);
+//        requete_valeur_colonne = requete_valeur_colonne.substr(0,requete_valeur_colonne.length()-1);
+//        requeteInsert = requeteInsert + requete_nom_colonne + ") VALUES (" + requete_valeur_colonne + ")";
+//        requete = requeteInsert;
+//    }
+//    PQclear(result);
+
+
+//    //std::cout<<requete<<std::endl;
+//    result = PQexec(connection,requete.c_str());
+//    if (PQresultStatus(result) != PGRES_COMMAND_OK){
+//            std::cout << "Error: " << PQerrorMessage(connection) << std::endl;
+//    }
+//    PQclear(result);
+//}
+
+//void Model2_1::writeResultInFile(const std::string idsimu,double jour){
+
+//    std::map < std::string,std::string > occurrenceResult;
+//    std::map < std::string,std::string >::iterator itOccurrRes;
+//    std::string ligneDonnees="",ligneEntete="",nomVar,valeurVar;
+
+//    std::ostringstream strs;
+
+
+//    occurrenceResult["idsimulation"] = idsimu;
+//    occurrenceResult["jour"] = utils::DateTime::toJulianDay(jour);
+//    strs << nbjas();
+//    occurrenceResult["nbjas"] = strs.str();
+//    strs.str("");
+
+//    strs << numphase();
+//    occurrenceResult["numphase"] = strs.str();
+//    strs.str("");
+
+//    strs << degresdujour();
+//    occurrenceResult["degresdujour"] = strs.str();
+//    strs.str("");
+
+//    strs << degresdujourcor();
+//    occurrenceResult["degresdujourcor"] = strs.str();
+//    strs.str("");
+
+//    strs << lai();
+//    occurrenceResult["lai"] = strs.str();
+//    strs.str("");
+
+//    strs << ftsw();
+//    occurrenceResult["ftsw"] = strs.str();
+//    strs.str("");
+
+//    strs << cstr();
+//    occurrenceResult["cstr"] = strs.str();
+//    strs.str("");
+
+//    strs << rootfront();
+//    occurrenceResult["rootfront"] = strs.str();
+//    strs.str("");
+
+//    strs << eto();
+//    occurrenceResult["eto"] = strs.str();
+//    strs.str("");
+
+//    strs << etm();
+//    occurrenceResult["etm"] = strs.str();
+//    strs.str("");
+
+//    strs << etr();
+//    occurrenceResult["etr"] = strs.str();
+//    strs.str("");
+
+//    strs << rue();
+//    occurrenceResult["rue"] = strs.str();
+//    strs.str("");
+
+//    strs << conversioneff();
+//    occurrenceResult["conversioneff"] = strs.str();
+//    strs.str("");
+
+//    strs << ic();
+//    occurrenceResult["ic"] = strs.str();
+//    strs.str("");
+
+//    strs << culmsperplant();
+//    occurrenceResult["culmsperplant"] = strs.str();
+//    strs.str("");
+
+//    strs << culmspop();
+//    occurrenceResult["culmspop"] = strs.str();
+//    strs.str("");
+
+//    strs << culmsperhill();
+//    occurrenceResult["culmsperhill"] = strs.str();
+//    strs.str("");
+
+//    strs << grainyieldpop();
+//    occurrenceResult["grainyieldpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructleafpop();
+//    occurrenceResult["drymatstructleafpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructsheathpop();
+//    occurrenceResult["drymatstructsheathpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructrootpop();
+//    occurrenceResult["drymatstructrootpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructinternodepop();
+//    occurrenceResult["drymatstructinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatresinternodepop();
+//    occurrenceResult["drymatresinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructpaniclepop();
+//    occurrenceResult["drymatstructpaniclepop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstructtotpop();
+//    occurrenceResult["drymatstructtotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatvegetotpop();
+//    occurrenceResult["drymatvegetotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatpanicletotpop();
+//    occurrenceResult["drymatpanicletotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatstempop();
+//    occurrenceResult["drymatstempop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymatabovegroundpop();
+//    occurrenceResult["drymatabovegroundpop"] = strs.str();
+//    strs.str("");
+
+//    strs << drymattotpop();
+//    occurrenceResult["drymattotpop"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitycold();
+//    occurrenceResult["sterilitycold"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilityheat();
+//    occurrenceResult["sterilityheat"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitydrought();
+//    occurrenceResult["sterilitydrought"] = strs.str();
+//    strs.str("");
+
+//    strs << sterilitytot();
+//    occurrenceResult["sterilitytot"] = strs.str();
+//    strs.str("");
+
+//    strs << harvestindex();
+//    occurrenceResult["harvestindex"] = strs.str();
+//    strs.str("");
+
+//    strs << paniclenumpop();
+//    occurrenceResult["paniclenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << paniclenumplant();
+//    occurrenceResult["paniclenumplant"] = strs.str();
+//    strs.str("");
+
+//    strs << grainyieldpanicle();
+//    occurrenceResult["grainyieldpanicle"] = strs.str();
+//    strs.str("");
+
+//    strs << spikenumpop();
+//    occurrenceResult["spikenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << spikenumpanicle();
+//    occurrenceResult["spikenumpanicle"] = strs.str();
+//    strs.str("");
+
+//    strs << fertspikenumpop();
+//    occurrenceResult["fertspikenumpop"] = strs.str();
+//    strs.str("");
+
+//    strs << grainfillingstatus();
+//    occurrenceResult["grainfillingstatus"] = strs.str();
+//    strs.str("");
+
+//    strs << phasestemelongation();
+//    occurrenceResult["phasestemelongation"] = strs.str();
+//    strs.str("");
+
+//    strs << sla();
+//    occurrenceResult["sla"] = strs.str();
+//    strs.str("");
+
+//    strs << haunindex();
+//    occurrenceResult["haunindex"] = strs.str();
+//    strs.str("");
+
+//    strs << apexheight();
+//    occurrenceResult["apexheight"] = strs.str();
+//    strs.str("");
+
+//    strs << plantheight();
+//    occurrenceResult["plantheight"] = strs.str();
+//    strs.str("");
+
+//    strs << plantwidth();
+//    occurrenceResult["plantwidth"] = strs.str();
+//    strs.str("");
+
+//    strs << krolling();
+//    occurrenceResult["krolling"] = strs.str();
+//    strs.str("");
+
+//    strs << lirkdfcl();
+//    occurrenceResult["lirkdfcl"] = strs.str();
+//    strs.str("");
+
+//    strs << ltrkdfcl();
+//    occurrenceResult["ltrkdfcl"] = strs.str();
+//    strs.str("");
+
+//    strs << assimpot();
+//    occurrenceResult["assimpot"] = strs.str();
+//    strs.str("");
+
+//    strs << assim();
+//    occurrenceResult["assim"] = strs.str();
+//    strs.str("");
+
+//    strs << respmainttot();
+//    occurrenceResult["respmainttot"] = strs.str();
+//    strs.str("");
+
+//    strs << supplytot();
+//    occurrenceResult["supplytot"] = strs.str();
+//    strs.str("");
+
+//    strs << assimsurplus();
+//    occurrenceResult["assimsurplus"] = strs.str();
+//    strs.str("");
+
+//    strs << assimnotused();
+//    occurrenceResult["assimnotused"] = strs.str();
+//    strs.str("");
+
+//    strs << tillerdeathpop();
+//    occurrenceResult["tillerdeathpop"] = strs.str();
+//    strs.str("");
+
+//    strs << plantleafnumtot();
+//    occurrenceResult["plantleafnumtot"] = strs.str();
+//    strs.str("");
+
+//    strs << deadleafdrywtpop();
+//    occurrenceResult["deadleafdrywtpop"] = strs.str();
+//    strs.str("");
+
+//    strs << laidead();
+//    occurrenceResult["laidead"] = strs.str();
+//    strs.str("");
+
+//    strs << rescapacityinternodepop();
+//    occurrenceResult["rescapacityinternodepop"] = strs.str();
+//    strs.str("");
+
+//    strs << internoderesstatus();
+//    occurrenceResult["internoderesstatus"] = strs.str();
+//    strs.str("");
+
+//    strs << daylength();
+//    occurrenceResult["daylength"] = strs.str();
+//    strs.str("");
+
+//    strs << par();
+//    occurrenceResult["par"] = strs.str();
+//    strs.str("");
+
+//    strs << rgcalc();
+//    occurrenceResult["rgcalc"] = strs.str();
+//    strs.str("");
+
+//    strs << vpdcalc();
+//    occurrenceResult["vpdcalc"] = strs.str();
+//    strs.str("");
+
+//    strs << tmoycalc();
+//    occurrenceResult["tmoycalc"] = strs.str();
+//    strs.str("");
+
+//    strs << hmoycalc();
+//    occurrenceResult["hmoycalc"] = strs.str();
+//    strs.str("");
+
+//    strs << kcereal();
+//    occurrenceResult["kcereal"] = strs.str();
+//    strs.str("");
+
+//    strs << stocktotal();
+//    occurrenceResult["stocktotal"] = strs.str();
+//    strs.str("");
+
+//    strs << eaudispo();
+//    occurrenceResult["eaudispo"] = strs.str();
+//    strs.str("");
+
+//    strs << stocksurface();
+//    occurrenceResult["stocksurface"] = strs.str();
+//    strs.str("");
+
+//    strs << stockrac();
+//    occurrenceResult["stockrac"] = strs.str();
+//    strs.str("");
+
+//    strs << rurac();
+//    occurrenceResult["rurac"] = strs.str();
+//    strs.str("");
+
+//    strs << kcp();
+//    occurrenceResult["kcp"] = strs.str();
+//    strs.str("");
+
+//    strs << kce();
+//    occurrenceResult["kce"] = strs.str();
+//    strs.str("");
+
+//    strs << evappot();
+//    occurrenceResult["evappot"] = strs.str();
+//    strs.str("");
+
+//    strs << evap();
+//    occurrenceResult["evap"] = strs.str();
+//    strs.str("");
+
+//    strs << trpot();
+//    occurrenceResult["trpot"] = strs.str();
+//    strs.str("");
+
+//    strs << tr();
+//    occurrenceResult["tr"] = strs.str();
+//    strs.str("");
+
+//    strs << lr();
+//    occurrenceResult["lr"] = strs.str();
+//    strs.str("");
+
+//    strs << dr();
+//    occurrenceResult["dr"] = strs.str();
+//    strs.str("");
+
+//    strs << parintercepte();
+//    occurrenceResult["parintercepte"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjour();
+//    occurrenceResult["sumdegresday"] = strs.str();
+//    strs.str("");
+
+//    strs << vitesseracinaire();
+//    occurrenceResult["vitesseracinaire"] = strs.str();
+//    strs.str("");
+
+//    strs << cstrassim();
+//    occurrenceResult["cstrassim"] = strs.str();
+//    strs.str("");
+
+//    strs << rayextra();
+//    occurrenceResult["rayextra"] = strs.str();
+//    strs.str("");
+
+//    strs << cumpar();
+//    occurrenceResult["cumpar"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjourcor();
+//    occurrenceResult["sumdegredaycor"] = strs.str();
+//    strs.str("");
+
+//    strs << sumpp();
+//    occurrenceResult["sumpp"] = strs.str();
+//    strs.str("");
+
+//    strs << sommedegresjourphaseprecedente();
+//    occurrenceResult["sumddphaseprec"] = strs.str();
+//    strs.str("");
+
+//    strs << respmaintdebt();
+//    occurrenceResult["respmaintdebt"] = strs.str();
+//    strs.str("");
+
+//    strs << tminmoy();
+//    occurrenceResult["tminmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << tmaxmoy();
+//    occurrenceResult["tmaxmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << ftswmoy();
+//    occurrenceResult["ftswmoy"] = strs.str();
+//    strs.str("");
+
+//    strs << rootshootratio();
+//    occurrenceResult["rootshootratio"] = strs.str();
+//    strs.str("");
+
+//    strs << treffinst();
+//    occurrenceResult["treffinst"] = strs.str();
+//    strs.str("");
+
+//    strs << treff();
+//    occurrenceResult["treff"] = strs.str();
+//    strs.str("");
+
+//    strs << wueet();
+//    occurrenceResult["wueet"] = strs.str();
+//    strs.str("");
+
+//    strs << wuetot();
+//    occurrenceResult["wuetot"] = strs.str();
+//    strs.str("");
+
+//    strs << floodwaterdepth();
+//    occurrenceResult["floodwaterdepth"] = strs.str();
+//    strs.str("");
+
+//    strs << irrigautoday();
+//    occurrenceResult["irrigautoday"] = strs.str();
+//    strs.str("");
+
+//    strs << irrigtotday();
+//    occurrenceResult["irrigtotday"] = strs.str();
+//    strs.str("");
+
+//    strs << fractionplantheightsubmer();
+//    occurrenceResult["fractionplantheightsubmer"] = strs.str();
+//    strs.str("");
+
+//    strs << density();
+//    occurrenceResult["density"] = strs.str();
+//    strs.str("");
+
+//    strs << rootmasspervol();
+//    occurrenceResult["rootmasspervol"] = strs.str();
+//    strs.str("");
+
+//    strs << volmacropores();
+//    occurrenceResult["volmacropores"] = strs.str();
+//    strs.str("");
+
+//    strs << stockmacropores();
+//    occurrenceResult["stockmacropores"] = strs.str();
+//    strs.str("");
+
+//    strs << relpotleaflength();
+//    occurrenceResult["relpotleaflength"] = strs.str();
+//    strs.str("");
+
+//    strs << apexheightgain();
+//    occurrenceResult["apexheightgain"] = strs.str();
+//    strs.str("");
+
+//    strs << haungain();
+//    occurrenceResult["haungain"] = strs.str();
+//    strs.str("");
+
+//    strs << conversion();
+//    occurrenceResult["conversion"] = strs.str();
+//    strs.str("");
+
+//    strs << stresscold();
+//    occurrenceResult["stresscold"] = strs.str();
+//    strs.str("");
+
+//    strs << fractionrootslogged();
+//    occurrenceResult["fractionrootslogged"] = strs.str();
+//    strs.str("");
+
+//    strs << resutil();
+//    occurrenceResult["resutil"] = strs.str();
+//    strs.str("");
+
+//    strs << kctot();
+//    occurrenceResult["kctot"] = strs.str();
+//    strs.str("");
+
+
+//    for(itOccurrRes = occurrenceResult.begin();itOccurrRes != occurrenceResult.end();itOccurrRes++){
+//        nomVar = itOccurrRes->first;
+//        valeurVar = itOccurrRes->second;
+//        if (valeurVar.find("nan") != std::string::npos || valeurVar.find("inf") != std::string::npos)
+//            valeurVar = "NA";
+//        ligneEntete = ligneEntete + nomVar + "\t";
+//        ligneDonnees = ligneDonnees + valeurVar + "\t";
+//    }
+//    ligneEntete = ligneEntete.substr(0,ligneEntete.length()-1);
+//    ligneDonnees = ligneDonnees.substr(0,ligneDonnees.length()-1);
+
+//    std::ifstream fichierResultTest("Résultats_journaliers.txt");
+
+//    if(fichierResultTest)  // si fichier existe deja
+//    {
+//        fichierResultTest.close();
+//        std::ofstream fichierResultEcrire("Résultats_journaliers.txt", std::ios::out | std::ios::app);  //déclaration du flux et ouverture du fichier
+//        fichierResultEcrire << ligneDonnees << std::endl;
+
+//        fichierResultEcrire.close();
+
+//    }
+//    else {
+//        std::ofstream fichierResultEcrire("Résultats_journaliers.txt", std::ios::out);
+//        fichierResultEcrire << ligneEntete << std::endl;
+//        fichierResultEcrire << ligneDonnees << std::endl;
+//        fichierResultEcrire.close();
+//    }
+//}
+
 void SamaraModel::init(double /* t */,
                  const model::models::ModelParameters& parameters)
 {

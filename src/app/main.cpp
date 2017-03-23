@@ -81,7 +81,6 @@
 //                  utils::DateTime::toJulianDayNumber(end));
 
 //    AnOutput output(simulator.observer());
-
 //    output();
 //}
 

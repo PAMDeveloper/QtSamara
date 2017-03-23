@@ -126,6 +126,8 @@ void SamaraModel2_1::compute(double t, bool /* update */)
     // Model::mortality(); //pour l'instant
     // Model2_1::keyResults();
     // Model2_1::evalSimEndCycle();
+//    SamaraModel::writeResultInDB(parameters.get<std::string>("idsimulation"), t);
+//    SamaraModel::writeResultInFile(parameters.get<std::string>("idsimulation"), t);
 }
 
 void SamaraModel2_1::init(double t, const model::models::ModelParameters& parameters)

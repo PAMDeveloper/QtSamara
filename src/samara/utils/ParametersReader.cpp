@@ -510,6 +510,103 @@ void ParametersReader::load_type_soil(
 }
 
 // JSON
+void ParametersReader::loadFromTree(
+        const boost::property_tree::ptree& tree,
+        model::models::ModelParameters& parameters)
+{
+    using boost::property_tree::ptree;
+
+    ptree::const_iterator it_simulation = tree.end();
+    ptree::const_iterator it_variety = tree.end();
+    ptree::const_iterator it_itineraire_technique = tree.end();
+    ptree::const_iterator it_plot = tree.end();
+    ptree::const_iterator it_site = tree.end();
+    ptree::const_iterator it_station = tree.end();
+    ptree::const_iterator it_type_soil = tree.end();
+
+    for (ptree::const_iterator it = tree.begin(); it != tree.end(); ++it) {
+        if (it->first == "simulation") {
+            it_simulation = it;
+        } else if (it->first == "variety") {
+            it_variety = it;
+        } else if (it->first == "itineraire_technique") {
+            it_itineraire_technique = it;
+        } else if (it->first == "plot") {
+            it_plot = it;
+        } else if (it->first == "site") {
+            it_site = it;
+        } else if (it->first == "station") {
+            it_station = it;
+        } else if (it->first == "type_soil") {
+            it_type_soil = it;
+        }
+    }
+    load_simulation(it_simulation, parameters);
+    load_variety(it_variety, parameters);
+    load_itineraire_technique(it_itineraire_technique, parameters);
+    load_plot(it_plot, parameters);
+    load_site(it_site, parameters);
+    load_station(it_station, parameters);
+    load_type_soil(it_type_soil, parameters);
+
+
+    PGconn* connection(
+                utils::Connections::connection(
+                    "samara", "host=localhost port=5432 dbname=samara user=user_samara password=samarapassword"));
+    if (PQstatus(connection) != CONNECTION_OK)
+    {
+        std::cout << "Connection to database failed: %s" << PQerrorMessage(connection);
+        PQfinish(connection);
+        exit(1);
+    } else {
+        std::cout << "DB connection initialized." << std::endl;
+    }
+
+
+    load_meteo(connection, parameters);
+//    std::cout << "Simulation " << id << ":" << std::endl;
+    std::cout << " - begin = " << parameters.get < std::string >("datedebut")
+              << std::endl;
+    std::cout << " - end = " << parameters.get < std::string >("datefin")
+              << std::endl;
+    std::cout << " - variety = " << parameters.get < std::string >("idvariete")
+              << std::endl;
+    std::cout << " - itineraire technique = "
+              << parameters.get < std::string >("iditinerairetechnique")
+              << std::endl;
+    std::cout << " - date semis = "
+              << parameters.get < std::string >("datesemis")
+              << std::endl;
+    std::cout << " - plot = " << parameters.get < std::string >("idparcelle")
+              << std::endl;
+    std::cout << " - site = " << parameters.get < std::string >("idsite")
+              << std::endl;
+    std::cout << " - station = "
+              << parameters.get < std::string >("codestationmeteo")
+              << std::endl;
+    std::cout << " - type_soil = "
+              << parameters.get < std::string >("codetypesol")
+              << std::endl;
+    std::cout << " - model = "
+              << parameters.get < std::string >("idmodele")
+              << std::endl;
+    std::cout << " - meteo = "
+              << parameters.meteoValues.size() << " values"
+              << std::endl;
+}
+
+void ParametersReader::loadFromJSON(
+        const std::string& json, model::models::ModelParameters& parameters)
+{
+    using boost::property_tree::ptree;
+
+    ptree tree;
+    std::stringstream ss;
+
+    ss << json;
+    read_json(ss, tree);
+    loadFromTree(tree, parameters);
+}
 
 void ParametersReader::load_data(
         boost::property_tree::ptree::const_iterator& it,
@@ -811,58 +908,7 @@ void ParametersReader::load_type_soil(
 
 //}
 
-//void ParametersReader::loadFromTree(
-//        const boost::property_tree::ptree& tree,
-//        model::models::ModelParameters& parameters)
-//{
-//    using boost::property_tree::ptree;
 
-//    ptree::const_iterator it_simulation = tree.end();
-//    ptree::const_iterator it_variety = tree.end();
-//    ptree::const_iterator it_itineraire_technique = tree.end();
-//    ptree::const_iterator it_plot = tree.end();
-//    ptree::const_iterator it_site = tree.end();
-//    ptree::const_iterator it_station = tree.end();
-//    ptree::const_iterator it_type_soil = tree.end();
-
-//    for (ptree::const_iterator it = tree.begin(); it != tree.end(); ++it) {
-//        if (it->first == "simulation") {
-//            it_simulation = it;
-//        } else if (it->first == "variety") {
-//            it_variety = it;
-//        } else if (it->first == "itineraire_technique") {
-//            it_itineraire_technique = it;
-//        } else if (it->first == "plot") {
-//            it_plot = it;
-//        } else if (it->first == "site") {
-//            it_site = it;
-//        } else if (it->first == "station") {
-//            it_station = it;
-//        } else if (it->first == "type_soil") {
-//            it_type_soil = it;
-//        }
-//    }
-//    load_simulation(it_simulation, parameters);
-//    load_variety(it_variety, parameters);
-//    load_itineraire_technique(it_itineraire_technique, parameters);
-//    load_plot(it_plot, parameters);
-//    load_site(it_site, parameters);
-//    load_station(it_station, parameters);
-//    load_type_soil(it_type_soil, parameters);
-//}
-
-//void ParametersReader::loadFromJSON(
-//        const std::string& json, model::models::ModelParameters& parameters)
-//{
-//    using boost::property_tree::ptree;
-
-//    ptree tree;
-//    std::stringstream ss;
-
-//    ss << json;
-//    read_json(ss, tree);
-//    loadFromTree(tree, parameters);
-//}
 
 //void load_meteo(PQConnector connection, model::models::ModelParameters &parameters){
 //#if 1
