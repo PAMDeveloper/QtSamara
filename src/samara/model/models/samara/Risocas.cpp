@@ -36,7 +36,7 @@
 #include <cmath>
 
 namespace samara {
-
+double NullValue = -999;
 void SamaraModel2::evalDegreeDay()
 {
     double V, V1, V3;
@@ -1555,8 +1555,8 @@ void SamaraModel2_1::evalDemandTotAndIcPreFlow()
             DemStructRootPop + DemStructInternodePop +
             DemStructPaniclePop + DemResInternodePop;
 
-        // std::cout << "SupplyTot = " << SupplyTot << std::endl;
-        // std::cout << "DemStructTotPop = " << DemStructTotPop << std::endl;
+//         std::cout << "SupplyTot = " << SupplyTot << std::endl;
+//         std::cout << "DemStructTotPop = " << DemStructTotPop << std::endl;
 
 
         Ic = SupplyTot / DemStructTotPop;
