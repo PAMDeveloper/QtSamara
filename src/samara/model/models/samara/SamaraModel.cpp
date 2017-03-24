@@ -1050,7 +1050,7 @@ void SamaraModel::writeResultInFile(const std::string idsimu,double jour){
     ligneEntete = ligneEntete.substr(0,ligneEntete.length()-1);
     ligneDonnees = ligneDonnees.substr(0,ligneDonnees.length()-1);
 
-    std::ifstream fichierResultTest("Résultats_journaliers.txt");
+    std::ifstream fichierResultTest("Resultats_journaliers.txt");
 
     if(fichierResultTest)  // si fichier existe deja
     {
