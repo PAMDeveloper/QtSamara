@@ -208,7 +208,7 @@ public:
 
     void init(double t, const model::models::ModelParameters& parameters);
 
-    double NullValue = 0;
+    static double NullValue;
 
     // parameters
     double Altitude=0;
@@ -693,6 +693,358 @@ protected:
     double calculeLaMoyenne(double laValeur, double leCompteur,
                             double laMoyenne);
 
+
+
+    double lai() const
+    { return Lai; }
+
+    double numphase() const
+    { return NumPhase; }
+
+    double degresdujour() const
+    { return DegresDuJour; }
+
+    double degresdujourcor() const
+    { return DegresDuJourCor; }
+
+    double ftsw() const
+    { return FTSW; }
+
+    double cstr() const
+    { return Cstr; }
+
+    double rootfront() const
+    { return RootFront; }
+
+    double eto() const
+    { return Eto; }
+
+    double etm() const
+    { return ETM; }
+
+    double etr() const
+    { return ETR; }
+
+    double rue() const
+    { return RUE; }
+
+    double conversioneff() const
+    { return ConversionEff; }
+
+    double ic() const
+    { return Ic; }
+
+    double culmsperplant() const
+    { return CulmsPerPlant; }
+
+    double culmspop() const
+    { return CulmsPop; }
+
+    double culmsperhill() const
+    { return CulmsPerHill; }
+
+    double grainyieldpop() const
+    { return GrainYieldPop; }
+
+    double drymatstructleafpop() const
+    { return DryMatStructLeafPop; }
+
+    double drymatstructsheathpop() const
+    { return DryMatStructSheathPop; }
+
+    double drymatstructrootpop() const
+    { return DryMatStructRootPop; }
+
+    double drymatstructinternodepop() const
+    { return DryMatStructInternodePop; }
+
+    double drymatresinternodepop() const
+    { return DryMatResInternodePop; }
+
+    double drymatstructpaniclepop() const
+    { return DryMatStructPaniclePop; }
+
+    double drymatstructtotpop() const
+    { return DryMatStructTotPop; }
+
+    double drymatvegetotpop() const
+    { return DryMatVegeTotPop; }
+
+    double drymatpanicletotpop() const
+    { return DryMatPanicleTotPop; }
+
+    double drymatstempop() const
+    { return DryMatStemPop; }
+
+    double drymatabovegroundpop() const
+    { return DryMatAboveGroundPop; }
+
+    double drymattotpop() const
+    { return DryMatTotPop; }
+
+    double sterilitycold() const
+    { return SterilityCold; }
+
+    double sterilityheat() const
+    { return SterilityHeat; }
+
+    double sterilitydrought() const
+    { return SterilityDrought; }
+
+    double sterilitytot() const
+    { return SterilityTot; }
+
+    double harvestindex() const
+    { return HarvestIndex; }
+
+    double paniclenumpop() const
+    { return PanicleNumPop; }
+
+    double paniclenumplant() const
+    { return PanicleNumPlant; }
+
+    double grainyieldpanicle() const
+    { return GrainYieldPanicle; }
+
+    double spikenumpop() const
+    { return SpikeNumPop; }
+
+    double spikenumpanicle() const
+    { return SpikeNumPanicle; }
+
+    double fertspikenumpop() const
+    { return FertSpikeNumPop; }
+
+    double grainfillingstatus() const
+    { return GrainFillingStatus; }
+
+    double phasestemelongation() const
+    { return PhaseStemElongation; }
+
+    double sla() const
+    { return Sla; }
+
+    double haunindex() const
+    { return HaunIndex; }
+
+    double apexheight() const
+    { return ApexHeight; }
+
+    double plantheight() const
+    { return PlantHeight; }
+
+    double plantwidth() const
+    { return PlantWidth; }
+
+    double krolling() const
+    { return KRolling; }
+
+    double lirkdfcl() const
+    { return LIRkdfcl; }
+
+    double ltrkdfcl() const
+    { return LTRkdfcl; }
+
+    double assimpot() const
+    { return AssimPot; }
+
+    double assim() const
+    { return Assim; }
+
+    double respmainttot() const
+    { return RespMaintTot; }
+
+    double supplytot() const
+    { return SupplyTot; }
+
+    double assimsurplus() const
+    { return AssimSurplus; }
+
+    double assimnotused() const
+    { return AssimNotUsed; }
+
+    double tillerdeathpop() const
+    { return TillerDeathPop; }
+
+    double plantleafnumtot() const
+    { return PlantLeafNumTot; }
+
+    double deadleafdrywtpop() const
+    { return DeadLeafDrywtPop; }
+
+    double laidead() const
+    { return LaiDead; }
+
+    double rescapacityinternodepop() const
+    { return ResCapacityInternodePop; }
+
+    double internoderesstatus() const
+    { return InternodeResStatus; }
+
+    double daylength() const
+    { return DayLength; }
+
+    double par() const
+    { return PAR; }
+
+    double rgcalc() const
+    { return RgCalc; }
+
+    double vpdcalc() const
+    { return VPD; }
+
+    double tmoycalc() const
+    { return TMoyCalc; }
+
+    double hmoycalc() const
+    { return HMoyCalc; }
+
+    double kcereal() const
+    { return KceReal; }
+
+    double stocktotal() const
+    { return StockTotal; }
+
+    double eaudispo() const
+    { return EauDispo; }
+
+    double stocksurface() const
+    { return StockSurface; }
+
+    double stockrac() const
+    { return StockRac; }
+
+    double rurac() const
+    { return RuRac; }
+
+    double kcp() const
+    { return Kcp; }
+
+    double kce() const
+    { return Kce; }
+
+    double evappot() const
+    { return EvapPot; }
+
+    double evap() const
+    { return Evap; }
+
+    double trpot() const
+    { return TrPot; }
+
+    double tr() const
+    { return Tr; }
+
+    double lr() const
+    { return Lr; }
+
+    double dr() const
+    { return Dr; }
+
+    double parintercepte() const
+    { return PARIntercepte; }
+
+    double sommedegresjour() const
+    { return SommeDegresJour; }
+
+    double vitesseracinaire() const
+    { return VitesseRacinaire; }
+
+    double cstrassim() const
+    { return CstrAssim; }
+
+    double rayextra() const
+    { return RayExtra; }
+
+    double cumpar() const
+    { return CumPar; }
+
+    double sommedegresjourcor() const
+    { return SommeDegresJourCor; }
+
+    double sumpp() const
+    { return SumPP; }
+
+    double sommedegresjourphaseprecedente() const
+    { return SommeDegresJourPhasePrecedente; }
+
+    double respmaintdebt() const
+    { return RespMaintDebt; }
+
+    double tminmoy() const
+    { return TMinMoy; }
+
+    double tmaxmoy() const
+    { return TMaxMoy; }
+
+    double ftswmoy() const
+    { return FtswMoy; }
+
+    double rootshootratio() const
+    { return RootShootRatio; }
+
+    double treffinst() const
+    { return TrEffInst; }
+
+    double treff() const
+    { return TrEff; }
+
+    double wueet() const
+    { return WueEt; }
+
+    double wuetot() const
+    { return WueTot; }
+
+    double floodwaterdepth() const
+    { return FloodwaterDepth; }
+
+    double irrigautoday() const
+    { return IrrigAutoDay; }
+
+    double irrigtotday() const
+    { return IrrigTotDay; }
+
+    double fractionplantheightsubmer() const
+    { return FractionPlantHeightSubmer; }
+
+    double density() const
+    { return Density; }
+
+    double rootmasspervol() const
+    { return RootMassPerVol; }
+
+    double volmacropores() const
+    { return VolMacropores; }
+
+    double stockmacropores() const
+    { return StockMacropores; }
+
+    double relpotleaflength() const
+    { return RelPotLeafLength; }
+
+    double apexheightgain() const
+    { return ApexHeightGain; }
+
+    double haungain() const
+    { return HaunGain; }
+
+    double conversion() const
+    { return Conversion; }
+
+    double stresscold() const
+    { return StressCold; }
+
+    double fractionrootslogged() const
+    { return FractionRootsLogged; }
+
+    double resutil() const
+    { return ResUtil; }
+
+    double kctot() const
+    { return KcTot; }
+
+    double nbjas() const
+    { return NbJas; }
 };
 
 } // namespace samara

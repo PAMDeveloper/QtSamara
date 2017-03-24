@@ -75,6 +75,7 @@ protected:
     void keyResults();
 
     static double NullValue;
+    model::models::ModelParameters parameters;
 };
 
 } // namespace samara

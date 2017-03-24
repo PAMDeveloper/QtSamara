@@ -45,14 +45,14 @@ void SamaraModel2_1::compute(double t, bool /* update */)
     SamaraModel::evalPAR(); // ok
     SamaraModel::etoFAO(); // ok
     SamaraModel::evolPhenoStress(t); // ok
-    // Model::evalSimAnthesis50(); // ok
+    SamaraModel::evalSimAnthesis50(); // ok
     SamaraModel::evalDateGermination(); // ok
     SamaraModel::evalColdStress(); // ok
-    // Model::evalSimEmergence();
-    // Model::evalSimPanIni();
-    // Model::evalSimStartGermin();
-    // Model::evalSimStartMatu2();
-    // Model::evalSimStartPSP();
+    SamaraModel::evalSimEmergence();
+    SamaraModel::evalSimPanIni();
+    SamaraModel::evalSimStartGermin();
+    SamaraModel::evalSimStartMatu2();
+    SamaraModel::evalSimStartPSP();
     SamaraModel2::evalDegreeDay(); // ok
     SamaraModel::evalSDJPhase4();
     SamaraModel2::evalDAF();
@@ -123,16 +123,22 @@ void SamaraModel2_1::compute(double t, bool /* update */)
     SamaraModel::evolSomDegresJour();
     SamaraModel::evolSomDegresJourCor();
     SamaraModel2_1::evalRUE();
-    // Model::mortality(); //pour l'instant
-    // Model2_1::keyResults();
-    // Model2_1::evalSimEndCycle();
-//    SamaraModel::writeResultInDB(parameters.get<std::string>("idsimulation"), t);
-//    SamaraModel::writeResultInFile(parameters.get<std::string>("idsimulation"), t);
+    SamaraModel::mortality(); //pour l'instant
+    SamaraModel2_1::keyResults();
+    SamaraModel2_1::evalSimEndCycle();
+    //    for(auto it = parameters.getRawParameters()->begin(); it != parameters.getRawParameters()->end(); ++it) {
+    //        std::cout << it->first << " " << it->second << std::endl;
+    ////      v.push_back(it->first);
+    ////      cout << it->first << "\n";
+    //    }
+    SamaraModel::writeResultInDB(parameters.get<std::string>("idsimulation"), t);
+    SamaraModel::writeResultInFile(parameters.get<std::string>("idsimulation"), t);
 }
 
 void SamaraModel2_1::init(double t, const model::models::ModelParameters& parameters)
 {
     SamaraModel2::init(t, parameters);
+    this->parameters = parameters;
     initCrop();
     initParcelle();
 }
