@@ -31,7 +31,7 @@
 
 #include <algorithm>
 #ifndef M_PI
-    #define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 #include <cmath>
 
@@ -54,7 +54,7 @@ void SamaraModel2::evalDegreeDay()
             S1 = V1 * std::max(0., std::min(TOpt1, Tx) - Tn);
             S2 = 1 * std::max(0., std::min(Tx, TOpt2) - std::max(Tn, TOpt1));
             V3 = (TLet - (std::max(Tx, TOpt2) + std::max(TOpt2, Tn)) / 2) /
-                (TLet - TOpt2);
+                    (TLet - TOpt2);
             S3 = V3 * std::max(0., Tx - std::max(TOpt2, Tn));
             V = (S1 + S2 + S3) / (TMax - TMin);
         }
@@ -78,15 +78,15 @@ void SamaraModel2::evalDegreeDay()
         DegresDuJourCor = DegresDuJour;
     }
     DegresDuJourCor = DegresDuJourCor * StressCold;
-     /*std::cout << "StressCold = " << StressCold << std::endl;
-     std::cout << "TMin = " << TMin << std::endl;
-     std::cout << "TMax = " << TMax << std::endl;
-     std::cout << "TBase = " << TBase << std::endl;
-     std::cout << "TLet = " << TLet << std::endl;
-     std::cout << "TOpt1 = " << TOpt1 << std::endl;
-     std::cout << "TOpt2 = " << TOpt2 << std::endl;
-     std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
-     std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;*/
+    //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
+    //std::cout << "TMin = " << TMin << " - line " << __LINE__ << std::endl;
+    //std::cout << "TMax = " << TMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "TBase = " << TBase << " - line " << __LINE__ << std::endl;
+    //std::cout << "TLet = " << TLet << " - line " << __LINE__ << std::endl;
+    //std::cout << "TOpt1 = " << TOpt1 << " - line " << __LINE__ << std::endl;
+    //std::cout << "TOpt2 = " << TOpt2 << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJour = " << DegresDuJour << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJourCor = " << DegresDuJourCor << " - line " << __LINE__ << std::endl;
 }
 
 
@@ -110,20 +110,20 @@ void SamaraModel::phyllochron()
             }
         }
         HaunIndex = HaunIndex + HaunGain;
-//    } else if (NumPhase == 7 && ChangePhase == 1){      //  avt present ds le code
-//        HaunIndex = 0;
+        //    } else if (NumPhase == 7 && ChangePhase == 1){      //  avt present ds le code
+        //        HaunIndex = 0;
     } else {
         HaunGain = 0;
         PhaseStemElongation = 0;
     }
 
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "Phyllo = " << Phyllo << std::endl;
-//    std::cout << "RelPhylloPhaseStemElong = " << RelPhylloPhaseStemElong << std::endl;
-//     std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
-//     std::cout << "PhaseStemElongation = " << PhaseStemElongation << std::endl;
-//     std::cout << "HaunGain = " << HaunGain << std::endl;
-//     std::cout << "HaunIndex = " << HaunIndex << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "Phyllo = " << Phyllo << " - line " << __LINE__ << std::endl;
+    //std::cout << "RelPhylloPhaseStemElong = " << RelPhylloPhaseStemElong << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJourCor = " << DegresDuJourCor << " - line " << __LINE__ << std::endl;
+    //std::cout << "PhaseStemElongation = " << PhaseStemElongation << " - line " << __LINE__ << std::endl;
+    //std::cout << "HaunGain = " << HaunGain << " - line " << __LINE__ << std::endl;
+    //std::cout << "HaunIndex = " << HaunIndex << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -131,9 +131,9 @@ void SamaraModel::evalCstrAssim()
 {
     CstrAssim = std::pow(std::max(Cstr, 0.00000001), ASScstr);
 
-//     std::cout << "cstr = " << Cstr << std::endl;
-//     std::cout << "ASScstr = " << ASScstr << std::endl;
-//     std::cout << "CstrAssim = " << CstrAssim << std::endl;
+    //std::cout << "cstr = " << Cstr << " - line " << __LINE__ << std::endl;
+    //std::cout << "ASScstr = " << ASScstr << " - line " << __LINE__ << std::endl;
+    //std::cout << "CstrAssim = " << CstrAssim << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalRespMaint()
@@ -150,27 +150,27 @@ void SamaraModel::evalRespMaint()
     RespMaintSheathPop = KRespMaintSheath * DryMatStructSheathPop * CoeffQ10;
     RespMaintRootPop = KRespMaintRoot * DryMatStructRootPop * CoeffQ10;
     RespMaintInternodePop = KRespInternode * DryMatStructInternodePop *
-        CoeffQ10;
+            CoeffQ10;
     RespMaintPaniclePop = KRespPanicle * DryMatStructPaniclePop * CoeffQ10;
     RespMaintTot = RespMaintLeafPop + RespMaintSheathPop + RespMaintRootPop +
-        RespMaintInternodePop + RespMaintPaniclePop;
+            RespMaintInternodePop + RespMaintPaniclePop;
 
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "CoefficientQ10 = " << CoefficientQ10 << std::endl;
-//     std::cout << "TMoyCalc = " << TMoyCalc << std::endl;
-//     std::cout << "KTempMaint = " << KTempMaint << std::endl;
-//     std::cout << "CoeffQ10 = " << CoeffQ10 << std::endl;
-//     std::cout << "KRespMaintLeaf = " << KRespMaintLeaf << std::endl;
-//     std::cout << "KRespMaintSheath = " << KRespMaintSheath << std::endl;
-//     std::cout << "KRespMaintRoot = " << KRespMaintRoot << std::endl;
-//     std::cout << "KRespInternode = " << KRespInternode << std::endl;
-//     std::cout << "KRespPanicle = " << KRespPanicle << std::endl;
-//     std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std:: endl;
-//     std::cout << "DryMatStructSheathPop = " << DryMatStructSheathPop << std:: endl;
-//     std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << std:: endl;
-//     std::cout << "DryMatStructInternodePop = " << DryMatStructInternodePop << std:: endl;
-//     std::cout << "DryMatStructPaniclePop = " << DryMatStructPaniclePop << std:: endl;
-//     std::cout << "RespMaintTot = " << RespMaintTot << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoefficientQ10 = " << CoefficientQ10 << " - line " << __LINE__ << std::endl;
+    //std::cout << "TMoyCalc = " << TMoyCalc << " - line " << __LINE__ << std::endl;
+    //std::cout << "KTempMaint = " << KTempMaint << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoeffQ10 = " << CoeffQ10 << " - line " << __LINE__ << std::endl;
+    //std::cout << "KRespMaintLeaf = " << KRespMaintLeaf << " - line " << __LINE__ << std::endl;
+    //std::cout << "KRespMaintSheath = " << KRespMaintSheath << " - line " << __LINE__ << std::endl;
+    //std::cout << "KRespMaintRoot = " << KRespMaintRoot << " - line " << __LINE__ << std::endl;
+    //std::cout << "KRespInternode = " << KRespInternode << " - line " << __LINE__ << std::endl;
+    //std::cout << "KRespPanicle = " << KRespPanicle << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std:: endl;
+    //std::cout << "DryMatStructSheathPop = " << DryMatStructSheathPop << std:: endl;
+    //std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << std:: endl;
+    //std::cout << "DryMatStructInternodePop = " << DryMatStructInternodePop << std:: endl;
+    //std::cout << "DryMatStructPaniclePop = " << DryMatStructPaniclePop << std:: endl;
+    //std::cout << "RespMaintTot = " << RespMaintTot << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_2::evalRespMaint()
@@ -187,37 +187,37 @@ void SamaraModel2_2::evalRespMaint()
     correction = (0.3 + 0.7 * std::min(PAR, 5.) / 5);
 
     RespMaintLeafPop = KRespMaintLeaf * DryMatStructLeafPop *
-        CoeffQ10 * correction;
+            CoeffQ10 * correction;
     RespMaintSheathPop = KRespMaintSheath * DryMatStructSheathPop *
-        CoeffQ10 * correction;
+            CoeffQ10 * correction;
     RespMaintRootPop = KRespMaintRoot * DryMatStructRootPop *
-        CoeffQ10 * correction;
+            CoeffQ10 * correction;
     RespMaintInternodePop = KRespInternode * DryMatStructInternodePop *
-        CoeffQ10 * correction;
+            CoeffQ10 * correction;
     RespMaintPaniclePop = KRespPanicle * DryMatStructPaniclePop *
-        CoeffQ10 * correction;
+            CoeffQ10 * correction;
     RespMaintTot = RespMaintLeafPop + RespMaintSheathPop + RespMaintRootPop +
-      RespMaintInternodePop + RespMaintPaniclePop;
+            RespMaintInternodePop + RespMaintPaniclePop;
 }
 
 void SamaraModel2::evolPlantTilNumTot()
 {
     double TilNewPlant;
 
-//    std::cout << "avt chgt" << std::endl;
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-////     std::cout << "ChangePhase = " << ChangePhase << std::endl;
-////     std::cout << "Density = " << Density << std::endl;
-//     std::cout << "PlantsPerHill = " << PlantsPerHill << std::endl;
-////     std::cout << "HaunIndex = " << HaunIndex << std::endl;
-////     std::cout << "HaunCritTillering = " << HaunCritTillering << std::endl;
-//     std::cout << "Ic = " << Ic << std::endl;
-//     std::cout << "IcTillering = " << IcTillering << std::endl;
-//     std::cout << "TilAbility = " << TilAbility << std::endl;
-//     std::cout << "LTRkdfcl = " << LTRkdfcl << std::endl;
-//     std::cout << "TilNewPlant = " << TilNewPlant << std::endl;
-//     std::cout << "CulmsPerPlant = " << CulmsPerPlant << std::endl;
-//     std::cout << "CulmsPerHill  = " << CulmsPerHill << std::endl;
+    //std::cout << "avt chgt" << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "ChangePhase = " << ChangePhase << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantsPerHill = " << PlantsPerHill << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "HaunIndex = " << HaunIndex << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "HaunCritTillering = " << HaunCritTillering << " - line " << __LINE__ << std::endl;
+    //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+    //std::cout << "IcTillering = " << IcTillering << " - line " << __LINE__ << std::endl;
+    //std::cout << "TilAbility = " << TilAbility << " - line " << __LINE__ << std::endl;
+    //std::cout << "LTRkdfcl = " << LTRkdfcl << " - line " << __LINE__ << std::endl;
+    //std::cout << "TilNewPlant = " << TilNewPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerPlant = " << CulmsPerPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerHill  = " << CulmsPerHill << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 1 && ChangePhase == 1) {
         CulmsPerHill = PlantsPerHill;
@@ -227,7 +227,7 @@ void SamaraModel2::evolPlantTilNumTot()
             CulmsPop = CulmsPerPlant * Density * PlantsPerHill;
         } else {
             if (NumPhase > 1 && NumPhase < 4 &&
-                                            HaunIndex > HaunCritTillering) {
+                    HaunIndex > HaunCritTillering) {
                 TilNewPlant = Cstr * std::min(std::max(0., (Ic - IcTillering) *
                                                        TilAbility) *
                                               std::sqrt(LTRkdfcl), 2.);
@@ -241,21 +241,21 @@ void SamaraModel2::evolPlantTilNumTot()
             }
         }
     }
-//     std::cout << "aprs chgt" << std::endl;
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-////     std::cout << "ChangePhase = " << ChangePhase << std::endl;
-////     std::cout << "Density = " << Density << std::endl;
-//     std::cout << "PlantsPerHill = " << PlantsPerHill << std::endl;
-////     std::cout << "HaunIndex = " << HaunIndex << std::endl;
-////     std::cout << "HaunCritTillering = " << HaunCritTillering << std::endl;
-//     std::cout << "Ic = " << Ic << std::endl;
-//     std::cout << "IcTillering = " << IcTillering << std::endl;
-//     std::cout << "TilAbility = " << TilAbility << std::endl;
-//     std::cout << "LTRkdfcl = " << LTRkdfcl << std::endl;
-//     std::cout << "TilNewPlant = " << TilNewPlant << std::endl;
-//     std::cout << "CulmsPerPlant = " << CulmsPerPlant << std::endl;
-//     std::cout << "CulmsPerHill  = " << CulmsPerHill << std::endl;
-////     std::cout << "CulmsPop = " << CulmsPop << std::endl;
+    //std::cout << "aprs chgt" << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "ChangePhase = " << ChangePhase << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantsPerHill = " << PlantsPerHill << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "HaunIndex = " << HaunIndex << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "HaunCritTillering = " << HaunCritTillering << " - line " << __LINE__ << std::endl;
+    //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+    //std::cout << "IcTillering = " << IcTillering << " - line " << __LINE__ << std::endl;
+    //std::cout << "TilAbility = " << TilAbility << " - line " << __LINE__ << std::endl;
+    //std::cout << "LTRkdfcl = " << LTRkdfcl << " - line " << __LINE__ << std::endl;
+    //std::cout << "TilNewPlant = " << TilNewPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerPlant = " << CulmsPerPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerHill  = " << CulmsPerHill << " - line " << __LINE__ << std::endl;
+    ////     //std::cout << "CulmsPop = " << CulmsPop << " - line " << __LINE__ << std::endl;
 
 
 }
@@ -290,32 +290,32 @@ void SamaraModel2_2::evolPlantTilNumTot()
 
 void SamaraModel::evolPlantLeafNumTot()
 {
-//    std::cout << "avt chg plntleafnumtot " << std::endl;
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "HaunGain = " << HaunGain << std::endl;
-//     std::cout << "CulmsPerHill = " << CulmsPerHill << std::endl;
-//     std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << std::endl;
-//     std::cout << "PlantLeafNumTot = " << PlantLeafNumTot << std::endl;
+    //std::cout << "avt chg plntleafnumtot " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "HaunGain = " << HaunGain << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerHill = " << CulmsPerHill << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantLeafNumTot = " << PlantLeafNumTot << " - line " << __LINE__ << std::endl;
 
-//    if (NumPhase == 0) {
-//        PlantLeafNumNew = 0.;            // avt instruction inclus ds le code
-//        PlantLeafNumTot = 0.;
-//    } else {
-        if (NumPhase > 1 && NumPhase < 5) {
-            PlantLeafNumNew = HaunGain * CulmsPerHill;
-            PlantLeafNumTot = PlantLeafNumTot + PlantLeafNumNew;
-        } else {
-            PlantLeafNumNew = PlantLeafNumNew;
-            PlantLeafNumTot = PlantLeafNumTot;
-        }
- //   }
-//
-//    std::cout << "aprs chg plntleafnumtot " << std::endl;
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "HaunGain = " << HaunGain << std::endl;
-//     std::cout << "CulmsPerHill = " << CulmsPerHill << std::endl;
-//     std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << std::endl;
-//     std::cout << "PlantLeafNumTot = " << PlantLeafNumTot << std::endl;
+    //    if (NumPhase == 0) {
+    //        PlantLeafNumNew = 0.;            // avt instruction inclus ds le code
+    //        PlantLeafNumTot = 0.;
+    //    } else {
+    if (NumPhase > 1 && NumPhase < 5) {
+        PlantLeafNumNew = HaunGain * CulmsPerHill;
+        PlantLeafNumTot = PlantLeafNumTot + PlantLeafNumNew;
+    } else {
+        PlantLeafNumNew = PlantLeafNumNew;
+        PlantLeafNumTot = PlantLeafNumTot;
+    }
+    //   }
+    //
+    //std::cout << "aprs chg plntleafnumtot " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "HaunGain = " << HaunGain << " - line " << __LINE__ << std::endl;
+    //std::cout << "CulmsPerHill = " << CulmsPerHill << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantLeafNumTot = " << PlantLeafNumTot << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -326,10 +326,10 @@ void SamaraModel::evalRelPotLeafLength()
                                     1.);
     }
 
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "HaunIndex = " << HaunIndex << std::endl;
-//     std::cout << "RankLongestLeaf = " << RankLongestLeaf << std::endl;
-//     std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "HaunIndex = " << HaunIndex << " - line " << __LINE__ << std::endl;
+    //std::cout << "RankLongestLeaf = " << RankLongestLeaf << " - line " << __LINE__ << std::endl;
+    //std::cout << "RelPotLeafLength = " << RelPotLeafLength << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -344,23 +344,23 @@ void SamaraModel2_2::evalRelPotLeafLength()
 
 void SamaraModel::evalDemandStructSheath()
 {
-//    std::cout << "avt chg dem struct sheath = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
+    //std::cout << "avt chg dem struct sheath = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
     if (NumPhase > 1 && NumPhase < 5) {
         DemStructSheathPop = (1 + ((SlaMax - Sla) / (SlaMax - SlaMin))) * 0.5 *
-            DemStructLeafPop / WtRatioLeafSheath *
-            std::max(0.00001, StressCold);
+                DemStructLeafPop / WtRatioLeafSheath *
+                std::max(0.00001, StressCold);
 
-//        std::cout << "aprs chg dem struct sheath = " << std::endl;
-//        std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "SlaMax = " << SlaMax << std::endl;
-//         std::cout << "Sla = " << Sla << std::endl;
-//         std::cout << "SlaMin = " << SlaMin << std::endl;
-//         std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
-//         std::cout << "WtRatioLeafSheath = " << WtRatioLeafSheath << std::endl;
-//         std::cout << "StressCold = " << StressCold << std::endl;
-//         std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
+        //std::cout << "aprs chg dem struct sheath = " << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "SlaMax = " << SlaMax << " - line " << __LINE__ << std::endl;
+        //std::cout << "Sla = " << Sla << " - line " << __LINE__ << std::endl;
+        //std::cout << "SlaMin = " << SlaMin << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "WtRatioLeafSheath = " << WtRatioLeafSheath << " - line " << __LINE__ << std::endl;
+        //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -368,17 +368,17 @@ void SamaraModel::evalDemandStructSheath()
 void SamaraModel2::evalDemandStructRoot()
 {
 
-//    std::cout << "avt chg dem struct root = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "RootFront = " << RootFront << std::endl;
-//    std::cout << "Density = " << Density << std::endl;
-//    std::cout << "RootSystSoilSurfPop = " << RootSystSoilSurfPop << std::endl;
-//    std::cout << "RootSystVolPop = " << RootSystVolPop << std::endl;
-//    std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
-//    std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
-//    std::cout << "RootPartitMax = " << RootPartitMax << std::endl;
-//    std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax << std::endl;
-//    std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << std::endl;
+    //std::cout << "avt chg dem struct root = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
+    //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootSystSoilSurfPop = " << RootSystSoilSurfPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootSystVolPop = " << RootSystVolPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootPartitMax = " << RootPartitMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << " - line " << __LINE__ << std::endl;
 
     RootSystSoilSurfPop = std::min(RootFront * RootFront * Density / 1000000,
                                    10000.);
@@ -387,26 +387,26 @@ void SamaraModel2::evalDemandStructRoot()
         GainRootSystSoilSurfPop = RootSystSoilSurfPop - RootSystSoilSurfPopOld;
         GainRootSystVolPop = RootSystVolPop - RootSystVolPopOld;
         DemStructRootPop =
-            std::min((DemStructLeafPop + DemStructSheathPop) *
-                     RootPartitMax, std::max(0., CoeffRootMassPerVolMax *
-                                             RootSystVolPop -
-                                             DryMatStructRootPop));
+                std::min((DemStructLeafPop + DemStructSheathPop) *
+                         RootPartitMax, std::max(0., CoeffRootMassPerVolMax *
+                                                 RootSystVolPop -
+                                                 DryMatStructRootPop));
         DemStructRootPlant = DemStructRootPop * 1000 / Density;
         RootSystSoilSurfPopOld = RootSystSoilSurfPop;
         RootFrontOld = RootFront;
         RootSystVolPopOld = RootSystVolPop;
 
-//    std::cout << "aprs chg dem struct root = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "RootFront = " << RootFront << std::endl;
-//    std::cout << "Density = " << Density << std::endl;
-//    std::cout << "RootSystSoilSurfPop = " << RootSystSoilSurfPop << std::endl;
-//    std::cout << "RootSystVolPop = " << RootSystVolPop << std::endl;
-//    std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
-//    std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
-//    std::cout << "RootPartitMax = " << RootPartitMax << std::endl;
-//    std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax << std::endl;
-//    std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << std::endl;
+        //std::cout << "aprs chg dem struct root = " << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
+        //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+        //std::cout << "RootSystSoilSurfPop = " << RootSystSoilSurfPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "RootSystVolPop = " << RootSystVolPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "RootPartitMax = " << RootPartitMax << " - line " << __LINE__ << std::endl;
+        //std::cout << "CoeffRootMassPerVolMax = " << CoeffRootMassPerVolMax << " - line " << __LINE__ << std::endl;
+        //std::cout << "DryMatStructRootPop = " << DryMatStructRootPop << " - line " << __LINE__ << std::endl;
     }
 }
 
@@ -414,10 +414,10 @@ void SamaraModel2::evalDemandStructPanicle()
 {
     if (NumPhase == 4) {
         DemStructPaniclePlant = CoeffPanicleMass * CulmsPerHill *
-            std::sqrt(std::min(Ic, 1.)) *
-            std::sqrt(std::max(0.00001, StressCold));
+                std::sqrt(std::min(Ic, 1.)) *
+                std::sqrt(std::max(0.00001, StressCold));
         PanStructMass = 1000 *
-            DryMatStructPaniclePop / (Density * CulmsPerHill);
+                DryMatStructPaniclePop / (Density * CulmsPerHill);
         if (PanStructMass > PanStructMassMax) {
             DemStructPaniclePlant = 0;
         }
@@ -463,36 +463,36 @@ void SamaraModel::evolGrowthStructPanPop()
 
 void SamaraModel::evalSlaMitch()
 {
-//    std::cout << "avt chg eval sla = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "SlaMin = " << SlaMin << std::endl;
-//    std::cout << "SlaMax = " << SlaMax << std::endl;
-//    std::cout << "SlaMitch = " << SlaMitch << std::endl;
-//    std::cout << "SlaNew = " << SlaNew << std::endl;
-//    std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
-//    std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << std::endl;
-//    std::cout << "Sla = " << Sla << std::endl;
+    //std::cout << "avt chg eval sla = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMin = " << SlaMin << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMax = " << SlaMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMitch = " << SlaMitch << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaNew = " << SlaNew << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "Sla = " << Sla << " - line " << __LINE__ << std::endl;
     if (NumPhase > 1) {
         SlaMitch = SlaMin + (SlaMax - SlaMin) *
-            std::pow(AttenMitch, (SommeDegresJour - SDJLevee));
+                std::pow(AttenMitch, (SommeDegresJour - SDJLevee));
         SlaNew = SlaMin + (SlaMitch - SlaMin) *
-            std::pow(DegresDuJour / (TOpt1 - TBase), TempSla);
+                std::pow(DegresDuJour / (TOpt1 - TBase), TempSla);
         Sla = ((Sla * DryMatStructLeafPop) + (SlaNew * GrowthStructLeafPop)) /
-            (DryMatStructLeafPop + GrowthStructLeafPop);
+                (DryMatStructLeafPop + GrowthStructLeafPop);
     } else {
         SlaMitch = 0;
         SlaNew = 0;
         Sla = SlaMax;
     }
-//    std::cout << "aprs chg eval sla = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "SlaMin = " << SlaMin << std::endl;
-//    std::cout << "SlaMax = " << SlaMax << std::endl;
-//    std::cout << "SlaMitch = " << SlaMitch << std::endl;
-//    std::cout << "SlaNew = " << SlaNew << std::endl;
-//    std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
-//    std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << std::endl;
-//    std::cout << "Sla = " << Sla << std::endl;
+    //std::cout << "aprs chg eval sla = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMin = " << SlaMin << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMax = " << SlaMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaMitch = " << SlaMitch << " - line " << __LINE__ << std::endl;
+    //std::cout << "SlaNew = " << SlaNew << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "Sla = " << Sla << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_2::evalSlaMitch()
@@ -504,7 +504,7 @@ void SamaraModel2_2::evalSlaMitch()
                                                                          TBase), TempSla);
         SlaNew = SlaNew + (SlaNew * 0.8 * (1 - std::min(PAR / 6, 1.)));
         Sla = ((Sla * DryMatStructLeafPop) + (SlaNew * GrowthStructLeafPop)) /
-            (DryMatStructLeafPop + GrowthStructLeafPop);
+                (DryMatStructLeafPop + GrowthStructLeafPop);
     } else {
         SlaMitch = 0;
         SlaNew = 0;
@@ -519,12 +519,12 @@ void SamaraModel::evolKcpKceBilhy()
     Kce = LTRkdfcl * 1 * (Mulch / 100);
     KcTot = Kcp + Kce;
 
-//     std::cout << "LTRkdfcl = " << LTRkdfcl << std::endl;
-//     std::cout << "KcMax = " << KcMax << std::endl;
-//     std::cout << "Mulch = " << Mulch << std::endl;
-//     std::cout << "Kcp = " << Kcp << std::endl;
-//     std::cout << "Kce = " << Kce << std::endl;
-//     std::cout << "KcTot = " << KcTot << std::endl;
+    //std::cout << "LTRkdfcl = " << LTRkdfcl << " - line " << __LINE__ << std::endl;
+    //std::cout << "KcMax = " << KcMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "Mulch = " << Mulch << " - line " << __LINE__ << std::endl;
+    //std::cout << "Kcp = " << Kcp << " - line " << __LINE__ << std::endl;
+    //std::cout << "Kce = " << Kce << " - line " << __LINE__ << std::endl;
+    //std::cout << "KcTot = " << KcTot << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -537,9 +537,9 @@ void SamaraModel2::evolConsRes_Flood()
     StockSurface = ValRFE + ValRDE;
     if (FloodwaterDepth + StockMacropores == 0 || NumPhase == 0) {
 
-//         std::cout << "On passe par la " << std::endl;
-//         std::cout << "RuRac = " << RuRac << std::endl;
-//         std::cout << "StockRac = " << StockRac << std::endl;
+        //std::cout << "On passe par la " << " - line " << __LINE__ << std::endl;
+        //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
 
 
@@ -555,7 +555,7 @@ void SamaraModel2::evolConsRes_Flood()
             TrSurf = 0;
         }
 
-//         std::cout << "TrSurf = " << TrSurf << std::endl;
+        //std::cout << "TrSurf = " << TrSurf << " - line " << __LINE__ << std::endl;
 
 
         ValRDE = std::max(0., ValRSurf - CapaREvap);
@@ -576,18 +576,18 @@ void SamaraModel2::evolConsRes_Flood()
         StockRac = std::max(0., StockRac - Tr);
         StockTotal = std::max(0., StockTotal - Tr);
 
-        // std::cout << "evolConsRes_Flood()" << std::endl;
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
+        //std::cout << "evolConsRes_Flood()" << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
         StockRac = std::min(StockRac, StockTotal);
     }
     if (StockMacropores + FloodwaterDepth > 0 &&
-        (StockMacropores + FloodwaterDepth <= Tr + Evap) && NumPhase > 0) {
+            (StockMacropores + FloodwaterDepth <= Tr + Evap) && NumPhase > 0) {
         WaterDeficit = (Tr + Evap) - (StockMacropores + FloodwaterDepth);
         StockMacropores = 0;
         FloodwaterDepth = 0;
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 -
-            WaterDeficit;
+                WaterDeficit;
         StockRac = RuRac - WaterDeficit;
         StockRac = std::min(StockRac, StockTotal);
         StockSurface = std::max(EpaisseurSurf * ResUtil / 1000 - WaterDeficit,
@@ -601,14 +601,14 @@ void SamaraModel2::evolConsRes_Flood()
             StockMacropores = StockMacropores + std::min(0., FloodwaterDepth);
             FloodwaterDepth = std::max(FloodwaterDepth, 0.);
             StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
-                StockMacropores;
+                    StockMacropores;
             StockRac = RuRac + StockMacropores;
             StockRac = std::min(StockRac, StockTotal);
             StockSurface =
-                std::max(EpaisseurSurf * ResUtil / 1000 +
-                         StockMacropores * (EpaisseurSurf /
-                                            (EpaisseurSurf + EpaisseurProf)),
-                         0.);
+                    std::max(EpaisseurSurf * ResUtil / 1000 +
+                             StockMacropores * (EpaisseurSurf /
+                                                (EpaisseurSurf + EpaisseurProf)),
+                             0.);
             ValRFE = std::max(StockSurface - ValRDE, 0.);
             ValRDE = ValRDE;
         }
@@ -626,28 +626,28 @@ void SamaraModel::evalConversion()
     case 4: KAssim = TxAssimBVP; break;
     case 5: KAssim = TxAssimBVP + (SommeDegresJourCor -
                                    SommeDegresJourPhasePrecedente) *
-            (TxAssimMatu1 - TxAssimBVP) / (SeuilTempPhaseSuivante -
-                                           SommeDegresJourPhasePrecedente);
+                (TxAssimMatu1 - TxAssimBVP) / (SeuilTempPhaseSuivante -
+                                               SommeDegresJourPhasePrecedente);
         break;
     case 6: KAssim = TxAssimMatu1 + (SommeDegresJourCor -
                                      SommeDegresJourPhasePrecedente) *
-            (TxAssimMatu2 - TxAssimMatu1) / (SeuilTempPhaseSuivante -
-                                             SommeDegresJourPhasePrecedente);
+                (TxAssimMatu2 - TxAssimMatu1) / (SeuilTempPhaseSuivante -
+                                                 SommeDegresJourPhasePrecedente);
         break;
     default:
         KAssim = 0;
     }
     Conversion = KAssim * TxConversion;
 
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "TxAssimBVP = " << TxAssimBVP << std::endl;
-//     std::cout << "SommeDegresJour = " << SommeDegresJour << std::endl;
-//     std::cout << "SommeDegresJourPhasePrecedente = " << SommeDegresJourPhasePrecedente << std::endl;
-//     std::cout << "TxAssimMatu1 = " << TxAssimMatu1 << std::endl;
-//     std::cout << "TxAssimMatu2 = " << TxAssimMatu2 << std::endl;
-//     std::cout << "KAssim = " << KAssim << std::endl;
-//     std::cout << "TxConversion = " << TxConversion << std::endl;
-//     std::cout << "Conversion = " << Conversion << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "TxAssimBVP = " << TxAssimBVP << " - line " << __LINE__ << std::endl;
+    //std::cout << "SommeDegresJour = " << SommeDegresJour << " - line " << __LINE__ << std::endl;
+    //std::cout << "SommeDegresJourPhasePrecedente = " << SommeDegresJourPhasePrecedente << " - line " << __LINE__ << std::endl;
+    //std::cout << "TxAssimMatu1 = " << TxAssimMatu1 << " - line " << __LINE__ << std::endl;
+    //std::cout << "TxAssimMatu2 = " << TxAssimMatu2 << " - line " << __LINE__ << std::endl;
+    //std::cout << "KAssim = " << KAssim << " - line " << __LINE__ << std::endl;
+    //std::cout << "TxConversion = " << TxConversion << " - line " << __LINE__ << std::endl;
+    //std::cout << "Conversion = " << Conversion << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -655,19 +655,19 @@ void SamaraModel::evolPSPMVMD(double t)
 {
     if (t >= DateSemis) {
 
-        /*std::cout << "-----" << std::endl;
-        std::cout << "AVANT" << std::endl;
-        std::cout << "-----" << std::endl;
-        std::cout << "NumPhase = " << NumPhase << std::endl;
-        std::cout << "ChangePhase = " << ChangePhase << std::endl;
-        std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
-        std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
-        std::cout << "DureeDuJour = " << DayLength << std::endl;
-        std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << std::endl;
-        std::cout << "PPExp = " << PPExp << std::endl;
-        std::cout << "SeuilPP = " << SeuilPP << std::endl;
-        std::cout << "PPCrit = " << PPCrit << std::endl;
-        std::cout << "SommeDegresJourPhasePrecedente = " << SommeDegresJourPhasePrecedente << std::endl;*/
+        /*//std::cout << "-----" << " - line " << __LINE__ << std::endl;
+        //std::cout << "AVANT" << " - line " << __LINE__ << std::endl;
+        //std::cout << "-----" << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "ChangePhase = " << ChangePhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "DegresDuJourCor = " << DegresDuJourCor << " - line " << __LINE__ << std::endl;
+        //std::cout << "DegresDuJour = " << DegresDuJour << " - line " << __LINE__ << std::endl;
+        //std::cout << "DureeDuJour = " << DayLength << " - line " << __LINE__ << std::endl;
+        //std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << " - line " << __LINE__ << std::endl;
+        //std::cout << "PPExp = " << PPExp << " - line " << __LINE__ << std::endl;
+        //std::cout << "SeuilPP = " << SeuilPP << " - line " << __LINE__ << std::endl;
+        //std::cout << "PPCrit = " << PPCrit << " - line " << __LINE__ << std::endl;
+        //std::cout << "SommeDegresJourPhasePrecedente = " << SommeDegresJourPhasePrecedente << " - line " << __LINE__ << std::endl;*/
 
 
 
@@ -678,33 +678,33 @@ void SamaraModel::evolPSPMVMD(double t)
             if (ChangePhase == 1) {
                 SumPP = 100;
                 SDJPSP = std::max(0.01, DegresDuJourCor);
-                /*std::cout << "Ligne 1" << std::endl;
-                std::cout << "SumPP = " << SumPP << std::endl;
-                std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
+                /*//std::cout << "Ligne 1" << " - line " << __LINE__ << std::endl;
+                //std::cout << "SumPP = " << SumPP << " - line " << __LINE__ << std::endl;
+                //std::cout << "SDJPSP = " << SDJPSP << " - line " << __LINE__ << std::endl;*/
             } else {
                 SDJPSP = SommeDegresJourCor - SommeDegresJourPhasePrecedente +
-                    std::max(0.01, DegresDuJourCor);
-                /*std::cout << "Ligne 2" << std::endl;
-                  std::cout << "SDJPSP = " << SDJPSP << std::endl;*/
+                        std::max(0.01, DegresDuJourCor);
+                /*//std::cout << "Ligne 2" << " - line " << __LINE__ << std::endl;
+                  //std::cout << "SDJPSP = " << SDJPSP << " - line " << __LINE__ << std::endl;*/
             }
 
-            /*std::cout << "std::pow((1000 / SDJPSP), PPExp) = " << std::pow((1000 / SDJPSP), PPExp) << std::endl;
-            std::cout << "DureeDuJour - PPCrit =" << DayLength - PPCrit << std::endl;
-            std::cout <<  "std::max(0., (DureeDuJour - PPCrit)) = " << std::max(0., (DureeDuJour - PPCrit)) << std::endl;*/
+            /*//std::cout << "std::pow((1000 / SDJPSP), PPExp) = " << std::pow((1000 / SDJPSP), PPExp) << " - line " << __LINE__ << std::endl;
+            //std::cout << "DureeDuJour - PPCrit =" << DayLength - PPCrit << " - line " << __LINE__ << std::endl;
+            //std::cout <<  "std::max(0., (DureeDuJour - PPCrit)) = " << std::max(0., (DureeDuJour - PPCrit)) << " - line " << __LINE__ << std::endl;*/
 
 
 
             SumPP = std::pow((1000 / SDJPSP), PPExp) *
-                std::max(0., (DayLength - PPCrit)) / (SeuilPP - PPCrit);
+                    std::max(0., (DayLength - PPCrit)) / (SeuilPP - PPCrit);
             SeuilTempPhaseSuivante = SommeDegresJourPhasePrecedente + SDJPSP;
         }
-//
-//        std::cout << "-----" << std::endl;
-//        std::cout << "APRES" << std::endl;
-//        std::cout << "-----" << std::endl;
-//        std::cout << "SDJPSP = " << SDJPSP << std::endl;
-//        std::cout << "SumPP = " << SumPP << std::endl;
-//        std::cout << "SeuilTempPhaseSuivante = " << SeuilTempPhaseSuivante << std::endl;
+        //
+        //std::cout << "-----" << " - line " << __LINE__ << std::endl;
+        //std::cout << "APRES" << " - line " << __LINE__ << std::endl;
+        //std::cout << "-----" << " - line " << __LINE__ << std::endl;
+        //std::cout << "SDJPSP = " << SDJPSP << " - line " << __LINE__ << std::endl;
+        //std::cout << "SumPP = " << SumPP << " - line " << __LINE__ << std::endl;
+        //std::cout << "SeuilTempPhaseSuivante = " << SeuilTempPhaseSuivante << " - line " << __LINE__ << std::endl;
 
 
 
@@ -720,9 +720,9 @@ void SamaraModel::evolSomDegresJourCor()
         SommeDegresJourCor = 0;
     }
 
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
-//     std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJourCor = " << DegresDuJourCor << " - line " << __LINE__ << std::endl;
+    //std::cout << "SommeDegresJourCor = " << SommeDegresJourCor << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -742,7 +742,7 @@ void SamaraModel::evalMaximumLai()
 void SamaraModel::evalVitesseRacinaire()
 {
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
 
 
     switch ((int)(NumPhase))
@@ -769,32 +769,32 @@ void SamaraModel::evalVitesseRacinaire()
         VitesseRacinaire = 0;
     }
     VitesseRacinaireDay = VitesseRacinaire * DegresDuJourCor *
-        std::pow(Cstr, RootCstr);
+            std::pow(Cstr, RootCstr);
 
-//     std::cout << "VitesseRacinaire = " << VitesseRacinaire << std::endl;
-//     std::cout << "DegresDuJourCor = " << DegresDuJourCor << std::endl;
-//     std::cout << "RootCstr = " << RootCstr << std::endl;
-//     std::cout << "VitesseRacinaireDay = " << VitesseRacinaireDay << std::endl;
+    //std::cout << "VitesseRacinaire = " << VitesseRacinaire << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJourCor = " << DegresDuJourCor << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootCstr = " << RootCstr << " - line " << __LINE__ << std::endl;
+    //std::cout << "VitesseRacinaireDay = " << VitesseRacinaireDay << " - line " << __LINE__ << std::endl;
 
 
 }
 void SamaraModel::evalRootFront()
 {
-//    std::cout << "avt chg rootfront = " << std::endl;
-//         std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "ResUtil = " << ResUtil << std::endl;
-//         std::cout << "RuRac = " << RuRac << std::endl;
-//         std::cout << "RootFront = " << RootFront << std::endl;
+    //std::cout << "avt chg rootfront = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+    //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
     if (NumPhase > 0) {
 
 
         RootFront = ((1 / ResUtil) * RuRac) * 1000;
 
-//        std::cout << "aprs chg rootfront = " << std::endl;
-//        std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "ResUtil = " << ResUtil << std::endl;
-//         std::cout << "RuRac = " << RuRac << std::endl;
-//         std::cout << "RootFront = " << RootFront << std::endl;
+        //std::cout << "aprs chg rootfront = " << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+        //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+        //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -802,13 +802,13 @@ void SamaraModel::evalRootFront()
 void SamaraModel::evalSDJPhase4()
 {
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 4) {
         SDJCorPhase4 = SDJCorPhase4 + DegresDuJourCor;
     }
 
-//     std::cout << "SDJCorPhase4 = " << SDJCorPhase4 << std::endl;
+    //std::cout << "SDJCorPhase4 = " << SDJCorPhase4 << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -820,41 +820,41 @@ void SamaraModel::evalDateGermination()
         NbDaysSinceGermination = NbDaysSinceGermination + 1;
     }
 
-//     std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << std::endl;
+    //std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalSterility()
 {
-//     std::cout << "NumPhase = " << NumPhase << std::endl;
-//     std::cout << "ChangePhase = " << ChangePhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ChangePhase = " << ChangePhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 5 && ChangePhase == 1) {
         SterilityCold =
-            std::max(0.,
-                     (std::min(1.,
-                               KCritSterCold1 / (KCritSterCold1 -
-                                                 KCritSterCold2) - TMinMoy /
-                               (KCritSterCold1 - KCritSterCold2))));
+                std::max(0.,
+                         (std::min(1.,
+                                   KCritSterCold1 / (KCritSterCold1 -
+                                                     KCritSterCold2) - TMinMoy /
+                                   (KCritSterCold1 - KCritSterCold2))));
 
-//         std::cout << "SterilityCold = " << SterilityCold << std::endl;
+        //std::cout << "SterilityCold = " << SterilityCold << " - line " << __LINE__ << std::endl;
 
         SterilityHeat =
-            1. - std::max(0.,
-                          (std::min(1., KCritSterHeat2 /
-                                    (KCritSterHeat2 -
-                                     KCritSterHeat1) - TMaxMoy /
-                                    (KCritSterHeat2 - KCritSterHeat1))));
+                1. - std::max(0.,
+                              (std::min(1., KCritSterHeat2 /
+                                        (KCritSterHeat2 -
+                                         KCritSterHeat1) - TMaxMoy /
+                                        (KCritSterHeat2 - KCritSterHeat1))));
 
-//         std::cout << "SterilityHeat = " << SterilityHeat << std::endl;
+        //std::cout << "SterilityHeat = " << SterilityHeat << " - line " << __LINE__ << std::endl;
 
         SterilityDrought =
-            std::max(0.,
-                     (std::min(1., KCritSterFtsw1 / (KCritSterFtsw1 -
-                                                     KCritSterFtsw2) -
-                               FtswMoy / (KCritSterFtsw1 - KCritSterFtsw2))));
+                std::max(0.,
+                         (std::min(1., KCritSterFtsw1 / (KCritSterFtsw1 -
+                                                         KCritSterFtsw2) -
+                                   FtswMoy / (KCritSterFtsw1 - KCritSterFtsw2))));
 
-//         std::cout << "SterilityDrought = " << SterilityDrought << std::endl;
-//         std::cout << "FtswMoy = " << FtswMoy << std::endl;
+        //std::cout << "SterilityDrought = " << SterilityDrought << " - line " << __LINE__ << std::endl;
+        //std::cout << "FtswMoy = " << FtswMoy << " - line " << __LINE__ << std::endl;
 
     } else {
         SterilityCold = SterilityCold;
@@ -865,7 +865,7 @@ void SamaraModel::evalSterility()
                                         (1 - SterilityHeat) *
                                         (1 - SterilityDrought)));
 
-//     std::cout << "SterilityTot = " << SterilityTot << std::endl;
+    //std::cout << "SterilityTot = " << SterilityTot << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -875,24 +875,24 @@ void SamaraModel2::initParcelle()
     double Stockini1;
 
 
-//     std::cout << "HumSat = " << HumSat << std::endl;
-//     std::cout << "HumFC = " << HumFC << std::endl;
-//     std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
-//     std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
-//     std::cout << "PEvap = " << PEvap << std::endl;
-//     std::cout << "StockIniSurf = " << StockIniSurf << std::endl;
-//     std::cout << "StockIniProf = " << StockIniProf << std::endl;
-//    std::cout << "avt init parc " << std::endl;
-//    std::cout << "Numphase = " << NumPhase << std::endl;
-//    std::cout << "ResUtil = " << ResUtil << std::endl;
-//    std::cout << "HumSat = " << HumSat << std::endl;
-//    std::cout << "HumPF = " << HumPF << std::endl;
-//    std::cout << "HumFC = " << HumFC << std::endl;
-//    std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
-//    std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
-//    std::cout << "ProfRu = " << ProfRu << std::endl;
-//    std::cout << "StockSurface = " << StockSurface << std::endl;
-//    std::cout << "StockTotal = " << StockTotal << std::endl;
+    //std::cout << "HumSat = " << HumSat << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumFC = " << HumFC << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurSurf = " << EpaisseurSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurProf = " << EpaisseurProf << " - line " << __LINE__ << std::endl;
+    //std::cout << "PEvap = " << PEvap << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockIniSurf = " << StockIniSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockIniProf = " << StockIniProf << " - line " << __LINE__ << std::endl;
+    //std::cout << "avt init parc " << " - line " << __LINE__ << std::endl;
+    //std::cout << "Numphase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumSat = " << HumSat << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumPF = " << HumPF << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumFC = " << HumFC << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurSurf = " << EpaisseurSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurProf = " << EpaisseurProf << " - line " << __LINE__ << std::endl;
+    //std::cout << "ProfRu = " << ProfRu << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockSurface = " << StockSurface << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
     VolRelMacropores = 100 * (HumSat - HumFC);
     ResUtil = (HumFC - HumPF) * 1000;
@@ -916,17 +916,17 @@ void SamaraModel2::initParcelle()
     CounterNursery = 0;
     VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) / 100;
 
-//    std::cout << "aprs init parc " << std::endl;
-//    std::cout << "Numphase = " << NumPhase << std::endl;
-//    std::cout << "ResUtil = " << ResUtil << std::endl;
-//    std::cout << "HumSat = " << HumSat << std::endl;
-//    std::cout << "HumPF = " << HumPF << std::endl;
-//    std::cout << "HumFC = " << HumFC << std::endl;
-//    std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
-//    std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
-//    std::cout << "ProfRu = " << ProfRu << std::endl;
-//    std::cout << "StockSurface = " << StockSurface << std::endl;
-//    std::cout << "StockTotal = " << StockTotal << std::endl;
+    //std::cout << "aprs init parc " << " - line " << __LINE__ << std::endl;
+    //std::cout << "Numphase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumSat = " << HumSat << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumPF = " << HumPF << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumFC = " << HumFC << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurSurf = " << EpaisseurSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurProf = " << EpaisseurProf << " - line " << __LINE__ << std::endl;
+    //std::cout << "ProfRu = " << ProfRu << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockSurface = " << StockSurface << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_2::initParcelle()
@@ -934,13 +934,13 @@ void SamaraModel2_2::initParcelle()
     double Stockini2;
     double Stockini1;
 
-//     std::cout << "HumSat = " << HumSat << std::endl;
-//     std::cout << "HumFC = " << HumFC << std::endl;
-//     std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
-//     std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
-//     std::cout << "PEvap = " << PEvap << std::endl;
-//     std::cout << "StockIniSurf = " << StockIniSurf << std::endl;
-//     std::cout << "StockIniProf = " << StockIniProf << std::endl;
+    //std::cout << "HumSat = " << HumSat << " - line " << __LINE__ << std::endl;
+    //std::cout << "HumFC = " << HumFC << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurSurf = " << EpaisseurSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "EpaisseurProf = " << EpaisseurProf << " - line " << __LINE__ << std::endl;
+    //std::cout << "PEvap = " << PEvap << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockIniSurf = " << StockIniSurf << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockIniProf = " << StockIniProf << " - line " << __LINE__ << std::endl;
 
     VolRelMacropores = 100 * (HumSat - HumFC);
     ResUtil = (HumFC - HumPF) * 1000;
@@ -969,9 +969,9 @@ void SamaraModel::evalEvapPot()
 {
     EvapPot = Kce * Eto ; // ETP ds samara delphi
 
-    // std::cout << "Kce = " << Kce << std::endl;
-    // std::cout << "Eto = " << Eto << std::endl;
-    // std::cout << "EvapPot = " << EvapPot << std::endl;
+    //std::cout << "Kce = " << Kce << " - line " << __LINE__ << std::endl;
+    //std::cout << "Eto = " << Eto << " - line " << __LINE__ << std::endl;
+    //std::cout << "EvapPot = " << EvapPot << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2::transplanting()
@@ -983,12 +983,12 @@ void SamaraModel2::transplanting()
         CounterNursery = CounterNursery + 1;
     }
     if (Transplanting == 1 && CounterNursery < DurationNursery &&
-        ChangeNurseryStatus == 0) {
+            ChangeNurseryStatus == 0) {
         NurseryStatus = 0;
         ChangeNurseryStatus = 0;
     } else {
         if (Transplanting == 1 && CounterNursery >= DurationNursery &&
-            ChangeNurseryStatus == 0 && NurseryStatus == 0) {
+                ChangeNurseryStatus == 0 && NurseryStatus == 0) {
             NurseryStatus = 1;
             ChangeNurseryStatus = 1;
         } else {
@@ -997,7 +997,7 @@ void SamaraModel2::transplanting()
         }
     }
 
-//    std::cout << "ChangeNurseryStatus =" << ChangeNurseryStatus << std::endl;
+    //std::cout << "ChangeNurseryStatus =" << ChangeNurseryStatus << " - line " << __LINE__ << std::endl;
 
     if (NurseryStatus == 1) {
         Density = DensityField;
@@ -1005,7 +1005,7 @@ void SamaraModel2::transplanting()
         Density = DensityNursery / PlantsPerHill;
     }
 
-   // std::cout << "DryMatStructLeafPop avt modif =" << DryMatStructLeafPop << std::endl;
+    //std::cout << "DryMatStructLeafPop avt modif =" << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
 
     if (ChangeNurseryStatus == 1) {
         DryMatStructLeafPop = DryMatStructLeafPop * DensityChange;
@@ -1015,8 +1015,8 @@ void SamaraModel2::transplanting()
         DryMatStructPaniclePop = DryMatStructPaniclePop * DensityChange;
         DryMatResInternodePop = DryMatResInternodePop * DensityChange;
     }
- //   std::cout << "DensityChange =" << DensityChange << std::endl;
-   // std::cout << "DryMatStructLeafPop aprs modif =" << DryMatStructLeafPop << std::endl;
+    //   //std::cout << "DensityChange =" << DensityChange << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructLeafPop aprs modif =" << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_2::transplanting()
@@ -1029,12 +1029,12 @@ void SamaraModel2_2::transplanting()
         CounterNursery = CounterNursery + 1;
     }
     if (Transplanting == 1 && CounterNursery < DurationNursery &&
-        ChangeNurseryStatus == 0) {
+            ChangeNurseryStatus == 0) {
         NurseryStatus = 0;
         ChangeNurseryStatus = 0;
     } else {
         if (Transplanting == 1 && CounterNursery >= DurationNursery &&
-            ChangeNurseryStatus == 0 && NurseryStatus == 0) {
+                ChangeNurseryStatus == 0 && NurseryStatus == 0) {
             NurseryStatus = 1;
             ChangeNurseryStatus = 1;
         } else {
@@ -1067,7 +1067,7 @@ void SamaraModel2::transplantingShock()
         Assim = Assim;
     }
 
-    // std::cout << "Assim = " << Assim << std::endl;
+    //std::cout << "Assim = " << Assim << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -1080,7 +1080,7 @@ void SamaraModel2::evalRuiss_FloodDyna()
     CorrectedBundHeight = BundHeight;
     // implement lifesaving drainage
     if (LifeSavingDrainage == 1 && FloodwaterDepth > 0.5 * PlantHeight &&
-        PlantHeight > 0 && NumPhase > 1 && BundHeight > 0) {
+            PlantHeight > 0 && NumPhase > 1 && BundHeight > 0) {
         CorrectedBundHeight = 0.5 * PlantHeight;
         Lr = Lr + std::max(0., FloodwaterDepth - (0.5 * PlantHeight));
         FloodwaterDepth = std::min(FloodwaterDepth, (0.5 * PlantHeight));
@@ -1090,7 +1090,7 @@ void SamaraModel2::evalRuiss_FloodDyna()
     }
     // implement terminal drainage
     if (NumPhase > 4 && NumPhase < 7 && DAF > PlotDrainageDAF &&
-        BundHeight > 0) {
+            BundHeight > 0) {
         CorrectedBundHeight = 0;
         Lr = Lr + FloodwaterDepth;
         FloodwaterDepth = 0;
@@ -1108,21 +1108,21 @@ void SamaraModel2::evalRuiss_FloodDyna()
     }
     // implement runoff and EauDispo under terminal drainage
     if (CorrectedBundHeight == 0 && BundHeight != CorrectedBundHeight) {
-      if ((StockMacropores + FloodwaterDepth) == 0) {
-        EauDispo = Rain + CorrectedIrrigation;
-      } else {
-          StockMacropores = StockMacropores + Rain + CorrectedIrrigation;
-          Lr = Lr + std::max(0., StockMacropores - VolMacropores);
-          StockMacropores = StockMacropores - std::max(0., StockMacropores -
-                                                       VolMacropores);
-          EauDispo = StockMacropores;
-      }
+        if ((StockMacropores + FloodwaterDepth) == 0) {
+            EauDispo = Rain + CorrectedIrrigation;
+        } else {
+            StockMacropores = StockMacropores + Rain + CorrectedIrrigation;
+            Lr = Lr + std::max(0., StockMacropores - VolMacropores);
+            StockMacropores = StockMacropores - std::max(0., StockMacropores -
+                                                         VolMacropores);
+            EauDispo = StockMacropores;
+        }
     }
     // implement classical upland runoff (SARRAH)
     if (BundHeight == 0) {
         if (Rain > SeuilRuiss) {
             Lr = Lr + (Rain + CorrectedIrrigation - SeuilRuiss) *
-                PourcRuiss / 100;
+                    PourcRuiss / 100;
             EauDispo = Rain + CorrectedIrrigation - Lr;
         } else {
             EauDispo = Rain + CorrectedIrrigation;
@@ -1160,9 +1160,9 @@ void SamaraModel2::evolRempliResRFE_RDE()
         EauReste = 0;
         ValRFE = ValRFE + EauDispo;
 
-        // std::cout << "ValRFE = " << ValRFE << std::endl;
-        // std::cout << "EauDispo = " << EauDispo << std::endl;
-        // std::cout << "CapaRFE = " << CapaRFE << std::endl;
+        //std::cout << "ValRFE = " << ValRFE << " - line " << __LINE__ << std::endl;
+        //std::cout << "EauDispo = " << EauDispo << " - line " << __LINE__ << std::endl;
+        //std::cout << "CapaRFE = " << CapaRFE << " - line " << __LINE__ << std::endl;
 
         if (ValRFE > CapaRFE) {
             EauReste = ValRFE - CapaRFE;
@@ -1171,9 +1171,9 @@ void SamaraModel2::evolRempliResRFE_RDE()
         ValRSurfPrec = ValRSurf;
         ValRSurf = ValRSurf + EauReste;
 
-        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
-        // std::cout << "ValRSurfPrec = " << ValRSurfPrec << std::endl;
-        // std::cout << "CapaREvap = " << CapaREvap << std::endl;
+        //std::cout << "ValRSurf = " << ValRSurf << " - line " << __LINE__ << std::endl;
+        //std::cout << "ValRSurfPrec = " << ValRSurfPrec << " - line " << __LINE__ << std::endl;
+        //std::cout << "CapaREvap = " << CapaREvap << " - line " << __LINE__ << std::endl;
 
         if (ValRSurfPrec < CapaREvap) {
             EauTranspi = EauDispo - (std::min(CapaREvap, ValRSurf) -
@@ -1182,7 +1182,7 @@ void SamaraModel2::evolRempliResRFE_RDE()
             EauTranspi = EauDispo;
         }
 
-        // std::cout << "EauTranspi = " << EauTranspi << std::endl;
+        //std::cout << "EauTranspi = " << EauTranspi << " - line " << __LINE__ << std::endl;
 
         if (ValRSurf > CapaREvap + CapaRDE) {
             ValRSurf = CapaREvap + CapaRDE;
@@ -1196,30 +1196,30 @@ void SamaraModel2::evolRempliResRFE_RDE()
         }
         StockSurface = ValRFE + ValRDE;
 
-        // std::cout << "StockSurface = " << StockSurface << std::endl;
+        //std::cout << "StockSurface = " << StockSurface << " - line " << __LINE__ << std::endl;
 
         StockTotal = StockTotal + EauTranspi;
 
-        // std::cout << "evolRempliResRFE_RDE()" << std::endl;
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
+        //std::cout << "evolRempliResRFE_RDE()" << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
 
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
-        // std::cout << "StRuMax = " << StRuMax << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
+        //std::cout << "StRuMax = " << StRuMax << " - line " << __LINE__ << std::endl;
 
         if (StockTotal > StRuMax) {
             Dr = StockTotal - StRuMax;
             StockTotal = StRuMax;
 
-            // std::cout << "evolRempliResRFE_RDE()" << std::endl;
-            // std::cout << "StockTotal = " << StockTotal << std::endl;
+            //std::cout << "evolRempliResRFE_RDE()" << " - line " << __LINE__ << std::endl;
+            //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
 
         } else {
             Dr = 0;
         }
 
-        // std::cout << "Dr = " << Dr << std::endl;
+        //std::cout << "Dr = " << Dr << " - line " << __LINE__ << std::endl;
 
         if (Hum < CapaRFE + CapaRDE) {
             Hum = StockSurface;
@@ -1227,12 +1227,12 @@ void SamaraModel2::evolRempliResRFE_RDE()
             Hum = std::max(Hum, StockTotal);
         }
 
-        // std::cout << "Hum = " << Hum << std::endl;
+        //std::cout << "Hum = " << Hum << " - line " << __LINE__ << std::endl;
 
     }
     StockRac = std::min(StockRac + EauTranspi, RuRac);
 
-    // std::cout << "StockRac = " << StockRac << std::endl;
+    //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
     // Shifting non-percolating Dr back to macropores & floodwater if plot is bunded
     if (BundHeight > 0) {
@@ -1241,7 +1241,7 @@ void SamaraModel2::evolRempliResRFE_RDE()
         Dr = std::min(Dr, PercolationMax);
         if (StockMacropores > VolMacropores) {
             FloodwaterDepth = FloodwaterDepth +
-                (StockMacropores - VolMacropores);
+                    (StockMacropores - VolMacropores);
             StockMacropores = VolMacropores;
         }
         // Implementing Dr
@@ -1251,7 +1251,7 @@ void SamaraModel2::evolRempliResRFE_RDE()
             StockMacropores = VolMacropores;
         } else {
             if (FloodwaterDepth < PercolationMax &&
-                FloodwaterDepth + StockMacropores >= PercolationMax) {
+                    FloodwaterDepth + StockMacropores >= PercolationMax) {
                 Dr = PercolationMax;
                 FloodwaterDepth = FloodwaterDepth - Dr;
                 StockMacropores = StockMacropores + FloodwaterDepth;
@@ -1269,7 +1269,7 @@ void SamaraModel2::evolRempliResRFE_RDE()
 void SamaraModel2::plantSubmergence()
 {
     FractionPlantHeightSubmer = std::min(
-        std::max(0., FloodwaterDepth / std::max(PlantHeight, 0.1)), 1.);
+                std::max(0., FloodwaterDepth / std::max(PlantHeight, 0.1)), 1.);
 }
 
 void SamaraModel2::excessAssimilToRoot()
@@ -1291,12 +1291,12 @@ void SamaraModel2::evolRempliMacropores()
 {
     if (StockMacropores + FloodwaterDepth > 0) {
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
-            StockMacropores;
+                StockMacropores;
         Hum = StockTotal;
         StockSurface = EpaisseurSurf * ResUtil / 1000 +
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
         StockRac = RootFront * ResUtil / 1000 +
-            (RootFront / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
+                (RootFront / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
         ValRDE = CapaRDE;
         ValRFE = CapaRFE;
         ValRSurf = EpaisseurSurf * ResUtil / 1000;
@@ -1305,7 +1305,7 @@ void SamaraModel2::evolRempliMacropores()
 
 void SamaraModel2::evalFTSW()
 {
-    // std::cout << "StockRac (avant) = " << StockRac << std::endl;
+    //std::cout << "StockRac (avant) = " << StockRac << " - line " << __LINE__ << std::endl;
 
     StockRac = std::min(StockRac, (RuRac +
                                    (StockMacropores * RuRac / StRuMax)));
@@ -1316,11 +1316,11 @@ void SamaraModel2::evalFTSW()
         FTSW = 0;
     }
 
-    // std::cout << "StockRac = " << StockRac << std::endl;
-    // std::cout << "RuRac = " << RuRac << std::endl;
-    // std::cout << "StockMacropores = " << StockMacropores << std::endl;
-    // std::cout << "StRuMax = " << StRuMax << std::endl;
-    // std::cout << "FTSW = " << FTSW << std::endl;
+    //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
+    //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+    //std::cout << "StockMacropores = " << StockMacropores << " - line " << __LINE__ << std::endl;
+    //std::cout << "StRuMax = " << StRuMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "FTSW = " << FTSW << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2::evalDAF()
@@ -1377,22 +1377,22 @@ void SamaraModel::evalSimStartMatu2()
 void SamaraModel::evalColdStress()
 {
     StressCold = 1 -
-        std::max(0.,
-                 std::min(1.,
-                          KCritStressCold1 / (KCritStressCold1 -
-                                              KCritStressCold2) - TMin /
-                          (KCritStressCold1 - KCritStressCold2)));
+            std::max(0.,
+                     std::min(1.,
+                              KCritStressCold1 / (KCritStressCold1 -
+                                                  KCritStressCold2) - TMin /
+                              (KCritStressCold1 - KCritStressCold2)));
     StressCold = std::max(0.00001, StressCold);
-    //std::cout << "StressCold = " << StressCold << std::endl;
+    //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalAssim()
 {
     Assim = std::max(AssimPot * CstrAssim, 0.);
 
-    // std::cout << "AssimPot = " << AssimPot << std::endl;
-    // std::cout << "CstrAssim = " << CstrAssim << std::endl;
-    // std::cout << "Assim = " << Assim << std::endl;
+    //std::cout << "AssimPot = " << AssimPot << " - line " << __LINE__ << std::endl;
+    //std::cout << "CstrAssim = " << CstrAssim << " - line " << __LINE__ << std::endl;
+    //std::cout << "Assim = " << Assim << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -1410,10 +1410,10 @@ void SamaraModel2::evalStressWaterLogging()
 {
     if (StockMacropores > 0 && RootFront > 0) {
         FractionRootsLogged =
-            (std::max(0., RootFront - ((VolMacropores - StockMacropores) /
-                                       VolMacropores) * (EpaisseurSurf +
-                                                         EpaisseurProf))) /
-            RootFront;
+                (std::max(0., RootFront - ((VolMacropores - StockMacropores) /
+                                           VolMacropores) * (EpaisseurSurf +
+                                                             EpaisseurProf))) /
+                RootFront;
         CoeffStressLogging = 1 - (FractionRootsLogged *
                                   std::min(1., WaterLoggingSens));
     }
@@ -1432,44 +1432,44 @@ void SamaraModel2::evalCstrPFactorFAO()
         Cstr = Cstr * CoeffStressLogging;
     }
 
-    // std::cout << "pFact = " << pFact << std::endl;
-    // std::cout << "FTSW = " << FTSW << std::endl;
-    // std::cout << "Cstr = " << Cstr << std::endl;
+    //std::cout << "pFact = " << pFact << " - line " << __LINE__ << std::endl;
+    //std::cout << "FTSW = " << FTSW << " - line " << __LINE__ << std::endl;
+    //std::cout << "Cstr = " << Cstr << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_1::evolHauteur_SDJ_cstr()
 {
     double CorrectedCstrMean;
 
-     //std::cout << "NumPhase = " << NumPhase << std::endl;
-     //std::cout << "PhaseStemElongation = " << PhaseStemElongation << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "PhaseStemElongation = " << PhaseStemElongation << " - line " << __LINE__ << std::endl;
 
     if (PhaseStemElongation == 1) {
 
-         //std::cout << "HaunGain = " << HaunGain << std::endl;
-         //std::cout << "Ic = " << Ic << std::endl;
-         //std::cout << "Cstr = " << Cstr << std::endl;
-         //std::cout << "StressCold = " << StressCold << std::endl;
-         //std::cout << "InternodeLengthMax = " << InternodeLengthMax << std::endl;
-         //std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << std::endl;
+        //std::cout << "HaunGain = " << HaunGain << " - line " << __LINE__ << std::endl;
+        //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+        //std::cout << "Cstr = " << Cstr << " - line " << __LINE__ << std::endl;
+        //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
+        //std::cout << "InternodeLengthMax = " << InternodeLengthMax << " - line " << __LINE__ << std::endl;
+        //std::cout << "CoeffInternodeNum = " << CoeffInternodeNum << " - line " << __LINE__ << std::endl;
 
         ApexHeightGain = HaunGain * std::min(std::pow(std::min(Ic, 1.), 0.5),
                                              Cstr) * StressCold * InternodeLengthMax;
         ApexHeightGain = ApexHeightGain * CoeffInternodeNum;
 
-        /*std::cout << "ApexHeightGain = " << ApexHeightGain << std::endl;*/
+        /*//std::cout << "ApexHeightGain = " << ApexHeightGain << " - line " << __LINE__ << std::endl;*/
 
     } else {
         ApexHeightGain = 0;
     }
 
-//    if (NumPhase == 7 && ChangePhase == 1) {    //  avt instruc inclus ds le code
-//        ApexHeight = 0;
-//    }
+    //    if (NumPhase == 7 && ChangePhase == 1) {    //  avt instruc inclus ds le code
+    //        ApexHeight = 0;
+    //    }
 
     ApexHeight = ApexHeight + ApexHeightGain;
 
-    //std::cout << "ApexHeight = " << ApexHeight << std::endl;
+    //std::cout << "ApexHeight = " << ApexHeight << " - line " << __LINE__ << std::endl;
 
     if (CstrMean <= 0) {
         CorrectedCstrMean = 1;
@@ -1477,36 +1477,36 @@ void SamaraModel2_1::evolHauteur_SDJ_cstr()
         CorrectedCstrMean = CstrMean;
     }
 
-//    if (NumPhase == 7 && ChangePhase == 1) {
-//         // avt instruct inclu ds le code
-//        PlantHeight = 0;
-//        PlantWidth = 0;
-//    } else {
+    //    if (NumPhase == 7 && ChangePhase == 1) {
+    //         // avt instruct inclu ds le code
+    //        PlantHeight = 0;
+    //        PlantWidth = 0;
+    //    } else {
 
 
-         //std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
-         //std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
-         //std::cout << "IcMean = " << IcMean << std::endl;
-         //std::cout << "CorrectedCstrMean = " << CorrectedCstrMean << std::endl;
-         //std::cout << "WtRatioLeafSheath = " << WtRatioLeafSheath << std::endl;
-         //std::cout << "ApexHeight = " << ApexHeight << std::endl;
+    //std::cout << "RelPotLeafLength = " << RelPotLeafLength << " - line " << __LINE__ << std::endl;
+    //std::cout << "LeafLengthMax = " << LeafLengthMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "IcMean = " << IcMean << " - line " << __LINE__ << std::endl;
+    //std::cout << "CorrectedCstrMean = " << CorrectedCstrMean << " - line " << __LINE__ << std::endl;
+    //std::cout << "WtRatioLeafSheath = " << WtRatioLeafSheath << " - line " << __LINE__ << std::endl;
+    //std::cout << "ApexHeight = " << ApexHeight << " - line " << __LINE__ << std::endl;
 
 
-        PlantHeight = ApexHeight + (1.5 * (1 - Kdf) * RelPotLeafLength *
-                                    LeafLengthMax * std::sqrt(IcMean) *
-                                    CorrectedCstrMean * (1 + 1 / WtRatioLeafSheath));
+    PlantHeight = ApexHeight + (1.5 * (1 - Kdf) * RelPotLeafLength *
+                                LeafLengthMax * std::sqrt(IcMean) *
+                                CorrectedCstrMean * (1 + 1 / WtRatioLeafSheath));
 
-        // std::cout << " PlantHeight = " << PlantHeight << std::endl;
-        // std::cout << "Kdf = " << Kdf << std::endl;
-        // std::cout << "IcMean = " << IcMean << std::endl;
-        // std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
-        // std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
+    //std::cout << " PlantHeight = " << PlantHeight << " - line " << __LINE__ << std::endl;
+    //std::cout << "Kdf = " << Kdf << " - line " << __LINE__ << std::endl;
+    //std::cout << "IcMean = " << IcMean << " - line " << __LINE__ << std::endl;
+    //std::cout << "RelPotLeafLength = " << RelPotLeafLength << " - line " << __LINE__ << std::endl;
+    //std::cout << "LeafLengthMax = " << LeafLengthMax << " - line " << __LINE__ << std::endl;
 
-        PlantWidth = std::pow(Kdf, 1.5) * 2 * std::sqrt(IcMean) * RelPotLeafLength *
+    PlantWidth = std::pow(Kdf, 1.5) * 2 * std::sqrt(IcMean) * RelPotLeafLength *
             LeafLengthMax;
 
-         //std::cout << "PlantHeight = " << PlantHeight << std::endl;
-         //std::cout << "PlantWidth = " << PlantWidth << std::endl;
+    //std::cout << "PlantHeight = " << PlantHeight << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantWidth = " << PlantWidth << " - line " << __LINE__ << std::endl;
     //}
 
 }
@@ -1518,11 +1518,11 @@ void SamaraModel2_1::evalParIntercepte()
     }
     PARIntercepte = PAR * LIRkdfcl;
 
-    // std::cout << "Lai = " << Lai << std::endl;
-    // std::cout << "LIRkdfcl = " << LIRkdfcl << std::endl;
-    // std::cout << "Kdf = " << Kdf << std::endl;
-    // std::cout << "PAR = " << PAR << std::endl;
-    // std::cout << "PARIntercepte = " << PARIntercepte << std::endl;
+    //std::cout << "Lai = " << Lai << " - line " << __LINE__ << std::endl;
+    //std::cout << "LIRkdfcl = " << LIRkdfcl << " - line " << __LINE__ << std::endl;
+    //std::cout << "Kdf = " << Kdf << " - line " << __LINE__ << std::endl;
+    //std::cout << "PAR = " << PAR << " - line " << __LINE__ << std::endl;
+    //std::cout << "PARIntercepte = " << PARIntercepte << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -1535,15 +1535,15 @@ void SamaraModel2_1::evolMobiliTillerDeath()
         CulmsPerPlant = CulmsPop / (Density * PlantsPerHill);
         CulmsPerHill = CulmsPerPlant * PlantsPerHill;
         DryMatStructPaniclePop = DryMatStructPaniclePop *
-            std::max(0., CulmsPop) / (CulmsPop + TillerDeathPop);
+                std::max(0., CulmsPop) / (CulmsPop + TillerDeathPop);
 
-        // std::cout << "NumPhase = " << NumPhase << std::endl;
-        // std::cout << "SDJCorPhase4 = " << SDJCorPhase4 << std::endl;
-        // std::cout << "SDJRPR = " << SDJRPR << std::endl;
-        // std::cout << "CulmsPerPlant = " << CulmsPerPlant << std::endl;
-        // std::cout << "Ic = " << Ic << std::endl;
-        // std::cout << "CulmsPop = " << CulmsPop << std::endl;
-        // std::cout << "CoeffTillerDeath = " << CoeffTillerDeath << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "SDJCorPhase4 = " << SDJCorPhase4 << " - line " << __LINE__ << std::endl;
+        //std::cout << "SDJRPR = " << SDJRPR << " - line " << __LINE__ << std::endl;
+        //std::cout << "CulmsPerPlant = " << CulmsPerPlant << " - line " << __LINE__ << std::endl;
+        //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+        //std::cout << "CulmsPop = " << CulmsPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "CoeffTillerDeath = " << CoeffTillerDeath << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -1558,35 +1558,35 @@ void SamaraModel2_2::evolMobiliTillerDeath()
         CulmsPerPlant = CulmsPop / (Density * PlantsPerHill);
         CulmsPerHill = CulmsPerPlant * PlantsPerHill;
         DryMatStructPaniclePop = DryMatStructPaniclePop * std::max(0., CulmsPop) /
-            (CulmsPop + TillerDeathPop);
+                (CulmsPop + TillerDeathPop);
     }
 }
 
 void SamaraModel2_1::evolMobiliLeafDeath()
 {
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "avt modif" << std::endl;
-//
-//     std::cout << "Ic = " << Ic << std::endl;
-//    std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
-//    std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << std::endl;
-//    // std::cout << "DeadLeafDrywtPop = " << DeadLeafDrywtPop << std::endl;
-//    std::cout << "LeafDeathPop = " << LeafDeathPop << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "avt modif" << " - line " << __LINE__ << std::endl;
+    //
+    //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+    //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << " - line " << __LINE__ << std::endl;
+    //std::cout << "DeadLeafDrywtPop = " << DeadLeafDrywtPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "LeafDeathPop = " << LeafDeathPop << " - line " << __LINE__ << std::endl;
 
     if (NumPhase > 1) {
         LeafDeathPop = (1 - (std::min(Ic, 1.))) * DryMatStructLeafPop *
-            CoeffLeafDeath;
+                CoeffLeafDeath;
         DryMatStructLeafPop = DryMatStructLeafPop - LeafDeathPop;
         MobiliLeafDeath = 0.25 * LeafDeathPop;
         DeadLeafDrywtPop = DeadLeafDrywtPop + (0.75 * LeafDeathPop);
         LaiDead = DeadLeafDrywtPop * Sla;
 
-//        std::cout << "si numpahase > 1 apres modif" << std::endl;
-//         std::cout << "Ic = " << Ic << std::endl;
-//         std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
-//         std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << std::endl;
-//        // std::cout << "DeadLeafDrywtPop = " << DeadLeafDrywtPop << std::endl;
-//         std::cout << "LeafDeathPop = " << LeafDeathPop << std::endl;
+        //std::cout << "si numpahase > 1 apres modif" << " - line " << __LINE__ << std::endl;
+        //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+        //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "CoeffLeafDeath = " << CoeffLeafDeath << " - line " << __LINE__ << std::endl;
+        //std::cout << "DeadLeafDrywtPop = " << DeadLeafDrywtPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "LeafDeathPop = " << LeafDeathPop << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -1594,9 +1594,9 @@ void SamaraModel2_1::evolMobiliLeafDeath()
 void SamaraModel2_1::evalSupplyTot()
 {
     SupplyTot = Assim + MobiliLeafDeath - RespMaintTot -
-        std::max(0., RespMaintDebt);
+            std::max(0., RespMaintDebt);
 
-    //std::cout << "SupplyTot1 = " << SupplyTot << std::endl;
+    //std::cout << "SupplyTot1 = " << SupplyTot << " - line " << __LINE__ << std::endl;
 
     if (NumPhase < 7) {
         CumSupplyTot = CumSupplyTot + SupplyTot - MobiliLeafDeath ;
@@ -1609,34 +1609,34 @@ void SamaraModel2_1::evalSupplyTot()
     } else {
         RespMaintDebt = 0;
     }
-     //std::cout << "NumPhase = " << NumPhase << std::endl;
-     //std::cout << "Assim = " << Assim << std::endl;
-     //std::cout << "MobiliLeafDeath = " << MobiliLeafDeath << std::endl;
-     //std::cout << "RespMaintTot = " << RespMaintTot << std::endl;
-     //std::cout << "RespMaintDebt = " << RespMaintDebt << std::endl;
-     //std::cout << "SupplyTot2 = " << SupplyTot << std::endl;
-     //std::cout << "CumSupplyTot = " << CumSupplyTot << std::endl;
-     //std::cout << "RespMaintDebt = " << RespMaintDebt << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "Assim = " << Assim << " - line " << __LINE__ << std::endl;
+    //std::cout << "MobiliLeafDeath = " << MobiliLeafDeath << " - line " << __LINE__ << std::endl;
+    //std::cout << "RespMaintTot = " << RespMaintTot << " - line " << __LINE__ << std::endl;
+    //std::cout << "RespMaintDebt = " << RespMaintDebt << " - line " << __LINE__ << std::endl;
+    //std::cout << "SupplyTot2 = " << SupplyTot << " - line " << __LINE__ << std::endl;
+    //std::cout << "CumSupplyTot = " << CumSupplyTot << " - line " << __LINE__ << std::endl;
+    //std::cout << "RespMaintDebt = " << RespMaintDebt << " - line " << __LINE__ << std::endl;
 
 }
 
 void SamaraModel2_1::evalDemandStructLeaf()
 {
-  double CorrectedSla;
+    double CorrectedSla;
 
-//    std::cout << "avt chg = " << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
-//    std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
-//    std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << std::endl;
-//    std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << std::endl;
-//    std::cout << "Cstr = " << Cstr << std::endl;
-//    std::cout << "StressCold = " << StressCold << std::endl;
-//    std::cout << "DemLeafAreaPlant = " << DemLeafAreaPlant << std::endl;
-//    std::cout << "CorrectedSla = " << CorrectedSla << std::endl;
-//    std::cout << "DemStructLeafPlant = " << DemStructLeafPlant << std::endl;
-//    std::cout << "Density = " << Density << std::endl;
-//    std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
+    //std::cout << "avt chg = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "RelPotLeafLength = " << RelPotLeafLength << " - line " << __LINE__ << std::endl;
+    //std::cout << "LeafLengthMax = " << LeafLengthMax << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << " - line " << __LINE__ << std::endl;
+    //std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << " - line " << __LINE__ << std::endl;
+    //std::cout << "Cstr = " << Cstr << " - line " << __LINE__ << std::endl;
+    //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemLeafAreaPlant = " << DemLeafAreaPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "CorrectedSla = " << CorrectedSla << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructLeafPlant = " << DemStructLeafPlant << " - line " << __LINE__ << std::endl;
+    //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
 
     if (NumPhase > 1 && NumPhase < 5) {
         DemLeafAreaPlant = (std::pow((RelPotLeafLength * LeafLengthMax), 2) *
@@ -1650,19 +1650,19 @@ void SamaraModel2_1::evalDemandStructLeaf()
         DemStructLeafPlant = DemLeafAreaPlant * 0.1 / CorrectedSla;
         DemStructLeafPop = DemStructLeafPlant * Density / 1000;
         A_DemStructLeaf = DemStructLeafPlant * Density / 1000;
-//         std::cout << "aprs chg = " << std::endl;
-//         std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "RelPotLeafLength = " << RelPotLeafLength << std::endl;
-//         std::cout << "LeafLengthMax = " << LeafLengthMax << std::endl;
-//         std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << std::endl;
-//         std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << std::endl;
-//         std::cout << "Cstr = " << Cstr << std::endl;
-//         std::cout << "StressCold = " << StressCold << std::endl;
-//         std::cout << "DemLeafAreaPlant = " << DemLeafAreaPlant << std::endl;
-//        std::cout << "CorrectedSla = " << CorrectedSla << std::endl;
-//        std::cout << "DemStructLeafPlant = " << DemStructLeafPlant << std::endl;
-//        std::cout << "Density = " << Density << std::endl;
-//        std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
+        //std::cout << "aprs chg = " << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "RelPotLeafLength = " << RelPotLeafLength << " - line " << __LINE__ << std::endl;
+        //std::cout << "LeafLengthMax = " << LeafLengthMax << " - line " << __LINE__ << std::endl;
+        //std::cout << "CoeffLeafWLRatio = " << CoeffLeafWLRatio << " - line " << __LINE__ << std::endl;
+        //std::cout << "PlantLeafNumNew = " << PlantLeafNumNew << " - line " << __LINE__ << std::endl;
+        //std::cout << "Cstr = " << Cstr << " - line " << __LINE__ << std::endl;
+        //std::cout << "StressCold = " << StressCold << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemLeafAreaPlant = " << DemLeafAreaPlant << " - line " << __LINE__ << std::endl;
+        //std::cout << "CorrectedSla = " << CorrectedSla << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructLeafPlant = " << DemStructLeafPlant << " - line " << __LINE__ << std::endl;
+        //std::cout << "Density = " << Density << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -1671,7 +1671,7 @@ void SamaraModel2_1::evalDemandStructIN()
 {
     if (PhaseStemElongation == 1) {
         DemStructInternodePlant = std::pow(std::min(Ic, 1.), 0.5) *
-            ApexHeightGain * CulmsPerHill * CoeffInternodeMass;
+                ApexHeightGain * CulmsPerHill * CoeffInternodeMass;
         DemStructInternodePop = DemStructInternodePlant * Density / 1000;
     }
     if (NumPhase > 1 && NumPhase < 5) {
@@ -1682,65 +1682,77 @@ void SamaraModel2_1::evalDemandStructIN()
 
 void SamaraModel2_1::evalDemandTotAndIcPreFlow()
 {
-//    std::cout << "avt chg evalDemandTotAndIcPreFlow"  << std::endl;
-//
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "Ic = " << Ic << std::endl;
-//    std::cout << "SupplyTot = " << SupplyTot << std::endl;
-//    std::cout << "DemStructTotPop = " << DemStructTotPop << std::endl;
-//    std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
-//    std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
-//    std::cout << "DemStructRootPop = " << DemStructRootPop << std::endl;
-//    std::cout << "DemStructInternodePop = " << DemStructInternodePop << std::endl;
-//    std::cout << "DemStructPaniclePop = " << DemStructPaniclePop << std::endl;
-//    std::cout << "DemResInternodePop = " << DemResInternodePop << std::endl;
+    //std::cout << "avt chg evalDemandTotAndIcPreFlow"  << " - line " << __LINE__ << std::endl;
+    //
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+    //std::cout << "SupplyTot = " << SupplyTot << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructTotPop = " << DemStructTotPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructRootPop = " << DemStructRootPop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructInternodePop = " << DemStructInternodePop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemStructPaniclePop = " << DemStructPaniclePop << " - line " << __LINE__ << std::endl;
+    //std::cout << "DemResInternodePop = " << DemResInternodePop << " - line " << __LINE__ << std::endl;
 
 
     if (NumPhase > 1 && NumPhase < 5) {
         DemStructTotPop = DemStructLeafPop + DemStructSheathPop +
-            DemStructRootPop + DemStructInternodePop +
-            DemStructPaniclePop + DemResInternodePop;
+                DemStructRootPop + DemStructInternodePop +
+                DemStructPaniclePop + DemResInternodePop;
         A_DemStructTot = DemStructLeafPop + DemStructSheathPop +
-            DemStructRootPop + DemStructInternodePop +
-            DemStructPaniclePop + DemResInternodePop;
+                DemStructRootPop + DemStructInternodePop +
+                DemStructPaniclePop + DemResInternodePop;
 
-         /*std::cout << "NumPhase = " << NumPhase << std::endl;
-         std::cout << "SupplyTot = " << SupplyTot << std::endl;
-         std::cout << "DemStructTotPop = " << DemStructTotPop << std::endl;*/
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "SupplyTot = " << SupplyTot << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructTotPop = " << DemStructTotPop << " - line " << __LINE__ << std::endl;
 
 
-        Ic = SupplyTot / DemStructTotPop;
-        if (Ic <= 0) {
-            Ic = 0;
+        //TODO CHECK THIS
+        if(DemStructTotPop == 0) {
+            Ic = 1;
+        } else {
+            Ic = SupplyTot / DemStructTotPop;
+            if (Ic <= 0) {
+                Ic = 0;
+            }
+            if (PlantHeight == 0){ //|| (DemStructTotPop == 0)) {
+                Ic = 1;
+            }
         }
-      if (PlantHeight == 0){ //|| (DemStructTotPop == 0)) {
-          Ic = 1;
-      }
+        //        Ic = SupplyTot / DemStructTotPop;
+        //        if (Ic <= 0) {
+        //            Ic = 0;
+        //        }
+        //      if (PlantHeight == 0){ //|| (DemStructTotPop == 0)) {
+        //          Ic = 1;
+        //      }
 
-//    std::cout << "aprs chgt evalDemandTotAndIcPreFlow" << std::endl;
-//    std::cout << "NumPhase = " << NumPhase << std::endl;
-//    std::cout << "Ic = " << Ic << std::endl;
-//    std::cout << "SupplyTot = " << SupplyTot << std::endl;
-//    std::cout << "DemStructTotPop = " << DemStructTotPop << std::endl;
-//    std::cout << "DemStructLeafPop = " << DemStructLeafPop << std::endl;
-//    std::cout << "DemStructSheathPop = " << DemStructSheathPop << std::endl;
-//    std::cout << "DemStructRootPop = " << DemStructRootPop << std::endl;
-//    std::cout << "DemStructInternodePop = " << DemStructInternodePop << std::endl;
-//    std::cout << "DemStructPaniclePop = " << DemStructPaniclePop << std::endl;
-//    std::cout << "DemResInternodePop = " << DemResInternodePop << std::endl;
-
-
-      IcCumul = IcCumul + std::min(Ic, 1.);
-      IcMean = IcCumul / NbDaysSinceGermination;
-      CstrCumul = CstrCumul + Cstr;
-      CstrMean = CstrCumul / NbDaysSinceGermination;
+        //std::cout << "aprs chgt evalDemandTotAndIcPreFlow" << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+        //std::cout << "SupplyTot = " << SupplyTot << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructTotPop = " << DemStructTotPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructLeafPop = " << DemStructLeafPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructSheathPop = " << DemStructSheathPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructRootPop = " << DemStructRootPop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructInternodePop = " << DemStructInternodePop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemStructPaniclePop = " << DemStructPaniclePop << " - line " << __LINE__ << std::endl;
+        //std::cout << "DemResInternodePop = " << DemResInternodePop << " - line " << __LINE__ << std::endl;
 
 
-       //std::cout << "NumPhase = " << NumPhase << std::endl;
-       //std::cout << "Ic = " << Ic << std::endl;
-       //std::cout << "IcCumul = " << IcCumul << std::endl;
-       //std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << std::endl;
-       //std::cout << "IcMean = " << IcMean << std::endl;
+        IcCumul = IcCumul + std::min(Ic, 1.);
+        IcMean = IcCumul / NbDaysSinceGermination;
+        CstrCumul = CstrCumul + Cstr;
+        CstrMean = CstrCumul / NbDaysSinceGermination;
+
+
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "Ic = " << Ic << " - line " << __LINE__ << std::endl;
+        //std::cout << "IcCumul = " << IcCumul << " - line " << __LINE__ << std::endl;
+        //std::cout << "NbDaysSinceGermination = " << NbDaysSinceGermination << " - line " << __LINE__ << std::endl;
+        //std::cout << "IcMean = " << IcMean << " - line " << __LINE__ << std::endl;
 
 
     }
@@ -1757,9 +1769,9 @@ void SamaraModel2_1::evolGrowthStructLeafPop()
     if (NumPhase > 1 && NumPhase < 5) {
         if (Ic < 1) {
             GrowthStructLeafPop = SupplyTot *
-                (DemStructLeafPop / DemStructTotPop);
+                    (DemStructLeafPop / DemStructTotPop);
             A_GrowthStructLeaf = SupplyTot *
-                (DemStructLeafPop / DemStructTotPop);
+                    (DemStructLeafPop / DemStructTotPop);
         } else {
             GrowthStructLeafPop = DemStructLeafPop;
             A_GrowthStructLeaf = DemStructLeafPop;
@@ -1772,9 +1784,9 @@ void SamaraModel2_1::evolGrowthStructINPop()
     if (NumPhase > 1 && NumPhase < 5) {
         if (Ic < 1) {
             GrowthStructInternodePop = SupplyTot *
-                (DemStructInternodePop / DemStructTotPop);
+                    (DemStructInternodePop / DemStructTotPop);
             GrowthResInternodePop = SupplyTot *
-                (DemResInternodePop / DemStructTotPop);
+                    (DemResInternodePop / DemStructTotPop);
         } else {
             GrowthStructInternodePop = DemStructInternodePop;
             GrowthResInternodePop = DemResInternodePop;
@@ -1791,20 +1803,20 @@ void SamaraModel2_1::addResToGrowthStructPop()
             A_ResInternodeMobiliDay = std::min(ResInternodeMobiliDayPot,
                                                GrowthStructDeficit);
             GrowthStructLeafPop = GrowthStructLeafPop + ResInternodeMobiliDay *
-                (DemStructLeafPop / DemStructTotPop);
+                    (DemStructLeafPop / DemStructTotPop);
             A_GrowthStructLeaf = GrowthStructLeafPop;
             GrowthStructSheathPop = GrowthStructSheathPop +
-                ResInternodeMobiliDay * (DemStructSheathPop / DemStructTotPop);
+                    ResInternodeMobiliDay * (DemStructSheathPop / DemStructTotPop);
             GrowthStructRootPop = GrowthStructRootPop + ResInternodeMobiliDay *
-                (DemStructRootPop / DemStructTotPop);
+                    (DemStructRootPop / DemStructTotPop);
             GrowthStructInternodePop = GrowthStructInternodePop +
-                ResInternodeMobiliDay *
-                (DemStructInternodePop / DemStructTotPop);
+                    ResInternodeMobiliDay *
+                    (DemStructInternodePop / DemStructTotPop);
             GrowthStructPaniclePop = GrowthStructPaniclePop +
-                ResInternodeMobiliDay * (DemStructPaniclePop / DemStructTotPop);
+                    ResInternodeMobiliDay * (DemStructPaniclePop / DemStructTotPop);
             GrowthStructTotPop = GrowthStructLeafPop + GrowthStructSheathPop +
-                GrowthStructRootPop + GrowthStructInternodePop +
-                GrowthStructPaniclePop + GrowthResInternodePop;
+                    GrowthStructRootPop + GrowthStructInternodePop +
+                    GrowthStructPaniclePop + GrowthResInternodePop;
             A_GrowthStructTot = GrowthStructTotPop;
         }
     }
@@ -1814,11 +1826,13 @@ void SamaraModel2_1::evolDemPanFilPopAndIcPFlow()
 {
     if (NumPhase == 5) {
         PanicleSinkPop = DryMatStructPaniclePop * CoeffPanSinkPop *
-            (1 - SterilityTot);
+                (1 - SterilityTot);
         DemPanicleFillPop = (DegresDuJourCor / SDJMatu1) * PanicleSinkPop
-            * std::sqrt(std::max(0.00001, StressCold));
+                * std::sqrt(std::max(0.00001, StressCold));
+        //std::cout << "*******" << " - line " << __LINE__ << std::endl;
+        //std::cout << "*******" << DegresDuJourCor << " " << SDJMatu1 << " " << PanicleSinkPop << " " << StressCold << " - line " << __LINE__ << std::endl;
         Ic = SupplyTot / std::max(DemPanicleFillPop, 0.0000001);
-
+        //std::cout << Ic << " " << DemPanicleFillPop << " l1821" <<"line " << __LINE__ << std::endl;
         if (Ic <= 0) {
             Ic = 0;
         }
@@ -1843,7 +1857,7 @@ void SamaraModel2_1::evolPanicleFilPop()
 {
     if (NumPhase == 5) {
         ResInternodeMobiliDayPot = RelMobiliInternodeMax *
-            DryMatResInternodePop;
+                DryMatResInternodePop;
         if (Ic > 1) {
             PanicleFilPop = std::max(DemPanicleFillPop, 0.);
             PanicleFilDeficit = 0;
@@ -1854,11 +1868,11 @@ void SamaraModel2_1::evolPanicleFilPop()
                 PanicleFilDeficit = std::max((DemPanicleFillPop -
                                               std::max(SupplyTot, 0.)), 0.);
                 ResInternodeMobiliDay = std::max(
-                    std::min(ResInternodeMobiliDayPot, 0.5 *
-                             PanicleFilDeficit), 0.);
+                            std::min(ResInternodeMobiliDayPot, 0.5 *
+                                     PanicleFilDeficit), 0.);
                 A_ResInternodeMobiliDay = std::max(
-                    std::min( ResInternodeMobiliDayPot, 0.5 *
-                              PanicleFilDeficit), 0.);
+                            std::min( ResInternodeMobiliDayPot, 0.5 *
+                                      PanicleFilDeficit), 0.);
                 PanicleFilPop = std::max((SupplyTot + ResInternodeMobiliDay),
                                          0.);
                 AssimSurplus = 0;
@@ -1891,14 +1905,14 @@ void SamaraModel2_1::evolGrowthReserveInternode()
         DryMatResInternodePopOld = DryMatResInternodePop;
         ResCapacityInternodePop = (DryMatStructInternodePop +
                                    DryMatStructSheathPop) *
-            CoeffResCapacityInternode;
+                CoeffResCapacityInternode;
         DryMatResInternodePop = DryMatResInternodePop + GrowthResInternodePop;
         IncreaseResInternodePop = std::min(
-            std::max(AssimSurplus, 0.), std::max((ResCapacityInternodePop -
-                                                  DryMatResInternodePop), 0.));
+                    std::max(AssimSurplus, 0.), std::max((ResCapacityInternodePop -
+                                                          DryMatResInternodePop), 0.));
         A_IncreaseResInternodePop = std::min(
-            std::max(AssimSurplus, 0.),
-            std::max((ResCapacityInternodePop - DryMatResInternodePop), 0.));
+                    std::max(AssimSurplus, 0.),
+                    std::max((ResCapacityInternodePop - DryMatResInternodePop), 0.));
         GrowthResInternodePop = IncreaseResInternodePop - ResInternodeMobiliDay;
         DryMatResInternodePop = DryMatResInternodePop + GrowthResInternodePop;
         AssimNotUsed = std::max((AssimSurplus - IncreaseResInternodePop), 0.);
@@ -1910,15 +1924,15 @@ void SamaraModel2_1::evolGrowthTot()
 {
     if (NumPhase < 5) {
         GrowthStructTotPop = GrowthStructLeafPop + GrowthStructSheathPop +
-            GrowthStructRootPop + GrowthStructInternodePop +
-            GrowthStructPaniclePop;
+                GrowthStructRootPop + GrowthStructInternodePop +
+                GrowthStructPaniclePop;
         A_GrowthStructTot = GrowthStructTotPop;
     } else {
         GrowthStructTotPop = 0;
         A_GrowthStructTot = GrowthStructTotPop;
     }
     GrowthDryMatPop = GrowthStructTotPop +
-        (DryMatResInternodePop -  DryMatResInternodePopOld) + PanicleFilPop;
+            (DryMatResInternodePop -  DryMatResInternodePopOld) + PanicleFilPop;
 }
 
 void SamaraModel2_1::evalLai()
@@ -1932,14 +1946,14 @@ void SamaraModel2_1::evalLai()
         LastLeafLengthPot = RelPotLeafLength * LeafLengthMax;
         if (GrowthStructTotPop > 0) {
             LastLeafLength = LastLeafLengthPot *
-                std::sqrt(std::max(GrowthStructLeafPop, 0.) / DemStructLeafPop);
+                    std::sqrt(std::max(GrowthStructLeafPop, 0.) / DemStructLeafPop);
         }
     }
     Lai = DryMatStructLeafPop * CorrectedSla;
 
-    // std::cout << "SlaMax = " << SlaMax << std::endl;
+    //std::cout << "SlaMax = " << SlaMax << " - line " << __LINE__ << std::endl;
 
-    // std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
+    //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
 
 
 
@@ -1956,16 +1970,16 @@ void SamaraModel2_1::evalClumpAndLightInter()
         LIRkdfcl = (1 - std::exp(-Kdf * RolledLai * 10000 /
                                  std::min(10000., Density * M_PI *
                                           std::pow(PlantWidth / 2000, 2)))) *
-            (std::min(10000., Density * M_PI *
-                      std::pow(PlantWidth / 2000, 2)) / 10000);
+                (std::min(10000., Density * M_PI *
+                          std::pow(PlantWidth / 2000, 2)) / 10000);
         LTRkdf = 1 - LIRkdf;
         LTRkdfcl = 1 - LIRkdfcl;
 
-        // std::cout << "Lai = " << Lai << std::endl;
-        // std::cout << "KRolling = " << KRolling << std::endl;
-        // std::cout << "FractionPlantHeightSubmer = " << FractionPlantHeightSubmer << std::endl;
-        // std::cout << "RolledLai = " << RolledLai << std::endl;
-        // std::cout << "LTRkdfcl = " << LTRkdfcl << std::endl;
+        //std::cout << "Lai = " << Lai << " - line " << __LINE__ << std::endl;
+        //std::cout << "KRolling = " << KRolling << " - line " << __LINE__ << std::endl;
+        //std::cout << "FractionPlantHeightSubmer = " << FractionPlantHeightSubmer << " - line " << __LINE__ << std::endl;
+        //std::cout << "RolledLai = " << RolledLai << " - line " << __LINE__ << std::endl;
+        //std::cout << "LTRkdfcl = " << LTRkdfcl << " - line " << __LINE__ << std::endl;
 
     }
 }
@@ -1975,7 +1989,7 @@ void SamaraModel2_1::evalRUE()
     double CorrectedIrrigation;
 
     if (NumPhase < 1 || (NumPhase == 1 && ChangePhase == 1) ||
-        Density == DensityNursery) {
+            Density == DensityNursery) {
         CumPar = 0;
         RUE = 0;
         CumTr = 0.00001;
@@ -1999,19 +2013,19 @@ void SamaraModel2_1::evalRUE()
         }
         if (Transplanting == 0 || NurseryStatus == 1) {
             CumWReceived = CumWReceived + Rain + CorrectedIrrigation +
-                IrrigAutoDay;
+                    IrrigAutoDay;
             CumIrrig = CumIrrig + CorrectedIrrigation + IrrigAutoDay;
             CumDr = CumDr + Dr;
             CumLr = CumLr + Lr;
         }
         if (AssimPot != 0) {
             ConversionEff = Conversion * Assim /
-                (PARIntercepte * Conversion * 10);
+                    (PARIntercepte * Conversion * 10);
         }
 
-        // std::cout << "Tr = " << Tr << std::endl;
-        // std::cout << "NbJas = " << NbJas << std::endl;
-        // std::cout << "NumPhase = " << NumPhase << std::endl;
+        //std::cout << "Tr = " << Tr << " - line " << __LINE__ << std::endl;
+        //std::cout << "NbJas = " << NbJas << " - line " << __LINE__ << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
 
         if (Tr > 0 && NbJas > 20 && NumPhase > 1) {
             TrEffInst = (SupplyTot - AssimNotUsed) / (Tr * 10000);
@@ -2020,8 +2034,8 @@ void SamaraModel2_1::evalRUE()
             WueTot = DryMatTotPop / (CumWuse * 10000);
             RUE = (DryMatAboveGroundTotPop / std::max(CumPar, 0.00001)) / 10;
 
-            // std::cout << "CumPAR = " << CumPar << std::endl;
-            // std::cout << "RUE = " << RUE << std::endl;
+            //std::cout << "CumPAR = " << CumPar << " - line " << __LINE__ << std::endl;
+            //std::cout << "RUE = " << RUE << " - line " << __LINE__ << std::endl;
 
         }
     }
@@ -2081,14 +2095,14 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
     double Evap1;
     double Evap2;
 
-    // std::cout << "StockMacropores = " << StockMacropores << std::endl;
-    // std::cout << "FloodwaterDepth = " << FloodwaterDepth << std::endl;
+    //std::cout << "StockMacropores = " << StockMacropores << " - line " << __LINE__ << std::endl;
+    //std::cout << "FloodwaterDepth = " << FloodwaterDepth << " - line " << __LINE__ << std::endl;
 
     if (StockMacropores + FloodwaterDepth == 0) {
         ValRSurfPrec = ValRSurf;
 
-        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
-        // std::cout << "ValRFE = " << ValRFE << std::endl;
+        //std::cout << "ValRSurf = " << ValRSurf << " - line " << __LINE__ << std::endl;
+        //std::cout << "ValRFE = " << ValRFE << " - line " << __LINE__ << std::endl;
 
         if (ValRFE > 0) {
             if (ValRFE < EvapPot) {
@@ -2105,9 +2119,9 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
             Evap2 = std::max(0., std::min(ValRSurf, EvapPot * ValRSurf /
                                           (CapaREvap + CapaRDE)));
 
-            // std::cout << "EvapPot = " << EvapPot << std::endl;
-            // std::cout << "Evap1 = " << Evap1 << std::endl;
-            // std::cout << "Evap2 = " << Evap2 << std::endl;
+            //std::cout << "EvapPot = " << EvapPot << " - line " << __LINE__ << std::endl;
+            //std::cout << "Evap1 = " << Evap1 << " - line " << __LINE__ << std::endl;
+            //std::cout << "Evap2 = " << Evap2 << " - line " << __LINE__ << std::endl;
 
 
         }
@@ -2116,11 +2130,11 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
         ValRSurf = ValRSurf - Evap2;
         ValRDE = std::max(0., ValRSurf - CapaREvap);
 
-        // std::cout << "Evap = " << Evap << std::endl;
-        // std::cout << "ValRFE = " << ValRFE << std::endl;
-        // std::cout << "ValRSurf = " << ValRSurf << std::endl;
-        // std::cout << "ValRDE = " << ValRDE << std::endl;
-        // std::cout << "CapaREvap = " << CapaREvap << std::endl;
+        //std::cout << "Evap = " << Evap << " - line " << __LINE__ << std::endl;
+        //std::cout << "ValRFE = " << ValRFE << " - line " << __LINE__ << std::endl;
+        //std::cout << "ValRSurf = " << ValRSurf << " - line " << __LINE__ << std::endl;
+        //std::cout << "ValRDE = " << ValRDE << " - line " << __LINE__ << std::endl;
+        //std::cout << "CapaREvap = " << CapaREvap << " - line " << __LINE__ << std::endl;
 
 
         if (EvapPot == 0) {
@@ -2129,7 +2143,7 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
             Kr = Evap / EvapPot;
         }
 
-        // std::cout << "Kr = " << Kr << std::endl;
+        //std::cout << "Kr = " << Kr << " - line " << __LINE__ << std::endl;
 
         if (ValRSurf >= CapaREvap) {
             EvapRU = Evap;
@@ -2141,7 +2155,7 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
             }
         }
 
-        // std::cout << "EvapRU = " << EvapRU << std::endl;
+        //std::cout << "EvapRU = " << EvapRU << " - line " << __LINE__ << std::endl;
 
         if (RuRac <= RuSurf) {
             StockRac = std::max(0., StockRac - EvapRU * RuRac / RuSurf); // output variable
@@ -2149,38 +2163,38 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
             StockRac = std::max(0., StockRac - EvapRU); // output variable
         }
 
-        // std::cout << "StockRac = " << StockRac << std::endl;
+        //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
         StockTotal = StockTotal - EvapRU; // output variable
 
-        // std::cout << "evolEvapSurfRFE_RDE()" << std::endl;
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
+        //std::cout << "evolEvapSurfRFE_RDE()" << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
 
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
 
         StockRac = std::min(StockRac, StockTotal); // output variable
 
-        // std::cout << "StockRac = " << StockRac << std::endl;
+        //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
         KceReal = Kce * Kr;
 
-        // std::cout << "KceReal = " << KceReal << std::endl;
+        //std::cout << "KceReal = " << KceReal << " - line " << __LINE__ << std::endl;
 
     }
     if (StockMacropores + FloodwaterDepth > 0 && NumPhase > 0) {
         Evap = EvapPot;
         ValRSurf = CapaREvap + StockMacropores *
-            (EpaisseurSurf /  (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf /  (EpaisseurSurf + EpaisseurProf));
         ValRFE = CapaRFE + StockMacropores *
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
         ValRDE = CapaRDE;
         StockRac = RuRac + StockMacropores *
-            (RootFront / (EpaisseurSurf + EpaisseurProf));
+                (RootFront / (EpaisseurSurf + EpaisseurProf));
         StockSurface = RuSurf + StockMacropores *
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
-            StockMacropores;
+                StockMacropores;
         StockRac = std::min(StockRac, StockTotal);
         Kr = 1;
         KceReal = Kce;
@@ -2194,14 +2208,14 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
             StockMacropores = std::max(StockMacropores, 0.);
         }
         ValRSurf = CapaREvap + StockMacropores *
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
         ValRFE = CapaRFE + StockMacropores *
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
         ValRDE = CapaRDE;
         StockSurface = RuSurf + StockMacropores *
-            (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
+                (EpaisseurSurf / (EpaisseurSurf + EpaisseurProf));
         StockTotal = (EpaisseurSurf + EpaisseurProf) * ResUtil / 1000 +
-            StockMacropores;
+                StockMacropores;
         Kr = 1;
         KceReal = Kce;
     }
@@ -2210,59 +2224,59 @@ void SamaraModel2_1::evolEvapSurfRFE_RDE()
 void SamaraModel2_1::evolDryMatTot()
 {
     CumGrowthPop = CumGrowthPop + GrowthStructLeafPop + GrowthStructSheathPop +
-        GrowthStructInternodePop + GrowthStructRootPop +
-        GrowthStructPaniclePop + (DryMatResInternodePop -
-                                  DryMatResInternodePopOld) + PanicleFilPop -
-        MobiliLeafDeath;
+            GrowthStructInternodePop + GrowthStructRootPop +
+            GrowthStructPaniclePop + (DryMatResInternodePop -
+                                      DryMatResInternodePopOld) + PanicleFilPop -
+            MobiliLeafDeath;
     GrowthPop = GrowthStructLeafPop + GrowthStructSheathPop +
-        GrowthStructInternodePop + GrowthStructRootPop +
-        GrowthStructPaniclePop + (DryMatResInternodePop -
-                                  DryMatResInternodePopOld) + PanicleFilPop -
-        MobiliLeafDeath;
+            GrowthStructInternodePop + GrowthStructRootPop +
+            GrowthStructPaniclePop + (DryMatResInternodePop -
+                                      DryMatResInternodePopOld) + PanicleFilPop -
+            MobiliLeafDeath;
 
-    // std::cout << "ChangePhase = " << ChangePhase << std::endl;
+    //std::cout << "ChangePhase = " << ChangePhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 2 && ChangePhase == 1) {
         DryMatTotPop = Density * PlantsPerHill * TxResGrain * PoidsSecGrain /
-            1000;
+                1000;
 
-        // std::cout << "Density = " << Density  << std::endl;
-        // std::cout << "PlantsPerHill = " << PlantsPerHill << std::endl;
-        // std::cout << "TxResGrain = "  << TxResGrain << std::endl;
-        // std::cout << "PoidsSecGrain = " << PoidsSecGrain << std::endl;
-        // std::cout << "DryMatTotPop = " << DryMatTotPop << std::endl;
+        //std::cout << "Density = " << Density  << " - line " << __LINE__ << std::endl;
+        //std::cout << "PlantsPerHill = " << PlantsPerHill << " - line " << __LINE__ << std::endl;
+        //std::cout << "TxResGrain = "  << TxResGrain << " - line " << __LINE__ << std::endl;
+        //std::cout << "PoidsSecGrain = " << PoidsSecGrain << " - line " << __LINE__ << std::endl;
+        //std::cout << "DryMatTotPop = " << DryMatTotPop << " - line " << __LINE__ << std::endl;
 
         DryMatStructLeafPop = DryMatTotPop * 0.5;
 
-        // std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
+        //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
 
     } else {
         if (NumPhase > 1) {
 
-            // std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << std::endl;
+            //std::cout << "DryMatStructLeafPop = " << DryMatStructLeafPop << " - line " << __LINE__ << std::endl;
 
             DryMatStructLeafPop = DryMatStructLeafPop + GrowthStructLeafPop;
 
-            // std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << std::endl;
+            //std::cout << "GrowthStructLeafPop = " << GrowthStructLeafPop << " - line " << __LINE__ << std::endl;
 
             DryMatStructSheathPop = DryMatStructSheathPop +
-                GrowthStructSheathPop;
+                    GrowthStructSheathPop;
             DryMatStructRootPop = DryMatStructRootPop + GrowthStructRootPop;
             DryMatStructInternodePop = DryMatStructInternodePop +
-                GrowthStructInternodePop;
+                    GrowthStructInternodePop;
             DryMatStructPaniclePop = DryMatStructPaniclePop +
-                GrowthStructPaniclePop;
+                    GrowthStructPaniclePop;
             DryMatStemPop = DryMatStructSheathPop + DryMatStructInternodePop
-                + DryMatResInternodePop;
+                    + DryMatResInternodePop;
             DryMatStructTotPop = DryMatStructLeafPop + DryMatStructSheathPop +
-                DryMatStructRootPop + DryMatStructInternodePop +
-                DryMatStructPaniclePop;
+                    DryMatStructRootPop + DryMatStructInternodePop +
+                    DryMatStructPaniclePop;
             DryMatVegeTotPop = DryMatStemPop + DryMatStructLeafPop +
-                DryMatStructRootPop + DeadLeafDrywtPop;
+                    DryMatStructRootPop + DeadLeafDrywtPop;
             DryMatPanicleTotPop = DryMatStructPaniclePop + GrainYieldPop;
             DryMatTotPop = DryMatVegeTotPop + DryMatPanicleTotPop;
             DryMatAboveGroundPop = DryMatTotPop - DryMatStructRootPop -
-                DeadLeafDrywtPop;
+                    DeadLeafDrywtPop;
             DryMatAboveGroundTotPop = DryMatAboveGroundPop + DeadLeafDrywtPop;
             CumCarbonUsedPop = DryMatTotPop + AssimNotUsedCum;
             RootShootRatio = DryMatStructRootPop / DryMatAboveGroundPop;
@@ -2270,7 +2284,7 @@ void SamaraModel2_1::evolDryMatTot()
                 InternodeResStatus = 0;
             } else {
                 InternodeResStatus = DryMatResInternodePop /
-                    ResCapacityInternodePop;
+                        ResCapacityInternodePop;
             }
         }
         if (NumPhase > 4) {
@@ -2279,12 +2293,12 @@ void SamaraModel2_1::evolDryMatTot()
             PanicleNumPop = CulmsPerPlant * Density * PlantsPerHill;
             GrainYieldPanicle = 1000 * GrainYieldPop / PanicleNumPop;
             SpikeNumPop = 1000 * DryMatStructPaniclePop * CoeffPanSinkPop /
-                PoidsSecGrain;
+                    PoidsSecGrain;
             SpikeNumPanicle = SpikeNumPop / PanicleNumPop;
             FertSpikeNumPop = SpikeNumPop * (1 - SterilityTot);
             //GrainFillingStatus = 1000 * (GrainYieldPop / FertSpikeNumPop) / PoidsSecGrain;        avt
             GrainFillingStatus = 1000 * (GrainYieldPop / std::max(FertSpikeNumPop, 0.00000001)) /
-                PoidsSecGrain;
+                    PoidsSecGrain;
         }
     }
 }
@@ -2293,8 +2307,8 @@ void SamaraModel2_1::evolGrowthStructTot()
 {
     if (NumPhase > 1 && NumPhase < 5) {
         GrowthStructTotPop = GrowthStructLeafPop + GrowthStructSheathPop +
-            GrowthStructRootPop + GrowthStructInternodePop +
-            GrowthStructPaniclePop + GrowthResInternodePop;
+                GrowthStructRootPop + GrowthStructInternodePop +
+                GrowthStructPaniclePop + GrowthResInternodePop;
         A_GrowthStructTot = GrowthStructTotPop;
         AssimSurplus = std::max((SupplyTot - GrowthStructTotPop), 0.);
         A_AssimSurplus = std::max((SupplyTot - GrowthStructTotPop), 0.);
@@ -2314,7 +2328,7 @@ void SamaraModel2_1::leafRolling()
 {
     if (NumPhase > 1) {
         KRolling = RollingBase + (1 - RollingBase) *
-            std::pow(FTSW,  std::max(0.0000001, Eto * RollingSens));
+                std::pow(FTSW,  std::max(0.0000001, Eto * RollingSens));
         if (KRolling > 1) {
             KRolling = 1;
         }
@@ -2323,21 +2337,21 @@ void SamaraModel2_1::leafRolling()
 
 void SamaraModel2_1::evalAssimPot()
 {
-    // std::cout << "DayLength = " << DayLength << std::endl;
-    // std::cout << "CO2Exp = " << CO2Exp << std::endl;
-    // std::cout << "CO2Cp = " << CO2Cp << std::endl;
-    // std::cout << "Ca = " << Ca << std::endl;
+    //std::cout << "DayLength = " << DayLength << " - line " << __LINE__ << std::endl;
+    //std::cout << "CO2Exp = " << CO2Exp << " - line " << __LINE__ << std::endl;
+    //std::cout << "CO2Cp = " << CO2Cp << " - line " << __LINE__ << std::endl;
+    //std::cout << "Ca = " << Ca << " - line " << __LINE__ << std::endl;
 
     if (-CO2Exp != 0 && CO2Cp != 0) {
         CoeffCO2Assim = (1 - std::exp(-CO2Exp * (Ca - CO2Cp))) /
-            (1 - std::exp(-CO2Exp * (400 - CO2Cp)));
+                (1 - std::exp(-CO2Exp * (400 - CO2Cp)));
     }
 
-    // std::cout << "CoeffCO2Assim = " << CoeffCO2Assim << std::endl;
+    //std::cout << "CoeffCO2Assim = " << CoeffCO2Assim << " - line " << __LINE__ << std::endl;
 
-    // std::cout << "PARIntercepte = " << PARIntercepte << std::endl;
-    // std::cout << "Conversion = " << Conversion << std::endl;
-    // std::cout << "PAR = " << PAR << std::endl;
+    //std::cout << "PARIntercepte = " << PARIntercepte << " - line " << __LINE__ << std::endl;
+    //std::cout << "Conversion = " << Conversion << " - line " << __LINE__ << std::endl;
+    //std::cout << "PAR = " << PAR << " - line " << __LINE__ << std::endl;
 
     AssimPot = PARIntercepte * Conversion * 10 * CoeffCO2Assim;
     AssimPot = AssimPot * std::min(((3 * TMax + TMin) / 4 - TBase) /
@@ -2345,7 +2359,7 @@ void SamaraModel2_1::evalAssimPot()
     AssimPot = AssimPot * std::sqrt(std::max(0.00001, StressCold));
     if (PARIntercepte != 0 && DayLength != 0) {
         AssimPot = AssimPot * std::pow((PAR / DayLength), 0.667) /
-            (PAR / DayLength);
+                (PAR / DayLength);
         AssimPot = AssimPot * std::pow((SlaMin / std::max(Sla, SlaMin)),
                                        CoeffAssimSla);
     }
@@ -2377,16 +2391,16 @@ void SamaraModel2_1::automaticIrrigation()
         FloodwaterDepth = 0;
     }
     if (NumPhase < 7 && DAF <= PlotDrainageDAF && IrrigAuto == 1 &&
-        NumPhase > 0 && CorrectedBundHeight > 0 && FTSW <= FTSWIrrig &&
-        StressPeriod == 0) {
+            NumPhase > 0 && CorrectedBundHeight > 0 && FTSW <= FTSWIrrig &&
+            StressPeriod == 0) {
         IrrigAutoTargetCor = std::min((IrrigAutoTarget * BundHeight),
                                       (0.5 * PlantHeight));
         if (NumPhase == 1) {
             IrrigAutoTargetCor = std::max(IrrigAutoTargetCor, BundHeight / 2);
         }
         IrrigAutoDay = std::max(0., (IrrigAutoTargetCor - FloodwaterDepth)) +
-            + (VolMacropores - StockMacropores) + RuRac *
-            (1 - (std::min(FTSW, 1.)));
+                + (VolMacropores - StockMacropores) + RuRac *
+                (1 - (std::min(FTSW, 1.)));
         if (ChangeNurseryStatus == 1) {
             IrrigAutoDay = VolMacropores + RuSurf + PercolationMax;
         }
@@ -2395,7 +2409,7 @@ void SamaraModel2_1::automaticIrrigation()
         } else {
             FloodwaterDepth = FloodwaterDepth + IrrigAutoDay;
             if (VolMacropores > 0 && StockMacropores < VolMacropores &&
-                FloodwaterDepth > 0) {
+                    FloodwaterDepth > 0) {
                 StockMacropores = StockMacropores + FloodwaterDepth;
                 FloodwaterDepth = std::max(0., StockMacropores - VolMacropores);
                 StockMacropores = StockMacropores - FloodwaterDepth;
@@ -2406,10 +2420,10 @@ void SamaraModel2_1::automaticIrrigation()
                 }
                 if (RootFront == 0) {
                     StockRac = RuRac + StockMacropores * ProfRacIni /
-                        (EpaisseurSurf + EpaisseurProf);
+                            (EpaisseurSurf + EpaisseurProf);
                 } else {
                     StockRac = RuRac + StockMacropores * RootFront /
-                        (EpaisseurSurf + EpaisseurProf);
+                            (EpaisseurSurf + EpaisseurProf);
                 }
                 FTSW = StockRac / RuRac;
             }
@@ -2417,7 +2431,7 @@ void SamaraModel2_1::automaticIrrigation()
         }
     } else {
         if (NumPhase < 7 && DAF <= PlotDrainageDAF && IrrigAuto == 1 &&
-            NumPhase > 0 && CorrectedBundHeight == 0) {
+                NumPhase > 0 && CorrectedBundHeight == 0) {
             FloodwaterDepth = 0;
         }
     }
@@ -2428,7 +2442,7 @@ void SamaraModel2_1::evolRurRFE_RDE()
 {
     double DeltaRur;
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 0) {
         RuRac = 0;
@@ -2436,47 +2450,47 @@ void SamaraModel2_1::evolRurRFE_RDE()
     } else {
         if (NumPhase == 1 && ChangePhase == 1) {
 
-            // std::cout << "ResUtil = " << ResUtil << std::endl;
-            // std::cout << "ProfRacIni = " << ProfRacIni << std::endl;
-            // std::cout << "EpaisseurSurf = " << EpaisseurSurf << std::endl;
-            // std::cout << "EpaisseurProf = " << EpaisseurProf << std::endl;
-            // std::cout << "ResUtil = " << ResUtil << std::endl;
+            //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+            //std::cout << "ProfRacIni = " << ProfRacIni << " - line " << __LINE__ << std::endl;
+            //std::cout << "EpaisseurSurf = " << EpaisseurSurf << " - line " << __LINE__ << std::endl;
+            //std::cout << "EpaisseurProf = " << EpaisseurProf << " - line " << __LINE__ << std::endl;
+            //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
 
             RuRac = ResUtil * std::min(ProfRacIni,
                                        (EpaisseurSurf + EpaisseurProf)) / 1000;
 
-            // std::cout << "RuRac = " << RuRac << std::endl;
+            //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
 
             if (ProfRacIni <= EpaisseurSurf) {
                 StockRac = (ValRDE + ValRFE) * ProfRacIni / EpaisseurSurf;
             } else {
                 StockRac = StockTotal *
-                    std::min(ProfRacIni /  (EpaisseurSurf + EpaisseurProf), 1.);
+                        std::min(ProfRacIni /  (EpaisseurSurf + EpaisseurProf), 1.);
             }
 
-            // std::cout << "StockRac = " << StockRac << std::endl;
+            //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
         } else {
             if (Hum - StockMacropores - RuRac < VitesseRacinaire / 1000 *
-                ResUtil) {
+                    ResUtil) {
                 DeltaRur = std::max(0., Hum - StockMacropores - RuRac);
                 if (RootFront >= EpaisseurSurf + EpaisseurProf ||
-                    RootFront >= RootFrontMax) {
+                        RootFront >= RootFrontMax) {
                     DeltaRur = 0;
                 }
             } else {
                 DeltaRur = VitesseRacinaire / 1000 * ResUtil;
                 if (RootFront >= EpaisseurSurf + EpaisseurProf ||
-                    RootFront >= RootFrontMax) {
+                        RootFront >= RootFrontMax) {
                     DeltaRur = 0;
                 }
             }
 
-            // std::cout << "RootFront = " << RootFront << std::endl;
-            // std::cout << "RootFrontMax = " << RootFrontMax << std::endl;
-            // std::cout << "ResUtil = " << ResUtil << std::endl;
-            // std::cout << "VitesseRacinaire = " << VitesseRacinaire << std::endl;
-            // std::cout << "DeltaRur = " << DeltaRur << std::endl;
+            //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
+            //std::cout << "RootFrontMax = " << RootFrontMax << " - line " << __LINE__ << std::endl;
+            //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+            //std::cout << "VitesseRacinaire = " << VitesseRacinaire << " - line " << __LINE__ << std::endl;
+            //std::cout << "DeltaRur = " << DeltaRur << " - line " << __LINE__ << std::endl;
 
             RuRac = RuRac + DeltaRur;
             if (RuRac > RuSurf) {
@@ -2485,19 +2499,19 @@ void SamaraModel2_1::evolRurRFE_RDE()
                 StockRac = (ValRDE + ValRFE) * (RuRac / RuSurf);
             }
 
-            // std::cout << "StockRac = " << StockRac << std::endl;
+            //std::cout << "StockRac = " << StockRac << " - line " << __LINE__ << std::endl;
 
         }
     }
-//    std::cout << "avt chg rootfront = " << std::endl;
-//         std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "ResUtil = " << ResUtil << std::endl;
-//         std::cout << "RuRac = " << RuRac << std::endl;
-//         std::cout << "RootFront = " << RootFront << std::endl;
+    //std::cout << "avt chg rootfront = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+    //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
     if (NumPhase != 0) {
         RootFront = ((1 / ResUtil) * RuRac) * 1000;
 
-        // std::cout << "RootFront = " << RootFront << std::endl;
+        //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
 
         if (ChangeNurseryStatus == 1 && Transplanting == 1) {
             RootFront = TransplantingDepth;
@@ -2510,19 +2524,19 @@ void SamaraModel2_1::evolRurRFE_RDE()
         }
     }
 
-    // std::cout << "RuRac = " << RuRac << std::endl;
+    //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
 
     if (StockMacropores + FloodwaterDepth > 0) {
         StockRac = RootFront * ResUtil / 1000 +
-            (RootFront / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
+                (RootFront / (EpaisseurSurf + EpaisseurProf)) * StockMacropores;
         StockRac = std::min(StockRac, StockTotal);
     }
 
-//    std::cout << "aprs chg rootfront = " << std::endl;
-//         std::cout << "NumPhase = " << NumPhase << std::endl;
-//         std::cout << "ResUtil = " << ResUtil << std::endl;
-//         std::cout << "RuRac = " << RuRac << std::endl;
-//         std::cout << "RootFront = " << RootFront << std::endl;
+    //std::cout << "aprs chg rootfront = " << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "ResUtil = " << ResUtil << " - line " << __LINE__ << std::endl;
+    //std::cout << "RuRac = " << RuRac << " - line " << __LINE__ << std::endl;
+    //std::cout << "RootFront = " << RootFront << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel2_1::evalSimEndCycle()
@@ -2544,17 +2558,17 @@ void SamaraModel2_1::priority2GrowthPanStrctPop()
                                            GrowthStructTotPop -
                                            GrowthStructPaniclePop);
         GrowthStructPaniclePop = GrowthStructPaniclePop +
-            GrowthStructPaniclePlus;
+                GrowthStructPaniclePlus;
         GrowthStructInternodePop = GrowthStructInternodePop -
-            GrowthStructPaniclePlus * (DemStructInternodePop / DemStructTotPop);
+                GrowthStructPaniclePlus * (DemStructInternodePop / DemStructTotPop);
         GrowthStructLeafPop = GrowthStructLeafPop - GrowthStructPaniclePlus *
-            (DemStructLeafPop / DemStructTotPop);
+                (DemStructLeafPop / DemStructTotPop);
         GrowthStructSheathPop = GrowthStructSheathPop -
-            GrowthStructPaniclePlus * (DemStructSheathPop / DemStructTotPop);
+                GrowthStructPaniclePlus * (DemStructSheathPop / DemStructTotPop);
         GrowthStructRootPop = GrowthStructRootPop - GrowthStructPaniclePlus *
-            (DemStructRootPop / DemStructTotPop);
+                (DemStructRootPop / DemStructTotPop);
         GrowthResInternodePop = GrowthResInternodePop -
-            GrowthStructPaniclePlus * (DemResInternodePop / DemStructTotPop);
+                GrowthStructPaniclePlus * (DemResInternodePop / DemStructTotPop);
     }
 }
 
@@ -2688,7 +2702,7 @@ void SamaraModel2_1::keyResults()
 void SamaraModel::degToRad()
 {
     LatRad = Latitude * M_PI / 180;
-    // std::cout << "LatRad = " << LatRad << std::endl;
+    //std::cout << "LatRad = " << LatRad << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::avgTempHum()
@@ -2703,47 +2717,47 @@ void SamaraModel::avgTempHum()
     } else {
         HMoyCalc = HMoy;
     }
-    // std::cout << "TMoyCalc = " << TMoyCalc << std::endl;
-    // std::cout << "HMoyCalc = " << HMoyCalc << std::endl;
+    //std::cout << "TMoyCalc = " << TMoyCalc << " - line " << __LINE__ << std::endl;
+    //std::cout << "HMoyCalc = " << HMoyCalc << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalDecli(double t)
 {
     Decli = 0.409 * std::sin(0.0172 * utils::DateTime::dayOfYear(t) - 1.39);
-    // std::cout << "Decli = " << Decli << std::endl;
+    //std::cout << "Decli = " << Decli << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalSunPosi()
 {
     SunPosi = std::acos(-std::tan(LatRad) * std::tan(Decli));
-    // std::cout << "SunPosi = " << SunPosi << std::endl;
+    //std::cout << "SunPosi = " << SunPosi << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalDayLength()
 {
     DayLength = 7.64 * SunPosi;
-    // std::cout << "DayLength = " << DayLength << std::endl;
+    //std::cout << "DayLength = " << DayLength << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalSunDistance(double t)
 {
     SunDistance = 1 + 0.033 *
-        std::cos(2 * M_PI / 365 * utils::DateTime::dayOfYear(t));
-    // std::cout << "SunDistance = " << SunDistance << std::endl;
+            std::cos(2 * M_PI / 365 * utils::DateTime::dayOfYear(t));
+    //std::cout << "SunDistance = " << SunDistance << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalRayExtra()
 {
     RayExtra = 24 * 60 * 0.0820 / M_PI * SunDistance *
-        (SunPosi * std::sin(Decli) * std::sin(LatRad) +
-         std::cos(Decli) * std::cos(LatRad) * std::sin(SunPosi));
-    // std::cout << "RayExtra = " << RayExtra << std::endl;
+            (SunPosi * std::sin(Decli) * std::sin(LatRad) +
+             std::cos(Decli) * std::cos(LatRad) * std::sin(SunPosi));
+    //std::cout << "RayExtra = " << RayExtra << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalRgMax()
 {
     RgMax = (0.75 + 0.00002 * Altitude) * RayExtra;
-    // std::cout << "RgMax = " << RgMax << std::endl;
+    //std::cout << "RgMax = " << RgMax << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::insToRg()
@@ -2753,15 +2767,15 @@ void SamaraModel::insToRg()
     } else {
         RgCalc = Rg;
     }
-    // std::cout << "RGCalc = " << RGCalc << std::endl;
+    //std::cout << "RGCalc = " << RgCalc << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalPAR()
 {
     PAR = KPar * RgCalc;
-    // std::cout << "KPar = " << KPar << std::endl;
-    // std::cout << "RgCalc = " << RgCalc << std::endl;
-    // std::cout << "PAR = " << PAR << std::endl;
+    //std::cout << "KPar = " << KPar << " - line " << __LINE__ << std::endl;
+    //std::cout << "RgCalc = " << RgCalc << " - line " << __LINE__ << std::endl;
+    //std::cout << "PAR = " << PAR << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::etoFAO()
@@ -2785,7 +2799,7 @@ void SamaraModel::etoFAO()
         } else {
             eActual = 0.3054 * (std::exp(17.27 * TMax / (TMax + 237.3)) *
                                 HMin / 100 + std::exp(17.27 * TMin /
-                                                       (TMin + 237.3)) *
+                                                      (TMin + 237.3)) *
                                 HMax / 100);
         }
         VPD = eSat - eActual;
@@ -2794,18 +2808,18 @@ void SamaraModel::etoFAO()
             RgRgMax = 1;
         }
         Rn = 0.77 * RgCalc - (1.35 * RgRgMax - 0.35) *
-            (0.34 - 0.14 * std::pow(eActual, 0.5)) *
-            (std::pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) *
-            2.45015 * std::pow(10, -9);
+                (0.34 - 0.14 * std::pow(eActual, 0.5)) *
+                (std::pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) *
+                2.45015 * std::pow(10, -9);
         Tlat = 2.501 - 2.361 * std::pow(10, -3) * TMoyCalc;
         delta = 4098 * (0.6108 * std::exp(17.27 * TMoyCalc / (TMoyCalc + 237.3))) /
-            std::pow(TMoyCalc + 237.3, 2);
+                std::pow(TMoyCalc + 237.3, 2);
         Kpsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude / 293),
                                           5.26) / Tlat;
         G = 0.38 * (TMoyCalc - TMoyPrec);
         Erad = 0.408 * (Rn - G) * delta / (delta + Kpsy * (1 + 0.34 * Vent));
         Eaero = (900 / (TMoyCalc + 273.16)) * ((eSat - eActual) * Vent) * Kpsy /
-            (delta + Kpsy * (1 + 0.34 * Vent));
+                (delta + Kpsy * (1 + 0.34 * Vent));
         Eto = Erad + Eaero;
 
     } else {
@@ -2822,15 +2836,15 @@ void SamaraModel::evolPhenoStress(double t)
         bool ChangementDePhase = false;
         bool ChangementDeSousPhase = false;
 
-        // std::cout << "NumPhase = " << NumPhase << std::endl;
-        // std::cout << "SeuilTempPhaseSuivante = " << SeuilTempPhaseSuivante << std::endl;
-        // std::cout << "SommeDegresJour = " << SommeDegresJour << std::endl;
-        // std::cout << "StockSurface = " << StockSurface << std::endl;
-        // std::cout << "TxRuSurfGermi = " << TxRuSurfGermi << std::endl;
-        // std::cout << "RuSurf = " << RuSurf << std::endl;
-        // std::cout << "StockTotal = " << StockTotal << std::endl;
-        // std::cout << "SumPP = " << SumPP << std::endl;
-        // std::cout << "PPSens = " << PPSens << std::endl;
+        //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+        //std::cout << "SeuilTempPhaseSuivante = " << SeuilTempPhaseSuivante << " - line " << __LINE__ << std::endl;
+        //std::cout << "SommeDegresJour = " << SommeDegresJour << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockSurface = " << StockSurface << " - line " << __LINE__ << std::endl;
+        //std::cout << "TxRuSurfGermi = " << TxRuSurfGermi << " - line " << __LINE__ << std::endl;
+        //std::cout << "RuSurf = " << RuSurf << " - line " << __LINE__ << std::endl;
+        //std::cout << "StockTotal = " << StockTotal << " - line " << __LINE__ << std::endl;
+        //std::cout << "SumPP = " << SumPP << " - line " << __LINE__ << std::endl;
+        //std::cout << "PPSens = " << PPSens << " - line " << __LINE__ << std::endl;
 
 
         ChangePhase = 0;
@@ -2843,7 +2857,7 @@ void SamaraModel::evolPhenoStress(double t)
             }
         } else {
             if ((int)(NumPhase) == 1 && //NumPhase == 2 &&  instruc precedente
-                SommeDegresJour >= SeuilTempPhaseSuivante) {
+                    SommeDegresJour >= SeuilTempPhaseSuivante) {
                 ChangementDePhase = true;
             } else {
                 if ((int)(NumPhase) != 3) {
@@ -2862,11 +2876,11 @@ void SamaraModel::evolPhenoStress(double t)
                 SommeDegresJourPhasePrecedente = SeuilTempPhaseSuivante;
                 switch ((int)(NumPhase)) {
                 case 2: SeuilTempPhaseSuivante = SeuilTempPhaseSuivante +
-                        SDJBVP; break;
-                //case 3: SumPP = 0; break; //  instruction active avt
+                            SDJBVP; break;
+                    //case 3: SumPP = 0; break; //  instruction active avt
                 case 4:
                     SeuilTempSousPhaseSuivante = SeuilTempPhaseSuivante + SDJRPR
-                        / 4;
+                            / 4;
                     NumSousPhase = 1;
                     MonCompteur = 0;
                     ChangeSousPhase = 1;
@@ -2881,13 +2895,13 @@ void SamaraModel::evolPhenoStress(double t)
             ChangementDeSousPhase = (SommeDegresJour >=
                                      SeuilTempSousPhaseSuivante);
 
-            // std::cout << "SommeDegresJour = " << SommeDegresJour << std::endl;
-            // std::cout << "SeuilTempSousPhaseSuivante = " << SeuilTempSousPhaseSuivante << std::endl;
-            // std::cout << "ChangementDeSousPhase = " << ChangementDeSousPhase << std::endl;
+            //std::cout << "SommeDegresJour = " << SommeDegresJour << " - line " << __LINE__ << std::endl;
+            //std::cout << "SeuilTempSousPhaseSuivante = " << SeuilTempSousPhaseSuivante << " - line " << __LINE__ << std::endl;
+            //std::cout << "ChangementDeSousPhase = " << ChangementDeSousPhase << " - line " << __LINE__ << std::endl;
 
             if (ChangementDeSousPhase) {
                 SeuilTempSousPhaseSuivante = SeuilTempSousPhaseSuivante +
-                    SDJRPR / 4;
+                        SDJRPR / 4;
                 NumSousPhase = NumSousPhase + 1;
                 MonCompteur = 1;
                 ChangeSousPhase = 1;
@@ -2897,7 +2911,7 @@ void SamaraModel::evolPhenoStress(double t)
         }
     }
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -2909,19 +2923,19 @@ void SamaraModel2_1::demandePlante()
     CoeffCO2Tr = Ca * CO2SlopeTr - 400 * CO2SlopeTr + 1;
     TrPot = TrPot * CoeffCO2Tr;
 
-     // std::cout << "Kcp = " << Kcp << std::endl;
-     // std::cout << "Eto = " << Eto << std::endl;
-     // std::cout << "Ca = " << Ca << std::endl;
-     // std::cout << "CO2SlopeTr = " << CO2SlopeTr << std::endl;
-     // std::cout << "CoeffCO2Tr = " << CoeffCO2Tr << std::endl;
-     // std::cout << "TrPot = " << TrPot << std::endl;
+    //std::cout << "Kcp = " << Kcp << " - line " << __LINE__ << std::endl;
+    //std::cout << "Eto = " << Eto << " - line " << __LINE__ << std::endl;
+    //std::cout << "Ca = " << Ca << " - line " << __LINE__ << std::endl;
+    //std::cout << "CO2SlopeTr = " << CO2SlopeTr << " - line " << __LINE__ << std::endl;
+    //std::cout << "CoeffCO2Tr = " << CoeffCO2Tr << " - line " << __LINE__ << std::endl;
+    //std::cout << "TrPot = " << TrPot << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalTranspi()
 {
     Tr = TrPot * Cstr;
 
-    // std::cout << "Tr = " << Tr << std::endl;
+    //std::cout << "Tr = " << Tr << " - line " << __LINE__ << std::endl;
 }
 
 void SamaraModel::evalETRETM()
@@ -2929,11 +2943,11 @@ void SamaraModel::evalETRETM()
     ETM = Evap + TrPot;
     ETR = Evap + Tr;
 
-    // std::cout << "TrPot = " << TrPot << std::endl;
-    // std::cout << "Tr = " << Tr << std::endl;
-    // std::cout << "Evap = " << Evap << std::endl;
-    // std::cout << "ETM = " << ETM << std::endl;
-    // std::cout << "ETR = " << ETR << std::endl;
+    //std::cout << "TrPot = " << TrPot << " - line " << __LINE__ << std::endl;
+    //std::cout << "Tr = " << Tr << " - line " << __LINE__ << std::endl;
+    //std::cout << "Evap = " << Evap << " - line " << __LINE__ << std::endl;
+    //std::cout << "ETM = " << ETM << " - line " << __LINE__ << std::endl;
+    //std::cout << "ETR = " << ETR << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -2945,9 +2959,9 @@ void SamaraModel::evolSomDegresJour()
         SommeDegresJour = 0;
     }
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
-    // std::cout << "DegresDuJour = " << DegresDuJour << std::endl;
-    // std::cout << "SommeDegresJour = " << SommeDegresJour << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "DegresDuJour = " << DegresDuJour << " - line " << __LINE__ << std::endl;
+    //std::cout << "SommeDegresJour = " << SommeDegresJour << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -2981,8 +2995,8 @@ void SamaraModel::mortality()
 
 void SamaraModel::evalTMaxMoy() {
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
-    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumSousPhase = " << NumSousPhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 4 && NumSousPhase == 4) {
         TMaxMoy = calculeLaMoyenne(TMax, MonCompteur, TMaxMoy);
@@ -2990,14 +3004,14 @@ void SamaraModel::evalTMaxMoy() {
         TMaxMoy = 0;
     }
 
-    // std::cout << "TMaxMoy = " << TMaxMoy << std::endl;
+    //std::cout << "TMaxMoy = " << TMaxMoy << " - line " << __LINE__ << std::endl;
 
 }
 
 void SamaraModel::evalTMinMoy() {
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
-    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumSousPhase = " << NumSousPhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 4 && NumSousPhase == 3) {
         TMinMoy = calculeLaMoyenne(TMin, MonCompteur, TMinMoy);
@@ -3005,14 +3019,14 @@ void SamaraModel::evalTMinMoy() {
         TMinMoy = 0;
     }
 
-    // std::cout << "TMinMoy = " << TMinMoy << std::endl;
+    //std::cout << "TMinMoy = " << TMinMoy << " - line " << __LINE__ << std::endl;
 
 }
 
 void SamaraModel::evalFtswMoy() {
 
-    // std::cout << "NumPhase = " << NumPhase << std::endl;
-    // std::cout << "NumSousPhase = " << NumSousPhase << std::endl;
+    //std::cout << "NumPhase = " << NumPhase << " - line " << __LINE__ << std::endl;
+    //std::cout << "NumSousPhase = " << NumSousPhase << " - line " << __LINE__ << std::endl;
 
     if (NumPhase == 4 && NumSousPhase == 4) {
         FtswMoy = calculeLaMoyenne(FTSW, MonCompteur, FtswMoy);
@@ -3020,7 +3034,7 @@ void SamaraModel::evalFtswMoy() {
         FtswMoy = 0;
     }
 
-    // std::cout << "FtswMoy = " << FtswMoy << std::endl;
+    //std::cout << "FtswMoy = " << FtswMoy << " - line " << __LINE__ << std::endl;
 
 }
 
@@ -3035,7 +3049,7 @@ void SamaraModel::evalNbJas(double t) {
 
     NbJas = t - DateSemis;
 
-    // std::cout << "NbJas (calcule) = " << NbJas << std::endl;
+    //std::cout << "NbJas (calcule) = " << NbJas << " - line " << __LINE__ << std::endl;
 }
 
 

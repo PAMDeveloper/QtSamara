@@ -60,25 +60,47 @@ static void format_dates(const model::models::ModelParameters& parameters,
 typedef artis::observer::Output < artis::utils::DoubleTime,
                                   model::models::ModelParameters > AnOutput;
 
+static bool is_number(const std::string& s) {
+  std::string::const_iterator it = s.begin();
+//  std::cout << s ;
+  int nbScore = 0;
+  int nbDots = 0;
+  while (it != s.end()){
+      if((*it)=='.')
+          nbDots++;
+      if((*it)=='-')
+          nbScore++;
+      if(nbScore > 1){
+//          std::cout << " TEXT" << std::endl;
+          return false;
+      }
+      if(std::isalpha(*it)) {
+//          std::cout << " TEXT" << std::endl;
+          return false;
+      }
+      it++;
+  }
+  if(nbDots > 1 || nbDots == 0){
+//      std::cout << " TEXT" << std::endl;
+      return false;
+  }
+//  std::cout << " NUMBER" << std::endl;
+  return true;
+}
+static double cint(double x){
+  if (modf(x,0)>=.5)
+    return x>=0?ceil(x):floor(x);
+  else
+    return x<0?ceil(x):floor(x);
+}
+
+static double round(double r,unsigned places){
+  double off=pow(10,places);
+  return cint(r*off)/off;
+}
+
 static void run(const std::string& id/* path */, int /* verbose */)
 {
-//    samara::GlobalParameters globalParameters;
-//    model::models::ModelParameters parameters;
-//    utils::ParametersReader reader;
-//    std::string begin;
-//    std::string end;
-
-//    reader.loadFromDatabase(id, parameters);
-//    format_dates(parameters, begin, end);
-
-//    globalParameters.modelVersion = parameters.get < std::string >("idmodele");
-//    model::kernel::KernelModel* model = new model::kernel::KernelModel;
-//    kernel::Simulator simulator(model, globalParameters);
-
-//    simulator.attachView("global", new model::observer::GlobalView);
-//    simulator.init(utils::DateTime::toJulianDayNumber(begin), parameters);
-//    simulator.run(utils::DateTime::toJulianDayNumber(begin),
-//                  utils::DateTime::toJulianDayNumber(end));
     samara::GlobalParameters globalParameters;
     model::kernel::KernelModel* model = new model::kernel::KernelModel;
     model::models::ModelParameters parameters;
@@ -86,32 +108,27 @@ static void run(const std::string& id/* path */, int /* verbose */)
     std::string beginstr;
     std::string endstr;
 
-//    reader.loadFromJSON("D:\\PAMStudio\\dev\\git\\rSamara\\examples\\", parameters);
     parameters.set< std::string>("idsimulation", id);
     reader.loadFromDatabase(id, parameters);
     for(auto it = parameters.getRawParameters()->begin(); it != parameters.getRawParameters()->end(); ++it) {
+        std::cout << it->first << " " << it->second; //<< std::endl;
+        if(is_number(it->second)){
+//            std::cout << std::stod(it->second.c_str()) << std::endl;
+            parameters.set<std::string>(it->first, std::to_string(std::stod(it->second.c_str())));
+        }
         std::cout << it->first << " " << it->second << std::endl;
-//      v.push_back(it->first);
-//      cout << it->first << "\n";
     }
     beginstr = parameters.get<std::string>("datedebut");
     endstr = parameters.get<std::string>("datefin");
     globalParameters.modelVersion = parameters.get < std::string >("idmodele");
 
-
     double begin = utils::DateTime::toJulianDayNumber(beginstr);
     double end = utils::DateTime::toJulianDayNumber(endstr);
-//    double begin = utils::DateTime::toJulianDayNumber(
-//      parameters.get<std::string>("datedebut"));
-//    double end = utils::DateTime::toJulianDayNumber(
-//      parameters.get<std::string>("datefin"));
     model::kernel::Simulator * simulator = new model::kernel::Simulator(model, globalParameters);
     model::observer::GlobalView * view = new model::observer::GlobalView();
     simulator->attachView("global", view);
     simulator->init(begin, parameters);
     simulator->run(begin, end);
-
-
 
     AnOutput output(simulator->observer());
     output();
@@ -218,6 +235,7 @@ struct ProgramOptions
 
 int main(int argc, char** argv)
 {
+//    06SB15-fev13-D1_SV21
     std::string simuId = argv[1];
     std::cout << simuId << std::endl;
     run(simuId, 1);
