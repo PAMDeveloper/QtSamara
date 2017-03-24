@@ -1062,7 +1062,7 @@ void SamaraModel::writeResultInFile(const std::string idsimu,double jour){
 
     }
     else {
-        std::ofstream fichierResultEcrire("Résultats_journaliers.txt", std::ios::out);
+        std::ofstream fichierResultEcrire("Resultats_journaliers.txt", std::ios::out);
         fichierResultEcrire << ligneEntete << std::endl;
         fichierResultEcrire << ligneDonnees << std::endl;
         fichierResultEcrire.close();
