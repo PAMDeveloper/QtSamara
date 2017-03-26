@@ -81,8 +81,8 @@ public:
     template < typename T >
     T get(const std::string& paramName) const
     {
-        std::map < std::string, std::string >::const_iterator it;
-        it = mParams.find(paramName);
+//        std::map < std::string, std::string >::const_iterator it;
+        auto it = mParams.find(paramName);
 
         return boost::lexical_cast<T>((it == mParams.end() ) ? "" : it->second);
     }
