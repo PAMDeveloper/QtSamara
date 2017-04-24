@@ -235,7 +235,6 @@ void MainWindow::displayData(observer::GlobalView * view,
     int j = 0;
     for(auto it = m.begin(); it != m.end(); ++it) {
         QString param = QString::fromStdString(it->first);
-        qDebug() << param;
         QLineSeries *series = new QLineSeries();
         series->setColor(getColor(j));
         QLineSeries * refSeries;
