@@ -1,79 +1,130 @@
+#include "MultiModelPlatform_Import_Export.hpp"
 
-bool CommunicationBDD::exportTableDansFichier(std::string nomFichier,std::string nomTable,Gtk::TreeView& treeViewExport,std::map < std::string,Gtk::TreeModelColumn<Glib::ustring>* >& mapNomChampTreeModelCol,std::string nomChampClePrimaire,std::string requete,int nombreClePrimaire,std::string nomChampClePrimaireDeux,std::string nomChampClePrimaireTrois,std::string nomChampClePrimaireQuatre){
-    Gtk::ListStore::Row ligneSelectionneeTreeView;
-    std::string ligneAEcrire,requeteExport,valeurChamp;
-    std::ofstream fichierExport(nomFichier.c_str(), std::ios::out | std::ios::trunc); //declaration de flux sortie en ecriture
-    Glib::ustring valeurID;
-    if (fichierExport){//si la creation du fichier est ok
-        if(requete==""){
-            //recupere tte la gestion de selection du treeview
-            Glib::RefPtr<Gtk::TreeSelection> selectionTreeView = treeViewExport.get_selection();
-            //recupere un iterator de la ligne selectionnee du treeview
-            Gtk::ListStore::iterator iterTreeModel = selectionTreeView->get_selected();
-            if(iterTreeModel){//si il y a une ligne selectionnee
-                //depointe l iterator pour obtenir la ligne
-                ligneSelectionneeTreeView = *iterTreeModel;
-                //recupere la valeur de la colonne id du treemodel
-                valeurID=ligneSelectionneeTreeView[*(mapNomChampTreeModelCol.find(nomChampClePrimaire)->second)];
-            }
-            if (!(valeurID.empty())){//si une ligne a bien ete selectionnee
-                Glib::ustring valeurIDDeux,valeurIDTrois,valeurIDQuatre;
-                //requete select pour extraire l enregistrement selectionne
-                requeteExport = "SELECT * FROM " + nomTable + " WHERE " + nomChampClePrimaire + "='" + valeurID + "'";
-                if (nombreClePrimaire>1){
-                    valeurIDDeux=ligneSelectionneeTreeView[*(mapNomChampTreeModelCol.find(nomChampClePrimaireDeux)->second)];
-                    requeteExport = requeteExport + " AND " + nomChampClePrimaireDeux + "='" + valeurIDDeux + "'";
-                }
-                if (nombreClePrimaire>2){
-                    valeurIDTrois=ligneSelectionneeTreeView[*(mapNomChampTreeModelCol.find(nomChampClePrimaireTrois)->second)];
-                    requeteExport = requeteExport + " AND " + nomChampClePrimaireTrois + "='" + valeurIDTrois + "'";
-                }
-                if (nombreClePrimaire>3){
-                    valeurIDQuatre=ligneSelectionneeTreeView[*(mapNomChampTreeModelCol.find(nomChampClePrimaireQuatre)->second)];
-                    requeteExport = requeteExport + " AND " + nomChampClePrimaireQuatre + "='" + valeurIDQuatre + "'";
-                }
-            }
-        }
-        else {
-            requeteExport = requete;
-        }
-        executeRequete(requeteExport);//exectution de la requete
-        if (!(retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
-            return  false;
-        }
-        for(int j=0;j<getNbColonnes();j++){//boucle sur le resultat de la requete precedente (nom des colonnes de la table)
-            if (j == 0)
-                ligneAEcrire = PQfname(leResultPrimaire,j);
-            else //recupere et concatene le nom des champs
-                ligneAEcrire = ligneAEcrire + "\t" + PQfname(leResultPrimaire,j);
-        }
-        fichierExport << ligneAEcrire << std::endl;//ecriture dans le fichier
-        ligneAEcrire = "";//remise a zero de la ligneaecrire
-        for(int i=0;i<getNbResult();i++){//boucle sur le nombre de ligne du resultat de la requete
-            for(int j=0; j<getNbColonnes();j++){//boucle sur le nombre de colonne du resultat de la requete
-                valeurChamp = getValeurChampResultat(i,j);//recupere la valeur du champ
-                if (j == 0)
-                    ligneAEcrire = valeurChamp;
-                else //recupere et concatene les valeurs des champs de l enregistrement
-                    ligneAEcrire = ligneAEcrire + "\t" + valeurChamp;
-            }
-            fichierExport << ligneAEcrire << std::endl;//ecriture dans le fichier
-            ligneAEcrire = "";//vide la ligneaecrire
-        }
-        videCurseurRes();//vide le curseur pr�c�demment utilis�
+const std::string nomHost="host=localhost",numPort=" port=5432",nomDB=" dbname=samara",nomUser=" user=user_samara",valeurPassword=" password=samarapassword";
+const std::string chaineConnexion=nomHost+numPort+nomDB+nomUser+valeurPassword;
 
-        fichierExport.close();//fermeture du fichier
-        return true;
+std::string nomIdParc="idparcelle",nomIdVar="idvariete",nomIdItinTech="iditinerairetechnique",nomIdTypET="idtypeet",
+            nomCodeStation="codestation",nomCodeStatMetSim="codestationmeteo",nomCodeStatPrecSim="codestationpluie",nomTypStatMet="Meteorologique",
+            nomTypStatPluv="Pluviometrique",nomTypStatSyno="Synoptique",nomIdSite="idsite",nomCodeTypSol="codetypesol",nomCodeConti="codecontinent",
+            nomCodePays="codepays",nomIdDoss="iddossier",nomIdSim="idsimulation",nomCodeTypStat="codetypestation",
+            nomMotCleId="id",nomMotCleCode="code",nomMotCleDate="date",nomChampNom="nom",
+            nomAliasParc="par",nomAliasPays="pay",nomAliasSite="sit",nomAliasSim="sim",
+            nomAliasStat="sta",nomAliasTypStat="tst",nomJour="jour",nomET="et",nomTMax="tmax",nomTMin="tmin",nomTMoy="tmoy",nomHMax="hmax",
+            nomHMin="hmin",nomHMoy="hmoy",nomVt="vt",nomIns="ins",nomRg="rg",nomDateFnSim="datefin",nomDescrDossier="description",nomDateDebSim="datedebut",
+            nomAnneeDebSim="anneedebut",nomAnneeFnSim="anneefin",nomNbAnneeSim="simulationyearnumber",nomTabParc="parcelle",
+            nomTabVar="variete",nomTabItinTech="itinerairetechnique",nomTabTypET="typeet",nomTabStation="station",
+            nomTabMet="meteo",nomTabPrecip="precipitation",nomTabSite="site",nomTabTypSol="typesol",nomTabConti="continent",nomTabPays="pays",
+            nomTabObs="observer",nomTabIrrig="irriguer",nomTabDoss="dossier",nomTabSim="simulation",nomTabTypStat="typestation",nomTabBilETO="bilaneto",
+            nomTabResultat="resultat";
+
+PGconn *laConnex;//connexion a la bdd postgres
+PGresult *leResult;//objet resultat renvoyé apres execution d'une commande
+
+
+bool connexionBase(){
+    bool retourConnex;
+    laConnex = PQconnectdb(chaineConnexion.c_str());
+    if (PQstatus(laConnex) != CONNECTION_OK) { //test si la connection a �t� �tablie
+        fermeConnection();//fermeture de la connection
+        retourConnex = false;
     }
-    else{
-        Gtk::MessageDialog dialogue("Error while creating file " + nomFichier + ".", false, Gtk::MESSAGE_INFO);
-        dialogue.run();
-        return false;
-    }
+    else retourConnex= true;
+    return retourConnex;
 }
 
+void fermeConnection(){
+    PQfinish(laConnex);//fermeture de la connexion avec la base postgres
+}
 
-bool CommunicationBDD::exportTableOptim_SensiDansFichier(std::string nomFichier,std::string nomTable,std::string nomChampClePrimaire,std::string requete,int nombreClePrimaire,std::string nomChampClePrimaireDeux,std::string nomChampClePrimaireTrois,std::string nomChampClePrimaireQuatre){
+std::string retourneEtatConnection(){
+    std::string mssgEtatConnect;
+    //test le statut de la connexion
+    if (PQstatus(laConnex) != CONNECTION_OK)
+        mssgEtatConnect="Connection finished";
+    else
+        mssgEtatConnect="Connection established";
+    return mssgEtatConnect;
+}
+
+bool retourneEtatRequete(std::string typeRequete){
+    bool retourReq;
+    if (typeRequete == "select"){
+        if (PQresultStatus(leResult) != PGRES_TUPLES_OK){//test sur le statut du res pour voir si commande bien execute
+            PQclear(leResult); //vide le PGResult
+            retourReq= false;//var retour a false
+        }
+        else retourReq= true;
+	}
+	if (typeRequete=="commandeMaj"){
+        if (PQresultStatus(leResult) != PGRES_COMMAND_OK){//test sur le statut du res pour voir si commande bien execute
+            PQclear(leResult); //vide le PGResult
+            retourReq= false;//var retour a false
+        }
+        else retourReq= true;
+    }
+    return retourReq;
+}
+
+void executeRequete(std::string laRequete){
+    leResult = PQexec(laConnex,laRequete.c_str());//execution de la requete sur le curseur principal
+}
+
+void videCurseurRes(){
+    
+    PQclear(leResult);//vide la struct res principale
+}
+
+std::vector<std::string> decoupeLigneLueEnVecteur(std::string ligneLue){
+    std::string valeurColonne,ligneTronque;
+    std::size_t positionTabTrouve;
+    std::vector<std::string> tabResLigneLue;
+
+    positionTabTrouve = ligneLue.find("\t");//recherche la premiere tabulation
+    if (positionTabTrouve!=std::string::npos){//si tab trouv� alors on peut traiter la ligne
+        valeurColonne = ligneLue.substr(0,positionTabTrouve);//extraction de la colonne
+        ligneTronque = ligneLue.substr(positionTabTrouve+1,ligneLue.length()-1);//on enleve la partie que l'on vient de traiter
+        tabResLigneLue.push_back(valeurColonne);//ajout au tableau qui sera retourn� en r�sultat
+        positionTabTrouve = ligneTronque.find("\t");//recherche du tab suivant
+        while (positionTabTrouve!=std::string::npos){//boucle tant qu'on trouve des tab
+            valeurColonne = ligneTronque.substr(0,positionTabTrouve);
+            ligneTronque = ligneTronque.substr(positionTabTrouve+1,ligneTronque.length()-1);
+            tabResLigneLue.push_back(valeurColonne);
+            positionTabTrouve = ligneTronque.find("\t");
+        }
+        valeurColonne = ligneTronque.substr(0,ligneTronque.length());//on traite ici la derniere colonne
+        tabResLigneLue.push_back(valeurColonne);
+    }
+    return tabResLigneLue;
+}
+
+int getNbResult(){
+    int nb_enreg;
+    nb_enreg = PQntuples(leResult);//retourne le nbre d enreg du curseur resultat principal
+    return nb_enreg;
+}
+
+int getNbColonnes(){
+    int nb_col;
+	nb_col = PQnfields(leResult);//retourne le nbre d enreg du curseur resultat principal
+    return nb_col;
+}
+
+std::string getValeurChampResultat(int ligne,int colonne){
+    std::string valeurChampRes;
+    valeurChampRes = PQgetvalue(leResult,ligne,colonne);//retourne la valeur d'un champ du curseur principal
+    return valeurChampRes;
+}
+
+std::string getValeurChampResultatParNom(std::string nomChamp,int ligne){
+    std::string valeurChampRes;
+    int numColonneChamp;
+    numColonneChamp=PQfnumber(leResult,nomChamp.c_str());
+    valeurChampRes = PQgetvalue(leResult,ligne,numColonneChamp);//retourne la valeur d'un champ du curseur principal
+    
+	return valeurChampRes;
+}
+
+bool exportTablDansFichier(std::string nomFichier,std::string nomTable,std::string nomChampClePrimaire,std::string requete,int nombreClePrimaire,std::string nomChampClePrimaireDeux,std::string nomChampClePrimaireTrois,std::string nomChampClePrimaireQuatre){
     std::string ligneAEcrire,requeteExport,valeurChamp;
     std::ofstream fichierExport(nomFichier.c_str(), std::ios::out | std::ios::trunc); //declaration de flux sortie en ecriture
     Glib::ustring valeurID;
@@ -85,9 +136,9 @@ bool CommunicationBDD::exportTableOptim_SensiDansFichier(std::string nomFichier,
         }
         for(int j=0;j<getNbColonnes();j++){//boucle sur le resultat de la requete precedente (nom des colonnes de la table)
             if (j == 0)
-                ligneAEcrire = PQfname(leResultPrimaire,j);
+                ligneAEcrire = PQfname(leResult,j);
             else //recupere et concatene le nom des champs
-                ligneAEcrire = ligneAEcrire + "\t" + PQfname(leResultPrimaire,j);
+                ligneAEcrire = ligneAEcrire + "\t" + PQfname(leResult,j);
         }
         fichierExport << ligneAEcrire << std::endl;//ecriture dans le fichier
         ligneAEcrire = "";//remise a zero de la ligneaecrire
@@ -114,206 +165,159 @@ bool CommunicationBDD::exportTableOptim_SensiDansFichier(std::string nomFichier,
     }
 }
 
-
-void Fenetre::on_boutonExportSim_clicked(){
+void onExportSim_clicked(std::string idSimuSelected){
     bool retourImport = true;
 
-    std::vector<int> vectorSimuSelectionnee;
-    vectorSimuSelectionnee = listeSimulation.get_selected();//recupere les index des simu selectionnees
-    Glib::ustring idSimuSelected;
+   	Glib::ustring requeteDebutSimu = "SELECT * FROM " + nomTabSim + " WHERE " + nomIdSim + "='";
+	Glib::ustring requeteFinSimu = "'";
+	Glib::ustring requeteCompleteSimu = requeteDebutSimu + idSimuSelected + requeteFinSimu;
 
-    if (!(vectorSimuSelectionnee.empty())){ //si au moins une simu select
-        if (vectorSimuSelectionnee.size()==1){
+	executeRequete(requeteCompleteSimu);//execution de la commande sur la connexion connex
+	if (!(retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
+		afficheRetourRequete();
+	}
 
-            std::string idParcelle,idVariete, idItinTech,codeStationMeteoSimu,codeStationPluvio,idDossier,
-                            codeTypSol,codePays,codeContinent,idSite,dateDebutComplet,dateFinComplet;
+	idParcelle = getValeurChampResultatParNom(nomIdParc);
+	idVariete = getValeurChampResultatParNom(nomIdVar);
+	idItinTech = getValeurChampResultatParNom(nomIdItinTech);
+	codeStationMeteoSimu = getValeurChampResultatParNom(nomCodeStatMetSim);
+	codeStationPluvio = getValeurChampResultatParNom(nomCodeStatPrecSim);
+	dateDebutComplet = getValeurChampResultatParNom(nomDateDebSim);//recupere la date complete YYYY-MM-DD
+	dateFinComplet = getValeurChampResultatParNom(nomDateFnSim);
+	idDossier = getValeurChampResultatParNom(nomIdDoss);
 
-            idSimuSelected=listeSimulation.get_text(vectorSimuSelectionnee[0]);//si 1 simu
-            Glib::ustring requeteDebutSimu = "SELECT * FROM " + CommunicationBDD::nomTabSim + " WHERE " + CommunicationBDD::nomIdSim + "='";
-            Glib::ustring requeteFinSimu = "'";
-            Glib::ustring requeteCompleteSimu = requeteDebutSimu + idSimuSelected + requeteFinSimu;
+	std::string requeteParcelle = "SELECT * FROM " + nomTabParc + " WHERE " +
+									nomIdParc + "='" + idParcelle + "'";
+	executeRequete(requeteParcelle);//execution de la commande sur la connexion connex
+	if (!(retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
+		afficheRetourRequete();
+	}
+	codeTypSol = getValeurChampResultatParNom(nomCodeTypSol);
+	idSite = getValeurChampResultatParNom(nomIdSite);
 
-            controleBDD.executeRequete(requeteCompleteSimu);//execution de la commande sur la connexion connex
-            if (!(controleBDD.retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
-                afficheRetourRequete();
-            }
+	std::string requeteSite = "SELECT * FROM " + nomTabSite + " WHERE " +
+							nomIdSite + "='" + idSite + "'";
+	executeRequete(requeteSite);//execution de la commande sur la connexion connex
+	if (!(retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
+		afficheRetourRequete();
+	}
+	codePays = getValeurChampResultatParNom(nomCodePays);
 
-            idParcelle = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomIdParc);
-            idVariete = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomIdVar);
-            idItinTech = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomIdItinTech);
-            codeStationMeteoSimu = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomCodeStatMetSim);
-            codeStationPluvio = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomCodeStatPrecSim);
-            dateDebutComplet = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomDateDebSim);//recupere la date complete YYYY-MM-DD
-            dateFinComplet = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomDateFnSim);
-            idDossier = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomIdDoss);
+	std::string requetePays = "SELECT * FROM " + nomTabPays + " WHERE " + nomCodePays + "='" + codePays + "'";
+	executeRequete(requetePays);//execution de la commande sur la connexion connex
+	if (!(retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
+		afficheRetourRequete();
+	}
+	codeContinent = getValeurChampResultatParNom(nomCodeConti);
 
-            std::string requeteParcelle = "SELECT * FROM " + CommunicationBDD::nomTabParc + " WHERE " +
-                                            CommunicationBDD::nomIdParc + "='" + idParcelle + "'";
-            controleBDD.executeRequete(requeteParcelle);//execution de la commande sur la connexion connex
-            if (!(controleBDD.retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
-                afficheRetourRequete();
-            }
-            codeTypSol = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomCodeTypSol);
-            idSite = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomIdSite);
+	std::string requeteSol = "SELECT * FROM " + nomTabTypSol + " WHERE " +
+							nomCodeTypSol + "='" + codeTypSol + "'";
+	retourImport = exportTablDansFichier("Sol.txt",nomTabTypSol,
+																 nomCodeTypSol,requeteSol);
+	std::string requeteContinent = "SELECT * FROM " + nomTabConti + " WHERE " +
+									nomCodeConti + "='" + codeContinent + "'";
+	retourImport = exportTablDansFichier("Continent.txt",nomTabConti,
+																 nomCodeConti,requeteContinent);
+	retourImport = exportTablDansFichier("Pays.txt",nomTabPays,
+																 nomCodePays,requetePays);
+	retourImport = exportTablDansFichier("Site.txt",nomTabSite,
+																 nomIdSite,requeteSite);
+	retourImport = exportTablDansFichier("Parcelle.txt",nomTabParc,
+																 nomIdParc,requeteParcelle);
+	std::string requeteStation = "SELECT * FROM " + nomTabStation + " WHERE " +
+								nomCodeStation + "='" + codeStationMeteoSimu + "'";
+	retourImport = exportTablDansFichier("Station.txt",nomTabStation,
+																 nomCodeStation,requeteStation);
+	std::string requeteVariete = "SELECT * FROM " + nomTabVar + " WHERE " +
+								nomIdVar + "='" + idVariete + "'";
+	retourImport = exportTablDansFichier("Variete.txt",nomTabVar,
+																 nomIdVar,requeteVariete);
+	std::string requeteItineraireTech = "SELECT * FROM " + nomTabItinTech + " WHERE " +
+										nomIdItinTech + "='" + idItinTech + "'";
+	retourImport = exportTablDansFichier("Itineraire_Technique.txt",
+																nomTabItinTech,nomIdItinTech,requeteItineraireTech);
+	std::string requeteIrrigation = "SELECT * FROM " + nomTabIrrig + " WHERE " +
+									nomIdParc + "='" + idParcelle + "' AND " + nomJour + ">='" + dateDebutComplet + "' AND " + nomJour + "<='" + dateFinComplet + "' ORDER BY " + nomJour;
+	retourImport = exportTablDansFichier("Irrigation.txt",
+																 nomTabIrrig,nomIdParc,requeteIrrigation);
+	std::string requeteMeteo = "SELECT * FROM " + nomTabMet + " WHERE " +
+								nomCodeStation + "='" + codeStationMeteoSimu + "' AND " + nomJour + ">='" + dateDebutComplet + "' AND " + nomJour + "<='" + dateFinComplet + "' ORDER BY " + nomCodeStation + "," + nomJour;
+	retourImport = exportTablDansFichier("Meteo.txt",nomTabMet,
+																 nomCodeStation,requeteMeteo);
+	std::string requetePluie = "SELECT * FROM " + nomTabPrecip + " WHERE " +
+								nomCodeStation + "='" + codeStationPluvio + "' AND " + nomJour + ">='" + dateDebutComplet + "' AND " + nomJour + "<='" + dateFinComplet + "' ORDER BY " + nomCodeStation + "," + nomJour;
+	retourImport = exportTablDansFichier("Pluie.txt",nomTabPrecip,
+																 nomCodeStation,requetePluie);
+	std::string requeteObs = "SELECT * FROM " + nomTabObs + " WHERE " +
+								nomIdParc + "='" + idParcelle + "' AND " +
+								nomIdVar + "='" + idVariete + "' AND " +
+								nomIdItinTech + "='" + idItinTech + "' AND " +
+								nomJour + ">='" + dateDebutComplet + "' AND " +
+								nomJour + "<='" + dateFinComplet + "' ORDER BY " +
+								nomIdParc + "," + nomIdVar + "," +
+								nomIdItinTech + "," + nomJour;
+	retourImport = exportTablDansFichier("ValObs.txt",nomTabObs,
+																 nomIdParc,requeteObs,4,
+																 nomIdVar,nomIdItinTech,nomJour);
+	retourImport = exportTablDansFichier("Simulation.txt",nomTabSim,
+																 nomIdSim,requeteCompleteSimu);
 
-            std::string requeteSite = "SELECT * FROM " + CommunicationBDD::nomTabSite + " WHERE " +
-                                    CommunicationBDD::nomIdSite + "='" + idSite + "'";
-            controleBDD.executeRequete(requeteSite);//execution de la commande sur la connexion connex
-            if (!(controleBDD.retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
-                afficheRetourRequete();
-            }
-            codePays = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomCodePays);
-
-            std::string requetePays = "SELECT * FROM " + CommunicationBDD::nomTabPays + " WHERE " + CommunicationBDD::nomCodePays + "='" + codePays + "'";
-            controleBDD.executeRequete(requetePays);//execution de la commande sur la connexion connex
-            if (!(controleBDD.retourneEtatRequete("select"))) {//test sur le statut du res pour voir si commande bien execute
-                afficheRetourRequete();
-            }
-            codeContinent = controleBDD.getValeurChampResultatParNom(CommunicationBDD::nomCodeConti);
-
-            std::string requeteSol = "SELECT * FROM " + CommunicationBDD::nomTabTypSol + " WHERE " +
-                                    CommunicationBDD::nomCodeTypSol + "='" + codeTypSol + "'";
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Sol.txt",CommunicationBDD::nomTabTypSol,
-                                                                         CommunicationBDD::nomCodeTypSol,requeteSol);
-            std::string requeteContinent = "SELECT * FROM " + CommunicationBDD::nomTabConti + " WHERE " +
-                                            CommunicationBDD::nomCodeConti + "='" + codeContinent + "'";
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Continent.txt",CommunicationBDD::nomTabConti,
-                                                                         CommunicationBDD::nomCodeConti,requeteContinent);
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Pays.txt",CommunicationBDD::nomTabPays,
-                                                                         CommunicationBDD::nomCodePays,requetePays);
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Site.txt",CommunicationBDD::nomTabSite,
-                                                                         CommunicationBDD::nomIdSite,requeteSite);
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Parcelle.txt",CommunicationBDD::nomTabParc,
-                                                                         CommunicationBDD::nomIdParc,requeteParcelle);
-            std::string requeteStation = "SELECT * FROM " + CommunicationBDD::nomTabStation + " WHERE " +
-                                        CommunicationBDD::nomCodeStation + "='" + codeStationMeteoSimu + "'";
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Station.txt",CommunicationBDD::nomTabStation,
-                                                                         CommunicationBDD::nomCodeStation,requeteStation);
-            std::string requeteVariete = "SELECT * FROM " + CommunicationBDD::nomTabVar + " WHERE " +
-                                        CommunicationBDD::nomIdVar + "='" + idVariete + "'";
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Variete.txt",CommunicationBDD::nomTabVar,
-                                                                         CommunicationBDD::nomIdVar,requeteVariete);
-            std::string requeteItineraireTech = "SELECT * FROM " + CommunicationBDD::nomTabItinTech + " WHERE " +
-                                                CommunicationBDD::nomIdItinTech + "='" + idItinTech + "'";
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Itineraire_Technique.txt",
-                                                                        CommunicationBDD::nomTabItinTech,CommunicationBDD::nomIdItinTech,requeteItineraireTech);
-            std::string requeteIrrigation = "SELECT * FROM " + CommunicationBDD::nomTabIrrig + " WHERE " +
-                                            CommunicationBDD::nomIdParc + "='" + idParcelle + "' AND " + CommunicationBDD::nomJour + ">='" + dateDebutComplet + "' AND " + CommunicationBDD::nomJour + "<='" + dateFinComplet + "' ORDER BY " + CommunicationBDD::nomJour;
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Irrigation.txt",
-                                                                         CommunicationBDD::nomTabIrrig,CommunicationBDD::nomIdParc,requeteIrrigation);
-            std::string requeteMeteo = "SELECT * FROM " + CommunicationBDD::nomTabMet + " WHERE " +
-                                        CommunicationBDD::nomCodeStation + "='" + codeStationMeteoSimu + "' AND " + CommunicationBDD::nomJour + ">='" + dateDebutComplet + "' AND " + CommunicationBDD::nomJour + "<='" + dateFinComplet + "' ORDER BY " + CommunicationBDD::nomCodeStation + "," + CommunicationBDD::nomJour;
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Meteo.txt",CommunicationBDD::nomTabMet,
-                                                                         CommunicationBDD::nomCodeStation,requeteMeteo);
-            std::string requetePluie = "SELECT * FROM " + CommunicationBDD::nomTabPrecip + " WHERE " +
-                                        CommunicationBDD::nomCodeStation + "='" + codeStationPluvio + "' AND " + CommunicationBDD::nomJour + ">='" + dateDebutComplet + "' AND " + CommunicationBDD::nomJour + "<='" + dateFinComplet + "' ORDER BY " + CommunicationBDD::nomCodeStation + "," + CommunicationBDD::nomJour;
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Pluie.txt",CommunicationBDD::nomTabPrecip,
-                                                                         CommunicationBDD::nomCodeStation,requetePluie);
-            std::string requeteObs = "SELECT * FROM " + CommunicationBDD::nomTabObs + " WHERE " +
-                                        CommunicationBDD::nomIdParc + "='" + idParcelle + "' AND " +
-                                        CommunicationBDD::nomIdVar + "='" + idVariete + "' AND " +
-                                        CommunicationBDD::nomIdItinTech + "='" + idItinTech + "' AND " +
-                                        CommunicationBDD::nomJour + ">='" + dateDebutComplet + "' AND " +
-                                        CommunicationBDD::nomJour + "<='" + dateFinComplet + "' ORDER BY " +
-                                        CommunicationBDD::nomIdParc + "," + CommunicationBDD::nomIdVar + "," +
-                                        CommunicationBDD::nomIdItinTech + "," + CommunicationBDD::nomJour;
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("ValObs.txt",CommunicationBDD::nomTabObs,
-                                                                         CommunicationBDD::nomIdParc,requeteObs,4,
-                                                                         CommunicationBDD::nomIdVar,CommunicationBDD::nomIdItinTech,CommunicationBDD::nomJour);
-            retourImport = controleBDD.exportTableOptim_SensiDansFichier("Simulation.txt",CommunicationBDD::nomTabSim,
-                                                                         CommunicationBDD::nomIdSim,requeteCompleteSimu);
-
-            if (!(retourImport)){
-                Gtk::MessageDialog dialogueErreurImport(*this,"Export problem",false,Gtk::MESSAGE_WARNING);
-                dialogueErreurImport.run();
-            }
-            Gtk::MessageDialog messageActionTerminee(*this,"Simulation's export ended", false);
-            messageActionTerminee.run();
-        }
-    }
+	if (!(retourImport)){
+		Gtk::MessageDialog dialogueErreurImport(*this,"Export problem",false,Gtk::MESSAGE_WARNING);
+		dialogueErreurImport.run();
+	}
+	Gtk::MessageDialog messageActionTerminee(*this,"Simulation's export ended", false);
+	messageActionTerminee.run();
+        
+    
 }
 
-
-void Fenetre::on_boutonExportResultats_clicked(){
+void onExportResultats_clicked(std::string idSimSelected){
     std::string  nomFichier;
     bool retourImport;
 
-    std::vector<int> vectorSimuSelectionnee;
-    std::string tableResSelectionnee, requeteFrom=" FROM ", conditionWhere = " WHERE ";;
-    vectorSimuSelectionnee = listeSimulationResultat.get_selected();
-    tableResSelectionnee = listeDeroulanteTableRes.get_active_text();
+    std::string tableResSelectionnee, requeteFrom=" FROM ", conditionWhere = " WHERE ";
 
-    if((vectorSimuSelectionnee.size()>0) && (tableResSelectionnee.size() > 0)){
-        std::string requeteResultat = "SELECT *";
-        Gtk::FileChooserDialog dialogueChoixFichResult(*this,"Please choose a text file to export result data",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialogueChoixFichResult.set_transient_for(*this);
-        //Demande de confirmation lors du remplacement d'un fichier existant
-        dialogueChoixFichResult.set_do_overwrite_confirmation();
-        //Permettre la cr?ation de dossiers
-        dialogueChoixFichResult.set_create_folders();
-        //ajout des boutons de choix de la boite de dialogue
-        dialogueChoixFichResult.add_button("CANCEL", Gtk::RESPONSE_CANCEL);
-        dialogueChoixFichResult.add_button("SAVE", Gtk::RESPONSE_OK);
-        //ajout de filtre, seul les fichiers textes peuvent etre selectionnes
-        Glib::RefPtr<Gtk::FileFilter>  filtreFichTexte = Gtk::FileFilter::create();
-        filtreFichTexte->set_name("Text files");
-        filtreFichTexte->add_mime_type("text/plain");
-        dialogueChoixFichResult.add_filter(filtreFichTexte);
-        //affiche la boite et attend reponse de l utilisateur
-        int resultat = dialogueChoixFichResult.run();
-        //gestion de la reponse
-        if (resultat == Gtk::RESPONSE_OK){
-            //recupere le nom du fichier selectionne
-            nomFichier = dialogueChoixFichResult.get_filename();
-            if (!(nomFichier.empty())){//test si un fichier a bien ete selectionne
-                if (tableResSelectionnee == CommunicationBDD::nomTabResultat){
-                    requeteFrom = requeteFrom + CommunicationBDD::nomTabResultat;
-                    for(unsigned int i=0;i<vectorSimuSelectionnee.size();i++){
-                        conditionWhere = conditionWhere + CommunicationBDD::nomIdSim + "='" +
-                        listeSimulationResultat.get_text(vectorSimuSelectionnee[i]) + "' OR ";
-                    }
-                    conditionWhere = conditionWhere.substr(0,conditionWhere.length()-4);
-                    requeteResultat = requeteResultat + requeteFrom + conditionWhere;
+	std::string requeteResultat = "SELECT *";
+	Gtk::FileChooserDialog dialogueChoixFichResult(*this,"Please choose a text file to export result data",Gtk::FILE_CHOOSER_ACTION_SAVE);
+	dialogueChoixFichResult.set_transient_for(*this);
+	//Demande de confirmation lors du remplacement d'un fichier existant
+	dialogueChoixFichResult.set_do_overwrite_confirmation();
+	//Permettre la cr?ation de dossiers
+	dialogueChoixFichResult.set_create_folders();
+	//ajout des boutons de choix de la boite de dialogue
+	dialogueChoixFichResult.add_button("CANCEL", Gtk::RESPONSE_CANCEL);
+	dialogueChoixFichResult.add_button("SAVE", Gtk::RESPONSE_OK);
+	//ajout de filtre, seul les fichiers textes peuvent etre selectionnes
+	Glib::RefPtr<Gtk::FileFilter>  filtreFichTexte = Gtk::FileFilter::create();
+	filtreFichTexte->set_name("Text files");
+	filtreFichTexte->add_mime_type("text/plain");
+	dialogueChoixFichResult.add_filter(filtreFichTexte);
+	//affiche la boite et attend reponse de l utilisateur
+	int resultat = dialogueChoixFichResult.run();
+	//gestion de la reponse
+	if (resultat == Gtk::RESPONSE_OK){
+		//recupere le nom du fichier selectionne
+		nomFichier = dialogueChoixFichResult.get_filename();
+		if (!(nomFichier.empty())){//test si un fichier a bien ete selectionne
+			requeteFrom = requeteFrom + nomTabResultat;
+			for(unsigned int i=0;i<vectorSimuSelectionnee.size();i++){
+				conditionWhere = conditionWhere + nomIdSim + "='" +
+				idSimSelected + "'";
+			}
+			requeteResultat = requeteResultat + requeteFrom + conditionWhere;
 
-                    retourImport = controleBDD.exportTableDansFichier(nomFichier,tableResSelectionnee,treeViewResultat,mapResultatNomChampTreeModelCol,CommunicationBDD::nomIdSim,requeteResultat,2,CommunicationBDD::nomJour);
-                }
-                else if (tableResSelectionnee == CommunicationBDD::nomTabObs){
+			retourImport = exportTableDansFichier(nomFichier,nomTabResultat,nomIdSim,requeteResultat,2,nomJour);
+		}
+		if (!(retourImport)){
+			Gtk::MessageDialog dialogueErreurImport(*this,"Export problem",false,Gtk::MESSAGE_WARNING);
+			dialogueErreurImport.run();
+		}
+	}
 
-                    requeteFrom = requeteFrom + CommunicationBDD::nomTabObs;
-                    requeteFrom = requeteFrom + "," + CommunicationBDD::nomTabSim;
-                    conditionWhere = conditionWhere + "(";
-                    for(unsigned int j=0;j<vectorSimuSelectionnee.size();j++){
-                        conditionWhere = conditionWhere + CommunicationBDD::nomTabSim + "." +
-                        CommunicationBDD::nomIdSim + "='" +
-                        listeSimulationResultat.get_text(vectorSimuSelectionnee[j]) + "' OR ";
-                    }
-                    conditionWhere = conditionWhere.substr(0,conditionWhere.length()-4);
-                    conditionWhere = conditionWhere + ") AND " + CommunicationBDD::nomTabObs + "." +
-                                    CommunicationBDD::nomIdParc + "=" + CommunicationBDD::nomTabSim + "." +
-                                    CommunicationBDD::nomIdParc + " AND " + CommunicationBDD::nomTabObs + "." +
-                                    CommunicationBDD::nomIdVar + "=" + CommunicationBDD::nomTabSim + "." +
-                                    CommunicationBDD::nomIdVar + " AND " + CommunicationBDD::nomTabObs + "." +
-                                    CommunicationBDD::nomIdItinTech + "=" + CommunicationBDD::nomTabSim + "." +
-                                    CommunicationBDD::nomIdItinTech + " AND " + CommunicationBDD::nomTabObs + "." +
-                                    CommunicationBDD::nomJour + ">=" + CommunicationBDD::nomTabSim + "." +
-                                    CommunicationBDD::nomDateDebSim + " AND " + CommunicationBDD::nomTabObs + "." +
-                                    CommunicationBDD::nomJour + "<=" + CommunicationBDD::nomTabSim + "." +
-                                    CommunicationBDD::nomDateFnSim;
-                    requeteResultat = requeteResultat + requeteFrom + conditionWhere;
-
-                    retourImport = controleBDD.exportTableDansFichier(nomFichier,tableResSelectionnee,treeViewResultat,mapResultatNomChampTreeModelCol,CommunicationBDD::nomIdParc,requeteResultat,4,CommunicationBDD::nomIdVar,CommunicationBDD::nomIdItinTech,CommunicationBDD::nomJour);
-                }
-            }
-            if (!(retourImport)){
-                Gtk::MessageDialog dialogueErreurImport(*this,"Export problem",false,Gtk::MESSAGE_WARNING);
-                dialogueErreurImport.run();
-            }
-        }
-    }
 }
 
-
-std::vector<std::string> CommunicationBDD::importFichierDansTable(std::string nomFichier,std::string nomTable,std::string nomChampClePrimaire,int nombreClePrimaire,std::string nomChampClePrimaireDeux,std::string nomChampClePrimaireTrois,std::string nomChampClePrimaireQuatre){
+std::vector<std::string> importFichierDansTable(std::string nomFichier,std::string nomTable,std::string nomChampClePrimaire,int nombreClePrimaire,std::string nomChampClePrimaireDeux,std::string nomChampClePrimaireTrois,std::string nomChampClePrimaireQuatre){
 
     std::ifstream fichierLu(nomFichier.c_str(), std::ios::in); //declaration de flux ouverture en lecture
     std::string ligneLue,motCleInsertInto="INSERT INTO ",motCleInsertValues=" VALUES ",carSeparCol=",";
@@ -563,44 +567,5 @@ std::vector<std::string> CommunicationBDD::importFichierDansTable(std::string no
         dialogue.run();
         tabARetourner.push_back("probleme");
         return tabARetourner;
-    }
-}
-
-
-void Fenetre::on_boutonImportVar_clicked(){
-    std::string  nomFichier,requeteVar;
-    std::vector<std::string> retourImport;
-    Gtk::FileChooserDialog dialogueChoixFichVar(*this,"Please choose a culture text file",Gtk::FILE_CHOOSER_ACTION_OPEN);
-    dialogueChoixFichVar.set_transient_for(*this);
-    //ajout des boutons de choix de la boite de dialogue
-    dialogueChoixFichVar.add_button("CANCEL", Gtk::RESPONSE_CANCEL);
-    dialogueChoixFichVar.add_button("OPEN", Gtk::RESPONSE_OK);
-    //ajout de filtre, seul les fichiers textes peuvent etre selectionnes
-    Glib::RefPtr<Gtk::FileFilter>  filtreFichTexte = Gtk::FileFilter::create();
-    filtreFichTexte->set_name("Text files");
-    filtreFichTexte->add_mime_type("text/plain");
-    dialogueChoixFichVar.add_filter(filtreFichTexte);
-    //affiche la boite et attend reponse de l utilisateur
-    int resultat = dialogueChoixFichVar.run();
-    //gestion de la reponse
-    if (resultat == Gtk::RESPONSE_OK){
-        //recupere le nom du fichier selectionne
-        nomFichier = dialogueChoixFichVar.get_filename();
-        if (!(nomFichier.empty())){//test si un fichier a bien ete selectionne
-            retourImport = controleBDD.importFichierDansTable(nomFichier,CommunicationBDD::nomTabVar,CommunicationBDD::nomIdVar);
-            if (retourImport[0] == "probleme"){
-                Gtk::MessageDialog dialogueErreurImport(*this,"Import problem",false,Gtk::MESSAGE_WARNING);
-                dialogueErreurImport.run();
-            }
-            else{
-                if (!(retourImport[0].empty())){
-                    requeteVar = "SELECT * FROM " + CommunicationBDD::nomTabVar + " ORDER BY " + CommunicationBDD::nomIdVar;
-                    if (!(controleBDD.remplirGrilleDeDonnees(treeViewVariete,treeModelVariete,mapVarieteNomChampTreeModelCol,requeteVar))){
-                        afficheRetourRequete();
-                        return;
-                    }
-                }
-            }
-        }
     }
 }
