@@ -28,7 +28,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void displayData(observer::GlobalView * view, QString dirName,
+    void displayData(observer::GlobalView * view, QString refFile,
                      samara::ModelParameters * parameters,
                      QString begin, QString end);
     void addChart(int row, int col, QLineSeries * series, QLineSeries *refseries,

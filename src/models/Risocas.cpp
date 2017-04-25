@@ -976,8 +976,8 @@ void SamaraModel::evalEvapPot()
 void SamaraModel2::transplanting()
 {
     double DensityChange;
-
     DensityChange = DensityField / (DensityNursery / PlantsPerHill);
+
     if (Transplanting == 1 && NumPhase >= 1) {
         CounterNursery = CounterNursery + 1;
     }

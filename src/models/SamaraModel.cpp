@@ -1190,7 +1190,7 @@ void SamaraModel::init(double /* t */,
 
 void SamaraModel::initCrop()
 {
-    NumPhase = 1;
+    NumPhase = 0;
     SommeDegresJourMaximale = SDJLevee + SDJBVP + SDJRPR + SDJMatu1 + SDJMatu2;
     SommeDegresJour = 0;
     SeuilTempPhaseSuivante = 0;

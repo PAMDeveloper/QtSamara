@@ -192,7 +192,7 @@ QLineSeries * MainWindow::getSeries(QString fileName, QDate endDate){
 }
 
 void MainWindow::displayData(observer::GlobalView * view,
-                             QString dirName,
+                             QString refFileName,
                              samara::ModelParameters * parameters,
                              QString begin, QString end){
 
@@ -217,19 +217,34 @@ void MainWindow::displayData(observer::GlobalView * view,
     currentDate = startDate;
     const int numCol = 3;
 
-    QStringList outRefs;
-    if(refFolder.isEmpty() && QDir(dirName+"/ref").exists())
-        refFolder = dirName+"/ref";
 
-    if(!refFolder.isEmpty()){
-        QDir dir(refFolder);
-        dir.setFilter(QDir::Files);
-        QFileInfoList list = dir.entryInfoList();
-        for (int i = 0; i < list.size(); ++i) {
-            QFileInfo fileInfo = list.at(i);
-            outRefs << fileInfo.fileName().toLower();
+    QMap < QString, QLineSeries * > refSeries;
+
+    QList< QPair < QString, QList <double> > > results;
+    if(!refFileName.isNull() && !refFileName.isEmpty() && QFileInfo(refFileName).exists()){
+        QFile file(refFileName);
+        file.open(QIODevice::ReadOnly |QIODevice::Text);
+        QTextStream in(&file);
+        QStringList headers = in.readLine().split('\t');
+        foreach (QString header, headers) {
+            refSeries.insert(header, new QLineSeries());
         }
+
+        QDateTime date;
+        date.setDate(startDate);
+        while(!in.atEnd()) {
+            QStringList vals = in.readLine().split('\t');
+            for (int i = 0; i < vals.size(); ++i) {
+                refSeries[headers[i]]
+                        ->append(date.toMSecsSinceEpoch(),
+                                 vals[i].replace(",", ".")
+                                 .toDouble());
+            }
+            date = date.addDays(1);
+        }
+        file.close();
     }
+
 
     std::map<std::string, std::vector < std::pair < double, std::string > > > m = view->values();
     int j = 0;
@@ -237,14 +252,6 @@ void MainWindow::displayData(observer::GlobalView * view,
         QString param = QString::fromStdString(it->first);
         QLineSeries *series = new QLineSeries();
         series->setColor(getColor(j));
-        QLineSeries * refSeries;
-        QString pCpy = param;
-        refSeries = NULL;
-        QString refName = pCpy.replace("Plant:","").toLower() +"_out.txt";
-        if(outRefs.contains(refName)) {
-            refSeries = getSeries(refFolder + "/" + pCpy.replace("Plant:","").toLower() +"_out.txt", endDate);
-            outRefs.removeAll(refName);
-        }
 
         for (int i = 0; i < startDate.daysTo(endDate); ++i) {
             double value = view->get(startDate.addDays(i).toJulianDay(),
@@ -254,7 +261,7 @@ void MainWindow::displayData(observer::GlobalView * view,
             series->append(momentInTime.toMSecsSinceEpoch(), value);
         }
 
-        addChart(j/numCol,j%numCol,series, refSeries, lay, param);
+        addChart(j/numCol,j%numCol, series, refSeries[param], lay, param);
         j++;
     }
 }

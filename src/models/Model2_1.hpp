@@ -40,6 +40,7 @@ public:
     { }
 
     void compute(double t, bool /*update*/){
+        //temporal params
         TMax = _parameters.get(t).TMax;
         TMin = _parameters.get(t).TMin;
         TMoy = _parameters.get(t).TMoy;
@@ -51,57 +52,59 @@ public:
         Rg = _parameters.get(t).Rg;
         ETP = _parameters.get(t).ETP;
         Rain = _parameters.get(t).Rain;
+
+        //compute
         SamaraModel::evalNbJas(t);
-        SamaraModel2::transplanting(); // ok
-        SamaraModel::degToRad(); // ok
-        SamaraModel::avgTempHum(); // ok
-        SamaraModel::evalDecli(t); // ok
-        SamaraModel::evalSunPosi(); // ok
-        SamaraModel::evalDayLength(); // ok
-        SamaraModel::evalSunDistance(t); // ok
-        SamaraModel::evalRayExtra(); // ok
-        SamaraModel::evalRgMax(); // ok
-        SamaraModel::insToRg(); // ok
-        SamaraModel::evalPAR(); // ok
-        SamaraModel::etoFAO(); // ok
-        SamaraModel::evolPhenoStress(t); // ok
-        SamaraModel::evalSimAnthesis50(); // ok
-        SamaraModel::evalDateGermination(); // ok
-        SamaraModel::evalColdStress(); // ok
+        SamaraModel2::transplanting();
+        SamaraModel::degToRad();
+        SamaraModel::avgTempHum();
+        SamaraModel::evalDecli(t);
+        SamaraModel::evalSunPosi();
+        SamaraModel::evalDayLength();
+        SamaraModel::evalSunDistance(t);
+        SamaraModel::evalRayExtra();
+        SamaraModel::evalRgMax();
+        SamaraModel::insToRg();
+        SamaraModel::evalPAR();
+        SamaraModel::etoFAO();
+        SamaraModel::evolPhenoStress(t);
+        SamaraModel::evalSimAnthesis50();
+        SamaraModel::evalDateGermination();
+        SamaraModel::evalColdStress();
         SamaraModel::evalSimEmergence();
         SamaraModel::evalSimPanIni();
         SamaraModel::evalSimStartGermin();
         SamaraModel::evalSimStartMatu2();
         SamaraModel::evalSimStartPSP();
-        SamaraModel2::evalDegreeDay(); // ok
+        SamaraModel2::evalDegreeDay();
         SamaraModel::evalSDJPhase4();
         SamaraModel2::evalDAF();
-        SamaraModel::phyllochron(); // ok
-        SamaraModel2_1::evolHauteur_SDJ_cstr(); // ok
-        SamaraModel::evolKcpKceBilhy(); // ok
-        SamaraModel::evalEvapPot(); // ok
-        SamaraModel2_1::evolEvapSurfRFE_RDE(); // ok
-        SamaraModel2::evalFTSW(); // ok
-        SamaraModel2::evalCstrPFactorFAO(); // ok
-        SamaraModel2_1::demandePlante(); // ok
-        SamaraModel::evalTranspi(); // ok
-        SamaraModel::evalETRETM(); // ok
+        SamaraModel::phyllochron();
+        SamaraModel2_1::evolHauteur_SDJ_cstr();
+        SamaraModel::evolKcpKceBilhy();
+        SamaraModel::evalEvapPot();
+        SamaraModel2_1::evolEvapSurfRFE_RDE();
+        SamaraModel2::evalFTSW();
+        SamaraModel2::evalCstrPFactorFAO();
+        SamaraModel2_1::demandePlante();
+        SamaraModel::evalTranspi();
+        SamaraModel::evalETRETM();
         SamaraModel2::evolConsRes_Flood(); // bof bof
-        SamaraModel::evalTMaxMoy(); // ok
-        SamaraModel::evalTMinMoy(); // ok
-        SamaraModel::evalFtswMoy(); // ok
-        SamaraModel::evalSterility(); // ok
-        SamaraModel::evalVitesseRacinaire(); // ok
-        SamaraModel::evalConversion(); // ok
-        SamaraModel2_1::evalParIntercepte(); // ok
-        SamaraModel2_1::evalAssimPot(); // ok
-        SamaraModel::evalCstrAssim(); // ok
-        SamaraModel::evalAssim(); // ok
-        SamaraModel2::transplantingShock(); // ok
-        SamaraModel::evalRespMaint(); // ok
-        SamaraModel::evalRelPotLeafLength(); // ok
-        SamaraModel2::evolPlantTilNumTot(); // ok
-        SamaraModel::evolPlantLeafNumTot(); // ok
+        SamaraModel::evalTMaxMoy();
+        SamaraModel::evalTMinMoy();
+        SamaraModel::evalFtswMoy();
+        SamaraModel::evalSterility();
+        SamaraModel::evalVitesseRacinaire();
+        SamaraModel::evalConversion();
+        SamaraModel2_1::evalParIntercepte();
+        SamaraModel2_1::evalAssimPot();
+        SamaraModel::evalCstrAssim();
+        SamaraModel::evalAssim();
+        SamaraModel2::transplantingShock();
+        SamaraModel::evalRespMaint();
+        SamaraModel::evalRelPotLeafLength();
+        SamaraModel2::evolPlantTilNumTot();
+        SamaraModel::evolPlantLeafNumTot();
         SamaraModel2_1::evolMobiliTillerDeath(); // bof bof
         SamaraModel2_1::evolMobiliLeafDeath(); // bof bof
         SamaraModel2_1::evalSupplyTot(); // bof bof

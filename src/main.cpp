@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
     w.show();
 
     GlobalParameters globalParameters;
-    std::string dirName = "D:/PAMStudio_dev/data/ecomeristem/refmodelecpp";
-
     samara::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string id = "06SB15-fev13-D1_SV21";
     parameters.set< std::string>("idsimulation", id);
     reader.loadFromDatabase(id, parameters);
+
+//    parameters.set < std::string >("datefin", "2011-10-21");
 
     QDate start = QDate::fromString(QString::fromStdString(parameters.get < std::string >("datedebut")),
                                     "yyyy-MM-dd");
@@ -61,7 +61,9 @@ int main(int argc, char *argv[])
     simulator.attachView("plant", view);
     simulator.init(start.toJulianDay(), parameters);
     simulator.run(context);
-    w.show_trace();
+//    w.show_trace();
+
+    std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
     w.displayData(view, QString::fromStdString(dirName), &parameters,
                   QString::fromStdString(parameters.get < std::string >("datedebut")),
                   QString::fromStdString(parameters.get < std::string >("datefin")));
