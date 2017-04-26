@@ -2790,7 +2790,7 @@ void SamaraModel::etoFAO()
     double Rn;
     double G;
 
-    if (ETP == NullValue) {
+    if (ETP == 0) {
         eSat = 0.3054 * (std::exp(17.27 * TMax / (TMax + 237.3)) +
                          std::exp(17.27 * TMin / (TMin + 237.3)));
         if (HMax == NullValue) {

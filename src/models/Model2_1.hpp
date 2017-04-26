@@ -149,19 +149,15 @@ public:
         SamaraModel::mortality(); //pour l'instant
         SamaraModel2_1::keyResults();
         SamaraModel2_1::evalSimEndCycle();
-        //    for(auto it = parameters.getRawParameters()->begin(); it != parameters.getRawParameters()->end(); ++it) {
-        //        std::cout << it->first << " " << it->second << std::endl;
-        ////      v.push_back(it->first);
-        ////      cout << it->first << "\n";
-        //    }
+
     //    SamaraModel::writeResultInDB(parameters.get<std::string>("idsimulation"), t);
     //    SamaraModel::writeResultInFile(parameters.get<std::string>("idsimulation"), t);
     }
 
     void init(double t, const samara::ModelParameters& parameters){
         SamaraModel2::init(t, parameters);
-        initCrop();
         initParcelle();
+        initCrop();
     }
 
 protected:

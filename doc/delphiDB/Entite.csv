@@ -1,0 +1,8 @@
+CodeEntite;NomEntite;Info;Hierarchie;HomeTable
+1;"Plot";"";2;"Parcelle"
+2;"Crop";"";3;"Variete"
+3;"Site";"";1;"Site"
+4;"Soil";"";2;"TypeSol"
+5;"Plante";"";3;"Variete"
+6;"Simulation";"";0;"Simule"
+7;"Scenario";"";0;""

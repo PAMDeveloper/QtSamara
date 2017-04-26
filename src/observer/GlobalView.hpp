@@ -37,17 +37,17 @@ public:
     GlobalView()
     {
 //        selector("ApexHeight", artis::kernel::DOUBLE, { SamaraModel::APEXHEIGHT });
-        selector("Assim", artis::kernel::DOUBLE, { SamaraModel::ASSIM });
-        selector("AssimNotUsed", artis::kernel::DOUBLE, { SamaraModel::ASSIMNOTUSED });
-        selector("AssimPot", artis::kernel::DOUBLE, { SamaraModel::ASSIMPOT });
-        selector("AssimSurplus", artis::kernel::DOUBLE, { SamaraModel::ASSIMSURPLUS });
-        selector("Cstr", artis::kernel::DOUBLE, { SamaraModel::CSTR });
-        selector("CstrAssim", artis::kernel::DOUBLE, { SamaraModel::CSTRASSIM });
-        selector("CulmsPerHill", artis::kernel::DOUBLE, { SamaraModel::CULMSPERHILL });
-        selector("CulmsPerPlant", artis::kernel::DOUBLE, { SamaraModel::CULMSPERPLANT });
-        selector("CulmsPop", artis::kernel::DOUBLE, { SamaraModel::CULMSPOP });
-        selector("DeadLeafdrywtPop", artis::kernel::DOUBLE, { SamaraModel::DEADLEAFDRYWTPOP });
-        selector("Density", artis::kernel::DOUBLE, { SamaraModel::DENSITY });
+//        selector("Assim", artis::kernel::DOUBLE, { SamaraModel::ASSIM });
+//        selector("AssimNotUsed", artis::kernel::DOUBLE, { SamaraModel::ASSIMNOTUSED });
+//        selector("AssimPot", artis::kernel::DOUBLE, { SamaraModel::ASSIMPOT });
+//        selector("AssimSurplus", artis::kernel::DOUBLE, { SamaraModel::ASSIMSURPLUS });
+//        selector("Cstr", artis::kernel::DOUBLE, { SamaraModel::CSTR });
+//        selector("CstrAssim", artis::kernel::DOUBLE, { SamaraModel::CSTRASSIM });
+//        selector("CulmsPerHill", artis::kernel::DOUBLE, { SamaraModel::CULMSPERHILL });
+//        selector("CulmsPerPlant", artis::kernel::DOUBLE, { SamaraModel::CULMSPERPLANT });
+//        selector("CulmsPop", artis::kernel::DOUBLE, { SamaraModel::CULMSPOP });
+//        selector("DeadLeafdrywtPop", artis::kernel::DOUBLE, { SamaraModel::DEADLEAFDRYWTPOP });
+//        selector("Density", artis::kernel::DOUBLE, { SamaraModel::DENSITY });
 //        selector("Dr", artis::kernel::DOUBLE, { SamaraModel::DR });
 //        selector("DryMatAboveGroundPop", artis::kernel::DOUBLE, { SamaraModel::DRYMATABOVEGROUNDPOP });
 //        selector("DryMatPanicleTotPop", artis::kernel::DOUBLE, { SamaraModel::DRYMATPANICLETOTPOP });
@@ -62,10 +62,10 @@ public:
 //        selector("DryMatTotPop", artis::kernel::DOUBLE, { SamaraModel::DRYMATTOTPOP });
 //        selector("DryMatVegeTotPop", artis::kernel::DOUBLE, { SamaraModel::DRYMATVEGETOTPOP });
 //        selector("ETM", artis::kernel::DOUBLE, { SamaraModel::Etm });
-//        selector("ETR", artis::kernel::DOUBLE, { SamaraModel::Etr });
-//        selector("Eto", artis::kernel::DOUBLE, { SamaraModel::ETO });
-//        selector("Evap", artis::kernel::DOUBLE, { SamaraModel::EVAP });
-//        selector("EvapPot", artis::kernel::DOUBLE, { SamaraModel::EVAPPOT });
+////        selector("ETR", artis::kernel::DOUBLE, { SamaraModel::Etr });
+////        selector("Eto", artis::kernel::DOUBLE, { SamaraModel::ETO });
+////        selector("Evap", artis::kernel::DOUBLE, { SamaraModel::EVAP });
+////        selector("EvapPot", artis::kernel::DOUBLE, { SamaraModel::EVAPPOT });
 //        selector("FTSW", artis::kernel::DOUBLE, { SamaraModel::Ftsw });
 //        selector("FertSpikeNumPop", artis::kernel::DOUBLE, { SamaraModel::FERTSPIKENUMPOP });
 //        selector("FractionPlantHeightSubmer", artis::kernel::DOUBLE, { SamaraModel::FRACTIONPLANTHEIGHTSUBMER });
@@ -86,7 +86,8 @@ public:
 //        selector("LTRkdfcl", artis::kernel::DOUBLE, { SamaraModel::LTRKDFCL });
 //        selector("Lai", artis::kernel::DOUBLE, { SamaraModel::LAI });
 //        selector("LaiDead", artis::kernel::DOUBLE, { SamaraModel::LAIDEAD });
-        selector("NumPhase", artis::kernel::DOUBLE, { SamaraModel::NUMPHASE });
+//        selector("Lr", artis::kernel::DOUBLE,{ SamaraModel::LR });
+//        selector("NumPhase", artis::kernel::DOUBLE, { SamaraModel::NUMPHASE });
 //        selector("PanicleNumPlant", artis::kernel::DOUBLE, { SamaraModel::PANICLENUMPLANT });
 //        selector("PanicleNumPop", artis::kernel::DOUBLE, { SamaraModel::PANICLENUMPOP });
 //        selector("ParIntercepte", artis::kernel::DOUBLE, { SamaraModel::PARINTERCEPTE });
@@ -120,7 +121,6 @@ public:
 //        selector("WueEt", artis::kernel::DOUBLE, { SamaraModel::WUEET });
 //        selector("WueTot", artis::kernel::DOUBLE, { SamaraModel::WUETOT });
 
-        return;
         //Give same results
         selector("ApexHeightGain", artis::kernel::DOUBLE,{ SamaraModel::APEXHEIGHTGAIN });
         selector("Conversion", artis::kernel::DOUBLE,{ SamaraModel::CONVERSION });
@@ -136,7 +136,6 @@ public:
         selector("IrrigAutoDay", artis::kernel::DOUBLE,{ SamaraModel::IRRIGAUTODAY });
         selector("IrrigTotDay", artis::kernel::DOUBLE,{ SamaraModel::IRRIGTOTDAY });
         selector("KRolling", artis::kernel::DOUBLE,{ SamaraModel::KROLLING });
-        selector("Lr", artis::kernel::DOUBLE,{ SamaraModel::LR });
         selector("NbJas", artis::kernel::DOUBLE,{ SamaraModel::NBJAS });
         selector("Par", artis::kernel::DOUBLE,{ SamaraModel::Par });
         selector("PhaseStemElongation", artis::kernel::DOUBLE,{ SamaraModel::PHASESTEMELONGATION });

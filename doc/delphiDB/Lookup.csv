@@ -1,0 +1,6 @@
+Database;DSTable;DSLookup;ChampLie;ChampSourceReference;Lookup
+"DBSimulation";"DSParcelle";"DSTypeSol";"idTypeSol";"Id";True
+"DBSimulation";"DSSite";"DSStation";"CodeStationPluie";"Code";True
+"DBSimulation";"DSSite";"DSStation";"CodeStationMeteo";"Code";True
+"DBSimulation";"dsItineraireTechnique";"dsreqIrrig";"IdIrrigation";"Id";True
+"DBSimulation";"dsItineraireTechnique";"dsreqGestionEau";"IdGestionEau";"Id";True
