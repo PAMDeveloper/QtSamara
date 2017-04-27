@@ -239,6 +239,11 @@ var
 
 begin
   try
+{$IFDEF AffichageComplet}
+    MainForm.affiche((TimeToStr(Time) + #9 +
+      'TSimule2.InitYear  numSimul : ' + FloatToStr(numSimul),0);
+{$ENDIF}
+
     // initialisation des variables temporelles pour la nouvelle année
     SetVal('Annee', GetVal('AnDebutSimul') + numSimul);
     DecodeDate(GetVal('DebutSimul'), an, mois, jour);

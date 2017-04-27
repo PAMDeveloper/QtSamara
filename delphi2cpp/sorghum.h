@@ -5,12 +5,9 @@
 using namespace std;
 
 namespace Sorghum {
-double tabCstr[ /*?*//*1..5*/ (5) - (1) + 1 ]; // utilisé dans SorghumMortality()
-
-int tabCstrIndiceCourant = 0; // utilisé dans SorghumMortality()
-
-
-int NbJourCompte = 0;
+static double tabCstr[5]; // utilisé dans SorghumMortality()
+static int tabCstrIndiceCourant = 0; // utilisé dans SorghumMortality()
+static int NbJourCompte = 0;
 
 //##############################################################################
 /// Ce module permet de suivre l'évolution des 5 derniers jours de Cstr afin de

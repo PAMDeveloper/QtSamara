@@ -117,13 +117,13 @@ void RS_Phyllochron(double const &NumPhase, double const &DegresDuJourCor, doubl
         PhaseStemElongation = 0;
       }
       if ((PhaseStemElongation == 0)) {
-        HaunGain = DegresDuJourCor * 1.0 / Phyllo;
+        HaunGain = DegresDuJourCor / Phyllo;
         if ((HaunIndex < 3)) {
           HaunGain = HaunGain * 2;
         }
       } else {
         if ((PhaseStemElongation == 1)) {
-          HaunGain = RelPhylloPhaseStemElong * (DegresDuJourCor * 1.0 / Phyllo);
+          HaunGain = RelPhylloPhaseStemElong * (DegresDuJourCor / Phyllo);
         }
       }
       HaunIndex = HaunIndex + HaunGain;
@@ -1533,7 +1533,6 @@ void RS_InitiationCulture(double const &SeuilTempLevee, double const &SeuilTempB
     Kcl = 0;
     Kr = 0;
     MobiliLeafDeath = 0;
-    NbDaysSinceGermination = 0;
     NurseryStatus = 0;
     PanicleFilDeficit = 0;
     PanicleFilPop = 0;

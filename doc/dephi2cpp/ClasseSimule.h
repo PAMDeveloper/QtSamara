@@ -92,3 +92,7 @@ struct/*class*/ TSimule: public TEntityInstance
   int numSimule2;
     //represente le numéro de la simulation en cours pour simulations pluriannuelles
 
+
+
+#endif//INCLUDED_CLASSESIMULE_H
+//END

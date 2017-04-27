@@ -36,95 +36,90 @@
 
 namespace samara {
 
-struct Climate
-{
-    double TMax;
-    double TMin;
-    double TMoy;
-    double HMax;
-    double HMin;
-    double HMoy;
-    double Vt;
-    double Ins;
-    double Rg;
-    double ETP;
-    double Rain;
+struct Climate {
+  double TMax;
+  double TMin;
+  double TMoy;
+  double HMax;
+  double HMin;
+  double HMoy;
+  double Vt;
+  double Ins;
+  double Rg;
+  double ETP;
+  double Rain;
 
-    Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
-            double HMoy, double Vt, double Ins, double Rg,
-            double Rain) :
-        TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
-        HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(0), Rain(Rain)
-    { }
+  Climate(double TMax, double TMin, double TMoy, double HMax, double HMin,
+          double HMoy, double Vt, double Ins, double Rg,
+          double Rain) :
+    TMax(TMax), TMin(TMin), TMoy(TMoy), HMax(HMax), HMin(HMin),
+    HMoy(HMoy), Vt(Vt), Ins(Ins), Rg(Rg), ETP(-999), Rain(Rain)
+  { }
 };
 
 
 class ModelParameters {
- public:
-   /**
-    * Default constructor.
-    */
-   ModelParameters()
-   { }
-
-   /**
-    * Destructor.
-    */
-   virtual ~ModelParameters()
-   { }
-
-   /**
-    * Get the requested parameter.
-    * @param[in] paramName The name of the needed parameter.
-    * @return T The data if readable for this type, an empty data otherwise.
-    */
-   template < typename T >
-   T get( const std::string &paramName ) const
-   {
-      std::map < std::string, std::string >::const_iterator it;
-      it = mParams.find( paramName );
-
-      if( it == mParams.end() )
-         std::cout << "Warning: no value for " << paramName << std::endl;
-
-      return boost::lexical_cast<T>( ( it == mParams.end() ) ? "0" : it->second );
-   }
-
-   Climate get( double time ) const
-   {
-      return meteoValues[time-beginDate];
-   }
-
-   /**
-    * Set (update or create) the given parameter/
-    * @param[in] key   The parameter name.
-    * @param[in] value The value of this parameter.
-    * @return void.
-    */
-   template < typename T >
-   inline void set( const std::string &key, const T &value )
-   {
-      mParams[key] = boost::lexical_cast < std::string >( value );
-   }
-
-   /**
-    * Removes all parameters.
-    * @param void.
-    * @return void.
-    */
-   inline void clear()
-   {
-      mParams.clear();
-   }
-
-
-   std::vector < Climate > meteoValues;
 public:
-        std::map < std::string, std::string > * getRawParameters() { return &mParams; }
-        std::vector < Climate > * getMeteoValues() { return &meteoValues; }
-        double beginDate;
- private:
-   std::map < std::string, std::string > mParams;//!< Represent the parameters.
+  /**
+   * Default constructor.
+   */
+  ModelParameters()
+  { }
+
+  /**
+   * Destructor.
+   */
+  virtual ~ModelParameters()
+  { }
+
+  /**
+   * Get the requested parameter.
+   * @param[in] paramName The name of the needed parameter.
+   * @return T The data if readable for this type, an empty data otherwise.
+   */
+  template < typename T >
+  T get(const std::string &paramName) const {
+    std::map < std::string, std::string >::const_iterator it;
+    it = mParams.find(paramName);
+
+    if (it == mParams.end())
+      std::cout << "Warning: no value for " << paramName << std::endl;
+
+    return boost::lexical_cast<T>((it == mParams.end()) ? "0" : it->second);
+  }
+
+  Climate get(double time) const {
+    return meteoValues[time - beginDate];
+  }
+
+  /**
+   * Set (update or create) the given parameter/
+   * @param[in] key   The parameter name.
+   * @param[in] value The value of this parameter.
+   * @return void.
+   */
+  template < typename T >
+  inline void set(const std::string &key, const T &value) {
+    mParams[key] = boost::lexical_cast < std::string >(value);
+  }
+
+  /**
+   * Removes all parameters.
+   * @param void.
+   * @return void.
+   */
+  inline void clear() {
+    mParams.clear();
+  }
+
+
+  std::vector < Climate > meteoValues;
+public:
+  std::map < std::string, std::string > *getRawParameters() { return &mParams; }
+  std::vector < Climate > *getMeteoValues() { return &meteoValues; }
+  double beginDate;
+private:
+  std::map < std::string, std::string > mParams;//!< Represent the parameters.
 };
 
 }

@@ -76,14 +76,25 @@ void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) {
 
 void MainWindow::addChart(int row, int col,
                           QLineSeries *series, QLineSeries *refSeries,
+                          QLineSeries *delphRefseries,
                           QGridLayout *lay, QString name) {
   QChart *chart = new QChart();
+  QColor color = series->color();
+  series->setColor(Qt::black);
   chart->addSeries(series);
+
   if (refSeries != NULL) {
-    refSeries->setColor(series->color().darker(200));
+    refSeries->setColor(color.darker(200));
     name += " + ref";
     chart->addSeries(refSeries);
   }
+
+  if (delphRefseries != NULL) {
+    delphRefseries->setColor(color);
+    name += " + ref*";
+    chart->addSeries(delphRefseries);
+  }
+
   chart->legend()->hide();
   chart->setTitle(name);
 
@@ -93,6 +104,8 @@ void MainWindow::addChart(int row, int col,
   chart->addAxis(axisX, Qt::AlignBottom);
   if (refSeries != NULL)
     refSeries->attachAxis(axisX);
+  if (delphRefseries != NULL)
+    delphRefseries->attachAxis(axisX);
   series->attachAxis(axisX);
 
 
@@ -127,14 +140,18 @@ void MainWindow::addChart(int row, int col,
     if (refSeries != NULL)
       refSeries->attachAxis(axisY);
     series->attachAxis(axisY);
+    if (delphRefseries != NULL)
+      delphRefseries->attachAxis(axisY);
   } else {
     series->attachAxis(axisY);
     if (refSeries != NULL)
       refSeries->attachAxis(axisY);
+    if (delphRefseries != NULL)
+      delphRefseries->attachAxis(axisY);
   }
 
 
-  ChartView *chartView = new ChartView(chart, series, refSeries, this);
+  ChartView *chartView = new ChartView(chart, series, refSeries, delphRefseries, this);
   lay->addWidget(chartView, row, col);
 }
 
@@ -210,8 +227,6 @@ void MainWindow::displayData(observer::GlobalView *view,
 
 
   QMap < QString, QLineSeries * > refSeries;
-
-  QList< QPair < QString, QList <double>>> results;
   if (!refFileName.isNull() && !refFileName.isEmpty() && QFileInfo(refFileName).exists()) {
     QFile file(refFileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -236,6 +251,32 @@ void MainWindow::displayData(observer::GlobalView *view,
     file.close();
   }
 
+  QMap < QString, QLineSeries * > delphRefSeries;
+  QString delphRefFileName = "D:/PAMStudio/dev/bin/SimReport.csv";
+  if (!delphRefFileName.isNull() && !delphRefFileName.isEmpty() && QFileInfo(delphRefFileName).exists()) {
+    QFile file(delphRefFileName);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    QStringList headers = in.readLine().split('\t');
+    foreach (QString header, headers) {
+      qDebug() << header;
+      delphRefSeries.insert(header, new QLineSeries());
+    }
+
+    QDateTime date;
+    date.setDate(startDate);
+    while (!in.atEnd()) {
+      QStringList vals = in.readLine().split('\t');
+      for (int i = 0; i < vals.size(); ++i) {
+        delphRefSeries[headers[i]]
+        ->append(date.toMSecsSinceEpoch(),
+                 vals[i].replace(",", ".")
+                 .toDouble());
+      }
+      date = date.addDays(1);
+    }
+    file.close();
+  }
 
   std::map<std::string, std::vector < std::pair < double, std::string >>> m = view->values();
   int j = 0;
@@ -249,10 +290,10 @@ void MainWindow::displayData(observer::GlobalView *view,
                                param.toLocal8Bit().constData());
       QDateTime momentInTime;
       momentInTime.setDate(startDate.addDays(i));
-      series->append(momentInTime.toMSecsSinceEpoch(), value);
+      series->append(momentInTime.toMSecsSinceEpoch(), value == -999 ? -1 : 0);
     }
 
-    addChart(j / numCol, j % numCol, series, refSeries[param], lay, param);
+    addChart(j / numCol, j % numCol, series, refSeries[param], delphRefSeries[param], lay, param);
     j++;
   }
 }

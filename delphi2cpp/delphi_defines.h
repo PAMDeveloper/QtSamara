@@ -26,6 +26,7 @@
 #endif
 #include <cmath>
 #include <iostream>
+#include <artis/utils/DateTime.hpp>
 
 #define Q(x) #x
 #define AfficheMessageErreur(A, B) std::cout << A << Q(x);
@@ -35,7 +36,7 @@ static double sqr(double x) {return x * x;}
 
 typedef double TDateTime;
 static double DayOfTheYear(TDateTime date) {
-  return 0;
+  return artis::utils::DateTime::dayOfYear(date);
 }
 
 static std::string FloatToStr(double val) {

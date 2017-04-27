@@ -45,30 +45,30 @@ class Callout;
 
 QT_CHARTS_USE_NAMESPACE
 
-class ChartView: public QGraphicsView
-{
-    Q_OBJECT
+class ChartView: public QGraphicsView {
+  Q_OBJECT
 
 public:
-    ChartView(QChart * chart, QLineSeries *series, QLineSeries *refseries, QWidget *parent = 0);
+  ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QLineSeries *delphRefseries, QWidget *parent = 0);
 
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+  void resizeEvent(QResizeEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
 
 public slots:
-    void keepCallout();
-    void tooltip(QPointF point, bool state);
+  void keepCallout();
+  void tooltip(QPointF point, bool state);
 
 private:
-    QGraphicsSimpleTextItem *m_coordX;
-    QGraphicsSimpleTextItem *m_coordY;
-    QGraphicsSimpleTextItem *m_coordRefY;
-    QChart *m_chart;
-    Callout *m_tooltip;
-    QList<Callout *> m_callouts;
-    QLineSeries *series;
-    QLineSeries *refseries;
+  QGraphicsSimpleTextItem *m_coordX;
+  QGraphicsSimpleTextItem *m_coordY;
+  QGraphicsSimpleTextItem *m_coordRefY;
+  QChart *m_chart;
+  Callout *m_tooltip;
+  QList<Callout *> m_callouts;
+  QLineSeries *series;
+  QLineSeries *refseries;
+  QLineSeries *delphrefseries;
 };
 
 #endif

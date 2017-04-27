@@ -32,6 +32,9 @@
 #include <models/Model2_1.hpp>
 #include <utils/ParametersReader.hpp>
 
+void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters);
+
+
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
   MainWindow w;
@@ -66,6 +69,7 @@ int main(int argc, char *argv[]) {
   w.displayData(view, QString::fromStdString(dirName), &parameters,
                 QString::fromStdString(parameters.get < std::string >("datedebut")),
                 QString::fromStdString(parameters.get < std::string >("datefin")));
+  runDelphiTrad(start.toJulianDay(), end.toJulianDay(), parameters);
 
   return a.exec();
 }
@@ -74,3 +78,7 @@ int main(int argc, char *argv[]) {
 //******** Delphi2cpp **********/
 
 #include "../delphi2cpp/delphirunner.h"
+
+void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters) {
+  run_samara_21(start, end, parameters);
+}
