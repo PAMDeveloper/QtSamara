@@ -76,12 +76,15 @@ double integreheure(double duree, double th)
     switch ((int)std::trunc(th)) {
     case 1: {
       p = -1; result = 12 + 0.5 * duree * (0.5 + p * sqrt(0.15));
+      break;
     }
     case 2: {
       p = 0; result = 12 + 0.5 * duree * (0.5 + p * sqrt(0.15));
+      break;
     }
     case 3: {
       p = 1; result = 12 + 0.5 * duree * (0.5 + p * sqrt(0.15));
+      break;
     }
 
     }

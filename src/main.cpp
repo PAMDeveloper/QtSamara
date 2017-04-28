@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
   w.displayData(view, QString::fromStdString(dirName), &parameters,
                 QString::fromStdString(parameters.get < std::string >("datedebut")),
                 QString::fromStdString(parameters.get < std::string >("datefin")));
+
   runDelphiTrad(start.toJulianDay(), end.toJulianDay(), parameters);
 
   return a.exec();

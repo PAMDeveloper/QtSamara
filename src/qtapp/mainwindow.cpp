@@ -81,16 +81,21 @@ void MainWindow::addChart(int row, int col,
   QChart *chart = new QChart();
   QColor color = series->color();
   series->setColor(Qt::black);
+  series->setOpacity(0);
   chart->addSeries(series);
 
   if (refSeries != NULL) {
-    refSeries->setColor(color.darker(200));
+    refSeries->setColor(color);
+    QPen pen;
+    pen.setWidth(4);
+    pen.setColor(color);
+    refSeries->setPen(pen);
     name += " + ref";
     chart->addSeries(refSeries);
   }
 
   if (delphRefseries != NULL) {
-    delphRefseries->setColor(color);
+    delphRefseries->setColor(color.darker(250));
     name += " + ref*";
     chart->addSeries(delphRefseries);
   }
@@ -109,13 +114,13 @@ void MainWindow::addChart(int row, int col,
   series->attachAxis(axisX);
 
 
-  bool refBigger = false;
+  int refIdx = 0;
   double maxVal = 0;
   double minVal = 999999999999999;
   for (int i = 0; i < series->count(); ++i) {
     if (series->at(i).y() > maxVal) {
       maxVal = series->at(i).y();
-      refBigger = false;
+      refIdx = 0;
     }
     if (series->at(i).y() < minVal) {
       minVal = series->at(i).y();
@@ -123,10 +128,20 @@ void MainWindow::addChart(int row, int col,
     if (refSeries != NULL) {
       if (refSeries->at(i).y() > maxVal) {
         maxVal = refSeries->at(i).y();
-        refBigger = true;
+        refIdx = 1;
       }
       if (refSeries->at(i).y() < minVal) {
         minVal = refSeries->at(i).y();
+      }
+    }
+
+    if (delphRefseries != NULL) {
+      if (delphRefseries->at(i).y() > maxVal) {
+        maxVal = delphRefseries->at(i).y();
+        refIdx = 2;
+      }
+      if (delphRefseries->at(i).y() < minVal) {
+        minVal = delphRefseries->at(i).y();
       }
     }
   }
@@ -136,18 +151,25 @@ void MainWindow::addChart(int row, int col,
   chart->addAxis(axisY, Qt::AlignLeft);
   axisY->setMax(maxVal * 1.1 + 0.001);
   axisY->setMin(qMin<double>(-0.001, minVal - (maxVal - minVal) * 0.1));
-  if (refBigger) {
+
+  if (refIdx == 1) {
     if (refSeries != NULL)
       refSeries->attachAxis(axisY);
     series->attachAxis(axisY);
     if (delphRefseries != NULL)
       delphRefseries->attachAxis(axisY);
-  } else {
+  } else if (refIdx == 0) {
     series->attachAxis(axisY);
     if (refSeries != NULL)
       refSeries->attachAxis(axisY);
     if (delphRefseries != NULL)
       delphRefseries->attachAxis(axisY);
+  } else if (refIdx == 2) {
+    if (delphRefseries != NULL)
+      delphRefseries->attachAxis(axisY);
+    if (refSeries != NULL)
+      refSeries->attachAxis(axisY);
+    series->attachAxis(axisY);
   }
 
 
@@ -219,6 +241,7 @@ void MainWindow::displayData(observer::GlobalView *view,
   client->setLayout(lay);
   lay->setSpacing(0);
   ui->tabWidget->addTab(scrollArea, "Variables");
+  ui->tabWidget->setCurrentIndex(2);
 
   startDate = QDate::fromString(begin, "yyyy-MM-dd");
   QDate endDate = QDate::fromString(end, "yyyy-MM-dd");
@@ -259,7 +282,6 @@ void MainWindow::displayData(observer::GlobalView *view,
     QTextStream in(&file);
     QStringList headers = in.readLine().split('\t');
     foreach (QString header, headers) {
-      qDebug() << header;
       delphRefSeries.insert(header, new QLineSeries());
     }
 

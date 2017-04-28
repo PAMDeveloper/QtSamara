@@ -1214,19 +1214,19 @@ void RS_EvalConversion(double const &NumPhase, double const &EpsiB, double const
   try {
     /* Modif JCC du 21/04/05 en phase BVP KAssim est toujours = 1, sinon autant modifier Tx Conversion.
     Ensuite Kdf augmente et on ne sait pas simuler cette variation. On va jouer sur AssimBVP,
-     que l'on pourra d'ailleurs renommer AssimRPR*/
+    que l'on pourra d'ailleurs renommer AssimRPR*/
     switch ((int)trunc(NumPhase)) {
-    case 2:  KAssim = 1;
-    case 3:  KAssim = AssimBVP;
-    case 4:  KAssim = AssimBVP;
+    case 2:  KAssim = 1; break;
+    case 3:  KAssim = AssimBVP; break;
+    case 4:  KAssim = AssimBVP; break;
     case 5:  KAssim = AssimBVP + (SommeDegresJourCor -
                                     SommeDegresJourPhasePrecedente) *
                         (AssimMatu1 - AssimBVP) * 1.0 / (SeuilTempPhaseSuivante -
-                                                         SommeDegresJourPhasePrecedente);
+                                                         SommeDegresJourPhasePrecedente); break;
     case 6:  KAssim = AssimMatu1 + (SommeDegresJourCor -
                                       SommeDegresJourPhasePrecedente) *
                         (AssimMatu2 - AssimMatu1) * 1.0 / (SeuilTempPhaseSuivante -
-                                                           SommeDegresJourPhasePrecedente);
+                                                           SommeDegresJourPhasePrecedente); break;
     default:
       KAssim = 0;
     }
@@ -1303,13 +1303,13 @@ void RS_EvalVitesseRacinaire(double const &VRacLevee, double const &RootSpeedBVP
 {
   try {
     switch ((int)trunc(NumPhase)) {
-    case 1:  VitesseRacinaire = VRacLevee;
-    case 2:  VitesseRacinaire = RootSpeedBVP;
-    case 3:  VitesseRacinaire = RootSpeedPSP;
-    case 4:  VitesseRacinaire = RootSpeedRPR;
-    case 5:  VitesseRacinaire = RootSpeedMatu1;
+    case 1:  VitesseRacinaire = VRacLevee; break;
+    case 2:  VitesseRacinaire = RootSpeedBVP; break;
+    case 3:  VitesseRacinaire = RootSpeedPSP; break;
+    case 4:  VitesseRacinaire = RootSpeedRPR; break;
+    case 5:  VitesseRacinaire = RootSpeedMatu1; break;
     /* TODO : attention en cas de gestion du champ vide... */
-    case 6:  VitesseRacinaire = RootSpeedMatu2;
+    case 6:  VitesseRacinaire = RootSpeedMatu2; break;
     default:
       VitesseRacinaire = 0;
     }
@@ -2598,7 +2598,7 @@ void RS_EvalSupplyTot_V2_1(double const &NumPhase, double const &PhaseStemElonga
     else
       CumSupplyTot = 0;
 
-    if ((SupplyTot <= 0)) {
+    if (SupplyTot <= 0) {
       RespMaintDebt = 0 - SupplyTot;
       SupplyTot = 0;
     } else {
@@ -2609,13 +2609,13 @@ void RS_EvalSupplyTot_V2_1(double const &NumPhase, double const &PhaseStemElonga
     /*
     if ((NumPhase < 5) and (PhaseStemElongation = 0)) then
     begin
-      AssimNotUsed := AssimSurplus;
-      AssimNotUsedCum := AssimNotUsedCum + AssimNotUsed;
+    AssimNotUsed := AssimSurplus;
+    AssimNotUsedCum := AssimNotUsedCum + AssimNotUsed;
     end
     else
     begin
-      AssimNotUsed := 0;
-      AssimNotUsedCum := AssimNotUsedCum + AssimNotUsed;
+    AssimNotUsed := 0;
+    AssimNotUsedCum := AssimNotUsedCum + AssimNotUsed;
     end;
     */
     // These commands seem redundant and in the wrong place. Denete?
@@ -2786,8 +2786,8 @@ void RS_AddResToGrowthStructPop_V2_1(double const &NumPhase, double const &Ic, d
       //if (PhaseStemElongation = 1) then
       /*DELETED may 06*//*if (NumPhase > 2) then
       begin
-        ResInternodeMobiliDayPot := RelMobiliInternodeMax * DryMatResInternodePop;
-        GrowthStructDeficit := Max((DemStructTotPop - GrowthStructTotPop *//*NEW LB*//* - GrowthResInternodePop), 0);*/
+      ResInternodeMobiliDayPot := RelMobiliInternodeMax * DryMatResInternodePop;
+      GrowthStructDeficit := Max((DemStructTotPop - GrowthStructTotPop *//*NEW LB*//* - GrowthResInternodePop), 0);*/
       /*DELETED may 06*/ /*end;*/
       if (((Ic < 1) && (DemStructTotPop > 0))) {
         ResInternodeMobiliDay = min(ResInternodeMobiliDayPot
@@ -2799,7 +2799,7 @@ void RS_AddResToGrowthStructPop_V2_1(double const &NumPhase, double const &Ic, d
         /*
         GrowthStructTotPop := GrowthStructLeafPop + GrowthStructSheathPop
         + GrowthStructRootPop + GrowthStructInternodePop +
-          GrowthStructPaniclePop + GrowthResInternodePop;
+        GrowthStructPaniclePop + GrowthResInternodePop;
         */
         /*/DELETED*/
         GrowthStructLeafPop = GrowthStructLeafPop + ResInternodeMobiliDay *
@@ -3070,9 +3070,7 @@ void RS_EvalRUE_V2_1(double const &NumPhase, double const &ChangePhase, double c
 
       if ((Irrigation == NilValue)) {
         CorrectedIrrigation = 0;
-      } else
-
-      {
+      } else {
         CorrectedIrrigation = Irrigation;
       }
 
@@ -3413,7 +3411,7 @@ void RS_EvalAssimPot_V2_1(double const &PARIntercepte, double const &PAR, double
     {
 
 
-      if ((-CO2Exp != 0) && (CO2Cp != 0))
+      if (CO2Exp != 0 && CO2Cp != 0)
         CoeffCO2Assim = (1 - exp(-CO2Exp * (Ca - CO2Cp))) * 1.0 / (1 - exp(-CO2Exp * (400 - CO2Cp)));
 
       // This coefficient always equals 1 at 400ppm CO2 and describes AssimPot response to Ca
@@ -3501,8 +3499,8 @@ void RS_AutomaticIrrigation_V2_1(double const &NumPhase, double const &IrrigAuto
       // dimension irrigation on day i to replenish the floodwater, macropores and RuRac
       /*DELETED JUNE 18*/
       /*IrrigAutoDay := max(0., (IrrigAutoTargetCor - FloodwaterDepth +
-        Min((VolMacropores - StockMacropores) / 2, VolRelMacropores * 200 /
-        100)));  // The sense of the last part of this equation is not clear*/
+      Min((VolMacropores - StockMacropores) / 2, VolRelMacropores * 200 /
+      100)));  // The sense of the last part of this equation is not clear*/
       /*NEW JUNE 18*/
       IrrigAutoDay = max(0., (IrrigAutoTargetCor - FloodwaterDepth)) +
                      + (VolMacropores - StockMacropores) + RuRac * (1 - (min(FTSW, 1.)));
@@ -3678,7 +3676,7 @@ void RS_Priority2GrowthPanStrctPop_V2_1(double const &PriorityPan, double const 
 
       /*DELETED LB*/
       /*GrowthStructInternodePop := max(0., GrowthStructInternodePop - PriorityPan
-       * GrowthPanDeficit);*/
+      * GrowthPanDeficit);*/
     }
 
   } catch (...) {
@@ -3769,39 +3767,39 @@ void RS_KeyResults_V2_1(double const &NumPhase, double const &CulmsPerPlant, dou
 
 
 void RS_BindAgronomicResults(double const &NumPhase) {
-//  TextFile part_1;
-//  TextFile part_2;
-//  TextFile complete_file;
-//  std::string content_of_1;
-//  std::string content_of_2;
+  //  TextFile part_1;
+  //  TextFile part_2;
+  //  TextFile complete_file;
+  //  std::string content_of_1;
+  //  std::string content_of_2;
 
 
-//  try {
+  //  try {
 
-//    if (fileexists("D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short.txt")) {
-//      AssignFile(part_1, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short.txt");
-//      AssignFile(part_2, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short part 2.txt");
-//      AssignFile(complete_file, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short FULL.txt");
+  //    if (fileexists("D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short.txt")) {
+  //      AssignFile(part_1, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short.txt");
+  //      AssignFile(part_2, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short part 2.txt");
+  //      AssignFile(complete_file, "D:\\Projets Cirad\\SarraH\\DBEcosys\\DBResult\\Requetes\\Agronomic results short FULL.txt");
 
-//      reset(part_1);
-//      reset(part_2);
-//      reWrite(complete_file);
+  //      reset(part_1);
+  //      reset(part_2);
+  //      reWrite(complete_file);
 
-//      while (!eof(part_1)) {
-//        readln(part_1, content_of_1);
-//        readln(part_2, content_of_2);
-//        writeLn(complete_file, "test");   //content_of_1 + content_of_2);
-//      }
+  //      while (!eof(part_1)) {
+  //        readln(part_1, content_of_1);
+  //        readln(part_2, content_of_2);
+  //        writeLn(complete_file, "test");   //content_of_1 + content_of_2);
+  //      }
 
-//      closeFile(part_1);
-//      closeFile(part_2);
-//      closeFile(complete_file);
-//    }
+  //      closeFile(part_1);
+  //      closeFile(part_2);
+  //      closeFile(complete_file);
+  //    }
 
 
-//  } catch (...) {
-//    AfficheMessageErreur("RS_BindAgronomicResults", URisocas);
-//  }
+  //  } catch (...) {
+  //    AfficheMessageErreur("RS_BindAgronomicResults", URisocas);
+  //  }
 }
 
 // MODULES FOR SAMARA V2.2

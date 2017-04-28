@@ -89,8 +89,10 @@ void EvolPhenoStress(double const &SeuilPP, double const &SommeDegresJour, doubl
         // utilisé dans EvalConversion
         switch ((int)std::trunc(NumPhase)) {
         case 2:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempBVP;
+          break;
         // BVP Developpement vegetatif
         case 3:  SumPP = 0; // PSP Photoperiode
+          break;
         case 4: {
           // gestion de l'initialisation des sous-phases
           SeuilTempSousPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR
@@ -102,11 +104,14 @@ void EvolPhenoStress(double const &SeuilPP, double const &SommeDegresJour, doubl
           // gestion du seuil de la phase suivante
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR;
           // RPR Stade initiation paniculaire
+          break;
         }
         case 5:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu1;
-        // Matu1 remplissage grains
+          // Matu1 remplissage grains
+          break;
         case 6:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu2;
           // Matu2 dessication
+          break;
         } // Case NumPhase
       } // end change
 
@@ -415,7 +420,8 @@ qui fonctionne en degres jours et declanche IP lorsque SumPP est inferieur à PP
         // utilisé dans EvalConversion
         switch ((int)std::trunc(NumPhase)) {
         case 2:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempBVP;
-        // BVP Developpement vegetatif
+          // BVP Developpement vegetatif
+          break;
         case 4: {
           // gestion de l'initialisation des sous-phases
           SeuilTempSousPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR
@@ -427,11 +433,14 @@ qui fonctionne en degres jours et declanche IP lorsque SumPP est inferieur à PP
           // gestion du seuil de la phase suivante
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR;
           // RPR Stade initiation paniculaire
+          break;
         }
         case 5:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu1;
-        // Matu1 remplissage grains
+          // Matu1 remplissage grains
+          break;
         case 6:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu2;
           // Matu2 dessication
+          break;
         } // Case NumPhase
       } // end change
       // gestion des sous-phases de la phase RPR (4)

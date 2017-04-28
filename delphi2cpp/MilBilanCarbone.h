@@ -172,22 +172,29 @@ void EvolPhenologieMilv2(double const &SeuilPP, double const &SommeDegresJour, d
         SommeDegresJourPhasePrec = SeuilTempPhaseSuivante; // utilisé dans EvalConversion
         switch ((int)std::trunc(NumPhase)) {
         case 2:  {   // BVP Developpement vegetatif
-
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempBVP;
+          break;
         }
-        case 3:  SumPP = 0;   // PSP Photoperiode
+        case 3:
+          SumPP = 0;   // PSP Photoperiode
+          break;
         case 4:  {   // RPR Stade initiation paniculaire
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR;
           BiomasseTotaleStadeIp = BiomasseTotale;
+          break;
         }
         case 5:  {   // Matu1 remplissage grains
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu1;
           BiomasseTotaleStadeFlo = BiomasseTotale;
+          break;
         }
-        case 6:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu2; // Matu2 dessication
+        case 6:
+          SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu2; // Matu2 dessication
+          break;
         case 7:  { // Recolte
           CycleReel = DateDuJour - DateSemis;
           DateMaturite = DateDuJour;
+          break;
           // sortie de RendementDeLaCulture
         }
         }  // Case NumPhase
@@ -209,15 +216,15 @@ void EvalConversion(double const &NumPhase, double const &EpsiB, double const &A
 
   try {
     switch ((int)std::trunc(NumPhase)) {
-    case 2:  KAssim = 1;
-    case 3:  KAssim = AssimBVP;
-    case 4:  KAssim = AssimBVP;
+    case 2:  KAssim = 1; break;
+    case 3:  KAssim = AssimBVP; break;
+    case 4:  KAssim = AssimBVP; break;
     case 5:  KAssim = AssimBVP + (SommeDegresJour - SommeDegresJourPhasePrecedente) *
-                        (AssimMatu1 - AssimBVP) * 1.0 / (SeuilTempPhaseSuivante - SommeDegresJourPhasePrecedente);
+                        (AssimMatu1 - AssimBVP) * 1.0 / (SeuilTempPhaseSuivante - SommeDegresJourPhasePrecedente); break;
     case 6:  KAssim = AssimMatu1 + (SommeDegresJour - SommeDegresJourPhasePrecedente) *
-                        (AssimMatu2 - AssimMatu1) * 1.0 / (SeuilTempPhaseSuivante - SommeDegresJourPhasePrecedente);
+                        (AssimMatu2 - AssimMatu1) * 1.0 / (SeuilTempPhaseSuivante - SommeDegresJourPhasePrecedente); break;
     default:
-      KAssim = 0;
+      KAssim = 0; break;
     }
     Conversion = KAssim * EpsiB;
 
@@ -273,14 +280,14 @@ void EvalVitesseRacinaire(double const &VRacLevee, double const &RootSpeedBVP, d
 {
   try {
     switch ((int)std::trunc(NumPhase)) {
-    case 1:  VitesseRacinaire = VRacLevee;
-    case 2:  VitesseRacinaire = RootSpeedBVP;
-    case 3:  VitesseRacinaire = RootSpeedPSP;
-    case 4:  VitesseRacinaire = RootSpeedRPR;
-    case 5:  VitesseRacinaire = RootSpeedMatu1; /* TODO : attention en cas de gestion du champ vide... */
-    case 6:  VitesseRacinaire = RootSpeedMatu2;
+    case 1:  VitesseRacinaire = VRacLevee; break;
+    case 2:  VitesseRacinaire = RootSpeedBVP; break;
+    case 3:  VitesseRacinaire = RootSpeedPSP; break;
+    case 4:  VitesseRacinaire = RootSpeedRPR; break;
+    case 5:  VitesseRacinaire = RootSpeedMatu1; break; /* TODO : attention en cas de gestion du champ vide... */
+    case 6:  VitesseRacinaire = RootSpeedMatu2; break;
     default:
-      VitesseRacinaire = 0;
+      VitesseRacinaire = 0; break;
     }
 
   } catch (...) {
@@ -583,6 +590,7 @@ void EvolBiomasseFeuilles2(double const &DeltaBiomasseTotale, double const &Part
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
 }
+
 ////////------------------------------------------------------------------------
 
 void EvalSlaRapBiomV2(double const &SlaBVP, double const &SlaRPR, double const &KpenteSla, double const &dayBiomLeaf, double const &BiomLeaf, double const &NumPhase, double const &ChangePhase,
@@ -746,17 +754,22 @@ void EvolPhenoGraminees(double const &PPSens, double const &SommeDegresJour, dou
         case 2:  {   // BVP Developpement vegetatif
 
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempBVP;
+          break;
         }
         case 3:  SumPP = 0;   // PSP Photoperiode
+          break;
         case 4:  {   // RPR Stade initiation paniculaire
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempRPR;
+          break;
           //BiomasseTotaleStadeIp := BiomasseTotale;
         }
         case 5:  {   // Matu1 remplissage grains
           SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu1;
+          break;
           //BiomasseTotaleStadeFlo:=BiomasseTotale;
         }
         case 6:  SeuilTempPhaseSuivante = SeuilTempPhaseSuivante + SeuilTempMatu2; // Matu2 dessication
+          break;
 
         }  // Case NumPhase
       }  // end change
