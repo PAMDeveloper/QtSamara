@@ -87,7 +87,7 @@ void MainWindow::addChart(int row, int col,
   if (refSeries != NULL) {
     refSeries->setColor(color);
     QPen pen;
-    pen.setWidth(4);
+    pen.setWidth(2);
     pen.setColor(color);
     refSeries->setPen(pen);
     name += " + ref";

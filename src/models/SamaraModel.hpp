@@ -32,161 +32,526 @@ public:
   void writeResultInFile(const std::string idsimu, double jour);
   void writeResultInDB(const std::string idsimu, double jour);
 
-  enum internals { LAI, NUMPHASE, DEGRESDUJOUR, DEGRESDUJOURCOR, Ftsw,
-                   CSTR, ROOTFRONT, ETO, Etm, Etr, Rue, CONVERSIONEFF, IC,
-                   CULMSPERPLANT, CULMSPOP, CULMSPERHILL, GRAINYIELDPOP,
-                   DRYMATSTRUCTLEAFPOP, DRYMATSTRUCTSHEATHPOP,
-                   DRYMATSTRUCTROOTPOP, DRYMATSTRUCTINTERNODEPOP,
-                   DRYMATRESINTERNODEPOP, DRYMATSTRUCTPANICLEPOP,
-                   DRYMATSTRUCTTOTPOP, DRYMATVEGETOTPOP, DRYMATPANICLETOTPOP,
-                   DRYMATSTEMPOP, DRYMATABOVEGROUNDPOP,
-                   DRYMATTOTPOP, STERILITYCOLD, STERILITYHEAT,
-                   STERILITYDROUGHT, STERILITYTOT, HARVESTINDEX,
-                   PANICLENUMPOP, PANICLENUMPLANT, GRAINYIELDPANICLE,
-                   SPIKENUMPOP, SPIKENUMPANICLE, FERTSPIKENUMPOP,
-                   GRAINFILLINGSTATUS, PHASESTEMELONGATION, SLA,
-                   HAUNINDEX, APEXHEIGHT, PLANTHEIGHT, PLANTWIDTH, KROLLING,
-                   LIRKDFCL, LTRKDFCL, ASSIMPOT, ASSIM, RESPMAINTTOT,
-                   SUPPLYTOT, ASSIMSURPLUS, ASSIMNOTUSED, TILLERDEATHPOP,
-                   PLANTLEAFNUMTOT, DEADLEAFDRYWTPOP, LAIDEAD,
-                   RESCAPACITYINTERNODEPOP, INTERNODERESSTATUS,
-                   DAYLENGTH, Par, RGCALC, VPDCALC, TMOYCALC, HMOYCALC,
-                   KCEREAL, STOCKTOTAL, EAUDISPO, STOCKSURFACE, STOCKRAC,
-                   RURAC, KCP, KCE, EVAPPOT, EVAP, TRPOT, TR, LR, DR,
-                   PARINTERCEPTE, SOMMEDEGRESJOUR, VITESSERACINAIRE,
-                   CSTRASSIM, RAYEXTRA, CUMPAR, SOMMEDEGRESJOURCOR,
-                   SUMPP, SOMMEDEGRESJOURPHASEPRECEDENTE, RESPMAINTDEBT,
-                   TMINMOY, TMAXMOY, FTSWMOY, ROOTSHOOTRATIO, TREFFINST,
-                   TREFF, WUEET, WUETOT, FLOODWATERDEPTH, IRRIGAUTODAY,
-                   IRRIGTOTDAY, FRACTIONPLANTHEIGHTSUBMER, DENSITY,
-                   ROOTMASSPERVOL, VOLMACROPORES, STOCKMACROPORES,
-                   RELPOTLEAFLENGTH, APEXHEIGHTGAIN, HAUNGAIN, CONVERSION,
-                   STRESSCOLD, FRACTIONROOTSLOGGED, RESUTIL, KCTOT, NBJAS
-                 };
-  enum externals { TMAX, TMIN, TMOY, HMAX, HMIN, HMOY, WIND, INS, RG, Etp,
-                   RAIN
-                 };
+  enum internals {A_ASSIMSURPLUS,A_DEMSTRUCTLEAF,A_DEMSTRUCTTOT,A_GROWTHSTRUCTLEAF,
+                  A_GROWTHSTRUCTTOT,A_INCREASERESINTERNODEPOP,APEXHEIGHT,APEXHEIGHTGAIN,
+                  A_RESINTERNODEMOBILIDAY,ASSIM,ASSIMNOTUSED,ASSIMNOTUSEDCUM,ASSIMPOT,
+                  ASSIMSURPLUS,CAPARDE,CAPAREVAP,CAPARFE,CHANGEPHASE,CHANGESOUSPHASE,
+                  CO2SLOPETR,COEFFCO2ASSIM,COEFFCO2TR,COEFFSTRESSLOGGING,CONVERSION,
+                  CONVERSIONEFF,COUNTERNURSERY,CSTR,CSTRASSIM,CSTRCUMUL,CSTRMEAN,
+                  CSTRPHASE2,CSTRPHASE3,CSTRPHASE4,CSTRPHASE5,CSTRPHASE6,CULMSPERHILL,
+                  CULMSPERHILLFIN,CULMSPERHILLMAX,CULMSPERPLANT,CULMSPERPLANTFIN,
+                  CULMSPERPLANTMAX,CULMSPOP,CUMCARBONUSEDPOP,CUMCSTRPHASE2,CUMCSTRPHASE3,
+                  CUMCSTRPHASE4,CUMCSTRPHASE5,CUMCSTRPHASE6,CUMDR,CUMET,CUMFTSWPHASE2,
+                  CUMFTSWPHASE3,CUMFTSWPHASE4,CUMFTSWPHASE5,CUMFTSWPHASE6,CUMGROWTHPOP,
+                  CUMICPHASE2,CUMICPHASE3,CUMICPHASE4,CUMICPHASE5,CUMICPHASE6,CUMIRRIG,
+                  CUMIRRIGFIN,CUMLR,CUMPAR,CUMSUPPLYTOT,CUMTR,CUMWRECEIVED,CUMWUSE,
+                  CUMWUSEFIN,_DAF,DATESEMIS,DAYLENGTH,DEADLEAFDRYWTPOP,DECLI,DEGRESDUJOUR,
+                  DEGRESDUJOURCOR,DEMLEAFAREAPLANT,DEMPANICLEFILLPOP,DEMRESINTERNODEPOP,
+                  DEMSTRUCTINTERNODEPLANT,DEMSTRUCTINTERNODEPOP,DEMSTRUCTLEAFPLANT,
+                  DEMSTRUCTLEAFPOP,DEMSTRUCTPANICLEPLANT,DEMSTRUCTPANICLEPOP,DEMSTRUCTROOTPLANT,
+                  DEMSTRUCTROOTPOP,DEMSTRUCTSHEATHPOP,DEMSTRUCTTOTPOP,DENSITY,DR,
+                  DRYMATABOVEGROUNDPOP,DRYMATABOVEGROUNDPOPFIN,DRYMATABOVEGROUNDTOTPOP,
+                  DRYMATPANICLETOTPOP,DRYMATRESINTERNODEPOP,DRYMATRESINTERNODEPOPOLD,
+                  DRYMATSTEMPOP,DRYMATSTRUCTINTERNODEPOP,DRYMATSTRUCTLEAFPOP,DRYMATSTRUCTPANICLEPOP,
+                  DRYMATSTRUCTROOTPOP,DRYMATSTRUCTSHEATHPOP,DRYMATSTRUCTSTEMPOP,DRYMATSTRUCTTOTPOP,
+                  DRYMATTOTPOP,DRYMATTOTPOPFIN,DRYMATVEGETOTPOP,DUREEDUJOUR,DURGERMFLOW,DURGERMMAT,
+                  DURPHASE1,DURPHASE2,DURPHASE3,DURPHASE4,DURPHASE5,DURPHASE6,EAUDISPO,_ETM,ETO,_ETP,
+                  _ETR,EVAP,EVAPPOT,FERTSPIKENUMPOP,FERTSPIKEPOP,FLOODWATERDEPTH,FLOODWATERGAIN,
+                  FRACTIONPLANTHEIGHTSUBMER,FRACTIONROOTSLOGGED,_FTSW,FTSWMOY,FTSWPHASE2,FTSWPHASE3,
+                  FTSWPHASE4,FTSWPHASE5,FTSWPHASE6,GAINROOTSYSTSOILSURFPOP,GAINROOTSYSTVOLPOP,
+                  GRAINFILLINGSTATUS,GRAINFILLINGSTATUSFIN,GRAINYIELDPANICLE,GRAINYIELDPOP,
+                  GRAINYIELDPOPFIN,GROWTHDRYMATPOP,GROWTHPOP,GROWTHRESINTERNODEPOP,GROWTHSTRUCTDEFICIT,
+                  GROWTHSTRUCTINTERNODEPOP,GROWTHSTRUCTLEAFPOP,GROWTHSTRUCTPANICLEPOP,
+                  GROWTHSTRUCTROOTPOP,GROWTHSTRUCTSHEATHPOP,GROWTHSTRUCTTOTPOP,HARVESTINDEX,
+                  HAUNGAIN,HAUNINDEX,HMAX,HMIN,HMOY,HMOYCALC,HUM,IC,ICCUMUL,ICMEAN,ICPHASE2,
+                  ICPHASE3,ICPHASE4,ICPHASE5,ICPHASE6,INCREASERESINTERNODEPOP,INS,INTERNODERESSTATUS,
+                  IRRIGATION,IRRIGAUTODAY,IRRIGTOTDAY,KCE,KCEREAL,KCL,KCP,KCTOT,KPAR,KR,KROLLING,LAI,
+                  LAIDEAD,LAIFIN,LASTLEAFLENGTH,LASTLEAFLENGTHPOT,LATRAD,LEAFDEATHPOP,LIRKDF,LIRKDFCL,
+                  LR,LTRKDF,LTRKDFCL,MAXIMUMLAI,MOBILILEAFDEATH,MONCOMPTEUR,NBDAYSSINCEGERMINATION,
+                  NBJAS,NUMPHASE,NUMSOUSPHASE,PANICLEFILDEFICIT,PANICLEFILPOP,PANICLENUMPLANT,
+                  PANICLENUMPOP,PANICLESINKPOP,PANSTRUCTMASS,_PAR,PARINTERCEPTE,PEVAP,PHASESTEMELONGATION,
+                  PLANTHEIGHT,PLANTLEAFNUMNEW,PLANTLEAFNUMTOT,PLANTWIDTH,PPSENS,PROFRU,RAIN,RAYEXTRA,
+                  RELPHYLLOPHASESTEMELONG,RELPOTLEAFLENGTH,RESCAPACITYINTERNODEPOP,RESERVEPOPFIN,
+                  RESINTERNODEMOBILIDAY,RESINTERNODEMOBILIDAYPOT,RESPMAINTDEBT,RESPMAINTTOT,RESUTIL,
+                  RG,RGCALC,RGMAX,ROOTFRONT,ROOTFRONTOLD,ROOTMASSPERVOL,ROOTSHOOTRATIO,ROOTSYSTSOILSURFPOP,
+                  ROOTSYSTSOILSURFPOPOLD,ROOTSYSTVOLPOP,ROOTSYSTVOLPOPOLD,_RUE,RUEGREEN,RURAC,RUSURF,
+                  SDJCORPHASE4,SEUILCSTRMORTALITY,SEUILTEMPPHASEPREC,SEUILTEMPPHASESUIVANTE,
+                  SEUILTEMPSOUSPHASESUIVANTE,SIMANTHESIS50,SIMEMERGENCE,SIMENDCYCLE,SIMPANINI,
+                  SIMSTARTGERMIN,SIMSTARTMATU2,SIMSTARTPSP,SLA,SLAMITCH,SLANEW,SOMMEDEGRESJOUR,
+                  SOMMEDEGRESJOURCOR,SOMMEDEGRESJOURMAXIMALE,SOMMEDEGRESJOURPHASEPRECEDENTE,
+                  SPIKENUMPANICLE,SPIKENUMPOP,STERILITYCOLD,STERILITYDROUGHT,STERILITYHEAT,STERILITYTOT,
+                  STERILITYTOTFIN,STOCKMACROPORES,STOCKRAC,STOCKSURFACE,STOCKTOTAL,STRESSCOLD,STRU,
+                  STRUMAX,SUMPP,SUNDISTANCE,SUNPOSI,SUPPLYTOT,TEMPLAI,TILLERDEATHPOP,TMAX,TMAXMOY,
+                  TMIN,TMINMOY,TMOY,TMOYCALC,TMOYPREC,TR,TREFF,TREFFINST,TRPOT,VALRDE,VALRFE,VALRSURF,
+                  VENT,VITESSERACINAIRE,VITESSERACINAIREDAY,VOLMACROPORES,VOLRELMACROPORES,_VPD,WUEET,
+                  WUETOT,CHANGENURSERYSTATUS,CHANGESSPHASE,NBJOURCOMPTE,NURSERYSTATUS,TABCSTRINDICECOURANT};
+
+//  enum internals { LAI, NUMPHASE, DEGRESDUJOUR, DEGRESDUJOURCOR, Ftsw,
+//                   CSTR, ROOTFRONT, ETO, Etm, Etr, Rue, CONVERSIONEFF, IC,
+//                   CULMSPERPLANT, CULMSPOP, CULMSPERHILL, GRAINYIELDPOP,
+//                   DRYMATSTRUCTLEAFPOP, DRYMATSTRUCTSHEATHPOP,
+//                   DRYMATSTRUCTROOTPOP, DRYMATSTRUCTINTERNODEPOP,
+//                   DRYMATRESINTERNODEPOP, DRYMATSTRUCTPANICLEPOP,
+//                   DRYMATSTRUCTTOTPOP, DRYMATVEGETOTPOP, DRYMATPANICLETOTPOP,
+//                   DRYMATSTEMPOP, DRYMATABOVEGROUNDPOP,
+//                   DRYMATTOTPOP, STERILITYCOLD, STERILITYHEAT,
+//                   STERILITYDROUGHT, STERILITYTOT, HARVESTINDEX,
+//                   PANICLENUMPOP, PANICLENUMPLANT, GRAINYIELDPANICLE,
+//                   SPIKENUMPOP, SPIKENUMPANICLE, FERTSPIKENUMPOP,
+//                   GRAINFILLINGSTATUS, PHASESTEMELONGATION, SLA,
+//                   HAUNINDEX, APEXHEIGHT, PLANTHEIGHT, PLANTWIDTH, KROLLING,
+//                   LIRKDFCL, LTRKDFCL, ASSIMPOT, ASSIM, RESPMAINTTOT,
+//                   SUPPLYTOT, ASSIMSURPLUS, ASSIMNOTUSED, TILLERDEATHPOP,
+//                   PLANTLEAFNUMTOT, DEADLEAFDRYWTPOP, LAIDEAD,
+//                   RESCAPACITYINTERNODEPOP, INTERNODERESSTATUS,
+//                   DAYLENGTH, Par, RGCALC, VPDCALC, TMOYCALC, HMOYCALC,
+//                   KCEREAL, STOCKTOTAL, EAUDISPO, STOCKSURFACE, STOCKRAC,
+//                   RURAC, KCP, KCE, EVAPPOT, EVAP, TRPOT, TR, LR, DR,
+//                   PARINTERCEPTE, SOMMEDEGRESJOUR, VITESSERACINAIRE,
+//                   CSTRASSIM, RAYEXTRA, CUMPAR, SOMMEDEGRESJOURCOR,
+//                   SUMPP, SOMMEDEGRESJOURPHASEPRECEDENTE, RESPMAINTDEBT,
+//                   TMINMOY, TMAXMOY, FTSWMOY, ROOTSHOOTRATIO, TREFFINST,
+//                   TREFF, WUEET, WUETOT, FLOODWATERDEPTH, IRRIGAUTODAY,
+//                   IRRIGTOTDAY, FRACTIONPLANTHEIGHTSUBMER, DENSITY,
+//                   ROOTMASSPERVOL, VOLMACROPORES, STOCKMACROPORES,
+//                   RELPOTLEAFLENGTH, APEXHEIGHTGAIN, HAUNGAIN, CONVERSION,
+//                   STRESSCOLD, FRACTIONROOTSLOGGED, RESUTIL, KCTOT, NBJAS
+//                 };
+//  enum externals { TMAX, TMIN, TMOY, HMAX, HMIN, HMOY, WIND, INS, RG, Etp,
+//                   RAIN
+//                 };
 
   SamaraModel() :
     CoupledModel < SamaraModel >() {
-    Internal(LAI, &SamaraModel::Lai);
-    Internal(NUMPHASE, &SamaraModel::NumPhase);
-    Internal(DEGRESDUJOUR, &SamaraModel::DegresDuJour);
-    Internal(DEGRESDUJOURCOR, &SamaraModel::DegresDuJourCor);
-    Internal(Ftsw, &SamaraModel::FTSW);
-    Internal(CSTR, &SamaraModel::Cstr);
-    Internal(ROOTFRONT, &SamaraModel::RootFront);
-    Internal(ETO, &SamaraModel::Eto);
-    Internal(Etm, &SamaraModel::ETM);
-    Internal(Etr, &SamaraModel::ETR);
-    Internal(Rue, &SamaraModel::RUE);
-    Internal(CONVERSIONEFF, &SamaraModel::ConversionEff);
-    Internal(IC, &SamaraModel::Ic);
-    Internal(CULMSPERPLANT, &SamaraModel::CulmsPerPlant);
-    Internal(CULMSPOP, &SamaraModel::CulmsPop);
-    Internal(CULMSPERHILL, &SamaraModel::CulmsPerHill);
-    Internal(GRAINYIELDPOP, &SamaraModel::GrainYieldPop);
-    Internal(DRYMATSTRUCTLEAFPOP, &SamaraModel::DryMatStructLeafPop);
-    Internal(DRYMATSTRUCTSHEATHPOP, &SamaraModel::DryMatStructSheathPop);
-    Internal(DRYMATSTRUCTROOTPOP, &SamaraModel::DryMatStructRootPop);
-    Internal(DRYMATSTRUCTINTERNODEPOP, &SamaraModel::DryMatStructInternodePop);
-    Internal(DRYMATRESINTERNODEPOP, &SamaraModel::DryMatResInternodePop);
-    Internal(DRYMATSTRUCTPANICLEPOP, &SamaraModel::DryMatStructPaniclePop);
-    Internal(DRYMATSTRUCTTOTPOP, &SamaraModel::DryMatStructTotPop);
-    Internal(DRYMATVEGETOTPOP, &SamaraModel::DryMatVegeTotPop);
-    Internal(DRYMATPANICLETOTPOP, &SamaraModel::DryMatPanicleTotPop);
-    Internal(DRYMATSTEMPOP, &SamaraModel::DryMatStemPop);
-    Internal(DRYMATABOVEGROUNDPOP, &SamaraModel::DryMatAboveGroundPop);
-    Internal(DRYMATTOTPOP, &SamaraModel::DryMatTotPop);
-    Internal(STERILITYCOLD, &SamaraModel::SterilityCold);
-    Internal(STERILITYHEAT, &SamaraModel::SterilityHeat);
-    Internal(STERILITYDROUGHT, &SamaraModel::SterilityDrought);
-    Internal(STERILITYTOT, &SamaraModel::SterilityTot);
-    Internal(HARVESTINDEX, &SamaraModel::HarvestIndex);
-    Internal(PANICLENUMPOP, &SamaraModel::PanicleNumPop);
-    Internal(PANICLENUMPLANT, &SamaraModel::PanicleNumPlant);
-    Internal(GRAINYIELDPANICLE, &SamaraModel::GrainYieldPanicle);
-    Internal(SPIKENUMPOP, &SamaraModel::SpikeNumPop);
-    Internal(SPIKENUMPANICLE, &SamaraModel::SpikeNumPanicle);
-    Internal(FERTSPIKENUMPOP, &SamaraModel::FertSpikeNumPop);
-    Internal(GRAINFILLINGSTATUS, &SamaraModel::GrainFillingStatus);
-    Internal(PHASESTEMELONGATION, &SamaraModel::PhaseStemElongation);
-    Internal(SLA, &SamaraModel::Sla);
-    Internal(HAUNINDEX, &SamaraModel::HaunIndex);
-    Internal(APEXHEIGHT, &SamaraModel::ApexHeight);
-    Internal(PLANTHEIGHT, &SamaraModel::PlantHeight);
-    Internal(PLANTWIDTH, &SamaraModel::PlantWidth);
-    Internal(KROLLING, &SamaraModel::KRolling);
-    Internal(LIRKDFCL, &SamaraModel::LIRkdfcl);
-    Internal(LTRKDFCL, &SamaraModel::LTRkdfcl);
-    Internal(ASSIMPOT, &SamaraModel::AssimPot);
-    Internal(ASSIM, &SamaraModel::Assim);
-    Internal(RESPMAINTTOT, &SamaraModel::RespMaintTot);
-    Internal(SUPPLYTOT, &SamaraModel::SupplyTot);
-    Internal(ASSIMSURPLUS, &SamaraModel::AssimSurplus);
-    Internal(ASSIMNOTUSED, &SamaraModel::AssimNotUsed);
-    Internal(TILLERDEATHPOP, &SamaraModel::TillerDeathPop);
-    Internal(PLANTLEAFNUMTOT, &SamaraModel::PlantLeafNumTot);
-    Internal(DEADLEAFDRYWTPOP, &SamaraModel::DeadLeafDrywtPop);
-    Internal(LAIDEAD, &SamaraModel::LaiDead);
-    Internal(RESCAPACITYINTERNODEPOP, &SamaraModel::ResCapacityInternodePop);
-    Internal(INTERNODERESSTATUS, &SamaraModel::InternodeResStatus);
-    Internal(DAYLENGTH, &SamaraModel::DayLength);
-    Internal(Par, &SamaraModel::PAR);
-    Internal(RGCALC, &SamaraModel::RgCalc);
-    Internal(VPDCALC, &SamaraModel::VPD);
-    Internal(TMOYCALC, &SamaraModel::TMoyCalc);
-    Internal(HMOYCALC, &SamaraModel::HMoyCalc);
-    Internal(KCEREAL, &SamaraModel::KceReal);
-    Internal(STOCKTOTAL, &SamaraModel::StockTotal);
-    Internal(EAUDISPO, &SamaraModel::EauDispo);
-    Internal(STOCKSURFACE, &SamaraModel::StockSurface);
-    Internal(STOCKRAC, &SamaraModel::StockRac);
-    Internal(RURAC, &SamaraModel::RuRac);
-    Internal(KCP, &SamaraModel::Kcp);
-    Internal(KCE, &SamaraModel::Kce);
-    Internal(EVAPPOT, &SamaraModel::EvapPot);
-    Internal(EVAP, &SamaraModel::Evap);
-    Internal(TRPOT, &SamaraModel::TrPot);
-    Internal(TR, &SamaraModel::Tr);
-    Internal(LR, &SamaraModel::Lr);
-    Internal(DR, &SamaraModel::Dr);
-    Internal(PARINTERCEPTE, &SamaraModel::PARIntercepte);
-    Internal(SOMMEDEGRESJOUR, &SamaraModel::SommeDegresJour);
-    Internal(VITESSERACINAIRE, &SamaraModel::VitesseRacinaire);
-    Internal(CSTRASSIM, &SamaraModel::CstrAssim);
-    Internal(RAYEXTRA, &SamaraModel::RayExtra);
-    Internal(CUMPAR, &SamaraModel::CumPar);
-    Internal(SOMMEDEGRESJOURCOR, &SamaraModel::SommeDegresJourCor);
-    Internal(SUMPP, &SamaraModel::SumPP);
-    Internal(SOMMEDEGRESJOURPHASEPRECEDENTE,
-             &SamaraModel::SommeDegresJourPhasePrecedente);
-    Internal(RESPMAINTDEBT, &SamaraModel::RespMaintDebt);
-    Internal(TMINMOY, &SamaraModel::TMinMoy);
-    Internal(TMAXMOY, &SamaraModel::TMaxMoy);
-    Internal(FTSWMOY, &SamaraModel::FtswMoy);
-    Internal(ROOTSHOOTRATIO, &SamaraModel::RootShootRatio);
-    Internal(TREFFINST, &SamaraModel::TrEffInst);
-    Internal(TREFF, &SamaraModel::TrEff);
-    Internal(WUEET, &SamaraModel::WueEt);
-    Internal(WUETOT, &SamaraModel::WueTot);
-    Internal(FLOODWATERDEPTH, &SamaraModel::FloodwaterDepth);
-    Internal(IRRIGAUTODAY, &SamaraModel::IrrigAutoDay);
-    Internal(IRRIGTOTDAY, &SamaraModel::IrrigTotDay);
-    Internal(FRACTIONPLANTHEIGHTSUBMER, &SamaraModel::FractionPlantHeightSubmer);
-    Internal(DENSITY, &SamaraModel::Density);
-    Internal(ROOTMASSPERVOL, &SamaraModel::RootMassPerVol);
-    Internal(VOLMACROPORES, &SamaraModel::VolMacropores);
-    Internal(STOCKMACROPORES, &SamaraModel::StockMacropores);
-    Internal(RELPOTLEAFLENGTH, &SamaraModel::RelPotLeafLength);
-    Internal(APEXHEIGHTGAIN, &SamaraModel::ApexHeightGain);
-    Internal(HAUNGAIN, &SamaraModel::HaunGain);
-    Internal(CONVERSION, &SamaraModel::Conversion);
-    Internal(STRESSCOLD, &SamaraModel::StressCold);
-    Internal(FRACTIONROOTSLOGGED, &SamaraModel::FractionRootsLogged);
-    Internal(RESUTIL, &SamaraModel::ResUtil);
-    Internal(KCTOT, &SamaraModel::KcTot);
-    Internal(NBJAS, &SamaraModel::NbJas);
+
+      Internal(A_ASSIMSURPLUS, &SamaraModel::A_AssimSurplus);
+      Internal(A_DEMSTRUCTLEAF, &SamaraModel::A_DemStructLeaf);
+      Internal(A_DEMSTRUCTTOT, &SamaraModel::A_DemStructTot);
+      Internal(A_GROWTHSTRUCTLEAF, &SamaraModel::A_GrowthStructLeaf);
+      Internal(A_GROWTHSTRUCTTOT, &SamaraModel::A_GrowthStructTot);
+      Internal(A_INCREASERESINTERNODEPOP, &SamaraModel::A_IncreaseResInternodePop);
+      Internal(APEXHEIGHT, &SamaraModel::ApexHeight);
+      Internal(APEXHEIGHTGAIN, &SamaraModel::ApexHeightGain);
+      Internal(A_RESINTERNODEMOBILIDAY, &SamaraModel::A_ResInternodeMobiliDay);
+      Internal(ASSIM, &SamaraModel::Assim);
+      Internal(ASSIMNOTUSED, &SamaraModel::AssimNotUsed);
+      Internal(ASSIMNOTUSEDCUM, &SamaraModel::AssimNotUsedCum);
+      Internal(ASSIMPOT, &SamaraModel::AssimPot);
+      Internal(ASSIMSURPLUS, &SamaraModel::AssimSurplus);
+      Internal(CAPARDE, &SamaraModel::CapaRDE);
+      Internal(CAPAREVAP, &SamaraModel::CapaREvap);
+      Internal(CAPARFE, &SamaraModel::CapaRFE);
+      Internal(CHANGEPHASE, &SamaraModel::ChangePhase);
+      Internal(CHANGESOUSPHASE, &SamaraModel::ChangeSousPhase);
+      Internal(CO2SLOPETR, &SamaraModel::CO2SlopeTr);
+      Internal(COEFFCO2ASSIM, &SamaraModel::CoeffCO2Assim);
+      Internal(COEFFCO2TR, &SamaraModel::CoeffCO2Tr);
+      Internal(COEFFSTRESSLOGGING, &SamaraModel::CoeffStressLogging);
+      Internal(CONVERSION, &SamaraModel::Conversion);
+      Internal(CONVERSIONEFF, &SamaraModel::ConversionEff);
+      Internal(COUNTERNURSERY, &SamaraModel::CounterNursery);
+      Internal(CSTR, &SamaraModel::Cstr);
+      Internal(CSTRASSIM, &SamaraModel::CstrAssim);
+      Internal(CSTRCUMUL, &SamaraModel::CstrCumul);
+      Internal(CSTRMEAN, &SamaraModel::CstrMean);
+      Internal(CSTRPHASE2, &SamaraModel::CstrPhase2);
+      Internal(CSTRPHASE3, &SamaraModel::CstrPhase3);
+      Internal(CSTRPHASE4, &SamaraModel::CstrPhase4);
+      Internal(CSTRPHASE5, &SamaraModel::CstrPhase5);
+      Internal(CSTRPHASE6, &SamaraModel::CstrPhase6);
+      Internal(CULMSPERHILL, &SamaraModel::CulmsPerHill);
+      Internal(CULMSPERHILLFIN, &SamaraModel::CulmsPerHillFin);
+      Internal(CULMSPERHILLMAX, &SamaraModel::CulmsPerHillMax);
+      Internal(CULMSPERPLANT, &SamaraModel::CulmsPerPlant);
+      Internal(CULMSPERPLANTFIN, &SamaraModel::CulmsPerPlantFin);
+      Internal(CULMSPERPLANTMAX, &SamaraModel::CulmsPerPlantMax);
+      Internal(CULMSPOP, &SamaraModel::CulmsPop);
+      Internal(CUMCARBONUSEDPOP, &SamaraModel::CumCarbonUsedPop);
+      Internal(CUMCSTRPHASE2, &SamaraModel::CumCstrPhase2);
+      Internal(CUMCSTRPHASE3, &SamaraModel::CumCstrPhase3);
+      Internal(CUMCSTRPHASE4, &SamaraModel::CumCstrPhase4);
+      Internal(CUMCSTRPHASE5, &SamaraModel::CumCstrPhase5);
+      Internal(CUMCSTRPHASE6, &SamaraModel::CumCstrPhase6);
+      Internal(CUMDR, &SamaraModel::CumDr);
+      Internal(CUMET, &SamaraModel::CumEt);
+      Internal(CUMFTSWPHASE2, &SamaraModel::CumFtswPhase2);
+      Internal(CUMFTSWPHASE3, &SamaraModel::CumFtswPhase3);
+      Internal(CUMFTSWPHASE4, &SamaraModel::CumFtswPhase4);
+      Internal(CUMFTSWPHASE5, &SamaraModel::CumFtswPhase5);
+      Internal(CUMFTSWPHASE6, &SamaraModel::CumFtswPhase6);
+      Internal(CUMGROWTHPOP, &SamaraModel::CumGrowthPop);
+      Internal(CUMICPHASE2, &SamaraModel::CumIcPhase2);
+      Internal(CUMICPHASE3, &SamaraModel::CumIcPhase3);
+      Internal(CUMICPHASE4, &SamaraModel::CumIcPhase4);
+      Internal(CUMICPHASE5, &SamaraModel::CumIcPhase5);
+      Internal(CUMICPHASE6, &SamaraModel::CumIcPhase6);
+      Internal(CUMIRRIG, &SamaraModel::CumIrrig);
+      Internal(CUMIRRIGFIN, &SamaraModel::CumIrrigFin);
+      Internal(CUMLR, &SamaraModel::CumLr);
+      Internal(CUMPAR, &SamaraModel::CumPar);
+      Internal(CUMSUPPLYTOT, &SamaraModel::CumSupplyTot);
+      Internal(CUMTR, &SamaraModel::CumTr);
+      Internal(CUMWRECEIVED, &SamaraModel::CumWReceived);
+      Internal(CUMWUSE, &SamaraModel::CumWUse);
+      Internal(CUMWUSEFIN, &SamaraModel::CumWUseFin);
+      Internal(_DAF, &SamaraModel::DAF);
+      Internal(DATESEMIS, &SamaraModel::DateSemis);
+      Internal(DAYLENGTH, &SamaraModel::DayLength);
+      Internal(DEADLEAFDRYWTPOP, &SamaraModel::DeadLeafDrywtPop);
+      Internal(DECLI, &SamaraModel::Decli);
+      Internal(DEGRESDUJOUR, &SamaraModel::DegresDuJour);
+      Internal(DEGRESDUJOURCOR, &SamaraModel::DegresDuJourCor);
+      Internal(DEMLEAFAREAPLANT, &SamaraModel::DemLeafAreaPlant);
+      Internal(DEMPANICLEFILLPOP, &SamaraModel::DemPanicleFillPop);
+      Internal(DEMRESINTERNODEPOP, &SamaraModel::DemResInternodePop);
+      Internal(DEMSTRUCTINTERNODEPLANT, &SamaraModel::DemStructInternodePlant);
+      Internal(DEMSTRUCTINTERNODEPOP, &SamaraModel::DemStructInternodePop);
+      Internal(DEMSTRUCTLEAFPLANT, &SamaraModel::DemStructLeafPlant);
+      Internal(DEMSTRUCTLEAFPOP, &SamaraModel::DemStructLeafPop);
+      Internal(DEMSTRUCTPANICLEPLANT, &SamaraModel::DemStructPaniclePlant);
+      Internal(DEMSTRUCTPANICLEPOP, &SamaraModel::DemStructPaniclePop);
+      Internal(DEMSTRUCTROOTPLANT, &SamaraModel::DemStructRootPlant);
+      Internal(DEMSTRUCTROOTPOP, &SamaraModel::DemStructRootPop);
+      Internal(DEMSTRUCTSHEATHPOP, &SamaraModel::DemStructSheathPop);
+      Internal(DEMSTRUCTTOTPOP, &SamaraModel::DemStructTotPop);
+      Internal(DENSITY, &SamaraModel::Density);
+      Internal(DR, &SamaraModel::Dr);
+      Internal(DRYMATABOVEGROUNDPOP, &SamaraModel::DryMatAboveGroundPop);
+      Internal(DRYMATABOVEGROUNDPOPFIN, &SamaraModel::DryMatAboveGroundPopFin);
+      Internal(DRYMATABOVEGROUNDTOTPOP, &SamaraModel::DryMatAboveGroundTotPop);
+      Internal(DRYMATPANICLETOTPOP, &SamaraModel::DryMatPanicleTotPop);
+      Internal(DRYMATRESINTERNODEPOP, &SamaraModel::DryMatResInternodePop);
+      Internal(DRYMATRESINTERNODEPOPOLD, &SamaraModel::DryMatResInternodePopOld);
+      Internal(DRYMATSTEMPOP, &SamaraModel::DryMatStemPop);
+      Internal(DRYMATSTRUCTINTERNODEPOP, &SamaraModel::DryMatStructInternodePop);
+      Internal(DRYMATSTRUCTLEAFPOP, &SamaraModel::DryMatStructLeafPop);
+      Internal(DRYMATSTRUCTPANICLEPOP, &SamaraModel::DryMatStructPaniclePop);
+      Internal(DRYMATSTRUCTROOTPOP, &SamaraModel::DryMatStructRootPop);
+      Internal(DRYMATSTRUCTSHEATHPOP, &SamaraModel::DryMatStructSheathPop);
+      Internal(DRYMATSTRUCTSTEMPOP, &SamaraModel::DryMatStructStemPop);
+      Internal(DRYMATSTRUCTTOTPOP, &SamaraModel::DryMatStructTotPop);
+      Internal(DRYMATTOTPOP, &SamaraModel::DryMatTotPop);
+      Internal(DRYMATTOTPOPFIN, &SamaraModel::DryMatTotPopFin);
+      Internal(DRYMATVEGETOTPOP, &SamaraModel::DryMatVegeTotPop);
+      Internal(DUREEDUJOUR, &SamaraModel::DureeDuJour);
+      Internal(DURGERMFLOW, &SamaraModel::DurGermFlow);
+      Internal(DURGERMMAT, &SamaraModel::DurGermMat);
+      Internal(DURPHASE1, &SamaraModel::DurPhase1);
+      Internal(DURPHASE2, &SamaraModel::DurPhase2);
+      Internal(DURPHASE3, &SamaraModel::DurPhase3);
+      Internal(DURPHASE4, &SamaraModel::DurPhase4);
+      Internal(DURPHASE5, &SamaraModel::DurPhase5);
+      Internal(DURPHASE6, &SamaraModel::DurPhase6);
+      Internal(EAUDISPO, &SamaraModel::EauDispo);
+      Internal(_ETM, &SamaraModel::ETM);
+      Internal(ETO, &SamaraModel::Eto);
+      Internal(_ETP, &SamaraModel::ETP);
+      Internal(_ETR, &SamaraModel::ETR);
+      Internal(EVAP, &SamaraModel::Evap);
+      Internal(EVAPPOT, &SamaraModel::EvapPot);
+      Internal(FERTSPIKENUMPOP, &SamaraModel::FertSpikeNumPop);
+      Internal(FERTSPIKEPOP, &SamaraModel::FertSpikePop);
+      Internal(FLOODWATERDEPTH, &SamaraModel::FloodwaterDepth);
+      Internal(FLOODWATERGAIN, &SamaraModel::FloodWaterGain);
+      Internal(FRACTIONPLANTHEIGHTSUBMER, &SamaraModel::FractionPlantHeightSubmer);
+      Internal(FRACTIONROOTSLOGGED, &SamaraModel::FractionRootsLogged);
+      Internal(_FTSW, &SamaraModel::FTSW);
+      Internal(FTSWMOY, &SamaraModel::FtswMoy);
+      Internal(FTSWPHASE2, &SamaraModel::FtswPhase2);
+      Internal(FTSWPHASE3, &SamaraModel::FtswPhase3);
+      Internal(FTSWPHASE4, &SamaraModel::FtswPhase4);
+      Internal(FTSWPHASE5, &SamaraModel::FtswPhase5);
+      Internal(FTSWPHASE6, &SamaraModel::FtswPhase6);
+      Internal(GAINROOTSYSTSOILSURFPOP, &SamaraModel::GainRootSystSoilSurfPop);
+      Internal(GAINROOTSYSTVOLPOP, &SamaraModel::GainRootSystVolPop);
+      Internal(GRAINFILLINGSTATUS, &SamaraModel::GrainFillingStatus);
+      Internal(GRAINFILLINGSTATUSFIN, &SamaraModel::GrainFillingStatusFin);
+      Internal(GRAINYIELDPANICLE, &SamaraModel::GrainYieldPanicle);
+      Internal(GRAINYIELDPOP, &SamaraModel::GrainYieldPop);
+      Internal(GRAINYIELDPOPFIN, &SamaraModel::GrainYieldPopFin);
+      Internal(GROWTHDRYMATPOP, &SamaraModel::GrowthDryMatPop);
+      Internal(GROWTHPOP, &SamaraModel::GrowthPop);
+      Internal(GROWTHRESINTERNODEPOP, &SamaraModel::GrowthResInternodePop);
+      Internal(GROWTHSTRUCTDEFICIT, &SamaraModel::GrowthStructDeficit);
+      Internal(GROWTHSTRUCTINTERNODEPOP, &SamaraModel::GrowthStructInternodePop);
+      Internal(GROWTHSTRUCTLEAFPOP, &SamaraModel::GrowthStructLeafPop);
+      Internal(GROWTHSTRUCTPANICLEPOP, &SamaraModel::GrowthStructPaniclePop);
+      Internal(GROWTHSTRUCTROOTPOP, &SamaraModel::GrowthStructRootPop);
+      Internal(GROWTHSTRUCTSHEATHPOP, &SamaraModel::GrowthStructSheathPop);
+      Internal(GROWTHSTRUCTTOTPOP, &SamaraModel::GrowthStructTotPop);
+      Internal(HARVESTINDEX, &SamaraModel::HarvestIndex);
+      Internal(HAUNGAIN, &SamaraModel::HaunGain);
+      Internal(HAUNINDEX, &SamaraModel::HaunIndex);
+      Internal(HMAX, &SamaraModel::HMax);
+      Internal(HMIN, &SamaraModel::HMin);
+      Internal(HMOY, &SamaraModel::HMoy);
+      Internal(HMOYCALC, &SamaraModel::HMoyCalc);
+      Internal(HUM, &SamaraModel::Hum);
+      Internal(IC, &SamaraModel::Ic);
+      Internal(ICCUMUL, &SamaraModel::IcCumul);
+      Internal(ICMEAN, &SamaraModel::IcMean);
+      Internal(ICPHASE2, &SamaraModel::IcPhase2);
+      Internal(ICPHASE3, &SamaraModel::IcPhase3);
+      Internal(ICPHASE4, &SamaraModel::IcPhase4);
+      Internal(ICPHASE5, &SamaraModel::IcPhase5);
+      Internal(ICPHASE6, &SamaraModel::IcPhase6);
+      Internal(INCREASERESINTERNODEPOP, &SamaraModel::IncreaseResInternodePop);
+      Internal(INS, &SamaraModel::Ins);
+      Internal(INTERNODERESSTATUS, &SamaraModel::InternodeResStatus);
+      Internal(IRRIGATION, &SamaraModel::Irrigation);
+      Internal(IRRIGAUTODAY, &SamaraModel::IrrigAutoDay);
+      Internal(IRRIGTOTDAY, &SamaraModel::IrrigTotDay);
+      Internal(KCE, &SamaraModel::Kce);
+      Internal(KCL, &SamaraModel::Kcl);
+      Internal(KCP, &SamaraModel::Kcp);
+      Internal(KCTOT, &SamaraModel::KcTot);
+      Internal(KPAR, &SamaraModel::KPar);
+      Internal(KR, &SamaraModel::Kr);
+      Internal(KROLLING, &SamaraModel::KRolling);
+      Internal(LAI, &SamaraModel::Lai);
+      Internal(LAIDEAD, &SamaraModel::LaiDead);
+      Internal(LAIFIN, &SamaraModel::LaiFin);
+      Internal(LATRAD, &SamaraModel::LatRad);
+      Internal(LEAFDEATHPOP, &SamaraModel::LeafDeathPop);
+      Internal(LIRKDF, &SamaraModel::LIRkdf);
+      Internal(LIRKDFCL, &SamaraModel::LIRkdfcl);
+      Internal(LR, &SamaraModel::Lr);
+      Internal(LTRKDF, &SamaraModel::LTRkdf);
+      Internal(LTRKDFCL, &SamaraModel::LTRkdfcl);
+      Internal(MAXIMUMLAI, &SamaraModel::MaximumLai);
+      Internal(MOBILILEAFDEATH, &SamaraModel::MobiliLeafDeath);
+      Internal(MONCOMPTEUR, &SamaraModel::MonCompteur);
+      Internal(NBDAYSSINCEGERMINATION, &SamaraModel::NbDaysSinceGermination);
+      Internal(NBJAS, &SamaraModel::NbJas);
+      Internal(NUMPHASE, &SamaraModel::NumPhase);
+      Internal(NUMSOUSPHASE, &SamaraModel::NumSousPhase);
+      Internal(PANICLEFILDEFICIT, &SamaraModel::PanicleFilDeficit);
+      Internal(PANICLEFILPOP, &SamaraModel::PanicleFilPop);
+      Internal(PANICLENUMPLANT, &SamaraModel::PanicleNumPlant);
+      Internal(PANICLENUMPOP, &SamaraModel::PanicleNumPop);
+      Internal(PANICLESINKPOP, &SamaraModel::PanicleSinkPop);
+      Internal(PANSTRUCTMASS, &SamaraModel::PanStructMass);
+      Internal(_PAR, &SamaraModel::PAR);
+      Internal(PARINTERCEPTE, &SamaraModel::PARIntercepte);
+      Internal(PEVAP, &SamaraModel::PEvap);
+      Internal(PHASESTEMELONGATION, &SamaraModel::PhaseStemElongation);
+      Internal(PLANTHEIGHT, &SamaraModel::PlantHeight);
+      Internal(PLANTLEAFNUMNEW, &SamaraModel::PlantLeafNumNew);
+      Internal(PLANTLEAFNUMTOT, &SamaraModel::PlantLeafNumTot);
+      Internal(PLANTWIDTH, &SamaraModel::PlantWidth);
+      Internal(PPSENS, &SamaraModel::PPSens);
+      Internal(PROFRU, &SamaraModel::ProfRu);
+      Internal(RAIN, &SamaraModel::Rain);
+      Internal(RAYEXTRA, &SamaraModel::RayExtra);
+      Internal(RELPHYLLOPHASESTEMELONG, &SamaraModel::RelPhylloPhaseStemElong);
+      Internal(RELPOTLEAFLENGTH, &SamaraModel::RelPotLeafLength);
+      Internal(RESCAPACITYINTERNODEPOP, &SamaraModel::ResCapacityInternodePop);
+      Internal(RESERVEPOPFIN, &SamaraModel::ReservePopFin);
+      Internal(RESINTERNODEMOBILIDAY, &SamaraModel::ResInternodeMobiliDay);
+      Internal(RESINTERNODEMOBILIDAYPOT, &SamaraModel::ResInternodeMobiliDayPot);
+      Internal(RESPMAINTDEBT, &SamaraModel::RespMaintDebt);
+      Internal(RESPMAINTTOT, &SamaraModel::RespMaintTot);
+      Internal(RESUTIL, &SamaraModel::ResUtil);
+      Internal(RG, &SamaraModel::Rg);
+      Internal(RGCALC, &SamaraModel::RgCalc);
+      Internal(RGMAX, &SamaraModel::RgMax);
+      Internal(ROOTFRONT, &SamaraModel::RootFront);
+      Internal(ROOTFRONTOLD, &SamaraModel::RootFrontOld);
+      Internal(ROOTMASSPERVOL, &SamaraModel::RootMassPerVol);
+      Internal(ROOTSHOOTRATIO, &SamaraModel::RootShootRatio);
+      Internal(ROOTSYSTSOILSURFPOP, &SamaraModel::RootSystSoilSurfPop);
+      Internal(ROOTSYSTSOILSURFPOPOLD, &SamaraModel::RootSystSoilSurfPopOld);
+      Internal(ROOTSYSTVOLPOP, &SamaraModel::RootSystVolPop);
+      Internal(ROOTSYSTVOLPOPOLD, &SamaraModel::RootSystVolPopOld);
+      Internal(_RUE, &SamaraModel::RUE);
+      Internal(RUEGREEN, &SamaraModel::RUEgreen);
+      Internal(RURAC, &SamaraModel::RuRac);
+      Internal(RUSURF, &SamaraModel::RuSurf);
+      Internal(SDJCORPHASE4, &SamaraModel::SDJCorPhase4);
+      Internal(SEUILCSTRMORTALITY, &SamaraModel::SeuilCstrMortality);
+      Internal(SEUILTEMPPHASEPREC, &SamaraModel::SeuilTempPhasePrec);
+      Internal(SEUILTEMPPHASESUIVANTE, &SamaraModel::SeuilTempPhaseSuivante);
+      Internal(SEUILTEMPSOUSPHASESUIVANTE, &SamaraModel::SeuilTempSousPhaseSuivante);
+      Internal(SIMANTHESIS50, &SamaraModel::SimAnthesis50);
+      Internal(SIMEMERGENCE, &SamaraModel::SimEmergence);
+      Internal(SIMENDCYCLE, &SamaraModel::SimEndCycle);
+      Internal(SIMPANINI, &SamaraModel::SimPanIni);
+      Internal(SIMSTARTGERMIN, &SamaraModel::SimStartGermin);
+      Internal(SIMSTARTMATU2, &SamaraModel::SimStartMatu2);
+      Internal(SIMSTARTPSP, &SamaraModel::SimStartPSP);
+      Internal(SLA, &SamaraModel::Sla);
+      Internal(SLAMITCH, &SamaraModel::SlaMitch);
+      Internal(SLANEW, &SamaraModel::SlaNew);
+      Internal(SOMMEDEGRESJOUR, &SamaraModel::SommeDegresJour);
+      Internal(SOMMEDEGRESJOURCOR, &SamaraModel::SommeDegresJourCor);
+      Internal(SOMMEDEGRESJOURMAXIMALE, &SamaraModel::SommeDegresJourMaximale);
+      Internal(SOMMEDEGRESJOURPHASEPRECEDENTE, &SamaraModel::SommeDegresJourPhasePrecedente);
+      Internal(SPIKENUMPANICLE, &SamaraModel::SpikeNumPanicle);
+      Internal(SPIKENUMPOP, &SamaraModel::SpikeNumPop);
+      Internal(STERILITYCOLD, &SamaraModel::SterilityCold);
+      Internal(STERILITYDROUGHT, &SamaraModel::SterilityDrought);
+      Internal(STERILITYHEAT, &SamaraModel::SterilityHeat);
+      Internal(STERILITYTOT, &SamaraModel::SterilityTot);
+      Internal(STERILITYTOTFIN, &SamaraModel::SterilityTotFin);
+      Internal(STOCKMACROPORES, &SamaraModel::StockMacropores);
+      Internal(STOCKRAC, &SamaraModel::StockRac);
+      Internal(STOCKSURFACE, &SamaraModel::StockSurface);
+      Internal(STOCKTOTAL, &SamaraModel::StockTotal);
+      Internal(STRESSCOLD, &SamaraModel::StressCold);
+      Internal(STRU, &SamaraModel::StRu);
+      Internal(STRUMAX, &SamaraModel::StRuMax);
+      Internal(SUMPP, &SamaraModel::SumPP);
+      Internal(SUNDISTANCE, &SamaraModel::SunDistance);
+      Internal(SUNPOSI, &SamaraModel::SunPosi);
+      Internal(SUPPLYTOT, &SamaraModel::SupplyTot);
+      Internal(TEMPLAI, &SamaraModel::TempLai);
+      Internal(TILLERDEATHPOP, &SamaraModel::TillerDeathPop);
+      Internal(TMAX, &SamaraModel::TMax);
+      Internal(TMAXMOY, &SamaraModel::TMaxMoy);
+      Internal(TMIN, &SamaraModel::TMin);
+      Internal(TMINMOY, &SamaraModel::TMinMoy);
+      Internal(TMOY, &SamaraModel::TMoy);
+      Internal(TMOYCALC, &SamaraModel::TMoyCalc);
+      Internal(TMOYPREC, &SamaraModel::TMoyPrec);
+      Internal(TR, &SamaraModel::Tr);
+      Internal(TREFF, &SamaraModel::TrEff);
+      Internal(TREFFINST, &SamaraModel::TrEffInst);
+      Internal(TRPOT, &SamaraModel::TrPot);
+      Internal(VALRDE, &SamaraModel::ValRDE);
+      Internal(VALRFE, &SamaraModel::ValRFE);
+      Internal(VALRSURF, &SamaraModel::ValRSurf);
+      Internal(VENT, &SamaraModel::Vent);
+      Internal(VITESSERACINAIRE, &SamaraModel::VitesseRacinaire);
+      Internal(VITESSERACINAIREDAY, &SamaraModel::VitesseRacinaireDay);
+      Internal(VOLMACROPORES, &SamaraModel::VolMacropores);
+      Internal(VOLRELMACROPORES, &SamaraModel::VolRelMacropores);
+      Internal(_VPD, &SamaraModel::VPD);
+      Internal(WUEET, &SamaraModel::WueEt);
+      Internal(WUETOT, &SamaraModel::WueTot);
+      Internal(CHANGENURSERYSTATUS, &SamaraModel::ChangeNurseryStatus);
+      Internal(CHANGESSPHASE, &SamaraModel::ChangeSsPhase);
+      Internal(NBJOURCOMPTE, &SamaraModel::NbJourCompte);
+      Internal(NURSERYSTATUS, &SamaraModel::NurseryStatus);
+      Internal(TABCSTRINDICECOURANT, &SamaraModel::tabCstrIndiceCourant);
+
+//    Internal(LAI, &SamaraModel::Lai);
+//    Internal(NUMPHASE, &SamaraModel::NumPhase);
+//    Internal(DEGRESDUJOUR, &SamaraModel::DegresDuJour);
+//    Internal(DEGRESDUJOURCOR, &SamaraModel::DegresDuJourCor);
+//    Internal(Ftsw, &SamaraModel::FTSW);
+//    Internal(CSTR, &SamaraModel::Cstr);
+//    Internal(ROOTFRONT, &SamaraModel::RootFront);
+//    Internal(ETO, &SamaraModel::Eto);
+//    Internal(Etm, &SamaraModel::ETM);
+//    Internal(Etr, &SamaraModel::ETR);
+//    Internal(Rue, &SamaraModel::RUE);
+//    Internal(CONVERSIONEFF, &SamaraModel::ConversionEff);
+//    Internal(IC, &SamaraModel::Ic);
+//    Internal(CULMSPERPLANT, &SamaraModel::CulmsPerPlant);
+//    Internal(CULMSPOP, &SamaraModel::CulmsPop);
+//    Internal(CULMSPERHILL, &SamaraModel::CulmsPerHill);
+//    Internal(GRAINYIELDPOP, &SamaraModel::GrainYieldPop);
+//    Internal(DRYMATSTRUCTLEAFPOP, &SamaraModel::DryMatStructLeafPop);
+//    Internal(DRYMATSTRUCTSHEATHPOP, &SamaraModel::DryMatStructSheathPop);
+//    Internal(DRYMATSTRUCTROOTPOP, &SamaraModel::DryMatStructRootPop);
+//    Internal(DRYMATSTRUCTINTERNODEPOP, &SamaraModel::DryMatStructInternodePop);
+//    Internal(DRYMATRESINTERNODEPOP, &SamaraModel::DryMatResInternodePop);
+//    Internal(DRYMATSTRUCTPANICLEPOP, &SamaraModel::DryMatStructPaniclePop);
+//    Internal(DRYMATSTRUCTTOTPOP, &SamaraModel::DryMatStructTotPop);
+//    Internal(DRYMATVEGETOTPOP, &SamaraModel::DryMatVegeTotPop);
+//    Internal(DRYMATPANICLETOTPOP, &SamaraModel::DryMatPanicleTotPop);
+//    Internal(DRYMATSTEMPOP, &SamaraModel::DryMatStemPop);
+//    Internal(DRYMATABOVEGROUNDPOP, &SamaraModel::DryMatAboveGroundPop);
+//    Internal(DRYMATTOTPOP, &SamaraModel::DryMatTotPop);
+//    Internal(STERILITYCOLD, &SamaraModel::SterilityCold);
+//    Internal(STERILITYHEAT, &SamaraModel::SterilityHeat);
+//    Internal(STERILITYDROUGHT, &SamaraModel::SterilityDrought);
+//    Internal(STERILITYTOT, &SamaraModel::SterilityTot);
+//    Internal(HARVESTINDEX, &SamaraModel::HarvestIndex);
+//    Internal(PANICLENUMPOP, &SamaraModel::PanicleNumPop);
+//    Internal(PANICLENUMPLANT, &SamaraModel::PanicleNumPlant);
+//    Internal(GRAINYIELDPANICLE, &SamaraModel::GrainYieldPanicle);
+//    Internal(SPIKENUMPOP, &SamaraModel::SpikeNumPop);
+//    Internal(SPIKENUMPANICLE, &SamaraModel::SpikeNumPanicle);
+//    Internal(FERTSPIKENUMPOP, &SamaraModel::FertSpikeNumPop);
+//    Internal(GRAINFILLINGSTATUS, &SamaraModel::GrainFillingStatus);
+//    Internal(PHASESTEMELONGATION, &SamaraModel::PhaseStemElongation);
+//    Internal(SLA, &SamaraModel::Sla);
+//    Internal(HAUNINDEX, &SamaraModel::HaunIndex);
+//    Internal(APEXHEIGHT, &SamaraModel::ApexHeight);
+//    Internal(PLANTHEIGHT, &SamaraModel::PlantHeight);
+//    Internal(PLANTWIDTH, &SamaraModel::PlantWidth);
+//    Internal(KROLLING, &SamaraModel::KRolling);
+//    Internal(LIRKDFCL, &SamaraModel::LIRkdfcl);
+//    Internal(LTRKDFCL, &SamaraModel::LTRkdfcl);
+//    Internal(ASSIMPOT, &SamaraModel::AssimPot);
+//    Internal(ASSIM, &SamaraModel::Assim);
+//    Internal(RESPMAINTTOT, &SamaraModel::RespMaintTot);
+//    Internal(SUPPLYTOT, &SamaraModel::SupplyTot);
+//    Internal(ASSIMSURPLUS, &SamaraModel::AssimSurplus);
+//    Internal(ASSIMNOTUSED, &SamaraModel::AssimNotUsed);
+//    Internal(TILLERDEATHPOP, &SamaraModel::TillerDeathPop);
+//    Internal(PLANTLEAFNUMTOT, &SamaraModel::PlantLeafNumTot);
+//    Internal(DEADLEAFDRYWTPOP, &SamaraModel::DeadLeafDrywtPop);
+//    Internal(LAIDEAD, &SamaraModel::LaiDead);
+//    Internal(RESCAPACITYINTERNODEPOP, &SamaraModel::ResCapacityInternodePop);
+//    Internal(INTERNODERESSTATUS, &SamaraModel::InternodeResStatus);
+//    Internal(DAYLENGTH, &SamaraModel::DayLength);
+//    Internal(Par, &SamaraModel::PAR);
+//    Internal(RGCALC, &SamaraModel::RgCalc);
+//    Internal(VPDCALC, &SamaraModel::VPD);
+//    Internal(TMOYCALC, &SamaraModel::TMoyCalc);
+//    Internal(HMOYCALC, &SamaraModel::HMoyCalc);
+//    Internal(KCEREAL, &SamaraModel::KceReal);
+//    Internal(STOCKTOTAL, &SamaraModel::StockTotal);
+//    Internal(EAUDISPO, &SamaraModel::EauDispo);
+//    Internal(STOCKSURFACE, &SamaraModel::StockSurface);
+//    Internal(STOCKRAC, &SamaraModel::StockRac);
+//    Internal(RURAC, &SamaraModel::RuRac);
+//    Internal(KCP, &SamaraModel::Kcp);
+//    Internal(KCE, &SamaraModel::Kce);
+//    Internal(EVAPPOT, &SamaraModel::EvapPot);
+//    Internal(EVAP, &SamaraModel::Evap);
+//    Internal(TRPOT, &SamaraModel::TrPot);
+//    Internal(TR, &SamaraModel::Tr);
+//    Internal(LR, &SamaraModel::Lr);
+//    Internal(DR, &SamaraModel::Dr);
+//    Internal(PARINTERCEPTE, &SamaraModel::PARIntercepte);
+//    Internal(SOMMEDEGRESJOUR, &SamaraModel::SommeDegresJour);
+//    Internal(VITESSERACINAIRE, &SamaraModel::VitesseRacinaire);
+//    Internal(CSTRASSIM, &SamaraModel::CstrAssim);
+//    Internal(RAYEXTRA, &SamaraModel::RayExtra);
+//    Internal(CUMPAR, &SamaraModel::CumPar);
+//    Internal(SOMMEDEGRESJOURCOR, &SamaraModel::SommeDegresJourCor);
+//    Internal(SUMPP, &SamaraModel::SumPP);
+//    Internal(SOMMEDEGRESJOURPHASEPRECEDENTE,
+//             &SamaraModel::SommeDegresJourPhasePrecedente);
+//    Internal(RESPMAINTDEBT, &SamaraModel::RespMaintDebt);
+//    Internal(TMINMOY, &SamaraModel::TMinMoy);
+//    Internal(TMAXMOY, &SamaraModel::TMaxMoy);
+//    Internal(FTSWMOY, &SamaraModel::FtswMoy);
+//    Internal(ROOTSHOOTRATIO, &SamaraModel::RootShootRatio);
+//    Internal(TREFFINST, &SamaraModel::TrEffInst);
+//    Internal(TREFF, &SamaraModel::TrEff);
+//    Internal(WUEET, &SamaraModel::WueEt);
+//    Internal(WUETOT, &SamaraModel::WueTot);
+//    Internal(FLOODWATERDEPTH, &SamaraModel::FloodwaterDepth);
+//    Internal(IRRIGAUTODAY, &SamaraModel::IrrigAutoDay);
+//    Internal(IRRIGTOTDAY, &SamaraModel::IrrigTotDay);
+//    Internal(FRACTIONPLANTHEIGHTSUBMER, &SamaraModel::FractionPlantHeightSubmer);
+//    Internal(DENSITY, &SamaraModel::Density);
+//    Internal(ROOTMASSPERVOL, &SamaraModel::RootMassPerVol);
+//    Internal(VOLMACROPORES, &SamaraModel::VolMacropores);
+//    Internal(STOCKMACROPORES, &SamaraModel::StockMacropores);
+//    Internal(RELPOTLEAFLENGTH, &SamaraModel::RelPotLeafLength);
+//    Internal(APEXHEIGHTGAIN, &SamaraModel::ApexHeightGain);
+//    Internal(HAUNGAIN, &SamaraModel::HaunGain);
+//    Internal(CONVERSION, &SamaraModel::Conversion);
+//    Internal(STRESSCOLD, &SamaraModel::StressCold);
+//    Internal(FRACTIONROOTSLOGGED, &SamaraModel::FractionRootsLogged);
+//    Internal(RESUTIL, &SamaraModel::ResUtil);
+//    Internal(KCTOT, &SamaraModel::KcTot);
+//    Internal(NBJAS, &SamaraModel::NbJas);
   }
 
   virtual ~SamaraModel()

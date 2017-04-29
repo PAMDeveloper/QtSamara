@@ -3086,7 +3086,7 @@ void RS_EvalRUE_V2_1(double const &NumPhase, double const &ChangePhase, double c
       if ((AssimPot != 0)) {
         ConversionEff = Conversion * Assim * 1.0 / /*NEW JUNE*/ (PARIntercepte * Conversion * 10)/*AssimPot*/;
       }
-      if (((Tr > 0) && (NbJas > /*NEW G*/20/*/NEW G*/) && (NumPhase > 1))) {
+      if (((Tr > 0) && (NbJas > 20) && (NumPhase > 1))) {
         TrEffInst = (SupplyTot - AssimNotUsed) * 1.0 / (Tr * 10000);
         TrEff = DryMatTotPop * 1.0 / (CumTr * 10000);
         WueEt = DryMatTotPop * 1.0 / (CumEt * 10000);
