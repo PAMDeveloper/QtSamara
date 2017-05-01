@@ -65,12 +65,13 @@ int main(int argc, char *argv[]) {
   simulator.run(context);
 //    w.show_trace();
 
+  runDelphiTrad(start.toJulianDay(), end.toJulianDay(), parameters);
+
   std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
   w.displayData(view, QString::fromStdString(dirName), &parameters,
                 QString::fromStdString(parameters.get < std::string >("datedebut")),
                 QString::fromStdString(parameters.get < std::string >("datefin")));
 
-  runDelphiTrad(start.toJulianDay(), end.toJulianDay(), parameters);
 
   return a.exec();
 }

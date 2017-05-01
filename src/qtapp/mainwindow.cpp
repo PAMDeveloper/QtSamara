@@ -83,7 +83,7 @@ void MainWindow::addChart(int row, int col,
   series->setColor(Qt::black);
   series->setOpacity(0);
   chart->addSeries(series);
-
+  QString sName = name;
   if (refSeries != NULL) {
     refSeries->setColor(color);
     QPen pen;
@@ -117,6 +117,11 @@ void MainWindow::addChart(int row, int col,
   int refIdx = 0;
   double maxVal = 0;
   double minVal = 999999999999999;
+
+  qreal sumRef = 0;
+  qreal sumSim = 0;
+  double tDiff = 0;
+  bool isSame = true;
   for (int i = 0; i < series->count(); ++i) {
     if (series->at(i).y() > maxVal) {
       maxVal = series->at(i).y();
@@ -125,7 +130,8 @@ void MainWindow::addChart(int row, int col,
     if (series->at(i).y() < minVal) {
       minVal = series->at(i).y();
     }
-    if (refSeries != NULL) {
+
+    if (refSeries != NULL) {        
       if (refSeries->at(i).y() > maxVal) {
         maxVal = refSeries->at(i).y();
         refIdx = 1;
@@ -133,7 +139,9 @@ void MainWindow::addChart(int row, int col,
       if (refSeries->at(i).y() < minVal) {
         minVal = refSeries->at(i).y();
       }
-    }
+      sumRef += refSeries->at(i).y();
+    } else
+        sumRef = -1;
 
     if (delphRefseries != NULL) {
       if (delphRefseries->at(i).y() > maxVal) {
@@ -143,8 +151,17 @@ void MainWindow::addChart(int row, int col,
       if (delphRefseries->at(i).y() < minVal) {
         minVal = delphRefseries->at(i).y();
       }
+      sumSim += delphRefseries->at(i).y();
+    } else
+        sumSim = -1;
+
+    if(isSame && sumSim != sumRef) {
+        isSame = false;
+        tDiff = refSeries->at(i).x();
     }
   }
+
+  qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << ((sumRef-sumSim)/sumRef) << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
 
   QValueAxis *axisY = new QValueAxis;
   axisY->setLabelFormat("%i");
