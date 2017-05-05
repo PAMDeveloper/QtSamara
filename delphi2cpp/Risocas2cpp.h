@@ -2999,22 +2999,21 @@ void RS_EvalLai_V2_1(double const &NumPhase, double const &ChangePhase, double c
         if (((NumPhase == 2) && (ChangePhase == 1))) {
             CorrectedSla = SlaMax;
         } else {
-
             CorrectedSla = sla;
 
             /*NEW*/
             LastLeafLengthPot = RelPotLeafLength * LeafLengthMax;
 
-
-            if (GrowthStructTotPop > 0)
+            if (GrowthStructTotPop > 0) {
                 LastLeafLength = LastLeafLengthPot * sqrt(max(GrowthStructLeafPop, 0.) * 1.0 / DemStructLeafPop);
+            } else {
+                LastLeafLength = 0;
+            }
             /*/NEW*/
 
         }
 
         Lai = DryMatStructLeafPop * CorrectedSla;
-
-
     } catch (...) {
         AfficheMessageErreur("RS_EvalLai_V2_1", URisocas);
     }

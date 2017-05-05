@@ -31,6 +31,7 @@
 #include <observer/GlobalView.hpp>
 #include <models/Model2_1.hpp>
 #include <utils/ParametersReader.hpp>
+#include "../delphi2cpp/delphirunner.h"
 
 void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters);
 
@@ -65,22 +66,11 @@ int main(int argc, char *argv[]) {
   simulator.run(context);
 //    w.show_trace();
 
-  runDelphiTrad(start.toJulianDay(), end.toJulianDay(), parameters);
+  run_samara_21(start.toJulianDay(), end.toJulianDay(), parameters);
 
   std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
   w.displayData(view, QString::fromStdString(dirName), &parameters,
                 QString::fromStdString(parameters.get < std::string >("datedebut")),
                 QString::fromStdString(parameters.get < std::string >("datefin")));
-
-
   return a.exec();
-}
-
-
-//******** Delphi2cpp **********/
-
-#include "../delphi2cpp/delphirunner.h"
-
-void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters) {
-  run_samara_21(start, end, parameters);
 }
