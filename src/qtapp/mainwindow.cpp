@@ -122,6 +122,8 @@ void MainWindow::addChart(int row, int col,
     qreal sumRef = 0;
     qreal sumSim = 0;
     double tDiff = 0;
+    double refValDiff = 0;
+    double valDiff = 0;
     bool isSame = true;
     for (int i = 0; i < series->count(); ++i) {
         if (series->at(i).y() > maxVal) {
@@ -156,13 +158,17 @@ void MainWindow::addChart(int row, int col,
         } else
             sumSim = -1;
 
-        if(isSame && sumSim != sumRef && refSeries != NULL) {
+        if(isSame && refSeries->at(i).y() != delphRefseries->at(i).y() && refSeries != NULL) {
             isSame = false;
             tDiff = refSeries->at(i).x();
+            refValDiff = refSeries->at(i).y();
+            valDiff = delphRefseries->at(i).y();
         }
     }
     double percentage = std::abs(((sumRef-sumSim)/sumRef)) * 100;
-    qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << percentage << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
+//    qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << percentage << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
+//    qDebug() << sName << ":" << percentage;
+        qDebug() << fixed << sName << ":" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy") << ":" << valDiff << ":" << refValDiff;
 
     QValueAxis *axisY = new QValueAxis;
     axisY->setLabelFormat("%i");
