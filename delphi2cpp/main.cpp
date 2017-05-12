@@ -70,16 +70,16 @@ int main(int argc, char *argv[]) {
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
 
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 10; ++i) {
         run_samara_21(start.toJulianDay(), end.toJulianDay(), parameters);
     }
 
     endC = std::chrono::system_clock::now();
-    double elapsed_seconds = std::chrono::duration_cast<std::chrono::microseconds>
-            (endC-startC).count() / 1000;
+    double elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>
+            (endC-startC).count() / 10;
     std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
     std::cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds << "microsec\n";
+              << "elapsed time: " << elapsed_seconds << "ms\n";
     exit(0);
 
 
