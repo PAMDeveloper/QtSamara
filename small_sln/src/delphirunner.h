@@ -11,22 +11,7 @@
 #include "ModelParameters.hpp"
 #include "DateTime.hpp"
 
-////Model Parameters
-//double
-//        Altitude, ASScstr, AttenMitch, BundHeight, Ca, CO2Cp, CO2Exp, CO2Slopetr, CoeffAssimSla, CoefficientQ10, CoeffInternodeMass, CoeffInternodeNum,
-//        CoeffLeafDeath, CoeffLeafWLRatio, CoeffPanicleMass, CoeffPanSinkPop, CoeffResCapacityInternode, CoeffReserveSink, CoeffRootMassPerVolMax,
-//        CoeffTillerDeath, CoeffTransplantingShock, DensityField, DensityNursery, DEVcstr, DurationNursery, EpaisseurProf, EpaisseurSurf,
-//        ExcessAssimToRoot, FTSWIrrig, HaunCritTillering, HumFC, HumPF, HumSat, IcTillering, InternodeLengthMax, IrrigAuto, IrrigAutoResume, IrrigAutoStop,
-//        IrrigAutoTarget, KcMax, KCritSterCold1, KCritSterCold2, KCritSterFtsw1, KCritSterFtsw2, KCritSterHeat1, KCritSterHeat2, KCritStressCold1,
-//        KCritStressCold2, Kdf, KPar, KRespInternode, KRespMaintLeaf, KRespMaintRoot, KRespMaintSheath, KRespPanicle, KTempMaint, Latitude, LeafLengthMax,
-//        LifeSavingDrainage, Mulch, PanStructMassMax, PercolationMax, PEvap, PFactor, Phyllo, PlantsPerHill, PlotDrainageDAF, PoidsSecGrain, PourcRuiss,
-//        PPCrit, PPExp, PPSens, PriorityPan, ProfRacIni, RankLongestLeaf, RelMobiliInternodeMax, RelPhylloPhaseStemElong,  RollingBase, RollingSens, RootCstr, RootFrontMax,
-//        RootPartitMax, SDJBVP, SDJLevee, SDJMatu1, SDJMatu2, SDJRPR, SeuilPP, SeuilRuiss, SlaMax, SlaMin, StockIniProf, StockIniSurf, TBase,
-//        TempSLA, TilAbility, TLim, TOpt1, TOpt2, Transplanting, TransplantingDepth, TxAssimBVP, TxAssimMatu1, TxAssimMatu2, TxConversion, TxResGrain, TxRuSurfGermi,
-//        VRacBVP, VRacLevee, VRacMatu1, VRacMatu2, VRacPSP, VRacRPR, WaterLoggingSens, WtRatioLeafSheath;
 
-//Unused State
-//    double ChangeSousPhase, CumWuse, DryMatStructStemPop, DureeDuJour, FertSpikePop, RUEgreen, SeuilTempPhasePrec, StRu, NbJourCompte, tabCstrIndiceCourant;
 
 void run_samara_21(const samara::ModelParameters& parameters, int log_every) {
 
@@ -746,88 +731,21 @@ void run_samara_21(const samara::ModelParameters& parameters, int log_every) {
     //file.close();
 }
 
+////Model Parameters
+//double
+//        Altitude, ASScstr, AttenMitch, BundHeight, Ca, CO2Cp, CO2Exp, CO2Slopetr, CoeffAssimSla, CoefficientQ10, CoeffInternodeMass, CoeffInternodeNum,
+//        CoeffLeafDeath, CoeffLeafWLRatio, CoeffPanicleMass, CoeffPanSinkPop, CoeffResCapacityInternode, CoeffReserveSink, CoeffRootMassPerVolMax,
+//        CoeffTillerDeath, CoeffTransplantingShock, DensityField, DensityNursery, DEVcstr, DurationNursery, EpaisseurProf, EpaisseurSurf,
+//        ExcessAssimToRoot, FTSWIrrig, HaunCritTillering, HumFC, HumPF, HumSat, IcTillering, InternodeLengthMax, IrrigAuto, IrrigAutoResume, IrrigAutoStop,
+//        IrrigAutoTarget, KcMax, KCritSterCold1, KCritSterCold2, KCritSterFtsw1, KCritSterFtsw2, KCritSterHeat1, KCritSterHeat2, KCritStressCold1,
+//        KCritStressCold2, Kdf, KPar, KRespInternode, KRespMaintLeaf, KRespMaintRoot, KRespMaintSheath, KRespPanicle, KTempMaint, Latitude, LeafLengthMax,
+//        LifeSavingDrainage, Mulch, PanStructMassMax, PercolationMax, PEvap, PFactor, Phyllo, PlantsPerHill, PlotDrainageDAF, PoidsSecGrain, PourcRuiss,
+//        PPCrit, PPExp, PPSens, PriorityPan, ProfRacIni, RankLongestLeaf, RelMobiliInternodeMax, RelPhylloPhaseStemElong,  RollingBase, RollingSens, RootCstr, RootFrontMax,
+//        RootPartitMax, SDJBVP, SDJLevee, SDJMatu1, SDJMatu2, SDJRPR, SeuilPP, SeuilRuiss, SlaMax, SlaMin, StockIniProf, StockIniSurf, TBase,
+//        TempSLA, TilAbility, TLim, TOpt1, TOpt2, Transplanting, TransplantingDepth, TxAssimBVP, TxAssimMatu1, TxAssimMatu2, TxConversion, TxResGrain, TxRuSurfGermi,
+//        VRacBVP, VRacLevee, VRacMatu1, VRacMatu2, VRacPSP, VRacRPR, WaterLoggingSens, WtRatioLeafSheath;
 
-//void TSimule::Aller(int const &numSimule)
-//// Gère le déroullement de la simulation :
-//// On récupère d'abord le plus petit pas de temps de tous les modules
-//// Ensuite tant qu'on a pas atteint la date de fin de simulation :
-////  - on execute les modules
-////  - on change la date de la prochaine execution
-////  - on incremente la date en cours avec le plus petit pas de temps
-////  - on fait passer les bookmarks sur l'enregistrement suivant
-
-//{
-//    try {
-//        // recuperation de la date de fin de la simulation
-//        datefin = GetVal("FinSimul");
-//        //VN déplacé dans la boucle
-//        //semis   := GetVal('DateSemisCalc');
-//        anPrec = 0;
-
-//        // boucle tant que la date courante thisDate n'a pas atteind la date de fin
-//        while (thisDate <= datefin) {
-//            //VN contraintes
-//            Pars.SetVariable("Dateencours", thisDate);
-//            Pars.SetVariable("DebutSimul", thisDate);
-//            Pars.SetVariable("finsimul", datefin);
-//            semis = GetVal("DateSemisCalc");
-
-//            //VN saveSemis
-//            //if  (thisDate = semis) then
-//            if ((contextObjet.GetCurrentInstance("Crop") == 00) && (thisDate == semis)) {
-//                // Création de crop si on est arrivé à la date de semis on place l'instance de Crop dans le context
-//                //ShowMessage(DateToStr(GetVal('DateSemisCalc')));
-//                contextObjet.SetCurrentInstance(TEntityInstance.create("Crop", thisDate, DbModule1.Variete.findfield("id").AsVariant));
-//            }
-
-//            // S'il existe une instance de type Crop <=> a partir du moment ou il y a eu le semis
-//            if (!(contextObjet.GetCurrentInstance("Crop") == 00)) {
-//                test = contextObjet.GetCurrentInstance("Crop").GetVal("NumPhase");
-//                //dateEnStr := Formadouble('dd:mm',contextObjet.GetCurrentInstance('Crop').GetVal('DateMaturite'));
-
-//                // Si le numero de la phase de l'instance de Crop est 7
-//                // Destruction de l'entité Crop car elle est a Maturité on place l'instance de Crop dans le context
-//                if (contextObjet.GetCurrentInstance("Crop").GetVal("NumPhase") == 7)
-//                    contextObjet.FreeEntityInstance("Crop");
-//            } // fin : test sur existence d'une instance de Crop
-
-//            //Ajout VN simcons
-//            contextObjet.RunInitInstances;
-//            //Lance les modules d'initialisation si il faut le faire.
-
-//            StepExe; // parcours du tableau et execution des modules selon leur pas de temps
-
-//            thisDate = thisDate + minorStep; // passage au pas de temps suivant
-
-//            //VN simcons (permet la manipulation de la fin de simul dans les modules)
-//            //      datefin = GetVal("FinSimul");
-
-//            if (thisDate != datefin) {
-//                //if (thisDate - Semis>0) and (thisDate - Semis<10) then ShowMessage(DateToStr(thisDate)+' '+DateToStr(semis));
-//                SetVal("DateEnCours", thisDate);
-//                //ShowMessage(DateToStr(thisDate));
-//                SetVal("NbJAS", thisDate - semis);
-//            }
-//            if (mainForm.butStopSimulation.Caption == "Arrêt en cours")
-//                thisDate = datefin + 1;
-//        } // fin du while thisDate <= dateFin do
-
-//        //VN save: Dans le cas de semis calculé on remet à jour la variable nbjas dans resjour
-//        // Finaliser le choix forcer ou calculer une date de semis....
-//        // Modif CB 02/06 ne fiare MajNbjAs que si date semis calculee
-//        if (contextObjet.GetCurrentInstance("Plot").GetVal("DateSemis") == NullValue)
-//            // Modif CB 02/06
-//            majNbJas(GetVal("DateSemisCalc"), GetVal("DebutSimul"), datefin - 1);
-
-//    } catch (Exception const &e)
-//    {AfficheMessageErreur(e.message + "TSimule.Aller", UClasseSimule);}
-
-//}
-
-
-
-void run_2() {}
-void run_22() {}
-void run_23() {}
+//Unused State
+//    double ChangeSousPhase, CumWuse, DryMatStructStemPop, DureeDuJour, FertSpikePop, RUEgreen, SeuilTempPhasePrec, StRu, NbJourCompte, tabCstrIndiceCourant;
 
 #endif // DELPHIRUNNER_H
