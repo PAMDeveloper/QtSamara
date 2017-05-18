@@ -16,7 +16,7 @@ namespace Meteo {
 void EvalPar(double const &RG, double const &Kpar,
              double &Par);
 // 50
-void EvalDecli(TDateTime const &aDate,
+void EvalDecli(double const &aDate,
                double &Decli);
 // 51
 void EvalSunPosi(double const &LatRad, double const &Decli,
@@ -25,7 +25,7 @@ void EvalSunPosi(double const &LatRad, double const &Decli,
 void EvalDayLength(double const &SunPosi,
                    double &DayLength);
 // 53
-void EvalSunDistance(TDateTime const &aDate,
+void EvalSunDistance(double const &aDate,
                      double &SunDistance);
 // 54
 void EvalRayExtra(double const &SunPosi, double const &Decli, double const &SunDistance, double const &LatRad,
@@ -137,7 +137,7 @@ void EvalPar(double const &RG, double const &Kpar,   double &Par) {
   }
 }
 
-void EvalDecli(TDateTime const &aDate,   double &Decli) {
+void EvalDecli(double const &aDate,   double &Decli) {
   try {
     Decli = 0.409 * sin(0.0172 * DayOfTheYear(aDate) - 1.39);
 
@@ -146,7 +146,7 @@ void EvalDecli(TDateTime const &aDate,   double &Decli) {
   }
 }
 
-void EvalDecli2(TDateTime const &aDate,
+void EvalDecli2(double const &aDate,
                 double &Decli)
 /*
 In :
@@ -201,7 +201,7 @@ Out :
   }
 }
 
-void EvalSunDistance(TDateTime const &aDate,   double &SunDistance) {
+void EvalSunDistance(double const &aDate,   double &SunDistance) {
   try {
     SunDistance = 1 + 0.033 * cos(2 * M_PI * 1.0 / 365 * DayOfTheYear(aDate));
 
@@ -210,7 +210,7 @@ void EvalSunDistance(TDateTime const &aDate,   double &SunDistance) {
   }
 }
 
-void EvalSunDistance2(TDateTime const &Decli, TDateTime const &LatRad, TDateTime const &DayLength,
+void EvalSunDistance2(double const &Decli, double const &LatRad, double const &DayLength,
                       double &SunDistance)
 /*
 In :

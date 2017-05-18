@@ -107,7 +107,7 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
                 + "-01-01' AND jour <='" + yearString + "-12-31' ORDER BY jour";
 
         PGresult *resultMeteorology = PQexec(connection,requestMeteorology.c_str());
-        if (PQresultStatus(resultMeteorology) != PGRES_TUPLES_OK){
+        if (PQresultStatus(resultMeteorology) != PGRES_TUPLES_OK) {
             std::cout << "Error: " << PQerrorMessage(connection) << std::endl;
         }
 
@@ -122,6 +122,7 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
 
         nbLigneResultMeteo = PQntuples(resultMeteorology);
         nbLigneResultPluie = PQntuples(resultRainfall);
+
         if (nbLigneResultMeteo>0 && nbLigneResultPluie>0){
             bool finished = false;
             compteurLigneResult = 0;
@@ -147,7 +148,7 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
                                         std::stod(PQgetvalue(resultRainfall,compteurLigneResult,2))
                                         ));
 
-                    }
+                    //}
                 }
                 compteurLigneResult++;
                 if(compteurLigneResult == nbLigneResultMeteo || compteurLigneResult == nbLigneResultPluie){
@@ -169,9 +170,10 @@ void ParametersReader::load_data(//pqxx::connection& connection,
     //    try {
     //pqxx::work action(connection);
     //pqxx::result result = action.exec(
+
+	std::string query = "SELECT * FROM " + table + " WHERE " + key + "='" + value + "'";
     PGresult* result = PQexec(connection,
-                              (boost::format("SELECT * FROM \"%1%\" WHERE \"%2%\"='%3%'") %
-                               table % key % value).str().c_str());
+                              query.c_str());
     if (PQresultStatus(result) != PGRES_TUPLES_OK){
         std::cout << "Error: " << PQerrorMessage(connection) << std::endl;
     }

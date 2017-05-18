@@ -42,9 +42,6 @@
     <ClInclude Include="..\src\sorghum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\tmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ModelParameters.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -28,14 +28,17 @@
 #include <iostream>
 #include "DateTime.hpp"
 
-#define Q(x) #x
-#define AfficheMessageErreur(A, B) std::cout << A << Q(x);
+//#define Q(x) #x
+//#define AfficheMessageErreur(A, B) std::cout << A << Q(x);
+
+#define AfficheMessageErreur(A, B)  ;
+#define try  ;
+#define catch(x)  ;
 
 static double NilValue = -999;
 static double sqr(double x) {return x * x;}
 
-typedef double TDateTime;
-static double DayOfTheYear(TDateTime date) {
+static double DayOfTheYear(double date) {
   return artis::utils::DateTime::dayOfYear(date);
 }
 

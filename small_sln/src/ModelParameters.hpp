@@ -32,6 +32,7 @@
 #include <vector>
 #include <iso646.h>
 #include <iostream>
+#include <sstream>
 
 namespace samara {
 
@@ -84,8 +85,44 @@ public:
     if (it == mParams.end())
       std::cout << "Warning: no value for " << paramName << std::endl;
 
-    return boost::lexical_cast<T>((it == mParams.end()) ? "0" : it->second);
+    return (T)((it == mParams.end()) ? "0" : it->second);
   }
+
+     template <>
+     double get( const std::string &paramName ) const
+     {
+        std::map < std::string, std::string >::const_iterator it;
+        it = mParams.find( paramName );
+
+        if( it == mParams.end() )
+           std::cout << "Warning: no value for " << paramName << std::endl;
+
+  	  return (it == mParams.end()) ? 0. : std::stod(it->second.c_str());
+     }
+
+     template <>
+     int get( const std::string &paramName ) const
+     {
+        std::map < std::string, std::string >::const_iterator it;
+        it = mParams.find( paramName );
+
+        if( it == mParams.end() )
+           std::cout << "Warning: no value for " << paramName << std::endl;
+
+        return ( it == mParams.end() ) ? 0 : atoi( it->second.c_str() );
+     }
+
+	 template <>
+	 std::string get(const std::string &paramName) const
+	 {
+		 std::map < std::string, std::string >::const_iterator it;
+		 it = mParams.find(paramName);
+
+		 if (it == mParams.end())
+			 std::cout << "Warning: no value for " << paramName << std::endl;
+
+		 return (it == mParams.end()) ? "0" : it->second.c_str();
+	 }
 
   Climate get(double time) const {
     return meteoValues[time - beginDate];
@@ -99,9 +136,28 @@ public:
    */
   template < typename T >
   inline void set(const std::string &key, const T &value) {
-    mParams[key] = boost::lexical_cast < std::string >(value);
+    mParams[key] = (std::string)(value);
   }
 
+  template <>
+  inline void set(const std::string &key, const  std::string &value) {
+	  mParams[key] = value;
+  }
+
+  template <>
+  inline void set(const std::string &key, const double &value) {
+	  std::ostringstream strs;
+	  strs << value;
+	  std::string str = strs.str();
+	  mParams[key] = str;
+  }
+  template < typename T >
+  inline void set(const std::string &key, const int &value) {
+	  std::ostringstream strs;
+	  strs << value;
+	  std::string str = strs.str();
+	  mParams[key] = str;
+  }
   /**
    * Removes all parameters.
    * @param void.

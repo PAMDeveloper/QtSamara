@@ -28,3 +28,11 @@ scripts/rtnt3/man/*.log
 .Rproj.user
 data/*/outputs
 CMakeLists.txt.user
+small_sln/Samara/x64/Debug/Samara.tlog/link.command.1.tlog
+small_sln/Samara/x64/
+small_sln/x64/
+*.vsp
+*.psess
+*.suo
+*.opendb
+small_sln/Samara.VC.db

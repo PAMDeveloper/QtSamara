@@ -37,9 +37,9 @@ void runDelphiTrad(double start, double end, const samara::ModelParameters &para
 
 
 int main(int argc, char *argv[]) {
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
     GlobalParameters globalParameters;
     samara::ModelParameters parameters;
@@ -56,15 +56,15 @@ int main(int argc, char *argv[]) {
                                   "yyyy-MM-dd");
     parameters.beginDate = start.toJulianDay();
     qDebug() << parameters.beginDate << end.toJulianDay();
-//    SamaraContext context(start.toJulianDay(), end.toJulianDay());
+    SamaraContext context(start.toJulianDay(), end.toJulianDay());
 
-//    ::Trace::trace().clear();
-//    SamaraSimulator simulator(new SamaraModel2_1, globalParameters);
-//    observer::GlobalView *view = new observer::GlobalView();
-//    simulator.attachView("plant", view);
-//    simulator.init(start.toJulianDay(), parameters);
-//    simulator.run(context);
-//    //w.show_trace();
+    ::Trace::trace().clear();
+    SamaraSimulator simulator(new SamaraModel2_1, globalParameters);
+    observer::GlobalView *view = new observer::GlobalView();
+    simulator.attachView("plant", view);
+    simulator.init(start.toJulianDay(), parameters);
+    simulator.run(context);
+//    w.show_trace();
 
 
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
@@ -80,12 +80,12 @@ int main(int argc, char *argv[]) {
     std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
     std::cout << "finished computation at " << std::ctime(&end_time)
               << "elapsed time: " << elapsed_seconds << "microsec\n";
-    exit(0);
+//    exit(0);
 
 
-//    std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
-//    w.displayData(view, QString::fromStdString(dirName), &parameters,
-//                  QString::fromStdString(parameters.get < std::string >("datedebut")),
-//                  QString::fromStdString(parameters.get < std::string >("datefin")));
-//    return a.exec();
+    std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
+    w.displayData(view, QString::fromStdString(dirName), &parameters,
+                  QString::fromStdString(parameters.get < std::string >("datedebut")),
+                  QString::fromStdString(parameters.get < std::string >("datefin")));
+    return a.exec();
 }

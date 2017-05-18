@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file app/main.cpp
  * @author The Ecomeristem Development Team
  * See the AUTHORS file
@@ -40,22 +40,21 @@ int main(int argc, char *argv[]) {
     parameters.set< std::string>("idsimulation", id);
     reader.loadFromDatabase(id, parameters);
 
-   /* QDate start = QDate::fromString(QString::fromStdString(parameters.get < std::string >("datedebut")), "yyyy-MM-dd");
-    QDate end = QDate::fromString(QString::fromStdString(parameters.get < std::string >("datefin")), "yyyy-MM-dd");*/
-	parameters.beginDate = 655565; // start.toJulianDay();
+	parameters.beginDate = 2455683;
 
-    std::chrono::time_point<std::chrono::system_clock> startC, endC;
-    startC = std::chrono::system_clock::now();
-
-    for (int i = 0; i < 10; ++i) {
-       // run_samara_21(start.toJulianDay(), end.toJulianDay(), parameters);
+    /*std::chrono::time_point<std::chrono::system_clock> startC, endC;
+    startC = std::chrono::system_clock::now();*/
+	int nb_runs = 10000;
+    for (int i = 0; i < nb_runs; ++i) {
+       run_samara_21(parameters, 1);
     }
 
-    endC = std::chrono::system_clock::now();
-    double elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>
-            (endC-startC).count() / 10;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
-    std::cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds << "ms\n";
-    exit(0);
+    //endC = std::chrono::system_clock::now();
+    //double elapsed_seconds = std::chrono::duration_cast<std::chrono::microseconds>
+    //        (endC-startC).count() / nb_runs;
+    //std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
+    //std::cout << "finished computation at " << std::ctime(&end_time)
+    //          << "elapsed time: " << elapsed_seconds << "microsec\n";
+	//std::cin.get();
+	exit(0);
 }
