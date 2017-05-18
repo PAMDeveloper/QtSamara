@@ -77,19 +77,18 @@ public:
    * @param[in] paramName The name of the needed parameter.
    * @return T The data if readable for this type, an empty data otherwise.
    */
-  template < typename T >
-  T get(const std::string &paramName) const {
-    std::map < std::string, std::string >::const_iterator it;
-    it = mParams.find(paramName);
+//  template < typename T >
+//  T get(const std::string &paramName) const {
+//    std::map < std::string, std::string >::const_iterator it;
+//    it = mParams.find(paramName);
 
-    if (it == mParams.end())
-      std::cout << "Warning: no value for " << paramName << std::endl;
+//    if (it == mParams.end())
+//      std::cout << "Warning: no value for " << paramName << std::endl;
 
-    return (T)((it == mParams.end()) ? "0" : it->second);
-  }
+//    return (T)((it == mParams.end()) ? "0" : it->second);
+//  }
 
-     template <>
-     double get( const std::string &paramName ) const
+     double getDouble( const std::string &paramName ) const
      {
         std::map < std::string, std::string >::const_iterator it;
         it = mParams.find( paramName );
@@ -100,8 +99,7 @@ public:
   	  return (it == mParams.end()) ? 0. : std::stod(it->second.c_str());
      }
 
-     template <>
-     int get( const std::string &paramName ) const
+     int getInt( const std::string &paramName ) const
      {
         std::map < std::string, std::string >::const_iterator it;
         it = mParams.find( paramName );
@@ -112,8 +110,7 @@ public:
         return ( it == mParams.end() ) ? 0 : atoi( it->second.c_str() );
      }
 
-	 template <>
-	 std::string get(const std::string &paramName) const
+     std::string getString(const std::string &paramName) const
 	 {
 		 std::map < std::string, std::string >::const_iterator it;
 		 it = mParams.find(paramName);
@@ -134,25 +131,25 @@ public:
    * @param[in] value The value of this parameter.
    * @return void.
    */
-  template < typename T >
-  inline void set(const std::string &key, const T &value) {
-    mParams[key] = (std::string)(value);
-  }
+//  template < typename T >
+//  inline void set(const std::string &key, const T &value) {
+//    mParams[key] = (std::string)(value);
+//  }
 
-  template <>
-  inline void set(const std::string &key, const  std::string &value) {
+//  template <>
+  inline void setString(const std::string &key, const  std::string &value) {
 	  mParams[key] = value;
   }
 
-  template <>
-  inline void set(const std::string &key, const double &value) {
+//  template <>
+  inline void setDouble(const std::string &key, const double &value) {
 	  std::ostringstream strs;
 	  strs << value;
 	  std::string str = strs.str();
 	  mParams[key] = str;
   }
-  template < typename T >
-  inline void set(const std::string &key, const int &value) {
+//  template < typename T >
+  inline void setInt(const std::string &key, const int &value) {
 	  std::ostringstream strs;
 	  strs << value;
 	  std::string str = strs.str();

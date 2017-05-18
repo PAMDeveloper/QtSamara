@@ -37,14 +37,14 @@ int main(int argc, char *argv[]) {
     samara::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string id = "06SB15-fev13-D1_SV21";
-    parameters.set< std::string>("idsimulation", id);
+    parameters.setString("idsimulation", id);
     reader.loadFromDatabase(id, parameters);
 
 	parameters.beginDate = 2455683;
 
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
-    int nb_runs = 1000;
+    int nb_runs = 10000;
     for (int i = 0; i < nb_runs; ++i) {
        run_samara_21(parameters, 1);
     }

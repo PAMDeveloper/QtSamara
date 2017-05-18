@@ -36,3 +36,11 @@ small_sln/x64/
 *.suo
 *.opendb
 small_sln/Samara.VC.db
+build-SmallSamara-RTools_MinGW_32bit-Release/
+build-SmallSamara-RTools_MinGW_64bit-Debug/.qmake.stash
+build-SmallSamara-RTools_MinGW_64bit-Debug/
+build-SmallSamara-RTools_MinGW_32bit-Debug/
+build-SmallSamara-Desktop_Qt_5_8_0_MinGW_32bit-Release/
+build-SmallSamara-RTools_MinGW_64bit-Release/
+build-SmallSamara-Desktop_Qt_5_8_0_MSVC2015_64bit-Release/
+small_sln/SmallSamara.pro.user

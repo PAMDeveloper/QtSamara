@@ -23,7 +23,8 @@
  */
 
 #include "DateTime.hpp"
-#include <iostream>
+//#include <iostream>
+#include <algorithm>
 #include "ParametersReader.hpp"
 #include <iso646.h>
 
@@ -45,36 +46,36 @@ void ParametersReader::loadFromDatabase(const std::string& id,
     }
 
     load_simulation(id, connection, parameters);
-    load_variety(parameters.get < std::string >("idvariete"), connection, parameters);
-    load_itineraire_technique( parameters.get < std::string >("iditinerairetechnique"), connection, parameters);
-    load_plot(parameters.get < std::string >("idparcelle"), connection, parameters);
-    load_station(parameters.get < std::string >("codestationmeteo"), connection, parameters);
+    load_variety(parameters.getString("idvariete"), connection, parameters);
+    load_itineraire_technique( parameters.getString("iditinerairetechnique"), connection, parameters);
+    load_plot(parameters.getString("idparcelle"), connection, parameters);
+    load_station(parameters.getString("codestationmeteo"), connection, parameters);
     load_meteo(connection, parameters);
     std::cout << "Simulation " << id << ":" << std::endl;
-    std::cout << " - begin = " << parameters.get < std::string >("datedebut")
+    std::cout << " - begin = " << parameters.getString("datedebut")
               << std::endl;
-    std::cout << " - end = " << parameters.get < std::string >("datefin")
+    std::cout << " - end = " << parameters.getString("datefin")
               << std::endl;
-    std::cout << " - variety = " << parameters.get < std::string >("idvariete")
+    std::cout << " - variety = " << parameters.getString("idvariete")
               << std::endl;
     std::cout << " - itineraire technique = "
-              << parameters.get < std::string >("iditinerairetechnique")
+              << parameters.getString("iditinerairetechnique")
               << std::endl;
     std::cout << " - date semis = "
-              << parameters.get < std::string >("datesemis")
+              << parameters.getString("datesemis")
               << std::endl;
-    std::cout << " - plot = " << parameters.get < std::string >("idparcelle")
+    std::cout << " - plot = " << parameters.getString("idparcelle")
               << std::endl;
-    std::cout << " - site = " << parameters.get < std::string >("idsite")
+    std::cout << " - site = " << parameters.getString("idsite")
               << std::endl;
     std::cout << " - station = "
-              << parameters.get < std::string >("codestationmeteo")
+              << parameters.getString("codestationmeteo")
               << std::endl;
     std::cout << " - type_soil = "
-              << parameters.get < std::string >("codetypesol")
+              << parameters.getString("codetypesol")
               << std::endl;
     std::cout << " - model = "
-              << parameters.get < std::string >("idmodele")
+              << parameters.getString("idmodele")
               << std::endl;
     std::cout << " - meteo = "
               << parameters.meteoValues.size() << " values"
@@ -91,8 +92,8 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
     unsigned int endYear;
     int nbLigneResultMeteo,nbLigneResultPluie,compteurLigneResult;
 
-    begin = artis::utils::DateTime::toJulianDayNumber(parameters.get < std::string >("datedebut")); //beginDate
-    end = artis::utils::DateTime::toJulianDayNumber(parameters.get < std::string >("datefin")); //endDate
+    begin = artis::utils::DateTime::toJulianDayNumber(parameters.getString("datedebut")); //beginDate
+    end = artis::utils::DateTime::toJulianDayNumber(parameters.getString("datefin")); //endDate
     beginYear = artis::utils::DateTime::year(begin);
     endYear = artis::utils::DateTime::year(end);
 
@@ -103,7 +104,7 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
         convertisseurAnnee<<year;
         yearString = convertisseurAnnee.str();
         std::string requestMeteorology = "SELECT * FROM meteo WHERE codestation='" +
-                parameters.get < std::string >("codestationmeteo") + "' AND jour >='" + yearString
+                parameters.getString("codestationmeteo") + "' AND jour >='" + yearString
                 + "-01-01' AND jour <='" + yearString + "-12-31' ORDER BY jour";
 
         PGresult *resultMeteorology = PQexec(connection,requestMeteorology.c_str());
@@ -112,7 +113,7 @@ void ParametersReader::load_meteo(PQConnector connection, samara::ModelParameter
         }
 
         std::string requestRainfall = "SELECT * FROM precipitation WHERE codestation='" +
-                parameters.get < std::string >("codestationpluie") +"' AND jour >='" + yearString
+                parameters.getString("codestationpluie") +"' AND jour >='" + yearString
                 + "-01-01' AND jour <='" + yearString + "-12-31' ORDER BY jour";
 
         PGresult *resultRainfall = PQexec(connection,requestRainfall.c_str());
@@ -191,14 +192,10 @@ void ParametersReader::load_data(//pqxx::connection& connection,
             if (itv != names.end()) { //si le nom du champ a ete trouve
                 //if (it->type() == 1043) { //test sur le type de la colonne, ici si c est une chaine de caract.
                 if((PQftype(result,compteur) == 1043) || (PQftype(result,compteur) == 1082)){
-                    parameters.set < std::string >( //affecte a la map parameters la cle nomdeparam avec sa valeur
-                                                    //                            *itv,  boost::lexical_cast < std::string >(*it));
-                                                    *itv,  std::string(PQgetvalue(result,0,compteur)));
+                    parameters.setString(*itv,  std::string(PQgetvalue(result,0,compteur)));
                 }
                 else {
-                    parameters.set < double >(
-                                //                            *itv, std::stod(*it));
-                                *itv, atof(PQgetvalue(result,0,compteur)));
+                    parameters.setDouble(*itv, atof(PQgetvalue(result,0,compteur)));
                 }
             } else {
                 //parameters.set < double >(it->name(), 0.);
@@ -398,9 +395,9 @@ void ParametersReader::load_plot(
 
     load_data(connection, "parcelle", "idparcelle", id, names, parameters);
 
-    load_site(parameters.get < std::string >("idsite"), connection, parameters);
+    load_site(parameters.getString("idsite"), connection, parameters);
 
-    load_type_soil(parameters.get < std::string >("codetypesol"), connection,parameters);
+    load_type_soil(parameters.getString("codetypesol"), connection,parameters);
 }
 
 void ParametersReader::load_simulation(
