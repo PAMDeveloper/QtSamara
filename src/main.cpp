@@ -70,22 +70,25 @@ int main(int argc, char *argv[]) {
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
 
-    for (int i = 0; i < 1000; ++i) {
+//    for (int i = 0; i < 1000; ++i) {
         run_samara_21(start.toJulianDay(), end.toJulianDay(), parameters);
-    }
+//    }
 
-    endC = std::chrono::system_clock::now();
-    double elapsed_seconds = std::chrono::duration_cast<std::chrono::microseconds>
-            (endC-startC).count() / 1000;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
-    std::cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds << "microsec\n";
-//    exit(0);
+//    endC = std::chrono::system_clock::now();
+//    double elapsed_seconds = std::chrono::duration_cast<std::chrono::microseconds>
+//            (endC-startC).count() / 1000;
+//    std::time_t end_time = std::chrono::system_clock::to_time_t(endC);
+//    std::cout << "finished computation at " << std::ctime(&end_time)
+//              << "elapsed time: " << elapsed_seconds << "microsec\n";
+////    exit(0);
 
 
     std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
     w.displayData(view, QString::fromStdString(dirName), &parameters,
                   QString::fromStdString(parameters.get < std::string >("datedebut")),
                   QString::fromStdString(parameters.get < std::string >("datefin")));
+
+//    std::cout << "finished computation at " << std::ctime(&end_time)
+//              << "elapsed time: " << elapsed_seconds << "microsec\n";
     return a.exec();
 }

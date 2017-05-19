@@ -21,19 +21,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "delphirunner.h"
 #include "ParametersReader.hpp"
 #include <chrono>
-#include <time.h>
 #include <ctime>
 
-struct GlobalParameters
-{ };
 
-
-int main(int argc, char *argv[]) {
-    GlobalParameters globalParameters;
+int main(int /*argc*/, char */*argv[]*/) {
     samara::ModelParameters parameters;
     utils::ParametersReader reader;
     std::string id = "06SB15-fev13-D1_SV21";
@@ -44,7 +38,7 @@ int main(int argc, char *argv[]) {
 
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
-    int nb_runs = 10000;
+    int nb_runs = 1000;
     for (int i = 0; i < nb_runs; ++i) {
        run_samara_21(parameters, 1);
     }

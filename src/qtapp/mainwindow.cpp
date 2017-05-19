@@ -165,10 +165,10 @@ void MainWindow::addChart(int row, int col,
             valDiff = delphRefseries->at(i).y();
         }
     }
-    double percentage = std::abs(((sumRef-sumSim)/sumRef)) * 100;
+    double percentage = std::roundf(std::abs(((sumRef-sumSim)/sumRef)) * 10000)/100;
 //    qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << percentage << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
-//    qDebug() << sName << ":" << percentage;
-        qDebug() << fixed << sName << ":" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy") << ":" << valDiff << ":" << refValDiff;
+//    qDebug() << sName << fixed << ":" << percentage;
+        qDebug() << sName << ":"  << percentage << "%";
 
     QValueAxis *axisY = new QValueAxis;
     axisY->setLabelFormat("%i");

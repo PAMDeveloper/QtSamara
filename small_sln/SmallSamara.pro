@@ -1,5 +1,6 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += c++11
+CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 #QMAKE_CXXFLAGS_RELEASE -= -O0
@@ -11,8 +12,8 @@ QMAKE_CXXFLAGS_RELEASE += -Ox
 #QMAKE_CXXFLAGS_RELEASE += -Ofast
 
 
-#CONFIG += BUILD_FOR_APP32
-CONFIG += BUILD_FOR_APP64
+CONFIG += BUILD_FOR_APP32
+#CONFIG += BUILD_FOR_APP64
 #CONFIG += BUILD_FOR_LIB32
 #CONFIG += BUILD_FOR_R32
 #CONFIG += BUILD_FOR_R64
@@ -94,4 +95,8 @@ HEADERS += \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/Risocas2cpp.h \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/Riz.h \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/sorghum.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/tmp.h
+    D:/PAMStudio/dev/git/samara_2/small_sln/src/tmp.h \
+    src/variables.h \
+    src/parameters.h \
+    src/samara.h \
+    src/parcelle.h
