@@ -21,8 +21,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "delphirunner.h"
+#include "../delphi2cpp/samara.h"
 #include "ParametersReader.hpp"
+#include "ModelParameters.hpp"
 #include <chrono>
 #include <ctime>
 
@@ -38,9 +39,9 @@ int main(int /*argc*/, char */*argv[]*/) {
 
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
-    int nb_runs = 1000;
+    int nb_runs = 10000;
     for (int i = 0; i < nb_runs; ++i) {
-       run_samara_21(parameters, 1);
+       run_samara_2_1(parameters);
     }
 
     endC = std::chrono::system_clock::now();

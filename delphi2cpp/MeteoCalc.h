@@ -16,7 +16,7 @@ namespace Meteo {
 void EvalPar(double const &RG, double const &Kpar,
              double &Par);
 // 50
-void EvalDecli(TDateTime const &aDate,
+void EvalDecli(double const &aDate,
                double &Decli);
 // 51
 void EvalSunPosi(double const &LatRad, double const &Decli,
@@ -25,7 +25,7 @@ void EvalSunPosi(double const &LatRad, double const &Decli,
 void EvalDayLength(double const &SunPosi,
                    double &DayLength);
 // 53
-void EvalSunDistance(TDateTime const &aDate,
+void EvalSunDistance(double const &aDate,
                      double &SunDistance);
 // 54
 void EvalRayExtra(double const &SunPosi, double const &Decli, double const &SunDistance, double const &LatRad,
@@ -93,7 +93,7 @@ double integreheure(double duree, double th)
     //intégration gaussienne pour trois heures
 
   } catch (...) {
-    AfficheMessageErreur("integreheure", UMeteo);
+    error_message("integreheure", UMeteo);
     result = -999;
   }
   result = -999;
@@ -115,7 +115,7 @@ void AVGTempHum(double const &TMin, double const &TMax, double const &HMin, doub
     }
 
   } catch (...) {
-    AfficheMessageErreur("AVGTempHum", UMeteo);
+    error_message("AVGTempHum", UMeteo);
   }
 }
 
@@ -124,7 +124,7 @@ void DegToRad(double const &Lat,   double &LatRad) {
     LatRad = Lat * M_PI * 1.0 / 180;
 
   } catch (...) {
-    AfficheMessageErreur("DegToRad", UMeteo);
+    error_message("DegToRad", UMeteo);
   }
 }
 
@@ -133,20 +133,20 @@ void EvalPar(double const &RG, double const &Kpar,   double &Par) {
     Par = Kpar * RG;
 
   } catch (...) {
-    AfficheMessageErreur("EvalPar", UMeteo);
+    error_message("EvalPar", UMeteo);
   }
 }
 
-void EvalDecli(TDateTime const &aDate,   double &Decli) {
+void EvalDecli(double const &aDate,   double &Decli) {
   try {
     Decli = 0.409 * sin(0.0172 * DayOfTheYear(aDate) - 1.39);
 
   } catch (...) {
-    AfficheMessageErreur("EvalDecli", UMeteo);
+    error_message("EvalDecli", UMeteo);
   }
 }
 
-void EvalDecli2(TDateTime const &aDate,
+void EvalDecli2(double const &aDate,
                 double &Decli)
 /*
 In :
@@ -160,7 +160,7 @@ Out :
                   cos(2 * M_PI * (DayOfTheYear(aDate) + 10) * 1.0 / 365));
 
   } catch (...) {
-    AfficheMessageErreur("EvalDecli2", UMeteo);
+    error_message("EvalDecli2", UMeteo);
   }
 }
 
@@ -169,7 +169,7 @@ void EvalSunPosi(double const &LatRad, double const &Decli,   double &SunPosi) {
     SunPosi = acos(-tan(LatRad) * tan(Decli));
 
   } catch (...) {
-    AfficheMessageErreur("EvalSunPosi", UMeteo);
+    error_message("EvalSunPosi", UMeteo);
   }
 }
 
@@ -178,7 +178,7 @@ void EvalDayLength(double const &SunPosi,   double &DayLength) {
     DayLength = 7.64 * SunPosi;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDayLength", UMeteo);
+    error_message("EvalDayLength", UMeteo);
   }
 }
 
@@ -197,20 +197,20 @@ Out :
     DayLength = 12 + 24 * 1.0 / 180 * asin(tan(LatRad) - tan(Decli));
 
   } catch (...) {
-    AfficheMessageErreur("EvalDayLength2", UMeteo);
+    error_message("EvalDayLength2", UMeteo);
   }
 }
 
-void EvalSunDistance(TDateTime const &aDate,   double &SunDistance) {
+void EvalSunDistance(double const &aDate,   double &SunDistance) {
   try {
     SunDistance = 1 + 0.033 * cos(2 * M_PI * 1.0 / 365 * DayOfTheYear(aDate));
 
   } catch (...) {
-    AfficheMessageErreur("EvalSunDistance", UMeteo);
+    error_message("EvalSunDistance", UMeteo);
   }
 }
 
-void EvalSunDistance2(TDateTime const &Decli, TDateTime const &LatRad, TDateTime const &DayLength,
+void EvalSunDistance2(double const &Decli, double const &LatRad, double const &DayLength,
                       double &SunDistance)
 /*
 In :
@@ -230,7 +230,7 @@ Out :
                    (2 + 3 * 0.4 * SinLD) * sqrt(1 - sqr(SinLD * 1.0 / CosLD)));
 
   } catch (...) {
-    AfficheMessageErreur("EvalSunDistance2", UMeteo);
+    error_message("EvalSunDistance2", UMeteo);
   }
 }
 
@@ -242,7 +242,7 @@ void EvalRayExtra(double const &SunPosi, double const &Decli, double const &SunD
                 cos(Decli) * cos(LatRad) * sin(SunPosi));
 
   } catch (...) {
-    AfficheMessageErreur("EvalRayExtra", UMeteo);
+    error_message("EvalRayExtra", UMeteo);
   }
 }
 
@@ -251,7 +251,7 @@ void EvalRgMax(double const &RayExtra, double const &Alt,   double &RgMax) {
     RgMax = (0.75 + 0.00002 * Alt) * RayExtra;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRgMax", UMeteo);
+    error_message("EvalRgMax", UMeteo);
   }
 }
 
@@ -296,7 +296,7 @@ void EToFao(double const &ETP, double const &Alt, double const &RgMax, double co
     TMoyPrec = TMoy;
 
   } catch (...) {
-    AfficheMessageErreur("EToFAO", UMeteo);
+    error_message("EToFAO", UMeteo);
   }
 }
 
@@ -310,7 +310,7 @@ void InsToRg(double const &DayLength, double const &Ins, double const &RayExtra,
     }
 
   } catch (...) {
-    AfficheMessageErreur("InsToRg", UMeteo);
+    error_message("InsToRg", UMeteo);
   }
 }
 
@@ -343,7 +343,7 @@ void SucrosPAR(double RG, double LatRad, double Decli, double SunDistance, doubl
     Par = Par * 1.0 / 0.2177;
 
   } catch (...) {
-    AfficheMessageErreur("SucrosPAR", UMeteo);
+    error_message("SucrosPAR", UMeteo);
   }
 }
 
@@ -399,7 +399,7 @@ void SucrosPARh(double RG, double LatRad, double Decli, double SunDistance, doub
     PARdrh = PARhtot - PARdfh;
 
   } catch (...) {
-    AfficheMessageErreur("SucrosPARh", UMeteo);
+    error_message("SucrosPARh", UMeteo);
   }
 }
 
@@ -489,7 +489,7 @@ Partie évaporative de ET0 = Eaéro
     TMoyPrec = TMoy;
 
   } catch (...) {
-    AfficheMessageErreur("EToFAO", UMeteo);
+    error_message("EToFAO", UMeteo);
   }
 }
 
@@ -498,7 +498,7 @@ void EvalEtpCalc(double const &ETP,   double &EtpCalc) {
     EtpCalc = ETP;
 
   } catch (...) {
-    AfficheMessageErreur("EvalEtpCalc", UMeteo);
+    error_message("EvalEtpCalc", UMeteo);
   }
 }
 

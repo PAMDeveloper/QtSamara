@@ -26,10 +26,10 @@
 #endif
 #include <cmath>
 #include <iostream>
-#include <artis/utils/DateTime.hpp>
+
 
 #define Q(x) #x
-#define AfficheMessageErreur(A, B) std::cout << A << Q(x);
+#define error_message(A, B) std::cout << A << Q(x);
 
 static double NilValue = -999;
 static double sqr(double x) {return x * x;}

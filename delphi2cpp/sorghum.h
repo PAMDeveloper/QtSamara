@@ -47,7 +47,7 @@ void SorghumMortality(double const &cstr, double const &SeuilCstrMortality,   do
     }
 
   } catch (...) {
-    AfficheMessageErreur("SorghumMortality", URiz);
+    error_message("SorghumMortality", URiz);
   }
 }
 
@@ -61,7 +61,7 @@ void EvalInfiltration(double const &Pluie, double const &Lr,
     Infiltration = Pluie - Lr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalInfiltration", USorghum);
+    error_message("EvalInfiltration", USorghum);
   }
 }
 
@@ -76,7 +76,7 @@ void EvalDrainage(double const &Pluie, double const &Infiltration, double const 
     StockRacinairePrec = StockRacinaire;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDrainage", USorghum);
+    error_message("EvalDrainage", USorghum);
   }
 }
 
@@ -86,7 +86,7 @@ void EvalDrainageSansCulture(double const &Pluie, double const &Infiltration,
     Drainage = max(0., Pluie - Infiltration);
 
   } catch (...) {
-    AfficheMessageErreur("EvalDrainage", USorghum);
+    error_message("EvalDrainage", USorghum);
   }
 }
 
@@ -110,7 +110,7 @@ void CumulGenerique(double const &ValeurACumuler, double const &NumPhase, double
     }
 
   } catch (...) {
-    AfficheMessageErreur("CumulGenerique", USorghum);
+    error_message("CumulGenerique", USorghum);
   }
 }
 
@@ -120,7 +120,7 @@ void CumulGeneriqueComplet(double const &ValeurACumuler,
     Cumul = Cumul + ValeurACumuler;
 
   } catch (...) {
-    AfficheMessageErreur("CumulGeneriqueComplet", USorghum);
+    error_message("CumulGeneriqueComplet", USorghum);
   }
 }
 
@@ -137,7 +137,7 @@ void CompteJourPluvieux(double const &Pluie, double const &NumPhase, double cons
     } /* TODO : voir l'initialisation si PhaseDebutNbPluie=0 */
 
   } catch (...) {
-    AfficheMessageErreur("CompteJourPluivieux", USorghum);
+    error_message("CompteJourPluivieux", USorghum);
   }
 }
 
@@ -154,7 +154,7 @@ void EvalSlaMitch(double const &SlaMax, double const &SlaMin, double const &Atte
       sla = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalSlaMitch", USorghum);
+    error_message("EvalSlaMitch", USorghum);
   }
 }
 

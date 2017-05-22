@@ -98,7 +98,7 @@ void InitPlot(double const &StockIniSurf, double const &StockIniProf, double con
     Hum = max(StTot, StRurMax);
 
   } catch (...) {
-    AfficheMessageErreur("InitPlot", UBilEau);
+    error_message("InitPlot", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -119,7 +119,7 @@ void EvalRunOffScale(double const &Rain, double const &Irrig, double const &seui
     EauDispo = EnPlus - Lr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRunOffScale", UBilEau);
+    error_message("EvalRunOffScale", UBilEau);
   }
 }
 
@@ -163,7 +163,7 @@ void EvalRunOffIrrigAuto(double const &Rain, double const &Irrigation, double co
     EauDispo = EnPlus - Lr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRunOffScale", UBilEau);
+    error_message("EvalRunOffScale", UBilEau);
   }
 }
 
@@ -268,7 +268,7 @@ Au lieu de gerer des profondeurs on gere des stocks d'eau
     stRUR = min(stRUR, stRu);
 
   } catch (...) {
-    AfficheMessageErreur("RempliRes", UBilEau);
+    error_message("RempliRes", UBilEau);
   }
 }
 
@@ -306,7 +306,7 @@ void RempliResDr_VN(double const &VitDr, double const &Ru, double const &ProfRu,
     stRUR = min(stRUR, stRu);
 
   } catch (...) {
-    AfficheMessageErreur("RempliResVitDr", UBilEau);
+    error_message("RempliResVitDr", UBilEau);
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -332,7 +332,7 @@ ftsw : mm
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalFTSW | StRurMax: " + FloatToStr(RuRac) + " StRur: " + FloatToStr(StockRac) + " ftsw: " + FloatToStr(ftsw), UBilEau);
+    error_message("EvalFTSW | StRurMax: " + FloatToStr(RuRac) + " StRur: " + FloatToStr(StockRac) + " ftsw: " + FloatToStr(ftsw), UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -356,7 +356,7 @@ fesw : mm
     fesw = stRuSurf * 1.0 / (RuSurf + RuSurf * 1.0 / 10);
 
   } catch (...) {
-    AfficheMessageErreur("EvalFESW", UBilEau);
+    error_message("EvalFESW", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -395,7 +395,7 @@ stRur : mm
       stRUR = max((stRuSurf - RuSurf * 1.0 / 10) * (StRurMax * 1.0 / RuSurf), 0.);
 
   } catch (...) {
-    AfficheMessageErreur("EvolRur | RuSurf: " + FloatToStr(RuSurf), UBilEau);
+    error_message("EvolRur | RuSurf: " + FloatToStr(RuSurf), UBilEau);
   }
 }
 
@@ -440,7 +440,7 @@ stRur : mm
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolRur | RuSurf: " + FloatToStr(RuSurf), UBilEau);
+    error_message("EvolRur | RuSurf: " + FloatToStr(RuSurf), UBilEau);
   }
 }
 
@@ -452,7 +452,7 @@ void EvalKce(double const &Mulch, double const &Ltr,
     Kce = Mulch * 1.0 / 100 * Ltr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalKce", UBilEau);
+    error_message("EvalKce", UBilEau);
   }
 }
 
@@ -468,7 +468,7 @@ void EvalKcTot(double const &Kce, double const &Kcp,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalKcTot", UBilEau);
+    error_message("EvalKcTot", UBilEau);
   }
 }
 
@@ -479,7 +479,7 @@ void DemandePlante(double const &Kcp, double const &ETo,   double &TrPot) {
     TrPot = Kcp * ETo;
 
   } catch (...) {
-    AfficheMessageErreur("DemandePlante", UBilEau);
+    error_message("DemandePlante", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -491,7 +491,7 @@ void DemandePlante_V2_1(double const &Kcp, double const &ETo, double const &Ca, 
     TrPot = TrPot * CoeffCO2Tr;
 
   } catch (...) {
-    AfficheMessageErreur("DemandePlante_V2_1", UBilEau);
+    error_message("DemandePlante_V2_1", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -519,7 +519,7 @@ evapPot : mm
     evapPot = Etp * Kce;
 
   } catch (...) {
-    AfficheMessageErreur("DemandeSol", UBilEau);
+    error_message("DemandeSol", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -541,7 +541,7 @@ evap : mm
     evap = min(evap, stRuSurf);
 
   } catch (...) {
-    AfficheMessageErreur("EvapRuSurf", UBilEau);
+    error_message("EvapRuSurf", UBilEau);
   }
 }
 
@@ -564,7 +564,7 @@ evap : mm
     evap = min(evap, stRuSurf);
 
   } catch (...) {
-    AfficheMessageErreur("EvapRuSurfFesw", UBilEau);
+    error_message("EvapRuSurfFesw", UBilEau);
   }
 }
 //////////////////////////////////////////////////////////////////////
@@ -581,7 +581,7 @@ void SeuilCSTR(double const &TrPot, double const &ParSeuilCSTR, double const &ft
     tr = min(TrPot, TrPot * ParSeuilCSTR * ftsw);
 
   } catch (...) {
-    AfficheMessageErreur("SeuilCSTR", UBilEau);
+    error_message("SeuilCSTR", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -605,7 +605,7 @@ cstr : %
     cstr = 1 * 1.0 / (1 + exp(-(ftsw - Par1ExpCSTR) * 1.0 / Par2ExpCSTR));
 
   } catch (...) {
-    AfficheMessageErreur("ExpCSTR", UBilEau);
+    error_message("ExpCSTR", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -615,7 +615,7 @@ void KHR(double const &ParKhr, double const &ftsw,
     cstr = min(1., ParKhr * ftsw * ftsw);
 
   } catch (...) {
-    AfficheMessageErreur("KHR", UBilEau);
+    error_message("KHR", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -642,7 +642,7 @@ cstr : %
       cstr = 1;
 
   } catch (...) {
-    AfficheMessageErreur("KHR", UBilEau);
+    error_message("KHR", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -652,7 +652,7 @@ void CstrIsohydrique(double const &Etp, double const &ftsw, double const &Kexpon
     cstr = std::min(1., 2 * ftsw) * std::pow((1 * 1.0 / (Etp + 1)), Kexponent);
 
   } catch (...) {
-    AfficheMessageErreur("CstrIsohydrique", UBilEau);
+    error_message("CstrIsohydrique", UBilEau);
   }
 }
 
@@ -668,7 +668,7 @@ void CstrPFactor(double const &Kcp, double const &ParPFact, double const &ftsw, 
     cstr = max(0., cstr);
 
   } catch (...) {
-    AfficheMessageErreur("CstrPFactor | pFact: " + FloatToStr(pFact), UBilEau);
+    error_message("CstrPFactor | pFact: " + FloatToStr(pFact), UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -700,7 +700,7 @@ cstr : %
 
 
   } catch (...) {
-    AfficheMessageErreur("CstrPFactorTropDo | pFact: " + FloatToStr(pFact), UBilEau);
+    error_message("CstrPFactorTropDo | pFact: " + FloatToStr(pFact), UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -709,7 +709,7 @@ void EvalTranspi(double const &TrPot, double const &cstr,   double &tr) {
     tr = TrPot * cstr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalTranspi", UBilEau);
+    error_message("EvalTranspi", UBilEau);
   }
 }
 
@@ -746,7 +746,7 @@ etm : mm
     }
 
   } catch (...) {
-    AfficheMessageErreur("EtrMinMax", UBilEau);
+    error_message("EtrMinMax", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -780,7 +780,7 @@ trPot : mm
     TrPot = etm;
 
   } catch (...) {
-    AfficheMessageErreur("ConsoRes", UBilEau);
+    error_message("ConsoRes", UBilEau);
   }
 }
 /*------------------------------------------------*/
@@ -852,7 +852,7 @@ etm : mm
     etm = TrPot + evap;
 
   } catch (...) {
-    AfficheMessageErreur("ConsoResSep", UBilEau);
+    error_message("ConsoResSep", UBilEau);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -871,7 +871,7 @@ void EvalRUE(double const &ParIntercepte, double const &BiomasseAerienne, double
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRUE", UBilEau);
+    error_message("EvalRUE", UBilEau);
   }
 }
 

@@ -48,7 +48,7 @@ void InitiationCulture(double const &SeuilTempLevee, double const &SeuilTempBVP,
     Lai = 0;
 
   } catch (...) {
-    AfficheMessageErreur("InitiationCulture", UMilBilanCarbone);
+    error_message("InitiationCulture", UMilBilanCarbone);
   }
 }
 
@@ -66,7 +66,7 @@ void EvalDateLevee(double const &StockRacinaire,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalDateLevee | StockRacinaire: " + FloatToStr(StockRacinaire) +
+    error_message("EvalDateLevee | StockRacinaire: " + FloatToStr(StockRacinaire) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
 }
@@ -78,7 +78,7 @@ void EvalDegresJourTOpt(double const &TOpt, double const &TMoy, double const &TB
     DegresDuJour = max(min(TOpt, TMoy), TBase) - TBase;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDegresJour", UMilBilanCarbone);
+    error_message("EvalDegresJour", UMilBilanCarbone);
   }
 }
 
@@ -90,7 +90,7 @@ void EvalDegresJourTborne(double const &TMax, double const &TMin, double const &
     DegresDuJour = (max(TMin, TBase) + min(TOpt, TMax)) * 1.0 / 2 - TBase;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDegresJourTborne", UMilBilanCarbone);
+    error_message("EvalDegresJourTborne", UMilBilanCarbone);
   }
 }
 
@@ -113,7 +113,7 @@ void EvalDegresJourVitMoy(double const &TMax, double const &TMin, double const &
     DegresDuJour = v * (TOpt1 - TBase);
 
   } catch (...) {
-    AfficheMessageErreur("EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
+    error_message("EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
                          " TMin=" + FloatToStr(TMin) + "TBase=" + FloatToStr(TBase) + " TOpt1=" + FloatToStr(TOpt1) +
                          " TOpt2=" + FloatToStr(TOpt2) + " TL=" + FloatToStr(TL) + " DegresDuJour=" + FloatToStr(DegresDuJour), UMilBilanCarbone);
   }
@@ -202,7 +202,7 @@ void EvolPhenologieMilv2(double const &SeuilPP, double const &SommeDegresJour, d
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolPhenologieTemperature | NumPhase: " + FloatToStr(NumPhase) +
+    error_message("EvolPhenologieTemperature | NumPhase: " + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour) +
                          " SeuilTempPhaseSuivante: " + FloatToStr(SeuilTempPhaseSuivante), UMilBilanCarbone);
   }
@@ -229,7 +229,7 @@ void EvalConversion(double const &NumPhase, double const &EpsiB, double const &A
     Conversion = KAssim * EpsiB;
 
   } catch (...) {
-    AfficheMessageErreur("EvalConversion | NumPhase: " + FloatToStr(NumPhase) +
+    error_message("EvalConversion | NumPhase: " + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour), UMilBilanCarbone);
   }
 }
@@ -241,7 +241,7 @@ void EvalParIntercepte(double const &PAR, double const &LTR,   double &PARInterc
     PARIntercepte = PAR * (1 - LTR);
 
   } catch (...) {
-    AfficheMessageErreur("EvalParIntercepte | PAR: " + FloatToStr(PAR) +
+    error_message("EvalParIntercepte | PAR: " + FloatToStr(PAR) +
                          " LTR: " + FloatToStr(LTR), UMilBilanCarbone);
   }
 }
@@ -253,7 +253,7 @@ void EvalAssimPot(double const &PARIntercepte, double const &Conversion,   doubl
     AssimPot = PARIntercepte * Conversion * 10;
 
   } catch (...) {
-    AfficheMessageErreur("EvalAssimPot | PAR Intercepté: " + FloatToStr(PARIntercepte) +
+    error_message("EvalAssimPot | PAR Intercepté: " + FloatToStr(PARIntercepte) +
                          " Conversion: " + FloatToStr(Conversion), UMilBilanCarbone);
   }
 }
@@ -267,7 +267,7 @@ void EvalCstrAssim(double const &Cstr,   double &CstrAssim)
     CstrAssim = Cstr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalCstrAssim | Cstr: " + FloatToStr(Cstr), UMilBilanCarbone);
+    error_message("EvalCstrAssim | Cstr: " + FloatToStr(Cstr), UMilBilanCarbone);
   }
 }
 
@@ -291,7 +291,7 @@ void EvalVitesseRacinaire(double const &VRacLevee, double const &RootSpeedBVP, d
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalVitesseRacinaire | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
+    error_message("EvalVitesseRacinaire | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
 }
 
@@ -301,7 +301,7 @@ void EvalAssim(double const &AssimPot, double const &CstrAssim,   double &Assim)
     Assim = AssimPot * CstrAssim;
 
   } catch (...) {
-    AfficheMessageErreur("EvalAssim | AssimPot: " + FloatToStr(AssimPot) +
+    error_message("EvalAssim | AssimPot: " + FloatToStr(AssimPot) +
                          " CstrAssim: " + FloatToStr(CstrAssim), UMilBilanCarbone);
   }
 }
@@ -317,7 +317,7 @@ void EvalDeltaBiomTot(double const &Assimilats, double const &RespMaint, double 
       DeltaBiomasseTotale = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalBiomasseTotaleDuJour | Assim: " + FloatToStr(Assimilats) +
+    error_message("EvalBiomasseTotaleDuJour | Assim: " + FloatToStr(Assimilats) +
                          " RespMaint: " + FloatToStr(RespMaint) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
@@ -334,7 +334,7 @@ void EvalRdtPotTotGra(double const &KRdt, double const &BiomTotStadeFloraison, d
       RdtPot = KRdt * (BiomTotStadeFloraison - BiomTotStadeIp) + KrdtB;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtPotTotGra | KRdt: " + FloatToStr(KRdt) +
+    error_message("EvalRdtPotTotGra | KRdt: " + FloatToStr(KRdt) +
                          " BiomTotStadeFloraison: " + FloatToStr(BiomTotStadeFloraison) +
                          " BiomTotStadeIp: " + FloatToStr(BiomTotStadeIp) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
@@ -352,7 +352,7 @@ void EvalDRdtPot(double const &NumPhase, double const &RdtPot, double const &Deg
       RdtPotDuJour = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDRdtPot | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
+    error_message("EvalDRdtPot | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
 }
 
@@ -374,7 +374,7 @@ void EvalReallocation(double const &RdtPotDuJour, double const &DeltaBiomasseAer
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRealloc | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
+    error_message("EvalRealloc | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
                          " DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
                          " KRealloc: " + FloatToStr(KRealloc) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
@@ -399,7 +399,7 @@ void EvalReallocation2(double const &RdtPotDuJour, double const &DeltaBiomasseAe
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRealloc2 | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
+    error_message("EvalRealloc2 | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
                          " DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
                          " KRealloc: " + FloatToStr(KRealloc) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
@@ -417,7 +417,7 @@ void EvolBiomasseTotale(double const &DeltaBiomasseTotale, double const &NumPhas
       BiomasseTotale = BiomasseTotale + DeltaBiomasseTotale; // pas de gestion de phase,car gérée en amont
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomTot | BiomasseTotale: " + FloatToStr(BiomasseTotale) +
+    error_message("EvolBiomTot | BiomasseTotale: " + FloatToStr(BiomasseTotale) +
                          " DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale), UMilBilanCarbone);
   }
 }
@@ -449,7 +449,7 @@ void EvolBiomasseAerienne(double const &DeltaBiomasseTotale, double const &Ratio
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomAero | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
+    error_message("EvolBiomAero | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
                          " RatioAero: " + FloatToStr(RatioAero) +
                          " BiomasseTotale: " + FloatToStr(BiomasseTotale) +
                          " BiomasseAerienne: " + FloatToStr(BiomasseAerienne), UMilBilanCarbone);
@@ -463,7 +463,7 @@ void EvalBiomasseRacinair(double const &BiomasseTotale, double const &BiomasseAe
     BiomasseRacinaire = BiomasseTotale - BiomasseAerienne;
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomasseRacinair | BiomasseTotale: " + FloatToStr(BiomasseTotale) +
+    error_message("EvolBiomasseRacinair | BiomasseTotale: " + FloatToStr(BiomasseTotale) +
                          " BiomasseAerienne: " + FloatToStr(BiomasseAerienne) +
                          " BiomasseRacinaire: " + FloatToStr(BiomasseRacinaire), UMilBilanCarbone);
   }
@@ -476,7 +476,7 @@ void EvalAllomTotAer(double const &KPenteAero, double const &BiomTot, double con
     RatioAero = min(0.9, KPenteAero * BiomTot + KBaseAero);
 
   } catch (...) {
-    AfficheMessageErreur("EvolAllomTotAer | KPenteAero: " + FloatToStr(KPenteAero) +
+    error_message("EvolAllomTotAer | KPenteAero: " + FloatToStr(KPenteAero) +
                          " BiomTot: " + FloatToStr(BiomTot) +
                          " KBaseAero: " + FloatToStr(KBaseAero), UMilBilanCarbone);
   }
@@ -499,7 +499,7 @@ void EvalAllomAeroFeuilV1(double const &NumPhase, double const &kBaseLaiDev, dou
       RatioFeuilles = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvolAllomAeroFeuilV1", UMilBilanCarbone);
+    error_message("EvolAllomAeroFeuilV1", UMilBilanCarbone);
   }
 }
 
@@ -515,7 +515,7 @@ void EvalAllomAeroFeuilV2(double const &Ma, double const &Mb, double const &Mc, 
       RatioFeuilles = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvolAllomAeroFeuilV2", UMilBilanCarbone);
+    error_message("EvolAllomAeroFeuilV2", UMilBilanCarbone);
   }
 }
 
@@ -548,7 +548,7 @@ void EvolBiomasseFeuilles(double const &DeltaBiomasseTotale, double const &PartF
 
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomFeuille | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
+    error_message("EvolBiomFeuille | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
                          " BiomasseAerienne: " + FloatToStr(BiomasseAerienne) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
@@ -585,7 +585,7 @@ void EvolBiomasseFeuilles2(double const &DeltaBiomasseTotale, double const &Part
 
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomFeuille2 | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
+    error_message("EvolBiomFeuille2 | DeltaBiomasseTotale: " + FloatToStr(DeltaBiomasseTotale) +
                          " BiomasseAerienne: " + FloatToStr(BiomasseAerienne) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
@@ -610,7 +610,7 @@ void EvalSlaRapBiomV2(double const &SlaBVP, double const &SlaRPR, double const &
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalSlaRapBiomV2", UMilBilanCarbone);
+    error_message("EvalSlaRapBiomV2", UMilBilanCarbone);
   }
 }
 
@@ -632,7 +632,7 @@ void EvolBiomasseTiges(double const &DeltaBiomasseTotale, double const &NumPhase
     }                                          /* TODO : KRealloc ou Reallocation ??? */
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomasseTiges", UMilBilanCarbone);
+    error_message("EvolBiomasseTiges", UMilBilanCarbone);
   }
 }
 
@@ -644,7 +644,7 @@ void EvalBiomasseVegetati(double const &BiomasseTiges, double const &BiomasseFeu
     BiomasseVegetative = BiomasseTiges  + BiomasseFeuilles;
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomasseVegetati | BiomasseTiges: " + FloatToStr(BiomasseTiges) +
+    error_message("EvolBiomasseVegetati | BiomasseTiges: " + FloatToStr(BiomasseTiges) +
                          " BiomasseFeuille: " + FloatToStr(BiomasseFeuilles), UMilBilanCarbone);
   }
 }
@@ -660,7 +660,7 @@ void EvalDeltaRdt(double const &DeltaBiomasseAerienne, double const &Reallocatio
       DRdt = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtDuJour | DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
+    error_message("EvalRdtDuJour | DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
                          " Reallocation: " + FloatToStr(Reallocation) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
@@ -676,7 +676,7 @@ void EvolRdtV2(double const &DRdt, double const &NumPhase,   double &Rdt) {
       Rdt = Rdt + DRdt;
 
   } catch (...) {
-    AfficheMessageErreur("EvolRdtV2 | DRdt: " + FloatToStr(DRdt) +
+    error_message("EvolRdtV2 | DRdt: " + FloatToStr(DRdt) +
                          " Rdt: " + FloatToStr(Rdt), UMilBilanCarbone);
   }
 }
@@ -693,7 +693,7 @@ void EvolSomDegresJour(double const &DegresDuJour, double const &NumPhase,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolSommeDegresJour | DegresDuJour: " + FloatToStr(DegresDuJour) +
+    error_message("EvolSommeDegresJour | DegresDuJour: " + FloatToStr(DegresDuJour) +
                          " Phase n°" + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour), UMilBilanCarbone);
@@ -776,7 +776,7 @@ void EvolPhenoGraminees(double const &PPSens, double const &SommeDegresJour, dou
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolPhenologieTemperature | NumPhase: " + FloatToStr(NumPhase) +
+    error_message("EvolPhenologieTemperature | NumPhase: " + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour) +
                          " SeuilTempPhaseSuivante: " + FloatToStr(SeuilTempPhaseSuivante), UMilBilanCarbone);
   }
@@ -800,7 +800,7 @@ void EvalRdtPotGramin(double const &KRdt, double const &BiomasseTotale, double c
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtPotGraminees | KRdt: " + FloatToStr(KRdt) +
+    error_message("EvalRdtPotGraminees | KRdt: " + FloatToStr(KRdt) +
                          " BiomasseTotale: " + FloatToStr(BiomasseTotale) +
                          " NumPhase: " + FloatToStr(NumPhase) +
                          " ChangePhase: " + FloatToStr(ChangePhase) +
@@ -824,7 +824,7 @@ void EvolLAIPhases(double const &NumPhase, double const &BiomasseFeuilles, doubl
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolLAIPhases: ", UMilBilanCarbone);
+    error_message("EvolLAIPhases: ", UMilBilanCarbone);
   }
 }
 
@@ -841,7 +841,7 @@ void EvalDRdtPotcstr(double const &NumPhase, double const &RdtPot, double const 
       RdtPotDuJour = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalDRdtPotcstr | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
+    error_message("EvalDRdtPotcstr | NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
   }
 }
 
@@ -859,7 +859,7 @@ void EvolSomDegresJourcstr(double const &stRuSurf, double const &RuSurf, double 
   else
     SommeDegresJour = SommeDegresJour + DegresDuJour;
 //except
-//  AfficheMessageErreur('EvolSommeDegresJour | DegresDuJour: '+FloatToStr(DegresDuJour)+
+//  error_message('EvolSommeDegresJour | DegresDuJour: '+FloatToStr(DegresDuJour)+
 //                       ' Phase n°'+FloatToStr(NumPhase)+
 //                      ' SommeDegresJour: '+FloatToStr(SommeDegresJour)+
 //                       ' SommeDegresJour: '+FloatToStr(SommeDegresJour),UMilBilanCarbone);
@@ -892,7 +892,7 @@ void EvalSlaRapBiom2(double const &SlaBVP, double const &SlaRPR, double const &K
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalSlaRapBiom2", UMilBilanCarbone);
+    error_message("EvalSlaRapBiom2", UMilBilanCarbone);
   }
 }
 
@@ -910,7 +910,7 @@ void EvalAlloAeroFeuilLin(double const &NumPhase, double const &FeuilAeroBase, d
       RatioFeuilles = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalAlloAeroFeuilLin", UMilBilanCarbone);
+    error_message("EvalAlloAeroFeuilLin", UMilBilanCarbone);
   }
 }
 
@@ -938,7 +938,7 @@ void EvalReallocationSorgho(double const &RdtPotDuJour, double const &DeltaBioma
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalReallocationSorgho | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
+    error_message("EvalReallocationSorgho | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
                          " DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
                          " TxRealloc: " + FloatToStr(TxRealloc) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
@@ -965,7 +965,7 @@ void EvalReallocationSorgho2(double const &RdtPotDuJour, double const &DeltaBiom
     ReallocationMax = max(0., ReallocationMax - Reallocation); // on diminue les réserves
 
   } catch (...) {
-    AfficheMessageErreur("EvalReallocationSorgho2 | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
+    error_message("EvalReallocationSorgho2 | RdtPotDujour: " + FloatToStr(RdtPotDuJour) +
                          " DeltaBiomasseAerienne: " + FloatToStr(DeltaBiomasseAerienne) +
                          " TxRealloc: " + FloatToStr(TxRealloc) +
                          " NumPhase: " + FloatToStr(NumPhase), UMilBilanCarbone);
@@ -992,7 +992,7 @@ void EvalRdtPotSorgho(double const &KRdt, double const &BiomasseTotale, double c
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtPotSorgho", UMilBilanCarbone);
+    error_message("EvalRdtPotSorgho", UMilBilanCarbone);
   }
 }
 
@@ -1013,7 +1013,7 @@ void EvalRdtPotSorgho2(double const &BiomasseTotale, double const &NumPhase, dou
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtPotSorgho2", UMilBilanCarbone);
+    error_message("EvalRdtPotSorgho2", UMilBilanCarbone);
   }
 }
 

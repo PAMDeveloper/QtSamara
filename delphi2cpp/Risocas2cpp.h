@@ -38,7 +38,7 @@ void RS_EvalDegresJourVitMoy(double const &TMax, double const &TMin, double cons
         DegresDuJourCor = DegresDuJour * 1.0 / std::pow(max(cstr, 0.00000001), DEVcstr);
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
+        error_message("RS_EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
                              " TMin=" + FloatToStr(TMin) + "TBase=" + FloatToStr(TBase) + " TOpt1=" +
                              FloatToStr(TOpt1) +
                              " TOpt2=" + FloatToStr(TOpt2) + " TL=" + FloatToStr(TL) + " DegresDuJour="
@@ -88,7 +88,7 @@ void RS_EvalDegresJourVitMoy_V2(double const &NumPhase, double const &TMax, doub
         DegresDuJourCor = DegresDuJourCor * StressCold;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
+        error_message("RS_EvalDegresJourVitMoy | TMax=" + FloatToStr(TMax) +
                              " TMin=" + FloatToStr(TMin) + "TBase=" + FloatToStr(TBase) + " TOpt1=" +
                              FloatToStr(TOpt1) +
                              " TOpt2=" + FloatToStr(TOpt2) + " TL=" + FloatToStr(TLet) +
@@ -133,7 +133,7 @@ void RS_Phyllochron(double const &NumPhase, double const &DegresDuJourCor, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_Phyllochron", URisocas);
+        error_message("RS_Phyllochron", URisocas);
     }
 }
 
@@ -171,7 +171,7 @@ void RS_EvolHauteur_SDJ_cstr(double const &PhaseStemElongation, double const &Co
                 min(1.4, (1 + 0.1 * (CulmsPerHill - 1)));
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolHauteur_SDJ_cstr", URisocas);
+        error_message("RS_EvolHauteur_SDJ_cstr", URisocas);
     }
 }
 
@@ -184,7 +184,7 @@ void RS_EvalParIntercepte(double const &PAR, double const &LIRkdfcl,   double &P
         PARIntercepte = PAR * LIRkdfcl;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalParIntercepte | PAR: " + FloatToStr(PAR) +
+        error_message("RS_EvalParIntercepte | PAR: " + FloatToStr(PAR) +
                              " LIRkdfcl: " + FloatToStr(LIRkdfcl), URisocas);
     }
 }
@@ -203,7 +203,7 @@ void RS_EvalCstrAssim(double const &cstr, double const &ASScstr,   double &cstra
         cstrassim = std::pow(max(cstr, 0.00000001), ASScstr);
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalCstrAssim", URisocas);
+        error_message("RS_EvalCstrAssim", URisocas);
     }
 }
 
@@ -236,7 +236,7 @@ void RS_EvalRespMaint(double const &kRespMaintLeaf, double const &kRespMaintShea
                 RespMaintInternodePop + RespMaintPaniclePop;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRespMaint", URisocas);
+        error_message("RS_EvalRespMaint", URisocas);
     }
 }
 
@@ -268,7 +268,7 @@ void RS_EvolPlantTilNumTot(double const &NumPhase, double const &ChangePhase, do
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPlantTilNumTot", URisocas);
+        error_message("RS_EvolPlantTilNumTot", URisocas);
     }
 }
 
@@ -300,7 +300,7 @@ void RS_EvolPlantTilNumTot_V2(double const &NumPhase, double const &ChangePhase,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPlantTilNumTot_V2", URisocas);
+        error_message("RS_EvolPlantTilNumTot_V2", URisocas);
     }
 }
 
@@ -317,7 +317,7 @@ void RS_EvolPlantLeafNumTot(double const &NumPhase, double const &CulmsPerHill, 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPlantLeafNumTot", URisocas);
+        error_message("RS_EvolPlantLeafNumTot", URisocas);
     }
 }
 
@@ -333,7 +333,7 @@ void RS_EvolMobiliTillerDeath(double const &NumPhase, double const &SDJPhase4, d
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliTillerDeath", URisocas);
+        error_message("RS_EvolMobiliTillerDeath", URisocas);
     }
 }
 
@@ -351,7 +351,7 @@ void RS_EvolMobiliTillerDeath_V2(double const &NumPhase, double const &SDJPhase4
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliTillerDeath_V2", URisocas);
+        error_message("RS_EvolMobiliTillerDeath_V2", URisocas);
     }
 }
 
@@ -367,7 +367,7 @@ void RS_EvolMobiliLeafDeath(double const &NumPhase, double const &Ic, double con
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliLeafDeath", URisocas);
+        error_message("RS_EvolMobiliLeafDeath", URisocas);
     }
 }
 
@@ -390,7 +390,7 @@ void RS_EvalSupplyTot(double const &NumPhase, double const &PhaseStemElongation,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSupplyTot", URisocas);
+        error_message("RS_EvalSupplyTot", URisocas);
     }
 }
 
@@ -402,7 +402,7 @@ void RS_EvalRelPotLeafLength(double const &NumPhase, double const &HaunIndex, do
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRelPotLeafLength", URisocas);
+        error_message("RS_EvalRelPotLeafLength", URisocas);
     }
 }
 
@@ -425,7 +425,7 @@ void RS_EvalDemandStructLeaf(double const &NumPhase, double const &PlantLeafNumN
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructLeaf", URisocas);
+        error_message("RS_EvalDemandStructLeaf", URisocas);
     }
 }
 
@@ -448,7 +448,7 @@ void RS_EvalDemandStructLeaf_V2(double const &NumPhase, double const &PlantLeafN
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructLeaf_V2", URisocas);
+        error_message("RS_EvalDemandStructLeaf_V2", URisocas);
     }
 }
 
@@ -461,7 +461,7 @@ void RS_EvalDemandStructSheath(double const &NumPhase, double const &DemStructLe
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructSheath", URisocas);
+        error_message("RS_EvalDemandStructSheath", URisocas);
     }
 }
 
@@ -484,7 +484,7 @@ void RS_EvalDemandStructRoot(double const &NumPhase, double const &Density,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructRoot", URisocas);
+        error_message("RS_EvalDemandStructRoot", URisocas);
     }
 }
 
@@ -508,7 +508,7 @@ void RS_EvalDemandStructRoot_V2(double const &NumPhase, double const &Density,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructRoot_V2", URisocas);
+        error_message("RS_EvalDemandStructRoot_V2", URisocas);
     }
 }
 
@@ -522,7 +522,7 @@ void RS_EvalDemandStructInternode(double const &PhaseElongation, double const &A
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructInternode", URisocas);
+        error_message("RS_EvalDemandStructInternode", URisocas);
     }
 }
 
@@ -536,7 +536,7 @@ void RS_EvalDemandStructIN_V2(double const &PhaseElongation, double const &ApexH
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructIN_V2", URisocas);
+        error_message("RS_EvalDemandStructIN_V2", URisocas);
     }
 }
 
@@ -553,7 +553,7 @@ void RS_EvalDemandStructPanicle(double const &NumPhase, double const &CoeffPanic
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructPanicle", URisocas);
+        error_message("RS_EvalDemandStructPanicle", URisocas);
     }
 }
 
@@ -571,7 +571,7 @@ void RS_EvalDemandStructPanicle_V2(double const &NumPhase, double const &CoeffPa
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructPanicle_V2", URisocas);
+        error_message("RS_EvalDemandStructPanicle_V2", URisocas);
     }
 }
 
@@ -602,7 +602,7 @@ void RS_EvalDemandTotAndIcPreFlow(double const &NumPhase, double const &RespMain
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandTotAndIcPreFlow" + FloatToStr(DemStructLeafPop) + FloatToStr(DemStructSheathPop) + FloatToStr(DemStructRootPop) + FloatToStr(DemStructInternodePop) + FloatToStr(DemStructPaniclePop) + FloatToStr(NumPhase) + FloatToStr(NbDaysSinceGermination) + " " + FloatToStr(DemStructTotPop), URisocas);
+        error_message("RS_EvalDemandTotAndIcPreFlow" + FloatToStr(DemStructLeafPop) + FloatToStr(DemStructSheathPop) + FloatToStr(DemStructRootPop) + FloatToStr(DemStructInternodePop) + FloatToStr(DemStructPaniclePop) + FloatToStr(NumPhase) + FloatToStr(NbDaysSinceGermination) + " " + FloatToStr(DemStructTotPop), URisocas);
     }
 }
 
@@ -618,7 +618,7 @@ void RS_EvolGrowthStructLeafPop(double const &NumPhase, double const &Ic, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructLeafPop", URisocas);
+        error_message("RS_EvolGrowthStructLeafPop", URisocas);
     }
 }
 
@@ -635,7 +635,7 @@ void RS_EvolGrowthStructSheathPop(double const &NumPhase, double const &Ic, doub
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructSheathPop", URisocas);
+        error_message("RS_EvolGrowthStructSheathPop", URisocas);
     }
 }
 
@@ -651,7 +651,7 @@ void RS_EvolGrowthStructRootPop(double const &NumPhase, double const &Ic, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructRootPop", URisocas);
+        error_message("RS_EvolGrowthStructRootPop", URisocas);
     }
 }
 
@@ -668,7 +668,7 @@ void RS_EvolGrowthStructINPop(double const &NumPhase, double const &Ic, double c
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructInternodePop", URisocas);
+        error_message("RS_EvolGrowthStructInternodePop", URisocas);
     }
 }
 
@@ -685,7 +685,7 @@ void RS_EvolGrowthStructPanPop(double const &NumPhase, double const &Ic, double 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructPaniclePop", URisocas);
+        error_message("RS_EvolGrowthStructPaniclePop", URisocas);
     }
 }
 
@@ -722,7 +722,7 @@ void RS_AddResToGrowthStructPop(double const &NumPhase, double const &Ic, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_AddResToGrowthStructPop GrowthStrucTotPop : " + FloatToStr(GrowthStructTotPop), URisocas);
+        error_message("RS_AddResToGrowthStructPop GrowthStrucTotPop : " + FloatToStr(GrowthStructTotPop), URisocas);
     }
 }
 
@@ -752,7 +752,7 @@ void RS_EvolDemPanFilPopAndIcPFlow(double const &NumPhase, double const &DryMatS
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolDemPanFilPopAndIcPFlow", URisocas);
+        error_message("RS_EvolDemPanFilPopAndIcPFlow", URisocas);
     }
 }
 
@@ -788,7 +788,7 @@ void RS_EvolPanicleFilPop(double const &NumPhase, double const &Ic, double const
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPanicleFilPop", URisocas);
+        error_message("RS_EvolPanicleFilPop", URisocas);
     }
 }
 
@@ -808,7 +808,7 @@ void RS_EvolGrowthReserveInternode(double const &NumPhase, double const &PhaseSt
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthReserveInternode", URisocas);
+        error_message("RS_EvolGrowthReserveInternode", URisocas);
     }
 }
 
@@ -826,7 +826,7 @@ void RS_EvolGrowthTot(double const &NumPhase, double const &GrowthStructLeafPop,
                 PanicleFilPop;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthTot", URisocas);
+        error_message("RS_EvolGrowthTot", URisocas);
     }
 }
 
@@ -843,7 +843,7 @@ void RS_EvalLai(double const &NumPhase, double const &ChangePhase, double const 
         Lai = DryMatStructLeafPop * CorrectedSla;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalLai", URisocas);
+        error_message("RS_EvalLai", URisocas);
     }
 }
 
@@ -886,7 +886,7 @@ void RS_EvalClumpAndLightInter(double const &NumPhase, double const &KRolling, d
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalClumpingAndLightInter", URisocas);
+        error_message("RS_EvalClumpingAndLightInter", URisocas);
     }
 }
 
@@ -906,7 +906,7 @@ void RS_EvalClumpAndLightInter_V2(double const &NumPhase, double const &KRolling
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalClumpingAndLightInter_V2", URisocas);
+        error_message("RS_EvalClumpingAndLightInter_V2", URisocas);
     }
 }
 
@@ -927,7 +927,7 @@ void RS_EvalSlaMitch(double const &SlaMax, double const &SlaMin, double const &A
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSlaMitch", URisocas);
+        error_message("RS_EvalSlaMitch", URisocas);
     }
 }
 
@@ -974,7 +974,7 @@ void RS_EvalRUE(double const &NumPhase, double const &ChangePhase, double const 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRUE", URisocas);
+        error_message("RS_EvalRUE", URisocas);
     }
 }
 
@@ -987,7 +987,7 @@ void RS_EvolKcpKceBilhy(double const &LtrKdfcl, double const &KcMax, double cons
         KcTot = Kcp + Kce;
 
     } catch (...) {
-        AfficheMessageErreur("RS_BilhyEvolKcpLai", URisocas);
+        error_message("RS_BilhyEvolKcpLai", URisocas);
     }
 }
 
@@ -1044,7 +1044,7 @@ void RS_EvolEvapSurfRFE_RDE(double const &Kce, double const &EvapPot, double con
         KceReal = Kce * Kr;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolEvapSurfRFE_RDE", URisocas);
+        error_message("RS_EvolEvapSurfRFE_RDE", URisocas);
     }
 }
 
@@ -1122,7 +1122,7 @@ void RS_EvolEvapSurfRFE_RDE_V2(double const &NumPhase, double const &Kce, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolEvapSurfRFE_RDE_V2", URisocas);
+        error_message("RS_EvolEvapSurfRFE_RDE_V2", URisocas);
     }
 }
 
@@ -1203,7 +1203,7 @@ void RS_EvolConsRes_Flood_V2(double const &NumPhase, double const &RuRac, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolConsRes_Flood_V2", URisocas);
+        error_message("RS_EvolConsRes_Flood_V2", URisocas);
     }
 }
 
@@ -1233,7 +1233,7 @@ void RS_EvalConversion(double const &NumPhase, double const &EpsiB, double const
         Conversion = KAssim * EpsiB;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalConversion | NumPhase: " + FloatToStr(NumPhase) +
+        error_message("RS_EvalConversion | NumPhase: " + FloatToStr(NumPhase) +
                              " SommeDegresJourCor: " + FloatToStr(SommeDegresJourCor), URisocas);
     }
 }
@@ -1262,7 +1262,7 @@ void RS_EvolPSPMVMD(double const &NumPhase, double const &ChangePhase, double co
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPSPMVMD", URisocas);
+        error_message("RS_EvolPSPMVMD", URisocas);
     }
 }
 
@@ -1276,7 +1276,7 @@ void RS_EvolSomDegresJourCor(double const &DegresDuJourCor, double const &NumPha
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolSomDegresJourCor", URisocas);
+        error_message("RS_EvolSomDegresJourCor", URisocas);
     }
 }
 
@@ -1293,7 +1293,7 @@ void RS_EvalMaximumLai(double const &NumPhase, double const &ChangePhase, double
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalMaximumLai", URisocas);
+        error_message("RS_EvalMaximumLai", URisocas);
     }
 }
 
@@ -1317,7 +1317,7 @@ void RS_EvalVitesseRacinaire(double const &VRacLevee, double const &RootSpeedBVP
                                                                            , RootCstr);
 
     } catch (...) {
-        AfficheMessageErreur("EvalVitesseRacinaire | NumPhase: " +
+        error_message("EvalVitesseRacinaire | NumPhase: " +
                              FloatToStr(NumPhase), URisocas);
     }
 }
@@ -1370,7 +1370,7 @@ void RS_EvolDryMatTot(double const &NumPhase, double const &ChangePhase, double 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolDryMatTot", URisocas);
+        error_message("RS_EvolDryMatTot", URisocas);
     }
 }
 
@@ -1422,7 +1422,7 @@ void RS_EvolDryMatTot_V2(double const &NumPhase, double const &ChangePhase, doub
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolDryMatTot_V2", URisocas);
+        error_message("RS_EvolDryMatTot_V2", URisocas);
     }
 }
 
@@ -1549,7 +1549,7 @@ void RS_InitiationCulture(double const &SeuilTempLevee, double const &SeuilTempB
         SDJCorPhase4 = 0;
 
     } catch (...) {
-        AfficheMessageErreur("RS_InitiationCulture", URisocas);
+        error_message("RS_InitiationCulture", URisocas);
     }
 }
 
@@ -1569,7 +1569,7 @@ void RS_InitiationCulture_V2(double const &SeuilTempLevee, double const &SeuilTe
         VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) * 1.0 / 100;
 
     } catch (...) {
-        AfficheMessageErreur("RS_InitiationCulture_V2", URisocas);
+        error_message("RS_InitiationCulture_V2", URisocas);
     }
 }
 
@@ -1584,7 +1584,7 @@ void RS_EvolGrowthStructTot(double const &NumPhase, double const &GrowthStructLe
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructTot", URisocas);
+        error_message("RS_EvolGrowthStructTot", URisocas);
     }
 }
 
@@ -1597,7 +1597,7 @@ void RS_LeafRolling(double const &NumPhase, double const &RollingBase, double co
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_LeafRolling", URisocas);
+        error_message("RS_LeafRolling", URisocas);
     }
 }
 
@@ -1609,7 +1609,7 @@ void RS_EvalRootFront(double const &NumPhase, double const &RuRac, double const 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRootFront", URisocas);
+        error_message("RS_EvalRootFront", URisocas);
     }
 }
 
@@ -1621,7 +1621,7 @@ void RS_EvalSDJPhase4(double const &NumPhase, double const &DegreDuJourCor,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSDJPhase4", URisocas);
+        error_message("RS_EvalSDJPhase4", URisocas);
     }
 }
 
@@ -1635,7 +1635,7 @@ void RS_EvalDateGermination(double const &NumPhase, double const &ChangePhase,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDateGermination", URisocas);
+        error_message("RS_EvalDateGermination", URisocas);
     }
 }
 
@@ -1658,7 +1658,7 @@ void RS_EvalSterility(double const &NumPhase, double const &ChangePhase, double 
                                        (1 - SterilityDrought)));
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSterility", URisocas);
+        error_message("RS_EvalSterility", URisocas);
     }
 }
 
@@ -1719,7 +1719,7 @@ void RS_ResetVariablesToZero(double const &NumPhase, double const &ChangePhase,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_ResetVariablesToZero", URisocas);
+        error_message("RS_ResetVariablesToZero", URisocas);
     }
 }
 
@@ -1747,7 +1747,7 @@ void RS_InitParcelle(double const &StockIniSurf, double const &StockIniProf, dou
         LtrKdfcl = 1;
 
     } catch (...) {
-        AfficheMessageErreur("RS_InitParcelle", URisocas);
+        error_message("RS_InitParcelle", URisocas);
     }
 }
 
@@ -1788,7 +1788,7 @@ void RS_InitParcelle_V2(double const &StockIniSurf, double const &StockIniProf, 
         VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) * 1.0 / 100;
 
     } catch (...) {
-        AfficheMessageErreur("RS_InitParcelle_V2", URisocas);
+        error_message("RS_InitParcelle_V2", URisocas);
     }
 }
 
@@ -1808,7 +1808,7 @@ void RS_EvalAssimPot(double const &PARIntercepte, double const &Conversion, doub
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalAssimPot", URisocas);
+        error_message("RS_EvalAssimPot", URisocas);
     }
 }
 
@@ -1817,7 +1817,7 @@ void RS_EvalEvapPot(double const &Etp, double const &Kce,   double &EvapPot) {
         EvapPot = Kce * Etp;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalEvapPot", URisocas);
+        error_message("RS_EvalEvapPot", URisocas);
     }
 }
 
@@ -1862,7 +1862,7 @@ void RS_Transplanting_V2(double const &NumPhase, double const &DensityNursery, d
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_Transplanting_V2", URisocas);
+        error_message("RS_Transplanting_V2", URisocas);
     }
 }
 
@@ -1877,7 +1877,7 @@ void RS_TransplantingShock_V2(double const &CounterNursery, double const &CoeffT
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_TransplantingShock_V2", URisocas);
+        error_message("RS_TransplantingShock_V2", URisocas);
     }
 }
 
@@ -1959,7 +1959,7 @@ void RS_EvalRuiss_FloodDyna_V2(double const &NumPhase, double const &Rain, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRuiss_FloodDyna_V2", URisocas);
+        error_message("RS_EvalRuiss_FloodDyna_V2", URisocas);
     }
 }
 
@@ -2039,7 +2039,7 @@ void RS_EvolRempliResRFE_RDE_V2(double const &NumPhase, double const &RuSurf, do
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolRempliResRFE_RDE_V2", URisocas);
+        error_message("RS_EvolRempliResRFE_RDE_V2", URisocas);
     }
 }
 
@@ -2094,7 +2094,7 @@ void RS_AutomaticIrrigation_V2(double const &NumPhase, double const &IrrigAuto, 
         IrrigTotDay = CorrectedIrrigation + IrrigAutoDay;
 
     } catch (...) {
-        AfficheMessageErreur("RS_AutomaticIrrigation_V2", URisocas);
+        error_message("RS_AutomaticIrrigation_V2", URisocas);
     }
 }
 
@@ -2107,7 +2107,7 @@ void RS_FloodwaterDynamic_V2(double const &FloodwaterDepth, double const &PlantH
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_FloodwaterDynamic_V2", URisocas);
+        error_message("RS_FloodwaterDynamic_V2", URisocas);
     }
 }
 
@@ -2157,7 +2157,7 @@ void RS_EvolRurRFE_RDE_V2(double const &VitesseRacinaire, double const &Hum, dou
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolRurRFE_RDE_V2", URisocas);
+        error_message("RS_EvolRurRFE_RDE_V2", URisocas);
     }
 }
 
@@ -2168,7 +2168,7 @@ void RS_PlantSubmergence_V2(double const &PlantHeight, double const &FloodwaterD
                                                                             , 0.1)), 1.);
 
     } catch (...) {
-        AfficheMessageErreur("RS_PlantSubmergence_V2", URisocas);
+        error_message("RS_PlantSubmergence_V2", URisocas);
     }
 }
 
@@ -2188,7 +2188,7 @@ void RS_ExcessAssimilToRoot_V2(double const &NumPhase, double const &ExcessAssim
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_ExcessAssimilToRoot_V2", URisocas);
+        error_message("RS_ExcessAssimilToRoot_V2", URisocas);
     }
 }
 
@@ -2209,7 +2209,7 @@ void RS_EvolRempliMacropores_V2(double const &NumPhase, double const &EpaisseurS
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolRempliMacropores_V2", URisocas);
+        error_message("RS_EvolRempliMacropores_V2", URisocas);
     }
 }
 
@@ -2225,7 +2225,7 @@ void RS_EvalFTSW_V2(double const &RuRac, double const &StockTotal, double const 
         }
 
     } catch (...) {
-        AfficheMessageErreur("EvalFTSW | StRurMax: " + FloatToStr(RuRac) + " StRur: "
+        error_message("EvalFTSW | StRurMax: " + FloatToStr(RuRac) + " StRur: "
                              + FloatToStr(StockRac) + " ftsw: " + FloatToStr(FTSW), URisocas);
     }
 }
@@ -2240,7 +2240,7 @@ void RS_EvalDAF_V2(double const &NumPhase,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDAF_V2", URisocas);
+        error_message("RS_EvalDAF_V2", URisocas);
     }
 }
 
@@ -2252,7 +2252,7 @@ void RS_EvalSimStartGermin(double const &NumPhase, double const &ChangePhase, do
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimStartGermin", URisocas);
+        error_message("RS_EvalSimStartGermin", URisocas);
     }
 }
 
@@ -2264,7 +2264,7 @@ void RS_EvalSimEmergence(double const &NumPhase, double const &ChangePhase, doub
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimEmergence", URisocas);
+        error_message("RS_EvalSimEmergence", URisocas);
     }
 }
 
@@ -2276,7 +2276,7 @@ void RS_EvalSimStartPSP(double const &NumPhase, double const &ChangePhase, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimStartPSP", URisocas);
+        error_message("RS_EvalSimStartPSP", URisocas);
     }
 }
 
@@ -2288,7 +2288,7 @@ void RS_EvalSimPanIni(double const &NumPhase, double const &ChangePhase, double 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimPanIni", URisocas);
+        error_message("RS_EvalSimPanIni", URisocas);
     }
 }
 
@@ -2300,7 +2300,7 @@ void RS_EvalSimAnthesis50(double const &NumPhase, double const &ChangePhase, dou
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimAnthesis50", URisocas);
+        error_message("RS_EvalSimAnthesis50", URisocas);
     }
 }
 
@@ -2312,7 +2312,7 @@ void RS_EvalSimStartMatu2(double const &NumPhase, double const &ChangePhase, dou
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimStartMatu2", URisocas);
+        error_message("RS_EvalSimStartMatu2", URisocas);
     }
 }
 
@@ -2324,7 +2324,7 @@ void RS_EvalSimEndCycle(double const &NumPhase, double const &ChangePhase, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimEndCycle", URisocas);
+        error_message("RS_EvalSimEndCycle", URisocas);
     }
 }
 
@@ -2336,7 +2336,7 @@ void RS_EvalColdStress(double const &KCritStressCold1, double const &KCritStress
         StressCold = max(0.00001, StressCold);
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalColdStress", URisocas);
+        error_message("RS_EvalColdStress", URisocas);
     }
 }
 
@@ -2345,7 +2345,7 @@ void RS_EvalAssim(double const &AssimPot, double const &cstrassim,   double &Ass
         Assim = max(AssimPot * cstrassim, 0.);
 
     } catch (...) {
-        AfficheMessageErreur("EvalAssim | AssimPot: " + FloatToStr(AssimPot) +
+        error_message("EvalAssim | AssimPot: " + FloatToStr(AssimPot) +
                              " CstrAssim: " + FloatToStr(cstrassim) + " StressCold: ", URisocas);
     }
 }
@@ -2364,7 +2364,7 @@ void RS_Priority2GrowthPanStrctPop(double const &PriorityPan, double const &DemS
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_Priority2GrowthPanStrctPop", URisocas);
+        error_message("RS_Priority2GrowthPanStrctPop", URisocas);
     }
 }
 
@@ -2435,7 +2435,7 @@ void RS_KeyResults_V2(double const &NumPhase, double const &CulmsPerPlant, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_KeyResults_V2", URisocas);
+        error_message("RS_KeyResults_V2", URisocas);
     }
 }
 
@@ -2450,7 +2450,7 @@ void RS_EvolWaterLoggingUpland_V2(double const &PercolationMax, double const &Bu
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolWaterLoggingUpland_V2", URisocas);
+        error_message("RS_EvolWaterLoggingUpland_V2", URisocas);
     }
 }
 
@@ -2466,7 +2466,7 @@ void RS_EvalStressWaterLogging_V2(double const &StockMacropores, double const &V
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalStressWaterLogging_V2", URisocas);
+        error_message("RS_EvalStressWaterLogging_V2", URisocas);
     }
 }
 
@@ -2485,7 +2485,7 @@ void RS_EvalCstrPFactorFAO_V2(double const &PFactor, double const &FTSW, double 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalCstrPFactorFAO_V2", URisocas);
+        error_message("RS_EvalCstrPFactorFAO_V2", URisocas);
     }
 }
 
@@ -2525,7 +2525,7 @@ void RS_EvolHauteur_SDJ_cstr_V2_1(double const &PhaseStemElongation, double cons
       Min(1.4, (1 + 0.1 * (CulmsPerHill - 1)));*/
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolHauteur_SDJ_cstr_V2_1", URisocas);
+        error_message("RS_EvolHauteur_SDJ_cstr_V2_1", URisocas);
     }
 }
 
@@ -2546,7 +2546,7 @@ void RS_EvalParIntercepte_V2_1(double const &PAR, double const &Lai, double cons
         PARIntercepte = PAR * LIRkdfcl;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalParIntercepte_V2_1 | PAR: " + FloatToStr(PAR) +
+        error_message("RS_EvalParIntercepte_V2_1 | PAR: " + FloatToStr(PAR) +
                              " LIRkdfcl: " + FloatToStr(LIRkdfcl), URisocas);
     }
 }
@@ -2565,7 +2565,7 @@ void RS_EvolMobiliTillerDeath_V2_1(double const &NumPhase, double const &SDJPhas
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliTillerDeath_V2_1", URisocas);
+        error_message("RS_EvolMobiliTillerDeath_V2_1", URisocas);
     }
 }
 
@@ -2583,7 +2583,7 @@ void RS_EvolMobiliLeafDeath_V2_1(double const &NumPhase, double const &Ic, doubl
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliLeafDeath_V2_1", URisocas);
+        error_message("RS_EvolMobiliLeafDeath_V2_1", URisocas);
     }
 }
 
@@ -2623,7 +2623,7 @@ void RS_EvalSupplyTot_V2_1(double const &NumPhase, double const &PhaseStemElonga
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSupplyTot_V2_1", URisocas);
+        error_message("RS_EvalSupplyTot_V2_1", URisocas);
     }
 }
 
@@ -2652,7 +2652,7 @@ void RS_EvalDemandStructLeaf_V2_1(double const &NumPhase, double const &PlantLea
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructLeaf_V2_1", URisocas);
+        error_message("RS_EvalDemandStructLeaf_V2_1", URisocas);
     }
 }
 
@@ -2677,7 +2677,7 @@ void RS_EvalDemandStructIN_V2_1(double const &PhaseElongation, double const &Ape
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandStructIN_V2_1", URisocas);
+        error_message("RS_EvalDemandStructIN_V2_1", URisocas);
     }
 }
 
@@ -2734,7 +2734,7 @@ void RS_EvalDemandTotAndIcPreFlow_V2_1(double const &NumPhase, double const &Res
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalDemandTotAndIcPreFlow_V2_1", URisocas);
+        error_message("RS_EvalDemandTotAndIcPreFlow_V2_1", URisocas);
     }
 }
 
@@ -2760,7 +2760,7 @@ void RS_EvolGrowthStructLeafPop_V2_1(double const &NumPhase, double const &Ic, d
         /*GrowthView := GrowthStructLeafPop;*/
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructLeafPop_V2_1", URisocas);
+        error_message("RS_EvolGrowthStructLeafPop_V2_1", URisocas);
     }
 }
 
@@ -2784,7 +2784,7 @@ void RS_EvolGrowthStructINPop_V2_1(double const &NumPhase, double const &Ic, dou
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructInternodePop_V2_1", URisocas);
+        error_message("RS_EvolGrowthStructInternodePop_V2_1", URisocas);
     }
 }
 
@@ -2836,7 +2836,7 @@ void RS_AddResToGrowthStructPop_V2_1(double const &NumPhase, double const &Ic, d
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_AddResToGrowthStructPop_V2_1 GrowthStrucTotPop : " + FloatToStr(GrowthStructTotPop), URisocas);
+        error_message("RS_AddResToGrowthStructPop_V2_1 GrowthStrucTotPop : " + FloatToStr(GrowthStructTotPop), URisocas);
     }
 }
 
@@ -2868,7 +2868,7 @@ void RS_EvolDemPanFilPopAndIcPFlow_V2_1(double const &NumPhase, double const &Dr
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolDemPanFilPopAndIcPFlow_V2_1", URisocas);
+        error_message("RS_EvolDemPanFilPopAndIcPFlow_V2_1", URisocas);
     }
 }
 
@@ -2914,7 +2914,7 @@ void RS_EvolPanicleFilPop_V2_1(double const &NumPhase, double const &Ic, double 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPanicleFilPop_V2_1", URisocas);
+        error_message("RS_EvolPanicleFilPop_V2_1", URisocas);
     }
 }
 
@@ -2957,7 +2957,7 @@ void RS_EvolGrowthReserveInternode_V2_1(double const &NumPhase, double const &Ph
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthReserveInternode_V2_1", URisocas);
+        error_message("RS_EvolGrowthReserveInternode_V2_1", URisocas);
     }
 }
 
@@ -2983,7 +2983,7 @@ void RS_EvolGrowthTot_V2_1(double const &NumPhase, double const &GrowthStructLea
                 PanicleFilPop;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthTot_V2_1", URisocas);
+        error_message("RS_EvolGrowthTot_V2_1", URisocas);
     }
 }
 
@@ -3015,7 +3015,7 @@ void RS_EvalLai_V2_1(double const &NumPhase, double const &ChangePhase, double c
 
         Lai = DryMatStructLeafPop * CorrectedSla;
     } catch (...) {
-        AfficheMessageErreur("RS_EvalLai_V2_1", URisocas);
+        error_message("RS_EvalLai_V2_1", URisocas);
     }
 }
 
@@ -3036,7 +3036,7 @@ void RS_EvalClumpAndLightInter_V2_1(double const &NumPhase, double const &KRolli
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalClumpingAndLightInter_V2_1", URisocas);
+        error_message("RS_EvalClumpingAndLightInter_V2_1", URisocas);
     }
 }
 
@@ -3117,7 +3117,7 @@ void RS_EvalRUE_V2_1(double const &NumPhase, double const &ChangePhase, double c
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRUE_V2_1", URisocas);
+        error_message("RS_EvalRUE_V2_1", URisocas);
     }
 }
 
@@ -3221,7 +3221,7 @@ void RS_EvolEvapSurfRFE_RDE_V2_1(double const &NumPhase, double const &Kce, doub
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolEvapSurfRFE_RDE_V2_1", URisocas);
+        error_message("RS_EvolEvapSurfRFE_RDE_V2_1", URisocas);
     }
 }
 
@@ -3287,7 +3287,7 @@ void RS_EvolDryMatTot_V2_1(double const &NumPhase, double const &ChangePhase, do
         }
 
     } catch (...)
-    {AfficheMessageErreur("RS_EvolDryMatTot_V2_1 " /*+ E.message*/, URisocas);}
+    {error_message("RS_EvolDryMatTot_V2_1 " /*+ E.message*/, URisocas);}
 
 }
 
@@ -3319,7 +3319,7 @@ void RS_EvolGrowthStructTot_V2_1(double const &NumPhase, double const &SupplyTot
         /*/NEW LB*/
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolGrowthStructTot_V2_1", URisocas);
+        error_message("RS_EvolGrowthStructTot_V2_1", URisocas);
     }
 }
 
@@ -3336,7 +3336,7 @@ void RS_LeafRolling_V2_1(double const &NumPhase, double const &RollingBase, doub
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_LeafRolling_V2_1", URisocas);
+        error_message("RS_LeafRolling_V2_1", URisocas);
     }
 }
 
@@ -3408,7 +3408,7 @@ void RS_ResetVariablesToZero_V2_1(double const &NumPhase, double const &ChangePh
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_ResetVariablesToZero_V2_1", URisocas);
+        error_message("RS_ResetVariablesToZero_V2_1", URisocas);
     }
 }
 
@@ -3452,7 +3452,7 @@ void RS_EvalAssimPot_V2_1(double const &PARIntercepte, double const &PAR, double
         }
 
     } catch (/*Exception const &E*/ ...) {
-        AfficheMessageErreur("RS_EvalAssimPot_V2_1 ", URisocas);
+        error_message("RS_EvalAssimPot_V2_1 ", URisocas);
     }
 
 }
@@ -3564,7 +3564,7 @@ void RS_AutomaticIrrigation_V2_1(double const &NumPhase, double const &IrrigAuto
         IrrigTotDay = CorrectedIrrigation + IrrigAutoDay;
 
     } catch (...) {
-        AfficheMessageErreur("RS_AutomaticIrrigation_V2_1", URisocas);
+        error_message("RS_AutomaticIrrigation_V2_1", URisocas);
     }
 }
 
@@ -3646,7 +3646,7 @@ void RS_EvolRurRFE_RDE_V2_1(double const &VitesseRacinaire, double const &Hum, d
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolRurRFE_RDE_V2_1", URisocas);
+        error_message("RS_EvolRurRFE_RDE_V2_1", URisocas);
     }
 }
 
@@ -3661,7 +3661,7 @@ void RS_EvalSimEndCycle_V2_1(double const &NumPhase, double const &ChangePhase, 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSimEndCycle_V2_1 ", URisocas);
+        error_message("RS_EvalSimEndCycle_V2_1 ", URisocas);
     }
 }
 
@@ -3691,7 +3691,7 @@ void RS_Priority2GrowthPanStrctPop_V2_1(double const &PriorityPan, double const 
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_Priority2GrowthPanStrctPop_V2_1", URisocas);
+        error_message("RS_Priority2GrowthPanStrctPop_V2_1", URisocas);
     }
 }
 
@@ -3772,7 +3772,7 @@ void RS_KeyResults_V2_1(double const &NumPhase, double const &CulmsPerPlant, dou
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_KeyResults_V2_1", URisocas);
+        error_message("RS_KeyResults_V2_1", URisocas);
     }
 }
 
@@ -3809,7 +3809,7 @@ void RS_BindAgronomicResults(double const &NumPhase) {
 
 
     //  } catch (...) {
-    //    AfficheMessageErreur("RS_BindAgronomicResults", URisocas);
+    //    error_message("RS_BindAgronomicResults", URisocas);
     //  }
 }
 
@@ -3827,7 +3827,7 @@ void RS_LodgingIndex_V2_2(double const &NumPhase, double const &PlantHeight, dou
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_LodgingIndex_V2_2", URisocas);
+        error_message("RS_LodgingIndex_V2_2", URisocas);
     }
 }
 
@@ -3871,7 +3871,7 @@ void RS_Transplanting_V2_2(double const &NumPhase, double const &DensityNursery,
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_Transplanting_V2_2", URisocas);
+        error_message("RS_Transplanting_V2_2", URisocas);
     }
 }
 
@@ -3934,7 +3934,7 @@ void RS_ResetVariablesToZero_V2_2(double const &NumPhase, double const &ChangePh
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_ResetVariablesToZero_V2_2", URisocas);
+        error_message("RS_ResetVariablesToZero_V2_2", URisocas);
     }
 }
 
@@ -4013,7 +4013,7 @@ void RS_EvalRUE_V2_2(double const &NumPhase, double const &ChangePhase, double c
 
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRUE_V2_2", URisocas);
+        error_message("RS_EvalRUE_V2_2", URisocas);
     }
 }
 
@@ -4038,7 +4038,7 @@ void RS_EvolMobiliTillerDeath_V2_2(double const &NumPhase, double const &SDJPhas
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolMobiliTillerDeath_V2_2", URisocas);
+        error_message("RS_EvolMobiliTillerDeath_V2_2", URisocas);
     }
 }
 
@@ -4064,7 +4064,7 @@ void RS_EvalSlaMitch_V2_2(double const &SlaMax, double const &SlaMin, double con
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalSlaMitch_V2_2", URisocas);
+        error_message("RS_EvalSlaMitch_V2_2", URisocas);
     }
 }
 
@@ -4079,7 +4079,7 @@ void RS_EvalRelPotLeafLength_V2_2(double const &NumPhase, double const &HaunInde
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRelPotLeafLength_V2_2", URisocas);
+        error_message("RS_EvalRelPotLeafLength_V2_2", URisocas);
     }
 }
 
@@ -4114,7 +4114,7 @@ void RS_EvolPlantTilNumTot_V2_2(double const &NumPhase, double const &ChangePhas
         }
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvolPlantTilNumTot_V2_2", URisocas);
+        error_message("RS_EvolPlantTilNumTot_V2_2", URisocas);
     }
 }
 
@@ -4144,7 +4144,7 @@ void RS_EvalRespMaint_V2_2(double const &kRespMaintLeaf, double const &kRespMain
                 RespMaintInternodePop + RespMaintPaniclePop;
 
     } catch (...) {
-        AfficheMessageErreur("RS_EvalRespMaint_V2_2", URisocas);
+        error_message("RS_EvalRespMaint_V2_2", URisocas);
     }
 }
 

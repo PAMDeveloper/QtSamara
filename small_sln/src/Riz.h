@@ -18,7 +18,7 @@ void CalculeLaMoyenne(double const &LaValeur,   int const &LeCompteur,
     LaMoyenne = (LaMoyenne * (LeCompteur - 1) + LaValeur) * 1.0 / (LeCompteur);
 
   } catch (...) {
-    AfficheMessageErreur("CalculeLaMoyenne", URiz);
+    error_message("CalculeLaMoyenne", URiz);
   }
 }
 
@@ -134,7 +134,7 @@ void EvolPhenoStress(double const &SeuilPP, double const &SommeDegresJour, doubl
 
 
   } catch (...) {
-    AfficheMessageErreur("EvolPhenoStress | NumPhase: " + FloatToStr(NumPhase) +
+    error_message("EvolPhenoStress | NumPhase: " + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour) +
                          " SeuilTempPhaseSuivante: " + FloatToStr(SeuilTempPhaseSuivante), URiz);
   }
@@ -156,7 +156,7 @@ void EvalTMinCstr(double const &TMin, double const &Cstr, double const &NumPhase
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalTMinCstr", URiz);
+    error_message("EvalTMinCstr", URiz);
   }
 }
 
@@ -169,7 +169,7 @@ void EvalTMaxMoy(double const &TMax, double const &NumPhase, double const &NumSo
       TMaxMoy = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalTMaxMoy", URiz);
+    error_message("EvalTMaxMoy", URiz);
   }
 }
 
@@ -185,7 +185,7 @@ void EvalStressTMin(double const &TStress, double const &TSterilite, double cons
                    , TStress - TSterilite);
 
   } catch (...) {
-    AfficheMessageErreur("EvalStressTMin", URiz);
+    error_message("EvalStressTMin", URiz);
   }
 }
 
@@ -200,7 +200,7 @@ void EvalStressTMax(double const &TLim, double const &TMaxMoy, double const &Num
       StressTMax = std::min(1., (TLim - std::max(TMaxMoy, 35.)) * 1.0 / (TLim - 35));
 
   } catch (...) {
-    AfficheMessageErreur("EvalStressTMax", URiz);
+    error_message("EvalStressTMax", URiz);
   }
 }
 
@@ -215,7 +215,7 @@ void EvalStressCstr(double const &CstrMoy, double const &NumPhase, double const 
       StressCstr = std::min(1., CstrMoy * 1.0 / 0.5);
 
   } catch (...) {
-    AfficheMessageErreur("StressCstr", URiz);
+    error_message("StressCstr", URiz);
   }
 }
 
@@ -231,7 +231,7 @@ void EvalSterilite(double const &StressTMin, double const &StressTMax, double co
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalSterilite", URiz);
+    error_message("EvalSterilite", URiz);
   }
 }
 
@@ -252,7 +252,7 @@ void EvalRdtPotRiz(double const &KRdt, double const &BiomasseTotale, double cons
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalRdtPotRiz", UMilBilanCarbone);
+    error_message("EvalRdtPotRiz", UMilBilanCarbone);
   }
 }
 
@@ -274,7 +274,7 @@ void EvalAlloAeroFeuilSDJ(double const &NumPhase, double const &FeuilAeroBase, d
       RatioFeuilles = 0;
 
   } catch (...) {
-    AfficheMessageErreur("EvalAlloAeroFeuilSDJ", URiz);
+    error_message("EvalAlloAeroFeuilSDJ", URiz);
   }
 }
 ////////------------------------------------------------------------------------
@@ -285,7 +285,7 @@ void EvalPartitionTotAer(double const &KPenteAero, double const &BiomTot, double
     RatioAero = std::min(1., KBaseAero + 2 * KPenteAero * BiomTot);
 
   } catch (...) {
-    AfficheMessageErreur("EvalPartitionTotAer | KPenteAero: " +
+    error_message("EvalPartitionTotAer | KPenteAero: " +
                          FloatToStr(KPenteAero) +
                          " BiomTot: " + FloatToStr(BiomTot) +
                          " KBaseAero: " + FloatToStr(KBaseAero), URiz);
@@ -320,7 +320,7 @@ void EvolPartBiomasseAerienne(double const &DeltaBiomasseTotale, double const &R
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolBiomAero | DeltaBiomasseTotale: " +
+    error_message("EvolBiomAero | DeltaBiomasseTotale: " +
                          FloatToStr(DeltaBiomasseTotale) +
                          " RatioAero: " + FloatToStr(RatioAero) +
                          " BiomasseTotale: " + FloatToStr(BiomasseTotale) +
@@ -352,7 +352,7 @@ void EvolSlaSDJ(double const &DeltaDegresJour, double const &SDJBVP, double cons
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolSlaSDJ", URiz);
+    error_message("EvolSlaSDJ", URiz);
   }
 }
 
@@ -459,7 +459,7 @@ qui fonctionne en degres jours et declanche IP lorsque SumPP est inferieur à PP
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolPhenoStress | NumPhase: " + FloatToStr(NumPhase) +
+    error_message("EvolPhenoStress | NumPhase: " + FloatToStr(NumPhase) +
                          " SommeDegresJour: " + FloatToStr(SommeDegresJour) +
                          " SeuilTempPhaseSuivante: " + FloatToStr(SeuilTempPhaseSuivante), URiz);
   }
@@ -504,7 +504,7 @@ void RS_EvalTMinMoy(double const &TMin, double const &NumPhase, double const &Nu
     }
 
   } catch (...) {
-    AfficheMessageErreur("RS_EvalTMinMoy", URiz);
+    error_message("RS_EvalTMinMoy", URiz);
   }
 }
 
@@ -520,7 +520,7 @@ void RS_EvalFtswMoy(double const &Ftsw, double const &NumPhase, double const &Nu
     }
 
   } catch (...) {
-    AfficheMessageErreur("RS_EvalFtswMoy", URiz);
+    error_message("RS_EvalFtswMoy", URiz);
   }
 }
 
@@ -532,7 +532,7 @@ void RS_EvalTMaxMoy(double const &TMax, double const &NumPhase, double const &Nu
       TMaxMoy = 0;
 
   } catch (...) {
-    AfficheMessageErreur("RS_EvalTMaxMoy", URiz);
+    error_message("RS_EvalTMaxMoy", URiz);
   }
 }
 
@@ -552,7 +552,7 @@ void RS_EvalTMaxMoy_V2_3(double const &TMax, double const &TMin, double const &H
       TMaxMoy = 0;
 
   } catch (...) {
-    AfficheMessageErreur("RS_EvalTMaxMoy_V2_3", URiz);
+    error_message("RS_EvalTMaxMoy_V2_3", URiz);
   }
 }
 

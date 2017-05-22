@@ -43,7 +43,7 @@ void InitParcelle(double const &StockIniSurf, double const &StockIniProf, double
 
 
   } catch (...) {
-    AfficheMessageErreur("InitParcelle", UBhyTypeFAO);
+    error_message("InitParcelle", UBhyTypeFAO);
   }
 }
 /*------------------------------------------------*/
@@ -109,7 +109,7 @@ void EvolHauteur_SDJ(double const &Phase,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolHauteur_SDJ", UBhyTypeFAO);
+    error_message("EvolHauteur_SDJ", UBhyTypeFAO);
   }
 }
 
@@ -138,7 +138,7 @@ void EvolKcpFaoSDJ(double const &Phase,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolKcpFaoSDJ", UBhyTypeFAO);
+    error_message("EvolKcpFaoSDJ", UBhyTypeFAO);
   }
 }
 
@@ -193,7 +193,7 @@ void EvalKcePotFAO(double const &Mulch, double const &vent, double const &HRmin,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalKcePotFAO", UBhyTypeFAO);
+    error_message("EvalKcePotFAO", UBhyTypeFAO);
   }
 }
 
@@ -207,7 +207,7 @@ void EvalEvapPot(double const &Etp, double const &Kce,
     EvapPot = Kce * Etp;
 
   } catch (...) {
-    AfficheMessageErreur("EvalEvapPot", UBhyTypeFAO);
+    error_message("EvalEvapPot", UBhyTypeFAO);
   }
 }
 
@@ -270,7 +270,7 @@ void EvolEvapSurfRFE_RDE(double const &EvapPot, double const &CapaREvap, double 
     StRu = StRu - EvapRU;
 
   } catch (...) {
-    AfficheMessageErreur("EvalEvapPot", UBhyTypeFAO);
+    error_message("EvalEvapPot", UBhyTypeFAO);
   }
 }
 
@@ -286,7 +286,7 @@ void EvalKcFAO(double const &Kce, double const &Kr, double const &Kcp,
     Kctot = Kce * Kr + Kcp;
 
   } catch (...) {
-    AfficheMessageErreur("EvalKcFAO", UBhyTypeFAO);
+    error_message("EvalKcFAO", UBhyTypeFAO);
   }
 }
 
@@ -316,7 +316,7 @@ comparer des sols sans modifier le pFactor*/
     cstr = max(0., cstr);
 
   } catch (...) {
-    AfficheMessageErreur("EvalCstrPFactorFAO", UBhyTypeFAO);
+    error_message("EvalCstrPFactorFAO", UBhyTypeFAO);
   }
 }
 
@@ -340,7 +340,7 @@ void EvalETRETM(double const &Evap, double const &Tr, double const &Trpot,   dou
     ETR = Evap + Tr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalETRETM", UBhyTypeFAO);
+    error_message("EvalETRETM", UBhyTypeFAO);
   }
 }
 
@@ -387,7 +387,7 @@ void EvolConsoResRDE_RFE(double const &RuRac, double const &RuSurf, double const
 
 
   } catch (...) {
-    AfficheMessageErreur("EvolConsoResRDE_RFE", UBhyTypeFAO);
+    error_message("EvolConsoResRDE_RFE", UBhyTypeFAO);
   }
 }
 
@@ -409,7 +409,7 @@ void EvalRuiss_Seuil(double const &Rain, double const &seuilRuiss, double const 
       EauDispo = Rain + Irrig - Lr;
 
   } catch (...) {
-    AfficheMessageErreur("EvalRuiss_Seuil", UBhyTypeFAO);
+    error_message("EvalRuiss_Seuil", UBhyTypeFAO);
   }
 }
 
@@ -478,7 +478,7 @@ void EvolRempliResRFE_RDE(double const &RuSurf, double const &EauDispo, double c
     //StRur:= std::min(StRur , StRu);       JCC 27/04/05
 
   } catch (...) {
-    AfficheMessageErreur("EvolRempliResRFE_RDE", UBhyTypeFAO);
+    error_message("EvolRempliResRFE_RDE", UBhyTypeFAO);
   }
 }
 
@@ -517,7 +517,7 @@ void EvolRurRFE_RDE(double const &Vrac, double const &Hum, double const &Ru, dou
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolRurRFE_RDE", UBhyTypeFAO);
+    error_message("EvolRurRFE_RDE", UBhyTypeFAO);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -539,7 +539,7 @@ void EvolRurPalmier(double const &StRuMax, double const &StRu,
     StRur = std::min(StRu, StRurMax);
 
   } catch (...) {
-    AfficheMessageErreur("EvolRurPalmier", UBhyTypeFAO);
+    error_message("EvolRurPalmier", UBhyTypeFAO);
   }
 }
 //"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -551,7 +551,7 @@ void EvalFESW_RFE_RDE(double const &CapaREvap, double const &CapaRFE, double con
     FESW = (ValRSurf + ValRFE) * 1.0 / (CapaREvap + CapaRFE + CapaRDE);
 
   } catch (...) {
-    AfficheMessageErreur("EvalFESW_RFE_RDE", UBhyTypeFAO);
+    error_message("EvalFESW_RFE_RDE", UBhyTypeFAO);
   }
 }
 //##############################################################################
@@ -608,7 +608,7 @@ void EvolEvapSurfFESW(double const &EvapPot, double const &FESW, double const &C
     StRu = StRu - EvapRU;
 
   } catch (...) {
-    AfficheMessageErreur("EvalEvapPot", UBhyTypeFAO);
+    error_message("EvalEvapPot", UBhyTypeFAO);
   }
 }
 /////////////////////////////////////////////////////////////////////////////////
@@ -644,7 +644,7 @@ void EvolRurRFE_RDEcstr(double const &Vrac, double const &Hum, double const &Ru,
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvolRurRFE_RDEcstr", UBhyTypeFAO);
+    error_message("EvolRurRFE_RDEcstr", UBhyTypeFAO);
   }
 }
 /*---------------------------------------------------------*/
@@ -693,7 +693,7 @@ void EvalKcePotLTRRn(double const &Mulch, double const &vent, double const &HRmi
     }
 
   } catch (...) {
-    AfficheMessageErreur("EvalKcePotLTRRn", UBhyTypeFAO);
+    error_message("EvalKcePotLTRRn", UBhyTypeFAO);
   }
 }
 
@@ -723,7 +723,7 @@ try
 /*else
   Kcp:= std::min(KcMax,power(Lai/std::max(0.01,MaxLai),2));   */
 /*except
-  AfficheMessageErreur('EvolKcpLai2',UBhyTypeFAO);
+  error_message('EvolKcpLai2',UBhyTypeFAO);
 end;
 end;  */
 /////////////////////////////////////////////////////////////////////////////////
@@ -751,7 +751,7 @@ void EvolKcpLai2(double const &NumPhase,
       Kcp:= std::min(KcMax,power(Lai/std::max(0.01,MaxLai),2));   */
 
   } catch (...) {
-    AfficheMessageErreur("EvolKcpLai2", UBhyTypeFAO);
+    error_message("EvolKcpLai2", UBhyTypeFAO);
   }
 }
 

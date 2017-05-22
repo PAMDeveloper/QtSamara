@@ -1,7 +1,6 @@
 #include "samara.h"
 #include "variables.h"
 
-#include <ModelParameters.hpp>
 #include <QDebug>
 #include <QFile>
 
@@ -17,9 +16,8 @@
 #include "Riz.h"
 #include "sorghum.h"
 
-static double step;
 
-void run_samara_2_1(double start, double end, const samara::ModelParameters& parameters) {
+void run_samara_2_1(const samara::ModelParameters& parameters) {
     init_parameters(parameters);
     //Corrections
     AttenMitch = 0.9955;
@@ -60,27 +58,25 @@ void run_samara_2_1(double start, double end, const samara::ModelParameters& par
 
     bool crop = false;
     for (DateEnCours; DateEnCours < DateFinSimul; DateEnCours++) {
-        step = DateEnCours;
-        set_meteo_vars(parameters);
-
+        TMax = parameters.get(DateEnCours).TMax;
+        set_meteo_vars(parameters, DateEnCours);
         NbJAS = DateEnCours - DateSemis;
-        /****/
 
         //crop entity
         if(NbJAS == 0) {
+            init_culture();
+            risocas::RS_Transplanting_V2(NumPhase, DensityNursery, DensityField, DurationNursery, PlantsPerHill, Transplanting, NurseryStatus, ChangeNurseryStatus,
+                                                 CounterNursery, Density, DryMatStructLeafPop, DryMatStructSheathPop, DryMatStructRootPop, DryMatStructInternodePop,
+                                                 DryMatStructPaniclePop, DryMatResInternodePop);
             crop = true;
-            if(crop)risocas::RS_Transplanting_V2(NumPhase, DensityNursery, DensityField, DurationNursery, PlantsPerHill, Transplanting, NurseryStatus, ChangeNurseryStatus,
-                                         CounterNursery, Density, DryMatStructLeafPop, DryMatStructSheathPop, DryMatStructRootPop, DryMatStructInternodePop,
-                                         DryMatStructPaniclePop, DryMatResInternodePop);
         }
-
-        eval_Par();
-        Meteo::EToFao(ETP, Altitude, RgMax, RgCalc, TMin, TMax, HMin, HMax, HMoyCalc, TMoyCalc, Vt, ETo, TMoyPrec, VDPCalc);
+        eval_Par(DateEnCours);
+        EToFao();
 
         if(crop) Riz::EvolPhenoPSPStress(SumPP, PPSens, SumDegreDayCor, SDJLevee, SDJBVP, SDJRPR, SDJMatu1, SDJMatu2, StockSurface, TxRuSurfGermi, RuSurf,
                                     DateEnCours, DateSemis, StockTotal, NumPhase, SumDDPhasePrec, SeuilTemp, ChangePhase, SeuilTempSsPhase, ChangeSsPhase, NumSsPhase);
 
-        /** PHASES **/
+        /** Phyllo **/
         risocas::RS_EvalSimAnthesis50(NumPhase, ChangePhase, NbJAS, SimAnthesis50);
         risocas::RS_EvalDateGermination(NumPhase, ChangePhase, NbDaysSinceGermination);
         risocas::RS_EvalColdStress(KCritStressCold1, KCritStressCold2, TMin, StressCold);
@@ -89,12 +85,13 @@ void run_samara_2_1(double start, double end, const samara::ModelParameters& par
         risocas::RS_EvalSimStartGermin(NumPhase, ChangePhase, NbJAS, SimStartGermin);
         risocas::RS_EvalSimStartMatu2(NumPhase, ChangePhase, NbJAS, SimStartMatu2);
         risocas::RS_EvalSimStartPSP(NumPhase, ChangePhase, NbJAS, SimStartPSP);
-
-        /** DD **/
         /*if (crop) */risocas::RS_EvalDegresJourVitMoy_V2(NumPhase, TMax, TMin, TBase, TOpt1, TOpt2, TLim, Cstr, DEVcstr, StressCold, DegresDuJour, DegresDuJourCor);
         risocas::RS_EvalSDJPhase4(NumPhase, DegresDuJourCor, SDJCorPhase4);
         risocas::RS_EvalDAF_V2(NumPhase, DAF);
         risocas::RS_Phyllochron(NumPhase, DegresDuJourCor, Phyllo, RelPhylloPhaseStemElong, PhaseStemElongation, HaunGain, HaunIndex);
+
+
+        /** DD **/
         risocas::RS_EvolHauteur_SDJ_cstr_V2_1(PhaseStemElongation, CoeffInternodeNum, HaunGain, Cstr, InternodeLengthMax, RelPotLeafLength, LeafLengthMax,
                                               CulmsPerHill, IcMean, Kdf, Ic, WtRatioLeafSheath, StressCold, CstrMean, ApexHeightGain, ApexHeight, PlantHeight, PlantWidth);
         risocas::RS_EvolKcpKceBilhy(LTRkdfcl, KcMax, Mulch, Kcp, Kce, KcTot);
@@ -254,7 +251,7 @@ void run_samara_2_1(double start, double end, const samara::ModelParameters& par
 
 #ifdef WITH_TRACE
         QString Jour = QString::fromStdString(artis::utils::DateTime::toJulianDayFmt(DateEnCours, artis::utils::DATE_FORMAT_YMD));
-        stream << Jour << "\t" << A_AssimSurplus << "\t" << A_DemStructLeaf << "\t" << A_DemStructTot << "\t" << A_GrowthStructLeaf << "\t" << A_GrowthStructTot << "\t" << A_IncreaseResInternodePop << "\t" << A_ResInternodeMobiliDay << "\t" << ApexHeight << "\t" << ApexHeightGain << "\t" << Assim << "\t" << AssimNotUsed << "\t" << AssimNotUsedCum << "\t" << AssimPot << "\t" << AssimSurplus << "\t" << CapaRDE << "\t" << CapaREvap << "\t" << CapaRFE << "\t" << ChangeNurseryStatus << "\t" << ChangePhase << "\t" << ChangeSsPhase << "\t" << CoeffCO2Assim << "\t" << CoeffCO2Tr << "\t" << CoeffStressLogging << "\t" << Conversion << "\t" << ConversionEff << "\t" << CounterNursery << "\t" << Cstr << "\t" << CstrAssim << "\t" << CstrCum << "\t" << CstrMean << "\t" << CstrPhase2 << "\t" << CstrPhase3 << "\t" << CstrPhase4 << "\t" << CstrPhase5 << "\t" << CstrPhase6 << "\t" << CulmsPerHill << "\t" << CulmsPerHillFin << "\t" << CulmsPerHillMax << "\t" << CulmsPerPlant << "\t" << CulmsPerPlantFin << "\t" << CulmsPerPlantMax << "\t" << CulmsPop << "\t" << CumCarbonUsedPop << "\t" << CumCstrPhase2 << "\t" << CumCstrPhase3 << "\t" << CumCstrPhase4 << "\t" << CumCstrPhase5 << "\t" << CumCstrPhase6 << "\t" << CumLr << "\t" << CumEt << "\t" << CumFTSWPhase2 << "\t" << CumFTSWPhase3 << "\t" << CumFTSWPhase4 << "\t" << CumFTSWPhase5 << "\t" << CumFTSWPhase6 << "\t" << CumGrowthPop << "\t" << CumIcPhase2 << "\t" << CumIcPhase3 << "\t" << CumIcPhase4 << "\t" << CumIcPhase5 << "\t" << CumIcPhase6 << "\t" << CumIrrig << "\t" << CumIrrigFin << "\t" << CumDr << "\t" << CumPAR << "\t" << CumSupplyTot << "\t" << CumTr << "\t" << CumWReceived << "\t" << CumWUse << "\t" << CumWUseFin << "\t" << DAF << "\t" << DayLength << "\t" << DeadLeafdrywtPop << "\t" << Decli << "\t" << DegresDuJour << "\t" << DegresDuJourCor << "\t" << DemLeafAreaPlant << "\t" << DemPanicleFillPop << "\t" << DemResInternodePop << "\t" << DemStructInternodePlant << "\t" << DemStructInternodePop << "\t" << DemStructLeafPlant << "\t" << DemStructLeafPop << "\t" << DemStructPaniclePlant << "\t" << DemStructPaniclePop << "\t" << DemStructRootPlant << "\t" << DemStructRootPop << "\t" << DemStructSheathPop << "\t" << DemStructTotPop << "\t" << Density << "\t" << Dr << "\t" << DryMatAboveGroundPop << "\t" << DryMatAboveGroundPopFin << "\t" << DryMatAboveGroundTotPop << "\t" << DryMatPanicleTotPop << "\t" << DryMatResInternodePop << "\t" << DryMatResInternodePopOld << "\t" << DryMatStructStemPop << "\t" << DryMatStructInternodePop << "\t" << DryMatStructLeafPop << "\t" << DryMatStructPaniclePop << "\t" << DryMatStructRootPop << "\t" << DryMatStructSheathPop << "\t" << DryMatStructTotPop << "\t" << DryMatTotPop << "\t" << DryMatTotPopFin << "\t" << DryMatVegeTotPop << "\t" << DurGermFlow << "\t" << DurGermMat << "\t" << DurPhase1 << "\t" << DurPhase2 << "\t" << DurPhase3 << "\t" << DurPhase4 << "\t" << DurPhase5 << "\t" << DurPhase6 << "\t" << ETM << "\t" << ETR << "\t" << ETo << "\t" << EauDispo << "\t" << Evap << "\t" << EvapPot << "\t" << FTSW << "\t" << FertSpikeNumPop << "\t" << FloodwaterDepth << "\t" << FloodwaterGain << "\t" << FractionPlantHeightSubmer << "\t" << FractionRootsLogged << "\t" << FtswMoy << "\t" << FtswPhase2 << "\t" << FtswPhase3 << "\t" << FtswPhase4 << "\t" << FtswPhase5 << "\t" << FtswPhase6 << "\t" << GainRootSystSoilSurfPop << "\t" << GainRootSystVolPop << "\t" << GrainFillingStatus << "\t" << GrainFillingStatusFin << "\t" << GrainYieldPanicle << "\t" << GrainYieldPop << "\t" << GrainYieldPopFin << "\t" << GrowthDryMatPop << "\t" << GrowthPop << "\t" << GrowthResInternodePop << "\t" << GrowthStructDeficit << "\t" << GrowthStructInternodePop << "\t" << GrowthStructLeafPop << "\t" << GrowthStructPaniclePop << "\t" << GrowthStructRootPop << "\t" << GrowthStructSheathPop << "\t" << GrowthStructTotPop << "\t" << HMoyCalc << "\t" << HarvestIndex << "\t" << HaunGain << "\t" << HaunIndex << "\t" << Hum << "\t" << Ic << "\t" << IcCum << "\t" << IcMean << "\t" << IcPhase2 << "\t" << IcPhase3 << "\t" << IcPhase4 << "\t" << IcPhase5 << "\t" << IcPhase6 << "\t" << IncreaseResInternodePop << "\t" << InternodeResStatus << "\t" << IrrigAutoDay << "\t" << IrrigTotDay << "\t" << Irrigation << "\t" << KRolling << "\t" << KcTot << "\t" << Kce << "\t" << KceReal << "\t" << Kcl << "\t" << Kcp << "\t" << Kr << "\t" << LIRkdf << "\t" << LIRkdfcl << "\t" << LTRkdf << "\t" << LTRkdfcl << "\t" << Lai << "\t" << LaiDead << "\t" << LaiFin << "\t" << LastLeafLength << "\t" << LastLeafLengthPot << "\t" << LatRad << "\t" << LeafDeathPop << "\t" << Lr << "\t" << MaxLai << "\t" << MobiliLeafDeath << "\t" << NbDaysSinceGermination << "\t" << NbJAS << "\t" << NumPhase << "\t" << NumSsPhase << "\t" << NurseryStatus << "\t" << PARIntercepte << "\t" << PanStructMass << "\t" << PanicleFilDeficit << "\t" << PanicleFilPop << "\t" << PanicleNumPlant << "\t" << PanicleNumPop << "\t" << PanicleSinkPop << "\t" << Par << "\t" << PhaseStemElongation << "\t" << PlantHeight << "\t" << PlantLeafNumNew << "\t" << PlantLeafNumTot << "\t" << PlantWidth << "\t" << ProfRu << "\t" << RUE << "\t" << RayExtra << "\t" << RelPotLeafLength << "\t" << ResCapacityInternodePop << "\t" << ResInternodeMobiliDay << "\t" << ResInternodeMobiliDayPot << "\t" << ResUtil << "\t" << ReservePopFin << "\t" << RespMaintDebt << "\t" << RespMaintTot << "\t" << RgCalc << "\t" << RgMax << "\t" << RootFront << "\t" << RootFrontOld << "\t" << RootMassPerVol << "\t" << RootShootRatio << "\t" << RootSystSoilSurfPop << "\t" << RootSystSoilSurfPopOld << "\t" << RootSystVolPop << "\t" << RootSystVolPopOld << "\t" << RuRac << "\t" << RuSurf << "\t" << SDJCorPhase4 << "\t" << SeuilCstrMortality << "\t" << SeuilTemp << "\t" << SeuilTempSsPhase << "\t" << SimAnthesis50 << "\t" << SimEmergence << "\t" << SimEndCycle << "\t" << SimPanIni << "\t" << SimStartGermin << "\t" << SimStartMatu2 << "\t" << SimStartPSP << "\t" << Sla << "\t" << SlaMitch << "\t" << SlaNew << "\t" << SommeDegresJourMax << "\t" << SpikeNumPanicle << "\t" << SpikeNumPop << "\t" << StRuMax << "\t" << SterilityCold << "\t" << SterilityDrought << "\t" << SterilityHeat << "\t" << SterilityTot << "\t" << SterilityTotFin << "\t" << StockMacropores << "\t" << StockRac << "\t" << StockSurface << "\t" << StockTotal << "\t" << StressCold << "\t" << SumDDPhasePrec << "\t" << SumDegreDayCor << "\t" << SumDegresDay << "\t" << SumPP << "\t" << SunDistance << "\t" << SunPosi << "\t" << SupplyTot << "\t" << TMoyCalc << "\t" << TMoyPrec << "\t" << TempLai << "\t" << TillerDeathPop << "\t" << TmaxMoy << "\t" << TminMoy << "\t" << Tr << "\t" << TrEff << "\t" << TrEffInst << "\t" << TrPot << "\t" << VDPCalc << "\t" << ValRDE << "\t" << ValRFE << "\t" << ValRSurf << "\t" << VitesseRacinaire << "\t" << VitesseRacinaireDay << "\t" << VolMacropores << "\t" << VolRelMacropores << "\t" << WueEt << "\t" << WueTot << endl;
+        stream << Jour << "\t" << A_AssimSurplus << "\t" << A_DemStructLeaf << "\t" << A_DemStructTot << "\t" << A_GrowthStructLeaf << "\t" << A_GrowthStructTot << "\t" << A_IncreaseResInternodePop << "\t" << A_ResInternodeMobiliDay << "\t" << ApexHeight << "\t" << ApexHeightGain << "\t" << Assim << "\t" << AssimNotUsed << "\t" << AssimNotUsedCum << "\t" << AssimPot << "\t" << AssimSurplus << "\t" << CapaRDE << "\t" << CapaREvap << "\t" << CapaRFE << "\t" << ChangeNurseryStatus << "\t" << ChangePhase << "\t" << ChangeSsPhase << "\t" << CoeffCO2Assim << "\t" << CoeffCO2Tr << "\t" << CoeffStressLogging << "\t" << Conversion << "\t" << ConversionEff << "\t" << CounterNursery << "\t" << Cstr << "\t" << CstrAssim << "\t" << CstrCum << "\t" << CstrMean << "\t" << CstrPhase2 << "\t" << CstrPhase3 << "\t" << CstrPhase4 << "\t" << CstrPhase5 << "\t" << CstrPhase6 << "\t" << CulmsPerHill << "\t" << CulmsPerHillFin << "\t" << CulmsPerHillMax << "\t" << CulmsPerPlant << "\t" << CulmsPerPlantFin << "\t" << CulmsPerPlantMax << "\t" << CulmsPop << "\t" << CumCarbonUsedPop << "\t" << CumCstrPhase2 << "\t" << CumCstrPhase3 << "\t" << CumCstrPhase4 << "\t" << CumCstrPhase5 << "\t" << CumCstrPhase6 << "\t" << CumLr << "\t" << CumEt << "\t" << CumFTSWPhase2 << "\t" << CumFTSWPhase3 << "\t" << CumFTSWPhase4 << "\t" << CumFTSWPhase5 << "\t" << CumFTSWPhase6 << "\t" << CumGrowthPop << "\t" << CumIcPhase2 << "\t" << CumIcPhase3 << "\t" << CumIcPhase4 << "\t" << CumIcPhase5 << "\t" << CumIcPhase6 << "\t" << CumIrrig << "\t" << CumIrrigFin << "\t" << CumDr << "\t" << CumPAR << "\t" << CumSupplyTot << "\t" << CumTr << "\t" << CumWReceived << "\t" << CumWUse << "\t" << CumWUseFin << "\t" << DAF << "\t" << DayLength << "\t" << DeadLeafdrywtPop << "\t" << Decli << "\t" << DegresDuJour << "\t" << DegresDuJourCor << "\t" << DemLeafAreaPlant << "\t" << DemPanicleFillPop << "\t" << DemResInternodePop << "\t" << DemStructInternodePlant << "\t" << DemStructInternodePop << "\t" << DemStructLeafPlant << "\t" << DemStructLeafPop << "\t" << DemStructPaniclePlant << "\t" << DemStructPaniclePop << "\t" << DemStructRootPlant << "\t" << DemStructRootPop << "\t" << DemStructSheathPop << "\t" << DemStructTotPop << "\t" << Density << "\t" << Dr << "\t" << DryMatAboveGroundPop << "\t" << DryMatAboveGroundPopFin << "\t" << DryMatAboveGroundTotPop << "\t" << DryMatPanicleTotPop << "\t" << DryMatResInternodePop << "\t" << DryMatResInternodePopOld << "\t" << DryMatStructStemPop << "\t" << DryMatStructInternodePop << "\t" << DryMatStructLeafPop << "\t" << DryMatStructPaniclePop << "\t" << DryMatStructRootPop << "\t" << DryMatStructSheathPop << "\t" << DryMatStructTotPop << "\t" << DryMatTotPop << "\t" << DryMatTotPopFin << "\t" << DryMatVegeTotPop << "\t" << DurGermFlow << "\t" << DurGermMat << "\t" << DurPhase1 << "\t" << DurPhase2 << "\t" << DurPhase3 << "\t" << DurPhase4 << "\t" << DurPhase5 << "\t" << DurPhase6 << "\t" << ETM << "\t" << ETR << "\t" << ETo << "\t" << EauDispo << "\t" << Evap << "\t" << EvapPot << "\t" << FTSW << "\t" << FertSpikeNumPop << "\t" << FloodwaterDepth << "\t" << FloodwaterGain << "\t" << FractionPlantHeightSubmer << "\t" << FractionRootsLogged << "\t" << FtswMoy << "\t" << FtswPhase2 << "\t" << FtswPhase3 << "\t" << FtswPhase4 << "\t" << FtswPhase5 << "\t" << FtswPhase6 << "\t" << GainRootSystSoilSurfPop << "\t" << GainRootSystVolPop << "\t" << GrainFillingStatus << "\t" << GrainFillingStatusFin << "\t" << GrainYieldPanicle << "\t" << GrainYieldPop << "\t" << GrainYieldPopFin << "\t" << GrowthDryMatPop << "\t" << GrowthPop << "\t" << GrowthResInternodePop << "\t" << GrowthStructDeficit << "\t" << GrowthStructInternodePop << "\t" << GrowthStructLeafPop << "\t" << GrowthStructPaniclePop << "\t" << GrowthStructRootPop << "\t" << GrowthStructSheathPop << "\t" << GrowthStructTotPop << "\t" << HMoyCalc << "\t" << HarvestIndex << "\t" << HaunGain << "\t" << HaunIndex << "\t" << Hum << "\t" << Ic << "\t" << IcCum << "\t" << IcMean << "\t" << IcPhase2 << "\t" << IcPhase3 << "\t" << IcPhase4 << "\t" << IcPhase5 << "\t" << IcPhase6 << "\t" << IncreaseResInternodePop << "\t" << InternodeResStatus << "\t" << IrrigAutoDay << "\t" << IrrigTotDay << "\t" << Irrigation << "\t" << KRolling << "\t" << KcTot << "\t" << Kce << "\t" << KceReal << "\t" << Kcl << "\t" << Kcp << "\t" << Kr << "\t" << LIRkdf << "\t" << LIRkdfcl << "\t" << LTRkdf << "\t" << LTRkdfcl << "\t" << Lai << "\t" << LaiDead << "\t" << LaiFin << "\t" << LastLeafLength << "\t" << LastLeafLengthPot << "\t" << LatRad << "\t" << LeafDeathPop << "\t" << Lr << "\t" << MaxLai << "\t" << MobiliLeafDeath << "\t" << NbDaysSinceGermination << "\t" << NbJAS << "\t" << NumPhase << "\t" << NumSsPhase << "\t" << NurseryStatus << "\t" << PARIntercepte << "\t" << PanStructMass << "\t" << PanicleFilDeficit << "\t" << PanicleFilPop << "\t" << PanicleNumPlant << "\t" << PanicleNumPop << "\t" << PanicleSinkPop << "\t" << Par << "\t" << PhaseStemElongation << "\t" << PlantHeight << "\t" << PlantLeafNumNew << "\t" << PlantLeafNumTot << "\t" << PlantWidth << "\t" << ProfRu << "\t" << RUE << "\t" << RayExtra << "\t" << RelPotLeafLength << "\t" << ResCapacityInternodePop << "\t" << ResInternodeMobiliDay << "\t" << ResInternodeMobiliDayPot << "\t" << ResUtil << "\t" << ReservePopFin << "\t" << RespMaintDebt << "\t" << RespMaintTot << "\t" << RgCalc << "\t" << RgMax << "\t" << RootFront << "\t" << RootFrontOld << "\t" << RootMassPerVol << "\t" << RootShootRatio << "\t" << RootSystSoilSurfPop << "\t" << RootSystSoilSurfPopOld << "\t" << RootSystVolPop << "\t" << RootSystVolPopOld << "\t" << RuRac << "\t" << RuSurf << "\t" << SDJCorPhase4 << "\t" << SeuilCstrMortality << "\t" << SeuilTemp << "\t" << SeuilTempSsPhase << "\t" << SimAnthesis50 << "\t" << SimEmergence << "\t" << SimEndCycle << "\t" << SimPanIni << "\t" << SimStartGermin << "\t" << SimStartMatu2 << "\t" << SimStartPSP << "\t" << Sla << "\t" << SlaMitch << "\t" << SlaNew << "\t" << SommeDegresJourMax << "\t" << SpikeNumPanicle << "\t" << SpikeNumPop << "\t" << StRuMax << "\t" << SterilityCold << "\t" << SterilityDrought << "\t" << SterilityHeat << "\t" << SterilityTot << "\t" << SterilityTotFin << "\t" << StockMacropores << "\t" << StockRac << "\t" << StockSurface << "\t" << StockTotal << "\t" << StressCold << "\t" << SumDDPhasePrec << "\t" << SumDegreDayCor << "\t" << SumDegresDay << "\t" << SumPP << "\t" << SunDistance << "\t" << SunPosi << "\t" << SupplyTot << "\t" << TMoyCalc << "\t" << TMoyPrec << "\t" << TempLai << "\t" << TillerDeathPop << "\t" << TmaxMoy << "\t" << TminMoy << "\t" << Tr << "\t" << TrEff << "\t" << TrEffInst << "\t" << TrPot << "\t" << VPDCalc << "\t" << ValRDE << "\t" << ValRFE << "\t" << ValRSurf << "\t" << VitesseRacinaire << "\t" << VitesseRacinaireDay << "\t" << VolMacropores << "\t" << VolRelMacropores << "\t" << WueEt << "\t" << WueTot << endl;
 #endif
     }
     #ifdef WITH_TRACE
@@ -434,18 +431,18 @@ void reset_variables() {
     DryMatAboveGroundTotPop = 0;
 }
 
-void set_meteo_vars(const samara::ModelParameters& parameters) {
-    TMax = parameters.get(step).TMax;
-    TMin = parameters.get(step).TMin;
-    TMoy = parameters.get(step).TMoy;
-    HMax = parameters.get(step).HMax;
-    HMin = parameters.get(step).HMin;
-    HMoy = parameters.get(step).HMoy;
-    Vt = parameters.get(step).Vt;
-    Ins = parameters.get(step).Ins;
-    Rg = parameters.get(step).Rg;
-    ETP = parameters.get(step).ETP;
-    Pluie = parameters.get(step).Rain;
+void set_meteo_vars(const samara::ModelParameters& parameters, double t) {
+    TMax = parameters.get(t).TMax;
+    TMin = parameters.get(t).TMin;
+    TMoy = parameters.get(t).TMoy; //local
+    HMax = parameters.get(t).HMax;
+    HMin = parameters.get(t).HMin;
+    HMoy = parameters.get(t).HMoy;//local
+    Vt = parameters.get(t).Vt;
+    Ins = parameters.get(t).Ins;
+    Rg = parameters.get(t).Rg;
+    ETP = parameters.get(t).ETP;
+    Pluie = parameters.get(t).Rain;
     if (((TMin != NilValue) && (TMax != NilValue))) {
       TMoyCalc = (TMax + TMin) * 1.0 / 2;
     } else {
@@ -489,15 +486,17 @@ void init_parcelle() {
         VolMacropores = VolRelMacropores * (EpaisseurSurf + EpaisseurProf) * 1.0 / 100;
 
     } catch (...) {
-        AfficheMessageErreur("RS_InitParcelle_V2", URisocas);
+        error_message("RS_InitParcelle_V2", URisocas);
     }
 }
 
-void eval_Par() {
+void eval_Par(double t) {
   try {
-    Decli = 0.409 * sin(0.0172 * DayOfTheYear(step) - 1.39);
+    double tDay = artis::utils::DateTime::dayOfYear(t);
+    Decli = 0.409 * sin(0.0172 * tDay - 1.39);
     SunPosi = acos(-tan(LatRad) * tan(Decli));
     DayLength = 7.64 * SunPosi;
+    SunDistance = 1 + 0.033 * cos(2 * M_PI * 1.0 / 365 * tDay);
     RayExtra = 24 * 60 * 0.0820 * 1.0 / M_PI * SunDistance *
                (SunPosi * sin(Decli) * sin(LatRad) +
                 cos(Decli) * cos(LatRad) * sin(SunPosi));
@@ -511,55 +510,55 @@ void eval_Par() {
 
      Par = KPar * RgCalc;
   } catch (...) {
-    AfficheMessageErreur("EvalRg", UMeteo);
+    error_message("EvalRg", UMeteo);
   }
 }
 
 
-void EToFao(double const &ETP, double const &Alt, double const &RgMax, double const &RayGlobal, double const &TMin, double const &TMax, double const &HrMin, double const &HrMax, double const &HrMoy, double const &TMoy, double const &Vent,   double &ETo, double &TMoyPrec, double &VPD) {
-  double eActual; double eSat; double RgRgMax; double TLat; double delta; double KPsy; double Eaero; double Erad; double Rn; double G;
+void EToFao() {
+    double eActual; double eSat; double RgRgMax; double TLat; double delta; double KPsy; double Eaero; double Erad; double Rn; double G;
 
-  try {
-    if ((ETP == NilValue)) {
-      eSat = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) +
-                       exp(17.27 * TMin * 1.0 / (TMin + 237.3)));
-      if ((HrMax == NilValue))
-        eActual = eSat * HrMoy * 1.0 / 100;
-      else
-        eActual = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) *
-                            HrMin * 1.0 / 100 + exp(17.27 * TMin * 1.0 / (TMin + 237.3)) *
-                            HrMax * 1.0 / 100);
-      VPD = eSat - eActual;
-      RgRgMax = RayGlobal * 1.0 / RgMax;
-      if ((RgRgMax > 1))
-        RgRgMax = 1;
-      Rn = 0.77 * RayGlobal - (1.35 * RgRgMax - 0.35) *
-           (0.34 - 0.14 * std::pow(eActual, 0.5)) *
-           (pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) * 2.45015 * std::pow(10
-                                                                                     , -9);
-      // chaleur latente de vaporisation de l'eau
-      TLat = 2.501 - 2.361 * std::pow(10, -3) * TMoy;
-      //  pente de la courbe de pression de vapeur saturante en kPa/°C
-      delta = 4098 * (0.6108 * exp(17.27 * TMoy * 1.0 / (TMoy + 237.3))) * 1.0 / std::pow(TMoy
-              + 237.3, 2);
-      // constante psychrométrique en kPa/°C
-      KPsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Alt * 1.0 / 293), 5.26) * 1.0 / TLat;
-      // Radiative
-      G = 0.38 * (TMoy - TMoyPrec);
-      Erad = 0.408 * (Rn - G) * delta * 1.0 / (delta + KPsy * (1 + 0.34 * Vent));
-      // Partie évaporative de ET0 = Eaéro
-      Eaero = (900 * 1.0 / (TMoy + 273.16)) * ((eSat - eActual) * Vent) * KPsy * 1.0 /
-              (delta + KPsy * (1 + 0.34 * Vent));
-      ETo = Erad + Eaero;
-    } else {
-      ETo = ETP;
+    try {
+      if ((ETP == NilValue)) {
+        eSat = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) +
+                         exp(17.27 * TMin * 1.0 / (TMin + 237.3)));
+        if ((HMax == NilValue))
+          eActual = eSat * HMoyCalc * 1.0 / 100;
+        else
+          eActual = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) *
+                              HMin * 1.0 / 100 + exp(17.27 * TMin * 1.0 / (TMin + 237.3)) *
+                              HMax * 1.0 / 100);
+        VPDCalc = eSat - eActual;
+        RgRgMax = RgCalc * 1.0 / RgMax;
+        if ((RgRgMax > 1))
+          RgRgMax = 1;
+        Rn = 0.77 * RgCalc - (1.35 * RgRgMax - 0.35) *
+             (0.34 - 0.14 * std::pow(eActual, 0.5)) *
+             (pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) * 2.45015 * std::pow(10
+                                                                                       , -9);
+        // chaleur latente de vaporisation de l'eau
+        TLat = 2.501 - 2.361 * std::pow(10, -3) * TMoyCalc;
+        //  pente de la courbe de pression de vapeur saturante en kPa/°C
+        delta = 4098 * (0.6108 * exp(17.27 * TMoyCalc * 1.0 / (TMoyCalc + 237.3))) * 1.0 / std::pow(TMoyCalc
+                + 237.3, 2);
+        // constante psychrométrique en kPa/°C
+        KPsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude * 1.0 / 293), 5.26) * 1.0 / TLat;
+        // Radiative
+        G = 0.38 * (TMoyCalc - TMoyPrec);
+        Erad = 0.408 * (Rn - G) * delta * 1.0 / (delta + KPsy * (1 + 0.34 * Vt));
+        // Partie évaporative de ET0 = Eaéro
+        Eaero = (900 * 1.0 / (TMoyCalc + 273.16)) * ((eSat - eActual) * Vt) * KPsy * 1.0 /
+                (delta + KPsy * (1 + 0.34 * Vt));
+        ETo = Erad + Eaero;
+      } else {
+        ETo = ETP;
+      }
+      TMoyPrec = TMoyCalc;
+
+    } catch (...) {
+      error_message("EToFAO", UMeteo);
     }
-    TMoyPrec = TMoy;
-
-  } catch (...) {
-    AfficheMessageErreur("EToFAO", UMeteo);
   }
-}
 
 void kill_crop(){
     NumPhase = 0;
@@ -593,3 +592,105 @@ void kill_crop(){
     A_AssimSurplus = 0;
     ETM = 0;
 }
+
+
+void init_culture() {
+    try {
+        NumPhase = 0;
+        SommeDegresJourMax = SDJLevee + SDJBVP + SDJRPR + SDJMatu1 + SDJMatu2;
+        SumDegresDay = 0;
+        SeuilTemp = 0;
+        Lai = 0;
+        IcCum = 0;
+        FTSW = 1;
+        Cstr = 1;
+        DurPhase1 = 0;
+        DurPhase2 = 0;
+        DurPhase3 = 0;
+        DurPhase4 = 0;
+        DurPhase5 = 0;
+        DurPhase6 = 0;
+        TempLai = 0;
+        ApexHeightGain = 0;
+        ChangeNurseryStatus = 0;
+        ChangePhase = 0;
+        ChangeSsPhase = 0;
+        CstrPhase2 = 0;
+        CstrPhase3 = 0;
+        CstrPhase4 = 0;
+        CstrPhase5 = 0;
+        CstrPhase6 = 0;
+        CumCstrPhase2 = 0;
+        CumCstrPhase3 = 0;
+        CumCstrPhase4 = 0;
+        CumCstrPhase5 = 0;
+        CumCstrPhase6 = 0;
+        CumFTSWPhase2 = 0;
+        CumFTSWPhase3 = 0;
+        CumFTSWPhase4 = 0;
+        CumFTSWPhase5 = 0;
+        CumFTSWPhase6 = 0;
+        CumIcPhase2 = 0;
+        CumIcPhase3 = 0;
+        CumIcPhase4 = 0;
+        CumIcPhase5 = 0;
+        CumIcPhase6 = 0;
+        DAF = 0;
+        DemLeafAreaPlant = 0;
+        DemPanicleFillPop = 0;
+        DemStructInternodePlant = 0;
+        DemStructInternodePop = 0;
+        DemStructLeafPlant = 0;
+        DemStructLeafPop = 0;
+        DemStructPaniclePlant = 0;
+        DemStructPaniclePop = 0;
+        DemStructRootPlant = 0;
+        DemStructRootPop = 0;
+        DemStructSheathPop = 0;
+        DemStructTotPop = 0;
+        FloodwaterGain = 0;
+        FtswPhase2 = 0;
+        FtswPhase3 = 0;
+        FtswPhase4 = 0;
+        FtswPhase5 = 0;
+        FtswPhase6 = 0;
+        GainRootSystSoilSurfPop = 0;
+        GainRootSystVolPop = 0;
+        GrowthDryMatPop = 0;
+        GrowthResInternodePop = 0;
+        GrowthStructDeficit = 0;
+        GrowthStructInternodePop = 0;
+        GrowthStructLeafPop = 0;
+        GrowthStructPaniclePop = 0;
+        GrowthStructRootPop = 0;
+        GrowthStructSheathPop = 0;
+        GrowthStructTotPop = 0;
+        HaunGain = 0;
+        IcPhase2 = 0;
+        IcPhase3 = 0;
+        IcPhase4 = 0;
+        IcPhase5 = 0;
+        IcPhase6 = 0;
+        IncreaseResInternodePop = 0;
+        Kcl = 0;
+        Kr = 0;
+        MobiliLeafDeath = 0;
+        NurseryStatus = 0;
+        PanicleFilDeficit = 0;
+        PanicleFilPop = 0;
+        PanicleSinkPop = 0;
+        PanStructMass = 0;
+        PlantLeafNumNew = 0;
+        ResInternodeMobiliDay = 0;
+        ResInternodeMobiliDayPot = 0;
+        RootFrontOld = 0;
+        RootSystSoilSurfPop = 0;
+        RootSystSoilSurfPopOld = 0;
+        RootSystVolPop = 0;
+        RootSystVolPopOld = 0;
+        SDJCorPhase4 = 0;
+    } catch (...) {
+        error_message("RS_InitiationCulture", URisocas);
+    }
+}
+

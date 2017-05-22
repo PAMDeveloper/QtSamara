@@ -76,27 +76,25 @@ LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
 INCLUDEPATH +=  D:/PAMStudio/dev/ext_libs/include \
                 D:/PAMStudio/dev/git/samara_2/small_sln/src
 SOURCES += \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Connections.cpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/DateTime.cpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/main.cpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/ParametersReader.cpp
+    src/Connections.cpp \
+    src/DateTime.cpp \
+    src/main.cpp \
+    src/ParametersReader.cpp \
+    src/samara.cpp
 
 HEADERS += \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/BhyTypeFAO.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Bileau.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Connections.hpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/DateTime.hpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/delphi_defines.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/delphirunner.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Meteo.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/MilBilanCarbone.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/ModelParameters.hpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/ParametersReader.hpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Risocas2cpp.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/Riz.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/sorghum.h \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/tmp.h \
-    src/variables.h \
-    src/parameters.h \
+    src/BhyTypeFAO.h \
+    src/Bileau.h \
+    src/Connections.hpp \
+    src/DateTime.hpp \
+    src/delphi_defines.h \
+    src/delphirunner.h \
+    src/MilBilanCarbone.h \
+    src/ModelParameters.hpp \
+    src/ParametersReader.hpp \
+    src/Risocas2cpp.h \
+    src/Riz.h \
     src/samara.h \
-    src/parcelle.h
+    src/sorghum.h \
+    src/variables.h
+

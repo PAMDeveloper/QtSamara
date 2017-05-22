@@ -26,21 +26,13 @@
 #endif
 #include <cmath>
 #include <iostream>
-#include "DateTime.hpp"
 
-//#define Q(x) #x
-//#define AfficheMessageErreur(A, B) std::cout << A << Q(x);
 
-#define AfficheMessageErreur(A, B)  ;
-#define try  ;
-#define catch(x)  ;
+#define Q(x) #x
+#define error_message(A, B) std::cout << A << Q(x);
 
 static double NilValue = -999;
 static double sqr(double x) {return x * x;}
-
-static double DayOfTheYear(double date) {
-  return artis::utils::DateTime::dayOfYear(date);
-}
 
 static std::string FloatToStr(double val) {
   return std::to_string(val);
