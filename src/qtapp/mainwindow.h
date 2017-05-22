@@ -30,7 +30,7 @@ public:
   void displayData(observer::GlobalView *view, QString refFile,
                    samara::ModelParameters *parameters,
                    QString begin, QString end);
-  void addChart(int row, int col, QLineSeries *series, QLineSeries *refseries,
+  bool addChart(int row, int col, QLineSeries *series, QLineSeries *refseries,
                 QLineSeries *delphRefseries,
                 QGridLayout *lay, QString name);
 

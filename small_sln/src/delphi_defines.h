@@ -27,9 +27,12 @@
 #include <cmath>
 #include <iostream>
 
+#define try  ;
+#define catch(x)  ;
 
-#define Q(x) #x
-#define error_message(A, B) std::cout << A << Q(x);
+
+#define Q(x) #x;
+#define error_message(A, B) ;// std::cout << A << Q(x);
 
 static double NilValue = -999;
 static double sqr(double x) {return x * x;}

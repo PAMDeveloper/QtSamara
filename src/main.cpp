@@ -56,7 +56,8 @@ int main(int argc, char *argv[]) {
                                   "yyyy-MM-dd");
     parameters.beginDate = start.toJulianDay();
     qDebug() << parameters.beginDate << end.toJulianDay();
-    SamaraContext context(start.toJulianDay(), end.toJulianDay());
+    double endJulian = nb_step > 0 ? start.toJulianDay() + nb_step : end.toJulianDay();
+    SamaraContext context(start.toJulianDay(), endJulian);
 
     ::Trace::trace().clear();
     SamaraSimulator simulator(new SamaraModel2_1, globalParameters);
@@ -71,7 +72,7 @@ int main(int argc, char *argv[]) {
     startC = std::chrono::system_clock::now();
 
 //    for (int i = 0; i < 1000; ++i) {
-        run_samara_2_1(start.toJulianDay(), end.toJulianDay(), parameters);
+        run_samara_2_1(parameters);
 //    }
 
 //    endC = std::chrono::system_clock::now();

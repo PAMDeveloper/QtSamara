@@ -72,21 +72,6 @@ public:
   virtual ~ModelParameters()
   { }
 
-  /**
-   * Get the requested parameter.
-   * @param[in] paramName The name of the needed parameter.
-   * @return T The data if readable for this type, an empty data otherwise.
-   */
-//  template < typename T >
-//  T get(const std::string &paramName) const {
-//    std::map < std::string, std::string >::const_iterator it;
-//    it = mParams.find(paramName);
-
-//    if (it == mParams.end())
-//      std::cout << "Warning: no value for " << paramName << std::endl;
-
-//    return (T)((it == mParams.end()) ? "0" : it->second);
-//  }
 
      double getDouble( const std::string &paramName ) const
      {

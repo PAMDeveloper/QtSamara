@@ -3,6 +3,7 @@ CONFIG += c++11
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
+#QMAKE_CXXFLAGS += -P -E  ##msvc
 #QMAKE_CXXFLAGS_RELEASE -= -O0
 #QMAKE_CXXFLAGS_RELEASE -= -O
 #QMAKE_LFLAGS_RELEASE -= -O1
@@ -11,9 +12,11 @@ CONFIG -= qt
 QMAKE_CXXFLAGS_RELEASE += -Ox
 #QMAKE_CXXFLAGS_RELEASE += -Ofast
 
+#R_PATH = "C:/R"
+#RCPP_PATH = $$R_PATH/library/Rcpp
 
-CONFIG += BUILD_FOR_APP32
-#CONFIG += BUILD_FOR_APP64
+#CONFIG += BUILD_FOR_APP32
+CONFIG += BUILD_FOR_APP64
 #CONFIG += BUILD_FOR_LIB32
 #CONFIG += BUILD_FOR_R32
 #CONFIG += BUILD_FOR_R64
@@ -48,6 +51,7 @@ BUILD_FOR_R32 {
     TEMPLATE = app
     CONFIG += static
     ARCHI = x86
+    ARCHI_R = i386
     COMPILER = mingw-4.9.3
 }
 
@@ -55,6 +59,7 @@ BUILD_FOR_R64 {
     TEMPLATE = app
     CONFIG += static
     ARCHI = x64
+    ARCHI_R = x64
     COMPILER = mingw-4.9.3
 }
 
@@ -72,9 +77,11 @@ BUILD_FOR_MGW64 {
     COMPILER = mingw_6.3.0
 }
 
-LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
+LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/static -llibpq
+# -L$$RCPP_PATH/libs/$$ARCHI_R -lRcpp
 INCLUDEPATH +=  D:/PAMStudio/dev/ext_libs/include \
-                D:/PAMStudio/dev/git/samara_2/small_sln/src
+                D:/PAMStudio/dev/git/samara_2/small_sln/src \
+
 SOURCES += \
     src/Connections.cpp \
     src/DateTime.cpp \
@@ -96,5 +103,6 @@ HEADERS += \
     src/Riz.h \
     src/samara.h \
     src/sorghum.h \
-    src/variables.h
+    src/variables.h \
+#    src/rsamara_types.hpp
 

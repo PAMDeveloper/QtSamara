@@ -294,7 +294,7 @@ void init_parameters(const samara::ModelParameters& parameters) {
     HumSat = parameters.getDouble("humsat");
     IcTillering = parameters.getDouble("ictillering");
     InternodeLengthMax = parameters.getDouble("internodelengthmax");
-    IrrigAuto = parameters.getInt("irrigauto");
+    IrrigAuto = parameters.getDouble("irrigauto");
     IrrigAutoResume = parameters.getDouble("irrigautoresume");
     IrrigAutoStop = parameters.getDouble("irrigautostop");
     IrrigAutoTarget = parameters.getDouble("irrigautotarget");

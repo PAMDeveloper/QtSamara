@@ -21,6 +21,7 @@
 #include <qtapp/parametersdatamodel.h>
 
 #include <defines.hpp>
+#include <../delphi2cpp/delphi_defines.h>
 
 using namespace artis::kernel;
 
@@ -74,7 +75,7 @@ void MainWindow::on_lineEdit_4_textChanged(const QString &arg1) {
 }
 
 
-void MainWindow::addChart(int row, int col,
+bool MainWindow::addChart(int row, int col,
                           QLineSeries *series, QLineSeries *refSeries,
                           QLineSeries *delphRefseries,
                           QGridLayout *lay, QString name) {
@@ -165,9 +166,12 @@ void MainWindow::addChart(int row, int col,
             valDiff = delphRefseries->at(i).y();
         }
     }
-    double percentage = std::roundf(std::abs(((sumRef-sumSim)/sumRef)) * 10000)/100;
+    double percentage = std::roundf(std::abs(((sumRef-sumSim)/sumRef)) * 10000000)/100000;
 //    qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << percentage << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
 //    qDebug() << sName << fixed << ":" << percentage;
+        if(percentage <= 0.001 || sumRef <= 0.001) {
+            return false;
+        }
         qDebug() << sName << ":"  << percentage << "%";
 
     QValueAxis *axisY = new QValueAxis;
@@ -199,6 +203,7 @@ void MainWindow::addChart(int row, int col,
 
     ChartView *chartView = new ChartView(chart, series, refSeries, delphRefseries, this);
     lay->addWidget(chartView, row, col);
+    return true;
 }
 
 
@@ -285,7 +290,9 @@ void MainWindow::displayData(observer::GlobalView *view,
 
         QDateTime date;
         date.setDate(startDate);
-        while (!in.atEnd()) {
+        int l = 0;
+        while (!in.atEnd() && (nb_step <= 0 || l <nb_step)) {
+            l++;
             QStringList vals = in.readLine().split('\t');
             for (int i = 0; i < vals.size(); ++i) {
                 refSeries[headers[i]]
@@ -311,7 +318,9 @@ void MainWindow::displayData(observer::GlobalView *view,
 
         QDateTime date;
         date.setDate(startDate);
-        while (!in.atEnd()) {
+        int l = 0;
+        while (!in.atEnd() && (nb_step <= 0 || l <nb_step)) {
+            l++;
             QStringList vals = in.readLine().split('\t');
             for (int i = 0; i < vals.size(); ++i) {
                 delphRefSeries[headers[i]]
@@ -331,7 +340,7 @@ void MainWindow::displayData(observer::GlobalView *view,
         QLineSeries *series = new QLineSeries();
         series->setColor(getColor(j));
 
-        for (int i = 0; i < startDate.daysTo(endDate); ++i) {
+        for (int i = 0; i < (nb_step > 0 ? nb_step : startDate.daysTo(endDate)); ++i) {
             double value = view->get(startDate.addDays(i).toJulianDay(),
                                      param.toLocal8Bit().constData());
             QDateTime momentInTime;
@@ -339,7 +348,7 @@ void MainWindow::displayData(observer::GlobalView *view,
             series->append(momentInTime.toMSecsSinceEpoch(), value == -999 ? -1 : 0);
         }
 
-        addChart(j / numCol, j % numCol, series, refSeries[param], delphRefSeries[param], lay, param);
-        j++;
+        if( addChart(j / numCol, j % numCol, series, refSeries[param], delphRefSeries[param], lay, param) )
+            j++;
     }
 }

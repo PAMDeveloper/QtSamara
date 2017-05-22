@@ -2859,8 +2859,8 @@ void RS_EvolDemPanFilPopAndIcPFlow_V2_1(double const &NumPhase, double const &Dr
                 AssimSurplus = max(0., Assim - RespMaintTot);
                 A_AssimSurplus = max(0., Assim - RespMaintTot);
             } else {
-                AssimSurplus = 0;
-                A_AssimSurplus = 0;
+                AssimSurplus = 0.;
+                A_AssimSurplus = 0.;
             }
             if ((Ic < 0)) {
                 Ic = 0;
