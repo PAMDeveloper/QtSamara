@@ -31,7 +31,7 @@
 #include <observer/GlobalView.hpp>
 #include <models/Model2_1.hpp>
 #include <utils/ParametersReader.hpp>
-#include "../delphi2cpp/delphirunner.h"
+#include "../delphi2cpp/samara.h"
 
 void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters);
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     startC = std::chrono::system_clock::now();
 
 //    for (int i = 0; i < 1000; ++i) {
-        run_samara_21(start.toJulianDay(), end.toJulianDay(), parameters);
+        run_samara_2_1(start.toJulianDay(), end.toJulianDay(), parameters);
 //    }
 
 //    endC = std::chrono::system_clock::now();
