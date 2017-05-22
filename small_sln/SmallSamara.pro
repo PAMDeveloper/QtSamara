@@ -79,7 +79,8 @@ SOURCES += \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/Connections.cpp \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/DateTime.cpp \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/main.cpp \
-    D:/PAMStudio/dev/git/samara_2/small_sln/src/ParametersReader.cpp
+    D:/PAMStudio/dev/git/samara_2/small_sln/src/ParametersReader.cpp \
+    src/variables.cpp
 
 HEADERS += \
     D:/PAMStudio/dev/git/samara_2/small_sln/src/BhyTypeFAO.h \

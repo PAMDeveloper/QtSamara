@@ -2,23 +2,59 @@
 #define METEO_H
 #include "parameters.h"
 
-double TMax = 0;
-double TMin = 0;
-double TMoy = 0;
-double HMax = 0;
-double HMin = 0;
-double HMoy = 0;
-double Vt = 0;
-double Ins = 0;
-double Rg = 0;
-double ETP = 0;
-double Pluie = 0;
+//global variables
+extern double DayLength;
+extern double Decli;
+extern double Par;
+extern double RayExtra;
+extern double RgCalc;
+extern double RgMax;
+extern double SunPosi;
+extern double TmaxMoy;
+extern double TminMoy;
+extern double TMoyCalc;
+extern double TMoyPrec;
+extern double ETo;
+extern double HMoyCalc;
+extern double LatRad;
+extern double SunDistance;
+extern double VPDCalc;
+
+
+//every steps
+extern double TMax;
+extern double TMin;
+extern double TMoy;
+extern double HMax;
+extern double HMin;
+extern double HMoy;
+extern double Vt;
+extern double Ins;
+extern double Rg;
+extern double ETP;
+extern double Pluie;
 
 namespace meteo {
 const samara::ModelParameters * parameters;
 
 void init_meteo(const samara::ModelParameters& p) {
     parameters = &p;
+    DayLength = 0;
+    Decli = 0;
+    ETo = 0;
+    HMoyCalc = 0;
+    LatRad = 0;
+    Par = 0;
+    RayExtra = 0;
+    RgCalc = 0;
+    RgMax = 0;
+    SunDistance = 0;
+    SunPosi = 0;
+    TmaxMoy = 0;
+    TminMoy = 0;
+    TMoyCalc = 0;
+    TMoyPrec = 0;
+    VPDCalc = 0;
 }
 
 void update_meteo(double t){
@@ -33,28 +69,26 @@ void update_meteo(double t){
     Rg = parameters->get(t).Rg;
     ETP = parameters->get(t).ETP;
     Pluie = parameters->get(t).Rain;
+
+    try {
+      if (((TMin != NilValue) && (TMax != NilValue))) {
+        TMoyCalc = (TMax + TMin) * 1.0 / 2;
+      } else {
+        TMoyCalc = TMoy;
+      }
+      if (((HMin != NilValue) && (HMax != NilValue))) {
+        HMoyCalc = (HMax + HMin) * 1.0 / 2;
+      } else {
+        HMoyCalc = HMoy;
+      }
+
+    } catch (...) {
+      AfficheMessageErreur("AVGTempHum", UMeteo);
+    }
 }
 
 
-void AVGTempHum() {
-  try {
-    if (((TMin != NilValue) && (TMax != NilValue))) {
-      TMoyCalc = (TMax + TMin) * 1.0 / 2;
-    } else {
-      TMoyCalc = TMoy;
-    }
-    if (((HMin != NilValue) && (HMax != NilValue))) {
-      HMoyCalc = (HMax + HMin) * 1.0 / 2;
-    } else {
-      HMoyCalc = HMoy;
-    }
-
-  } catch (...) {
-    AfficheMessageErreur("AVGTempHum", UMeteo);
-  }
-}
-
-void EvalPar(double t) {
+void eval_Par(double t) {
   try {
     Decli = 0.409 * sin(0.0172 * DayOfTheYear(t) - 1.39);
     SunPosi = acos(-tan(LatRad) * tan(Decli));
@@ -76,35 +110,34 @@ void EvalPar(double t) {
   }
 }
 
+void EToFao() {
 
-void EvalPar(double const &RG, double const &Kpar,   double &Par) {
-  try {
-
-
-  } catch (...) {
-    AfficheMessageErreur("EvalPar", UMeteo);
-  }
-}
-
-
-void EToFao(double const &ETP, double const &Alt, double const &RgMax, double const &RayGlobal, double const &TMin, double const &TMax, double const &HrMin, double const &HrMax, double const &HrMoy, double const &TMoy, double const &Vent,   double &ETo, double &TMoyPrec, double &VPD) {
-  double eActual; double eSat; double RgRgMax; double TLat; double delta; double KPsy; double Eaero; double Erad; double Rn; double G;
+  double eActual;
+  double eSat;
+  double RgRgMax;
+  double TLat;
+  double delta;
+  double KPsy;
+  double Eaero;
+  double Erad;
+  double Rn;
+  double G;
 
   try {
     if ((ETP == NilValue)) {
       eSat = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) +
                        exp(17.27 * TMin * 1.0 / (TMin + 237.3)));
-      if ((HrMax == NilValue))
-        eActual = eSat * HrMoy * 1.0 / 100;
+      if ((HMax == NilValue))
+        eActual = eSat * HMoyCalc * 1.0 / 100;
       else
         eActual = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) *
-                            HrMin * 1.0 / 100 + exp(17.27 * TMin * 1.0 / (TMin + 237.3)) *
-                            HrMax * 1.0 / 100);
-      VPD = eSat - eActual;
-      RgRgMax = RayGlobal * 1.0 / RgMax;
+                            HMin * 1.0 / 100 + exp(17.27 * TMin * 1.0 / (TMin + 237.3)) *
+                            HMax * 1.0 / 100);
+      VPDCalc = eSat - eActual;
+      RgRgMax = RgCalc * 1.0 / RgMax;
       if ((RgRgMax > 1))
         RgRgMax = 1;
-      Rn = 0.77 * RayGlobal - (1.35 * RgRgMax - 0.35) *
+      Rn = 0.77 * RgCalc - (1.35 * RgRgMax - 0.35) *
            (0.34 - 0.14 * std::pow(eActual, 0.5)) *
            (pow(TMax + 273.16, 4) + std::pow(TMin + 273.16, 4)) * 2.45015 * std::pow(10
                                                                                      , -9);
@@ -114,13 +147,13 @@ void EToFao(double const &ETP, double const &Alt, double const &RgMax, double co
       delta = 4098 * (0.6108 * exp(17.27 * TMoy * 1.0 / (TMoy + 237.3))) * 1.0 / std::pow(TMoy
               + 237.3, 2);
       // constante psychrométrique en kPa/°C
-      KPsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Alt * 1.0 / 293), 5.26) * 1.0 / TLat;
+      KPsy = 0.00163 * 101.3 * std::pow(1 - (0.0065 * Altitude * 1.0 / 293), 5.26) * 1.0 / TLat;
       // Radiative
       G = 0.38 * (TMoy - TMoyPrec);
-      Erad = 0.408 * (Rn - G) * delta * 1.0 / (delta + KPsy * (1 + 0.34 * Vent));
+      Erad = 0.408 * (Rn - G) * delta * 1.0 / (delta + KPsy * (1 + 0.34 * Vt));
       // Partie évaporative de ET0 = Eaéro
-      Eaero = (900 * 1.0 / (TMoy + 273.16)) * ((eSat - eActual) * Vent) * KPsy * 1.0 /
-              (delta + KPsy * (1 + 0.34 * Vent));
+      Eaero = (900 * 1.0 / (TMoy + 273.16)) * ((eSat - eActual) * Vt) * KPsy * 1.0 /
+              (delta + KPsy * (1 + 0.34 * Vt));
       ETo = Erad + Eaero;
     } else {
       ETo = ETP;

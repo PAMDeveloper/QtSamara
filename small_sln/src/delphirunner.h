@@ -121,7 +121,6 @@ void run_samara_21(const samara::ModelParameters& parameters, int log_every) {
         Meteo::EvalRgMax(RayExtra, Altitude, RgMax);
         Meteo::InsToRg(DayLength, Ins, RayExtra, RgMax, Rg, RgCalc);
         Meteo::EvalPar(RgCalc, KPar, Par);
-        Meteo::EToFao(ETP, Altitude, RgMax, RgCalc, TMin, TMax, HMin, HMax, HMoyCalc, TMoyCalc, Vt, ETo, TMoyPrec, VDPCalc);
 
         if(crop) Riz::EvolPhenoPSPStress(SumPP, PPSens, SumDegreDayCor, SDJLevee, SDJBVP, SDJRPR, SDJMatu1, SDJMatu2, StockSurface, TxRuSurfGermi, RuSurf,
                                     DateEnCours, DateSemis, StockTotal, NumPhase, SumDDPhasePrec, SeuilTemp, ChangePhase, SeuilTempSsPhase, ChangeSsPhase, NumSsPhase);
