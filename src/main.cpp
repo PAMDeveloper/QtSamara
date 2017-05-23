@@ -32,8 +32,7 @@
 #include <models/Model2_1.hpp>
 #include <utils/ParametersReader.hpp>
 #include "../delphi2cpp/samara.h"
-
-void runDelphiTrad(double start, double end, const samara::ModelParameters &parameters);
+#include "../delphi2cpp/psqlloader.h"
 
 
 int main(int argc, char *argv[]) {

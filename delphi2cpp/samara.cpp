@@ -4,8 +4,6 @@
 #include <QDebug>
 #include <QFile>
 
-
-
 #include <artis/utils/DateTime.hpp>
 
 #include "BhyTypeFAO.h"
@@ -64,7 +62,9 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
         TMax = parameters.get(DateEnCours).TMax;
         set_meteo_vars(parameters, DateEnCours);
         NbJAS = DateEnCours - DateSemis;
-
+        if(NbJAS == 57) {
+            qDebug() << NbJAS;
+        }
         //crop entity
         if(NbJAS == 0) {
             init_culture();
@@ -517,9 +517,7 @@ void eval_Par(double t) {
 
 
 void EToFao() {
-    try {
-	 
-
+    try {	 
       if ((ETP == NilValue)) {
 		  double eActual; double eSat; double RgRgMax; double TLat; double delta; double KPsy; double Eaero; double Erad; double Rn; double G;
         eSat = 0.3054 * (exp(17.27 * TMax * 1.0 / (TMax + 237.3)) +

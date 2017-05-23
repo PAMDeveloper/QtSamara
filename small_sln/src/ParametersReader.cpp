@@ -35,7 +35,7 @@ void ParametersReader::loadFromDatabase(const std::string& id,
 {
     PGconn* connection(
                 utils::Connections::connection(
-                    "samara", "host=localhost port=5432 dbname=samara user=user_samara password=samarapassword"));
+                    "samara", "host=localhost port=5432 dbname=samara_old user=user_samara password=samarapassword"));
     if (PQstatus(connection) != CONNECTION_OK)
     {
         std::cout << "Connection to database failed: %s" << PQerrorMessage(connection);
