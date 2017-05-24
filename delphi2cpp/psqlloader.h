@@ -17,13 +17,73 @@ public:
         parameters = new SamaraParameters();
     }
 
-    void load_simulation(string id);
-    void load_variety(string id);
-    void load_plot(string id);
-    void load_itinerary(string id);
-    void load_meteo(string id, string start, string end);
+    string query(string table, string key, string value) {
+        return "SELECT * FROM " + table + " WHERE " + key + " = '" + value + "'";
+    }
 
-    void get_record(string query, string category) {
+    void load_complete_simulation(string idsimulation) {
+        load_simulation(idsimulation);
+        load_variety(parameters->getString("idvariete"));
+        load_station(parameters->getString("codestation"));
+        load_plot(parameters->getString("idparcelle"));
+        load_itinerary(parameters->getString("iditinerairetechnique"));
+        load_meteo(parameters->getString("codestation"),
+                   parameters->getString("datedebut"),
+                   parameters->getString("datefin"));
+    }
+
+    //@TODO bouger KPAR dans la station ou ailleurs
+    void load_simulation(string idsimulation) {
+        load_record(query("simulation","idsimulation",idsimulation), "simulation");
+    }
+
+    void load_variety(string idvariete) {
+        load_record(query("variete","idvariete",idvariete), "variete");
+    }
+
+    void load_station(string codestation) {
+        load_record(query("station","codestation",codestation), "station");
+    }
+
+    void load_plot(string idparcelle) {
+        load_record(query("parcelle","idparcelle",idparcelle), "parcelle");
+        load_record(query("typesol","codetypesol",parameters->getString("codetypesol")), "parcelle");
+    }
+
+    void load_itinerary(string iditinerairetechnique) {
+        load_record(query("itinerairetechnique","iditinerairetechnique",iditinerairetechnique), "itinerairetechnique");
+    }
+
+    void load_meteo(string codestation, string start, string end) {
+        std::string meteo_query = query("meteo","codestation",codestation) +
+                " AND jour <= '" + start + "' AND jour <= '" +
+                end + "' ORDER BY jour ASC";
+        load_records(meteo_query);
+    }
+
+    void load_records(string query) {
+//        PGresult* result = PQexec(db, query.c_str());
+//        if (PQresultStatus(result) != PGRES_TUPLES_OK){
+//            cout << "Error: " << PQerrorMessage(db) << endl;
+//        }
+
+//        for (int row = 0; row < PQntuples(result); ++row) {
+//            for (int col = 0; col < PQnfields(result); ++col) {
+//                string key = string(PQfname(result,col));
+//                if((PQftype(result,col) == 1043) || (PQftype(result,col) == 1082)){
+//                    parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
+//                }
+//                else {
+//                    parameters->doubles[key] =  pair <double, string> ( atof(PQgetvalue(result,0,col)), category);
+//                }
+//            }
+//        }
+    }
+
+#define PSQLTYPE_STRING 1043
+#define PSQLTYPE_DATE 1082
+
+    void load_record(string query, string category) {
         PGresult* result = PQexec(db, query.c_str());
         if (PQresultStatus(result) != PGRES_TUPLES_OK){
             cout << "Error: " << PQerrorMessage(db) << endl;
@@ -31,7 +91,7 @@ public:
 
         for (int col = 0; col < PQnfields(result); ++col) {
             string key = string(PQfname(result,col));
-            if((PQftype(result,col) == 1043) || (PQftype(result,col) == 1082)){
+            if((PQftype(result,col) == PSQLTYPE_STRING) || (PQftype(result,col) == PSQLTYPE_DATE)){
                 parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
             }
             else {

@@ -30,6 +30,12 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
     std::string startDate = parameters.get<std::string>("datedebut");
     std::string endDate = parameters.get<std::string>("datefin");
     std::string semisDate = parameters.get<std::string>("datesemis");
+//    dt_utils::datetime dt;
+//    dt_utils::datetime_format22 fmt(dt);
+//    dt.clear();
+//    strtk::string_to_type_converter(startDate, fmt);
+//    qDebug() << dt.
+
     double DateDebutSimul = artis::utils::DateTime::toJulianDayNumber(startDate);
     double DateFinSimul = artis::utils::DateTime::toJulianDayNumber(endDate);
     if(nb_step > 0)
