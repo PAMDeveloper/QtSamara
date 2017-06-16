@@ -1,12 +1,7 @@
-/**   @file
-     @brief
-*/
-#pragma once
 #ifndef INCLUDED_MILBILANCARBONE_H
 #define INCLUDED_MILBILANCARBONE_H
 
 
-////////-----------------------------------------------------////////
 // Cette unité regroupe l'ensemble des procédures permettant
 // le calcul de l'évolution du bilan carbonné pour la culture
 // annuelle du Mil. Ces procédures sont basées sur
@@ -22,10 +17,9 @@
 // Date de commencement          : 21/06/2004
 // Date de derniere modification : 25/06/2004
 // Etat : en cours d'implémentation
-////////-----------------------------------------------------////////
 
 
-#include "delphi_defines.h"
+#include <samara_defines.h>
 
 using namespace std;
 

@@ -1,64 +1,58 @@
-///**
-// * @file rcpp_samara.cpp
-// * @author See the AUTHORS file
-// */
+/**
+ * @file rcpp_samara.cpp
+ * @author See the AUTHORS file
+ */
 
-///*
-//* Copyright (C) 2012-2017 ULCO http://www.univ-littoral.fr
-//*
-//* This program is free software: you can redistribute it and/or modify
-//* it under the terms of the GNU General Public License as published by
-//* the Free Software Foundation, either version 3 of the License, or
-//* (at your option) any later version.
-//*
-//* This program is distributed in the hope that it will be useful,
-//* but WITHOUT ANY WARRANTY; without even the implied warranty of
-//* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//* GNU General Public License for more details.
-//*
-//* You should have received a copy of the GNU General Public License
-//* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//*/
+/*
+* Copyright (C) 2012-2017 ULCO http://www.univ-littoral.fr
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-//#include <Rcpp.h>
-//#include <Rinternals.h>
-//#include <cmath>
-//#include "rsamara_types.hpp"
-
-//#include <ModelParameters.hpp>
-//#include <ParametersReader.hpp>
-
-//using namespace Rcpp;
-
-//double round(double value, int digits)
-//{
-//  return floor(value * pow(10, digits) + 0.5) / pow(10, digits);
-//}
+#include <Rcpp.h>
+#include <Rinternals.h>
+#include <cmath>
+#include "rsamara_types.hpp"
 
 
-//XPtr < Context > init_simulation_from_psql(Rcpp::String name) {}
-//XPtr < Context > init_simulation_from_folder(Rcpp::String path) {}
+using namespace Rcpp;
 
 
-//List getSimulation(Rcpp::String name) {
+XPtr < Context > init_simulation_from_psql(Rcpp::String name) {}
+XPtr < Context > init_simulation_from_folder(Rcpp::String path) {}
 
-//}
+//load_simulation(idsimulation);
+//load_variety(parameters->getString("idvariete"));
+//load_station(parameters->getString("codestation"));
+//load_plot(parameters->getString("idparcelle"));
+//load_itinerary(parameters->getString("iditinerairetechnique"));
+//load_meteo(parameters->getString("codestation"),
+//           parameters->getString("datedebut"),
+//           parameters->getString("datefin"));
 
-//List getCrop(Rcpp::String name) {
-
-//}
-
-//List getItinerary(Rcpp::String name) {
-
-//}
-
-//List getMeteo(Rcpp::String name) {
-
-//}
-
-//List getPlot(Rcpp::String name) {
-
-//}
+List getDBSimulationDF(Rcpp::String idsimulation) {}
+List getDBVarietyDF(Rcpp::String idvariete) {}
+List getDBVarietyDFfromSim(Rcpp::String idsimulation) {}
+List getDBItineraryDF(Rcpp::String iditinerairetechnique) {}
+List getDBItineraryDFfromSim(Rcpp::String idsimulation) {}
+List getDBStationDF(Rcpp::String codestation) {}
+List getDBStationDFfromSim(Rcpp::String idsimulation) {}
+List getDBPlotDF(Rcpp::String idparcelle) {}
+List getDBPlotDFfromSim(Rcpp::String idsimulation) {}
+List getDBMeteoDF(Rcpp::String codestation, Rcpp::String beginDate, Rcpp::String endDate) {}
+List getDBMeteoDFfromSim(Rcpp::String idsimulation) {}
+List getFileParameters(Rcpp::String filepath, Rcpp::String id){}
 
 //// [[Rcpp::export]]
 //List run(Rcpp::String from_date, Rcpp::String to_date, List meteo, List plot, List crop, List itinerary, List result_variables, int every_steps)

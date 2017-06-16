@@ -1,33 +1,5 @@
-/**
- * @file artis/utils/DateTime.hpp
- * @author See the AUTHORS file
- */
-
-/*
- * Copyright (C) 2012-2017 ULCO http://www.univ-littoral.fr
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef ARTIS_UTILS_DATE_TIME_HPP
 #define ARTIS_UTILS_DATE_TIME_HPP
-
-#include <ostream>
-#include <string>
-
-
-namespace artis { namespace utils {
 
 enum DateTimeUnitOptions
 {
@@ -265,13 +237,13 @@ public:
     /**
      * @brief Convert a julian date into a string in a given format.
      * @code
-     * artis::utils::DateTime::toJulianDay(2454115.05486, DATE_FORMAT_YMD)) = "2001-10-9";
+     * DateTime::toJulianDay(2454115.05486, DATE_FORMAT_YMD)) = "2001-10-9";
      * @endcode
      * @param date The date to convert.
-     * @param format The string format from enum artis::utils::DateFormat.
+     * @param format The string format from enum DateFormat.
      * @return A string representation of the julian day.
      */
-    static std::string toJulianDayFmt(double date, artis::utils::DateFormat format);
+    static std::string toJulianDayFmt(double date, DateFormat format);
 
                                   /* * * * */
 
@@ -323,7 +295,5 @@ public:
 
   
 };
-
-} }
 
 #endif

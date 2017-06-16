@@ -26,12 +26,12 @@ struct Climate {
 
 class SamaraParameters {
  public:
-    double getDouble(string s) {return doubles[s].first;}
-    string getString(string s) {return strings[s].first;}
-    Climate getClimate(int t){return climatics[t];}
     map < string, pair < double, string > > doubles;
     map < string, pair < string, string > > strings;
     vector < Climate > climatics;
+    double getDouble(string s) {return doubles[s].first;}
+    string getString(string s) {return strings[s].first;}
+    Climate getClimate(int t){return climatics[t];}
 
 
 };

@@ -15,7 +15,7 @@
 #include "sorghum.h"
 #include "psqlloader.h"
 
-void run_samara_2_1(/*const samara::ModelParameters& parameters*/) {
+void run_samara_2_1() {
     PSQLLoader loader;
     loader.load_complete_simulation("06SB15-fev13-D1_SV21");
 

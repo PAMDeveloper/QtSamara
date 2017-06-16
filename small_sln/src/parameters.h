@@ -1,6 +1,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include <vector>
+#include <map>
+
 using namespace std;
 
 struct Climate {
@@ -26,14 +29,13 @@ struct Climate {
 
 class SamaraParameters {
  public:
+    vector < Climate > climatics;
+    map < string, pair < double, string > > doubles;
+    map < string, pair < string, string > > strings;
+
     double getDouble(string s) {return doubles[s].first;}
     string getString(string s) {return strings[s].first;}
     Climate getClimate(int t){return climatics[t];}
-    map < string, pair < double, string > > doubles;
-    map < string, pair < string, string > > strings;
-    vector < Climate > climatics;
-
-
 };
 
 

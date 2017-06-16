@@ -1,11 +1,7 @@
-/**   @file
-     @brief
-*/
-#pragma once
 #ifndef INCLUDED_RIZ_H
 #define INCLUDED_RIZ_H
 
-#include "delphi_defines.h"
+#include <samara_defines.h>
 using namespace std;
 
 namespace Riz {

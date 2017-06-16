@@ -1,10 +1,8 @@
-/**   @file
-     @brief
-*/
-#pragma once
 #ifndef INCLUDED_BILEAU_H
 #define INCLUDED_BILEAU_H
-#include "delphi_defines.h"
+
+#include <samara_defines.h>
+
 using namespace std;
 
 namespace Bileau {

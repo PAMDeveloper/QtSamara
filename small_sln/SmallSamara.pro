@@ -1,24 +1,22 @@
 TEMPLATE = app
 CONFIG += c++11
 CONFIG += console
-CONFIG -= app_bundle
-CONFIG -= qt
+CONFIG -= app_bundle qt
 #QMAKE_CXXFLAGS += -P -E  ##msvc
 #QMAKE_CXXFLAGS_RELEASE -= -O0
 #QMAKE_CXXFLAGS_RELEASE -= -O
 #QMAKE_LFLAGS_RELEASE -= -O1
 #QMAKE_CXXFLAGS_RELEASE -= -O2
-#QMAKE_CXXFLAGS_RELEASE += -O3
-QMAKE_CXXFLAGS_RELEASE += -Ox
-#QMAKE_CXXFLAGS_RELEASE += -Ofast
+QMAKE_CXXFLAGS_RELEASE += -O3
+#QMAKE_CXXFLAGS_RELEASE += -Ox
+QMAKE_CXXFLAGS_RELEASE += -Ofast
 
-#R_PATH = "C:/R"
-#RCPP_PATH = $$R_PATH/library/Rcpp
+#DEFINES += WITH_TRACE
 
 #CONFIG += BUILD_FOR_APP32
-CONFIG += BUILD_FOR_APP64
+#CONFIG += BUILD_FOR_APP64
 #CONFIG += BUILD_FOR_LIB32
-#CONFIG += BUILD_FOR_R32
+CONFIG += BUILD_FOR_R32
 #CONFIG += BUILD_FOR_R64
 #CONFIG += BUILD_FOR_MGW32
 #CONFIG += BUILD_FOR_MGW64
@@ -29,6 +27,7 @@ BUILD_FOR_APP32 {
     ARCHI = x86
     COMPILER = msvc14
     LIBS += -lSecur32 -lWs2_32 -lShell32 -lAdvapi32
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/static -llibpq
 }
 
 BUILD_FOR_APP64 {
@@ -37,6 +36,7 @@ BUILD_FOR_APP64 {
     ARCHI = x64
     COMPILER = msvc14
     LIBS += -lSecur32 -lWs2_32 -lShell32 -lAdvapi32
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/static -llibpq
 }
 
 BUILD_FOR_LIB32 {
@@ -53,6 +53,7 @@ BUILD_FOR_R32 {
     ARCHI = x86
     ARCHI_R = i386
     COMPILER = mingw-4.9.3
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
 }
 
 BUILD_FOR_R64 {
@@ -61,6 +62,7 @@ BUILD_FOR_R64 {
     ARCHI = x64
     ARCHI_R = x64
     COMPILER = mingw-4.9.3
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
 }
 
 BUILD_FOR_MGW32 {
@@ -68,6 +70,7 @@ BUILD_FOR_MGW32 {
     CONFIG += static
     ARCHI = x86
     COMPILER = mingw_6.3.0
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
 }
 
 BUILD_FOR_MGW64 {
@@ -75,31 +78,41 @@ BUILD_FOR_MGW64 {
     CONFIG += static
     ARCHI = x64
     COMPILER = mingw_6.3.0
+    LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/shared -llibpq
 }
 
-LIBS += -LD:/PAMStudio/dev/ext_libs/$$COMPILER/$$ARCHI/static -llibpq
-# -L$$RCPP_PATH/libs/$$ARCHI_R -lRcpp
-INCLUDEPATH +=  D:/PAMStudio/dev/ext_libs/include \
-                D:/PAMStudio/dev/git/samara_2/small_sln/src \
 
-SOURCES += \
-    src/Connections.cpp \
-    src/DateTime.cpp \
-    src/main.cpp \
-    src/ParametersReader.cpp \
-    src/samara.cpp
+### R CONFIG ###
+R_PATH = C:/R
+RCPP_PATH = $$R_PATH/library/Rcpp
+INCLUDEPATH += $$RCPP_PATH/include $$R_PATH/include
+LIBS += -L$$RCPP_PATH/libs/$$ARCHI_R -lRcpp
+######
+
+
+INCLUDEPATH +=  D:/PAMStudio/dev/ext_libs/include \
+                D:/PAMStudio/dev/git/small_sln/src \
 
 HEADERS += \
-    src/BhyTypeFAO.h \
-    src/Bileau.h \
-    src/DateTime.hpp \
-    src/delphi_defines.h \
-    src/delphirunner.h \
-    src/MilBilanCarbone.h \
-    src/Risocas2cpp.h \
-    src/Riz.h \
+    src/parameters.h \
     src/samara.h \
-    src/sorghum.h \
     src/variables.h \
-#    src/rsamara_types.hpp
+    src/processes/BhyTypeFAO.h \
+    src/processes/Bileau.h \
+    src/processes/MilBilanCarbone.h \
+    src/processes/Risocas2cpp.h \
+    src/processes/Riz.h \
+    src/processes/sorghum.h \
+    src/utils/DateTime.h \
+    src/utils/psqlloader.h \
+    src/samara_defines.h \
+    src/r/rsamara_types.hpp \
+    src/utils/fileloader.h
+
+SOURCES += \
+    src/main.cpp \
+    src/samara.cpp \
+    src/utils/DateTime.cpp \
+    src/r/rcpp_samara.cpp
+
 

@@ -1,11 +1,8 @@
-/**   @file
-     @brief
-*/
-#pragma once
 #ifndef INCLUDED_RISOCAS_H
 #define INCLUDED_RISOCAS_H
-#include "delphi_defines.h"
-#include "Riz.h"
+
+#include <samara_defines.h>
+//#include <processes/Riz.h>
 
 namespace risocas {
 
@@ -2673,7 +2670,7 @@ void RS_EvalDemandStructIN_V2_1(double const &PhaseElongation, double const &Ape
         /*/NEW G*/
         /*/NEW LB*/
         else
-            DemResInternodePop = (ResCapacityInternodePop - DryMatResInternodePop) * CoeffReserveSink;
+            DemResInternodePop = 0;//(ResCapacityInternodePop - DryMatResInternodePop) * CoeffReserveSink;
 
 
     } catch (...) {
@@ -2859,8 +2856,8 @@ void RS_EvolDemPanFilPopAndIcPFlow_V2_1(double const &NumPhase, double const &Dr
                 AssimSurplus = max(0., Assim - RespMaintTot);
                 A_AssimSurplus = max(0., Assim - RespMaintTot);
             } else {
-                AssimSurplus = 0;
-                A_AssimSurplus = 0;
+                AssimSurplus = 0.;
+                A_AssimSurplus = 0.;
             }
             if ((Ic < 0)) {
                 Ic = 0;

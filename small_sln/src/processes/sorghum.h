@@ -1,7 +1,7 @@
 #ifndef SORGHUM_H
 #define SORGHUM_H
 
-#include "delphi_defines.h"
+#include <samara_defines.h>
 using namespace std;
 
 namespace Sorghum {

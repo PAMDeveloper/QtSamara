@@ -1,7 +1,13 @@
 #ifndef PSQLLOADER_H
 #define PSQLLOADER_H
+
 #include <libpq-fe.h>
-#include "parameters.h"
+
+#include <parameters.h>
+
+#define PSQLTYPE_STRING 1043
+#define PSQLTYPE_DATE 1082
+
 
 using namespace std;
 
@@ -11,10 +17,10 @@ public:
     PGconn * db;
     SamaraParameters * parameters;
 
-    PSQLLoader() {
+    PSQLLoader(SamaraParameters * params) {
         string connection_string = "host=localhost port=5432 dbname=samara user=user_samara password=samarapassword";
         db = PQconnectdb(connection_string.c_str());
-        parameters = new SamaraParameters();
+        parameters = params;
     }
 
     string query(string table, string key, string value) {
@@ -85,9 +91,6 @@ public:
                         );
         }
     }
-
-#define PSQLTYPE_STRING 1043
-#define PSQLTYPE_DATE 1082
 
     void load_record(string query, string category) {
         PGresult* result = PQexec(db, query.c_str());

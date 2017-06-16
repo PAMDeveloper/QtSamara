@@ -1,11 +1,12 @@
 #ifndef SAMARA_H
 #define SAMARA_H
 
-#include <ModelParameters.hpp>
+#include "samara_defines.h"
+#include "parameters.h"
 
-void run_samara_2_1(const samara::ModelParameters& parameters);
-void set_meteo_vars(const samara::ModelParameters& parameters, double t);
-void init_parameters(const samara::ModelParameters& parameters);
+void run_samara_2_1(SamaraParameters * parameters);
+void set_meteo_vars(SamaraParameters * parameters, double t);
+void init_parameters(SamaraParameters * params);
 void init_parcelle();
 void eval_Par(double t);
 void EToFao();
