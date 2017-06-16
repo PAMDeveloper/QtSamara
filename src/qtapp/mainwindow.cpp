@@ -169,9 +169,9 @@ bool MainWindow::addChart(int row, int col,
     double percentage = std::roundf(std::abs(((sumRef-sumSim)/sumRef)) * 10000000)/100000;
 //    qDebug() << sName << ";" << sumRef << ";" << sumSim << ";" << percentage << ";" << QDateTime::fromMSecsSinceEpoch(tDiff).toString("dd/MM/yyyy");
 //    qDebug() << sName << fixed << ":" << percentage;
-        if(percentage <= 0.00001 || sumRef <= 0.00001) {
-            return false;
-        }
+//        if(percentage <= 0.00001 || sumRef <= 0.00001) {
+//            return false;
+//        }
         qDebug() << sName << ":"  << percentage << "%";
 
     QValueAxis *axisY = new QValueAxis;

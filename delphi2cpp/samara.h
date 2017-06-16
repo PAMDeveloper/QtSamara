@@ -1,11 +1,14 @@
 #ifndef SAMARA_H
 #define SAMARA_H
 
-#include <ModelParameters.hpp>
+//#include <ModelParameters.hpp>
 #include "delphi_defines.h"
+#include "parameters.h"
 
-void run_samara_2_1(const samara::ModelParameters& parameters);
+void run_samara_2_1(/*const samara::ModelParameters& parameters*/);
 void set_meteo_vars(const samara::ModelParameters& parameters, double t);
+void set_meteo_vars_2(SamaraParameters * parameters, double t);
+void init_parameters_2(SamaraParameters * params);
 void init_parameters(const samara::ModelParameters& parameters);
 void init_parcelle();
 void eval_Par(double t);

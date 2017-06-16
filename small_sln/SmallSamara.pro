@@ -92,13 +92,10 @@ SOURCES += \
 HEADERS += \
     src/BhyTypeFAO.h \
     src/Bileau.h \
-    src/Connections.hpp \
     src/DateTime.hpp \
     src/delphi_defines.h \
     src/delphirunner.h \
     src/MilBilanCarbone.h \
-    src/ModelParameters.hpp \
-    src/ParametersReader.hpp \
     src/Risocas2cpp.h \
     src/Riz.h \
     src/samara.h \

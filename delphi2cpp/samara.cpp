@@ -8,28 +8,25 @@
 
 #include "BhyTypeFAO.h"
 #include "Bileau.h"
-#include "MeteoCalc.h"
+//#include "MeteoCalc.h"
 #include "MilBilanCarbone.h"
 #include "Risocas2cpp.h"
 #include "Riz.h"
 #include "sorghum.h"
+#include "psqlloader.h"
 
+void run_samara_2_1(/*const samara::ModelParameters& parameters*/) {
+    PSQLLoader loader;
+    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
 
-void run_samara_2_1(const samara::ModelParameters& parameters) {
-    init_parameters(parameters);
-    //Corrections
-    AttenMitch = 0.9955;
-    CO2Slopetr = -0.0004;
-    CO2Exp = 0.004;
-    SlaMax = 0.005;
-    SlaMin = 0.0018;
-    PoidsSecGrain = 0.028;
-
+//    init_parameters(parameters);
+    init_parameters_2(loader.parameters);
+    SamaraParameters * parameters = loader.parameters;
 
     //Simu parameters
-    std::string startDate = parameters.get<std::string>("datedebut");
-    std::string endDate = parameters.get<std::string>("datefin");
-    std::string semisDate = parameters.get<std::string>("datesemis");
+    std::string startDate = parameters->getString("datedebut");
+    std::string endDate = parameters->getString("datefin");
+    std::string semisDate = parameters->getString("datesemis");
 //    dt_utils::datetime dt;
 //    dt_utils::datetime_format22 fmt(dt);
 //    dt.clear();
@@ -38,8 +35,8 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
 
     double DateDebutSimul = artis::utils::DateTime::toJulianDayNumber(startDate);
     double DateFinSimul = artis::utils::DateTime::toJulianDayNumber(endDate);
-    if(nb_step > 0)
-        DateFinSimul = DateDebutSimul + nb_step;
+//    if(nb_step > 0)
+//        DateFinSimul = DateDebutSimul + nb_step;
     double DateEnCours = DateDebutSimul;
     double DateSemis = artis::utils::DateTime::toJulianDayNumber(semisDate);
     double NbJAS = DateEnCours - DateSemis;
@@ -65,8 +62,9 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
     bool crop = false;
     for (DateEnCours; DateEnCours < DateFinSimul; DateEnCours++) {
         std::string currentDate = artis::utils::DateTime::toJulianDayFmt(DateEnCours, artis::utils::DateFormat::DATE_FORMAT_YMD);
-        TMax = parameters.get(DateEnCours).TMax;
-        set_meteo_vars(parameters, DateEnCours);
+        qDebug() << fixed << QString::fromStdString(currentDate) << DateEnCours << NbJAS;
+        TMax = parameters->getClimate(DateEnCours-DateDebutSimul).TMax;
+        set_meteo_vars_2(parameters, DateEnCours-DateDebutSimul);
         NbJAS = DateEnCours - DateSemis;
         if(NbJAS == 57) {
             qDebug() << NbJAS;
@@ -251,17 +249,20 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
                                     ReservePopFin, DryMatTotPopFin, GrainFillingStatusFin, SterilityTotFin, CumIrrigFin, CumWUseFin);
 
 
-        if ( NumPhase == 7 && ChangePhase == 1 ) {
-            kill_crop();
-            reset_variables();
-            crop = false;
-        }
+
 //                risocas::RS_EvalSimEndCycle_V2_1(NumPhase, ChangePhase, NbJAS, SimEndCycle);
 
+        if ( NumPhase == 7 && ChangePhase == 1 ) {
+            reset_variables();
+        }
 #ifdef WITH_TRACE
         QString Jour = QString::fromStdString(artis::utils::DateTime::toJulianDayFmt(DateEnCours, artis::utils::DATE_FORMAT_YMD));
         stream << fixed << Jour << "\t" << A_AssimSurplus << "\t" << A_DemStructLeaf << "\t" << A_DemStructTot << "\t" << A_GrowthStructLeaf << "\t" << A_GrowthStructTot << "\t" << A_IncreaseResInternodePop << "\t" << A_ResInternodeMobiliDay << "\t" << ApexHeight << "\t" << ApexHeightGain << "\t" << Assim << "\t" << AssimNotUsed << "\t" << AssimNotUsedCum << "\t" << AssimPot << "\t" << AssimSurplus << "\t" << CapaRDE << "\t" << CapaREvap << "\t" << CapaRFE << "\t" << ChangeNurseryStatus << "\t" << ChangePhase << "\t" << ChangeSsPhase << "\t" << CoeffCO2Assim << "\t" << CoeffCO2Tr << "\t" << CoeffStressLogging << "\t" << Conversion << "\t" << ConversionEff << "\t" << CounterNursery << "\t" << Cstr << "\t" << CstrAssim << "\t" << CstrCum << "\t" << CstrMean << "\t" << CstrPhase2 << "\t" << CstrPhase3 << "\t" << CstrPhase4 << "\t" << CstrPhase5 << "\t" << CstrPhase6 << "\t" << CulmsPerHill << "\t" << CulmsPerHillFin << "\t" << CulmsPerHillMax << "\t" << CulmsPerPlant << "\t" << CulmsPerPlantFin << "\t" << CulmsPerPlantMax << "\t" << CulmsPop << "\t" << CumCarbonUsedPop << "\t" << CumCstrPhase2 << "\t" << CumCstrPhase3 << "\t" << CumCstrPhase4 << "\t" << CumCstrPhase5 << "\t" << CumCstrPhase6 << "\t" << CumLr << "\t" << CumEt << "\t" << CumFTSWPhase2 << "\t" << CumFTSWPhase3 << "\t" << CumFTSWPhase4 << "\t" << CumFTSWPhase5 << "\t" << CumFTSWPhase6 << "\t" << CumGrowthPop << "\t" << CumIcPhase2 << "\t" << CumIcPhase3 << "\t" << CumIcPhase4 << "\t" << CumIcPhase5 << "\t" << CumIcPhase6 << "\t" << CumIrrig << "\t" << CumIrrigFin << "\t" << CumDr << "\t" << CumPAR << "\t" << CumSupplyTot << "\t" << CumTr << "\t" << CumWReceived << "\t" << CumWUse << "\t" << CumWUseFin << "\t" << DAF << "\t" << DayLength << "\t" << DeadLeafdrywtPop << "\t" << Decli << "\t" << DegresDuJour << "\t" << DegresDuJourCor << "\t" << DemLeafAreaPlant << "\t" << DemPanicleFillPop << "\t" << DemResInternodePop << "\t" << DemStructInternodePlant << "\t" << DemStructInternodePop << "\t" << DemStructLeafPlant << "\t" << DemStructLeafPop << "\t" << DemStructPaniclePlant << "\t" << DemStructPaniclePop << "\t" << DemStructRootPlant << "\t" << DemStructRootPop << "\t" << DemStructSheathPop << "\t" << DemStructTotPop << "\t" << Density << "\t" << Dr << "\t" << DryMatAboveGroundPop << "\t" << DryMatAboveGroundPopFin << "\t" << DryMatAboveGroundTotPop << "\t" << DryMatPanicleTotPop << "\t" << DryMatResInternodePop << "\t" << DryMatResInternodePopOld << "\t" << DryMatStructStemPop << "\t" << DryMatStructInternodePop << "\t" << DryMatStructLeafPop << "\t" << DryMatStructPaniclePop << "\t" << DryMatStructRootPop << "\t" << DryMatStructSheathPop << "\t" << DryMatStructTotPop << "\t" << DryMatTotPop << "\t" << DryMatTotPopFin << "\t" << DryMatVegeTotPop << "\t" << DurGermFlow << "\t" << DurGermMat << "\t" << DurPhase1 << "\t" << DurPhase2 << "\t" << DurPhase3 << "\t" << DurPhase4 << "\t" << DurPhase5 << "\t" << DurPhase6 << "\t" << ETM << "\t" << ETR << "\t" << ETo << "\t" << EauDispo << "\t" << Evap << "\t" << EvapPot << "\t" << FTSW << "\t" << FertSpikeNumPop << "\t" << FloodwaterDepth << "\t" << FloodwaterGain << "\t" << FractionPlantHeightSubmer << "\t" << FractionRootsLogged << "\t" << FtswMoy << "\t" << FtswPhase2 << "\t" << FtswPhase3 << "\t" << FtswPhase4 << "\t" << FtswPhase5 << "\t" << FtswPhase6 << "\t" << GainRootSystSoilSurfPop << "\t" << GainRootSystVolPop << "\t" << GrainFillingStatus << "\t" << GrainFillingStatusFin << "\t" << GrainYieldPanicle << "\t" << GrainYieldPop << "\t" << GrainYieldPopFin << "\t" << GrowthDryMatPop << "\t" << GrowthPop << "\t" << GrowthResInternodePop << "\t" << GrowthStructDeficit << "\t" << GrowthStructInternodePop << "\t" << GrowthStructLeafPop << "\t" << GrowthStructPaniclePop << "\t" << GrowthStructRootPop << "\t" << GrowthStructSheathPop << "\t" << GrowthStructTotPop << "\t" << HMoyCalc << "\t" << HarvestIndex << "\t" << HaunGain << "\t" << HaunIndex << "\t" << Hum << "\t" << Ic << "\t" << IcCum << "\t" << IcMean << "\t" << IcPhase2 << "\t" << IcPhase3 << "\t" << IcPhase4 << "\t" << IcPhase5 << "\t" << IcPhase6 << "\t" << IncreaseResInternodePop << "\t" << InternodeResStatus << "\t" << IrrigAutoDay << "\t" << IrrigTotDay << "\t" << Irrigation << "\t" << KRolling << "\t" << KcTot << "\t" << Kce << "\t" << KceReal << "\t" << Kcl << "\t" << Kcp << "\t" << Kr << "\t" << LIRkdf << "\t" << LIRkdfcl << "\t" << LTRkdf << "\t" << LTRkdfcl << "\t" << Lai << "\t" << LaiDead << "\t" << LaiFin << "\t" << LastLeafLength << "\t" << LastLeafLengthPot << "\t" << LatRad << "\t" << LeafDeathPop << "\t" << Lr << "\t" << MaxLai << "\t" << MobiliLeafDeath << "\t" << NbDaysSinceGermination << "\t" << NbJAS << "\t" << NumPhase << "\t" << NumSsPhase << "\t" << NurseryStatus << "\t" << PARIntercepte << "\t" << PanStructMass << "\t" << PanicleFilDeficit << "\t" << PanicleFilPop << "\t" << PanicleNumPlant << "\t" << PanicleNumPop << "\t" << PanicleSinkPop << "\t" << Par << "\t" << PhaseStemElongation << "\t" << PlantHeight << "\t" << PlantLeafNumNew << "\t" << PlantLeafNumTot << "\t" << PlantWidth << "\t" << ProfRu << "\t" << RUE << "\t" << RayExtra << "\t" << RelPotLeafLength << "\t" << ResCapacityInternodePop << "\t" << ResInternodeMobiliDay << "\t" << ResInternodeMobiliDayPot << "\t" << ResUtil << "\t" << ReservePopFin << "\t" << RespMaintDebt << "\t" << RespMaintTot << "\t" << RgCalc << "\t" << RgMax << "\t" << RootFront << "\t" << RootFrontOld << "\t" << RootMassPerVol << "\t" << RootShootRatio << "\t" << RootSystSoilSurfPop << "\t" << RootSystSoilSurfPopOld << "\t" << RootSystVolPop << "\t" << RootSystVolPopOld << "\t" << RuRac << "\t" << RuSurf << "\t" << SDJCorPhase4 << "\t" << SeuilCstrMortality << "\t" << SeuilTemp << "\t" << SeuilTempSsPhase << "\t" << SimAnthesis50 << "\t" << SimEmergence << "\t" << SimEndCycle << "\t" << SimPanIni << "\t" << SimStartGermin << "\t" << SimStartMatu2 << "\t" << SimStartPSP << "\t" << Sla << "\t" << SlaMitch << "\t" << SlaNew << "\t" << SommeDegresJourMax << "\t" << SpikeNumPanicle << "\t" << SpikeNumPop << "\t" << StRuMax << "\t" << SterilityCold << "\t" << SterilityDrought << "\t" << SterilityHeat << "\t" << SterilityTot << "\t" << SterilityTotFin << "\t" << StockMacropores << "\t" << StockRac << "\t" << StockSurface << "\t" << StockTotal << "\t" << StressCold << "\t" << SumDDPhasePrec << "\t" << SumDegreDayCor << "\t" << SumDegresDay << "\t" << SumPP << "\t" << SunDistance << "\t" << SunPosi << "\t" << SupplyTot << "\t" << TMoyCalc << "\t" << TMoyPrec << "\t" << TempLai << "\t" << TillerDeathPop << "\t" << TmaxMoy << "\t" << TminMoy << "\t" << Tr << "\t" << TrEff << "\t" << TrEffInst << "\t" << TrPot << "\t" << VPDCalc << "\t" << ValRDE << "\t" << ValRFE << "\t" << ValRSurf << "\t" << VitesseRacinaire << "\t" << VitesseRacinaireDay << "\t" << VolMacropores << "\t" << VolRelMacropores << "\t" << WueEt << "\t" << WueTot << endl;
 #endif
+        if ( NumPhase == 7 && ChangePhase == 1 ) {
+            kill_crop();
+            crop = false;
+        }
     }
     #ifdef WITH_TRACE
     stream.flush();
@@ -269,6 +270,133 @@ void run_samara_2_1(const samara::ModelParameters& parameters) {
 #endif
 }
 
+
+void init_parameters_2(SamaraParameters * params) {
+//    for(auto const &p : params->doubles) {
+//        qDebug() << QString::fromStdString(p.first) << p.second.first;
+//    }
+
+//    for(auto const &p : params->climatics) {
+//        qDebug() << p.TMax;
+//    }
+
+    SamaraParameters parameters = *params;
+    Altitude = parameters.getDouble("altitude");
+    ASScstr = parameters.getDouble("asscstr");
+    AttenMitch = parameters.getDouble("attenmitch");
+    BundHeight = parameters.getDouble("bundheight");
+    Ca = parameters.getDouble("ca");
+    CO2Cp = parameters.getDouble("co2cp");
+    CO2Exp = parameters.getDouble("co2exp");
+    CO2Slopetr = parameters.getDouble("co2slopetr");
+    CoeffAssimSla = parameters.getDouble("coeffassimsla");
+    CoefficientQ10 = parameters.getDouble("coefficientq10");
+    CoeffInternodeMass = parameters.getDouble("coeffinternodemass");
+    CoeffInternodeNum = parameters.getDouble("coeffinternodenum");
+    CoeffLeafDeath = parameters.getDouble("coeffleafdeath");
+    CoeffLeafWLRatio = parameters.getDouble("coeffleafwlratio");
+    CoeffPanicleMass = parameters.getDouble("coeffpaniclemass");
+    CoeffPanSinkPop = parameters.getDouble("coeffpansinkpop");
+    CoeffResCapacityInternode = parameters.getDouble("coeffrescapacityinternode");
+    CoeffReserveSink = parameters.getDouble("coeffreservesink");
+    CoeffRootMassPerVolMax = parameters.getDouble("coeffrootmasspervolmax");
+    CoeffTillerDeath = parameters.getDouble("coefftillerdeath");
+    CoeffTransplantingShock = parameters.getDouble("coefftransplantingshock");
+    DensityField = parameters.getDouble("densityfield");
+    DensityNursery = parameters.getDouble("densitynursery");
+    DEVcstr = parameters.getDouble("devcstr");
+    DurationNursery = parameters.getDouble("durationnursery");
+    EpaisseurProf = parameters.getDouble("epaisseurprof");
+    EpaisseurSurf = parameters.getDouble("epaisseursurf");
+    ExcessAssimToRoot = parameters.getDouble("excessassimtoroot");
+    FTSWIrrig = parameters.getDouble("ftswirrig");
+    HaunCritTillering = parameters.getDouble("hauncrittillering");
+    HumFC = parameters.getDouble("humfc");
+    HumPF = parameters.getDouble("humpf");
+    HumSat = parameters.getDouble("humsat");
+    IcTillering = parameters.getDouble("ictillering");
+    InternodeLengthMax = parameters.getDouble("internodelengthmax");
+    IrrigAuto = parameters.getDouble("irrigauto");
+    IrrigAutoResume = parameters.getDouble("irrigautoresume");
+    IrrigAutoStop = parameters.getDouble("irrigautostop");
+    IrrigAutoTarget = parameters.getDouble("irrigautotarget");
+    KcMax = parameters.getDouble("kcmax");
+    KCritSterCold1 = parameters.getDouble("kcritstercold1");
+    KCritSterCold2 = parameters.getDouble("kcritstercold2");
+    KCritSterFtsw1 = parameters.getDouble("kcritsterftsw1");
+    KCritSterFtsw2 = parameters.getDouble("kcritsterftsw2");
+    KCritSterHeat1 = parameters.getDouble("kcritsterheat1");
+    KCritSterHeat2 = parameters.getDouble("kcritsterheat2");
+    KCritStressCold1 = parameters.getDouble("kcritstresscold1");
+    KCritStressCold2 = parameters.getDouble("kcritstresscold2");
+    Kdf = parameters.getDouble("kdf");
+    KPar = parameters.getDouble ("kpar");
+    KRespInternode = parameters.getDouble("krespinternode");
+    KRespMaintLeaf = parameters.getDouble("krespmaintleaf");
+    KRespMaintRoot = parameters.getDouble("krespmaintroot");
+    KRespMaintSheath = parameters.getDouble("krespmaintsheath");
+    KRespPanicle = parameters.getDouble("kresppanicle");
+    KTempMaint = parameters.getDouble("ktempmaint");
+    Latitude = parameters.getDouble("latitude");
+    LeafLengthMax = parameters.getDouble("leaflengthmax");
+    LifeSavingDrainage = parameters.getDouble("lifesavingdrainage");
+    Mulch = parameters.getDouble("mulch");
+    PanStructMassMax = parameters.getDouble("panstructmassmax");
+    PercolationMax = parameters.getDouble("percolationmax");
+    PEvap = parameters.getDouble("pevap");
+    PFactor = parameters.getDouble("pfactor");
+    Phyllo = parameters.getDouble("phyllo");
+    PlantsPerHill = parameters.getDouble("plantsperhill");
+    PlotDrainageDAF = parameters.getDouble("plotdrainagedaf");
+    PoidsSecGrain = parameters.getDouble("poidssecgrain");
+    PourcRuiss = parameters.getDouble("pourcruiss");
+    PPCrit = parameters.getDouble("ppcrit");
+    PPExp = parameters.getDouble("ppexp");
+    PPSens = parameters.getDouble("ppsens");
+    PriorityPan = parameters.getDouble("prioritypan");
+    ProfRacIni = parameters.getDouble("profracini");
+    RankLongestLeaf = parameters.getDouble("ranklongestleaf");
+    RelMobiliInternodeMax = parameters.getDouble("relmobiliinternodemax");
+    RelPhylloPhaseStemElong = parameters.getDouble("relphyllophasestemelong");
+    RollingBase = parameters.getDouble("rollingbase");
+    RollingSens = parameters.getDouble("rollingsens");
+    RootCstr = parameters.getDouble("rootcstr");
+    RootFrontMax = parameters.getDouble("rootfrontmax");
+    RootPartitMax = parameters.getDouble("rootpartitmax");
+    SDJBVP = parameters.getDouble("sdjbvp");
+    SDJLevee = parameters.getDouble("sdjlevee");
+    SDJMatu1 = parameters.getDouble("sdjmatu1");
+    SDJMatu2 = parameters.getDouble("sdjmatu2");
+    SDJRPR = parameters.getDouble("sdjrpr");
+    SeuilPP = parameters.getDouble("seuilpp");
+    SeuilRuiss = parameters.getDouble("seuilruiss");
+    SlaMax = parameters.getDouble("slamax");
+    SlaMin = parameters.getDouble("slamin");
+    StockIniProf = parameters.getDouble("stockiniprof");
+    StockIniSurf = parameters.getDouble("stockinisurf");
+    TBase = parameters.getDouble("tbase");
+    TempSLA = parameters.getDouble("tempsla");
+    TilAbility = parameters.getDouble("tilability");
+    TLim = parameters.getDouble("tlim");
+    TOpt1 = parameters.getDouble("topt1");
+    TOpt2 = parameters.getDouble("topt2");
+    Transplanting = parameters.getDouble("transplanting");
+    TransplantingDepth = parameters.getDouble("transplantingdepth");
+    TxAssimBVP = parameters.getDouble("txassimbvp");
+    TxAssimMatu1 = parameters.getDouble("txassimmatu1");
+    TxAssimMatu2 = parameters.getDouble("txassimmatu2");
+    TxConversion = parameters.getDouble("txconversion");
+    TxResGrain = parameters.getDouble("txresgrain");
+    TxRuSurfGermi = parameters.getDouble("txrusurfgermi");
+    VRacBVP = parameters.getDouble("vracbvp");
+    VRacLevee = parameters.getDouble("vraclevee");
+    VRacMatu1 = parameters.getDouble("vracmatu1");
+    VRacMatu2 = parameters.getDouble("vracmatu2");
+    VRacPSP = parameters.getDouble("vracpsp");
+    VRacRPR = parameters.getDouble("vracrpr");
+    WaterLoggingSens = parameters.getDouble("waterloggingsens");
+    WtRatioLeafSheath = parameters.getDouble("wtratioleafsheath");
+}
 
 void init_parameters(const samara::ModelParameters& parameters) {
     Altitude = parameters.get<double>("altitude");
@@ -389,6 +517,8 @@ void init_parameters(const samara::ModelParameters& parameters) {
 }
 
 void reset_variables() {
+    CstrMean = 0;
+    IcMean = 0;
     CulmsPerPlant = 0;
     CulmsPerHill = 0;
     CulmsPop = 0;
@@ -439,6 +569,31 @@ void reset_variables() {
     FTSW = 0;
     DryMatAboveGroundTotPop = 0;
 }
+
+void set_meteo_vars_2(SamaraParameters * parameters, double t) {
+    TMax = parameters->getClimate(t).TMax;
+    TMin = parameters->getClimate(t).TMin;
+    TMoy = parameters->getClimate(t).TMoy; //local
+    HMax = parameters->getClimate(t).HMax;
+    HMin = parameters->getClimate(t).HMin;
+    HMoy = parameters->getClimate(t).HMoy;//local
+    Vt = parameters->getClimate(t).Vt;
+    Ins = parameters->getClimate(t).Ins;
+    Rg = parameters->getClimate(t).Rg;
+    ETP = parameters->getClimate(t).ETP;
+    Pluie = parameters->getClimate(t).Rain;
+    if (((TMin != NilValue) && (TMax != NilValue))) {
+      TMoyCalc = (TMax + TMin) * 1.0 / 2;
+    } else {
+      TMoyCalc = TMoy;
+    }
+    if (((HMin != NilValue) && (HMax != NilValue))) {
+      HMoyCalc = (HMax + HMin) * 1.0 / 2;
+    } else {
+      HMoyCalc = HMoy;
+    }
+}
+
 
 void set_meteo_vars(const samara::ModelParameters& parameters, double t) {
     TMax = parameters.get(t).TMax;
@@ -582,14 +737,13 @@ void kill_crop(){
     A_DemStructTot = 0;
     CoeffCO2Tr = 0;
     CoeffCO2Assim = 0;
-    CstrMean = 0;
+
     DemResInternodePop = 0;
     GrowthDryMatPop = 0;
     Tr = 0;
     TrEff = 0;
     ConversionEff = 0;
     GrowthPop = 0;
-    IcMean = 0;
     DryMatResInternodePopOld = 0;
     CumGrowthPop = 0;
     CumCarbonUsedPop = 0;

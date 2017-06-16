@@ -28,7 +28,7 @@
 #include <cmath>
 #include <iostream>
 
-static const int nb_step = 100;
+static const int nb_step = 200;
 
 #define Q(x) #x
 #define error_message(A, B) std::cout << A << Q(x);

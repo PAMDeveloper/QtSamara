@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     startC = std::chrono::system_clock::now();
 
 //    for (int i = 0; i < 1000; ++i) {
-        run_samara_2_1(parameters);
+        run_samara_2_1(/*parameters*/);
 //    }
 
 //    endC = std::chrono::system_clock::now();

@@ -2673,7 +2673,7 @@ void RS_EvalDemandStructIN_V2_1(double const &PhaseElongation, double const &Ape
         /*/NEW G*/
         /*/NEW LB*/
         else
-            DemResInternodePop = (ResCapacityInternodePop - DryMatResInternodePop) * CoeffReserveSink;
+            DemResInternodePop = 0;//(ResCapacityInternodePop - DryMatResInternodePop) * CoeffReserveSink;
 
 
     } catch (...) {
