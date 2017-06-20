@@ -2,8 +2,8 @@
 #define PSQLLOADER_H
 
 #include <libpq-fe.h>
-
-#include <parameters.h>
+#include "../parameters.h"
+#include "../utils/DateTime.h"
 
 #define PSQLTYPE_STRING 1043
 #define PSQLTYPE_DATE 1082
@@ -92,6 +92,10 @@ public:
         }
     }
 
+    void load_record(string table, string key, string value) {
+        load_record(query(table,key,value), table);
+    }
+
     void load_record(string query, string category) {
         PGresult* result = PQexec(db, query.c_str());
         if (PQresultStatus(result) != PGRES_TUPLES_OK){
@@ -100,10 +104,13 @@ public:
 
         for (int col = 0; col < PQnfields(result); ++col) {
             string key = string(PQfname(result,col));
-            if((PQftype(result,col) == PSQLTYPE_STRING) || (PQftype(result,col) == PSQLTYPE_DATE)){
+            if( PQftype(result,col) == PSQLTYPE_STRING ){
                 parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
-            }
-            else {
+            } else if( PQftype(result,col) == PSQLTYPE_DATE ){
+                parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
+                parameters->doubles[key] =  pair <double, string> (DateTime::toJulianDayNumber(string(PQgetvalue(result,0,col))), category);
+
+            } else {
                 parameters->doubles[key] =  pair <double, string> ( atof(PQgetvalue(result,0,col)), category);
             }
         }

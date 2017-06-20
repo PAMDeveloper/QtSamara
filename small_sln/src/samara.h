@@ -4,7 +4,7 @@
 #include "samara_defines.h"
 #include "parameters.h"
 
-void run_samara_2_1(SamaraParameters * parameters);
+pair <vector <string>, vector < vector <double> > > run_samara_2_1(SamaraParameters * parameters);
 void set_meteo_vars(SamaraParameters * parameters, double t);
 void init_parameters(SamaraParameters * params);
 void init_parcelle();

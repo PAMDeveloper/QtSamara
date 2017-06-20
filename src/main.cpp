@@ -31,8 +31,8 @@
 #include <observer/GlobalView.hpp>
 #include <models/Model2_1.hpp>
 #include <utils/ParametersReader.hpp>
-#include "../delphi2cpp/samara.h"
-#include "../delphi2cpp/psqlloader.h"
+#include "../../small_sln/src/samara.h"
+#include "../../small_sln/src/utils/psqlloader.h"
 
 
 int main(int argc, char *argv[]) {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
                                   "yyyy-MM-dd");
     parameters.beginDate = start.toJulianDay();
     qDebug() << parameters.beginDate << end.toJulianDay();
-    double endJulian = nb_step > 0 ? start.toJulianDay() + nb_step : end.toJulianDay();
+    double endJulian = end.toJulianDay();
     SamaraContext context(start.toJulianDay(), endJulian);
 
     ::Trace::trace().clear();
@@ -63,15 +63,19 @@ int main(int argc, char *argv[]) {
     observer::GlobalView *view = new observer::GlobalView();
     simulator.attachView("plant", view);
     simulator.init(start.toJulianDay(), parameters);
-    simulator.run(context);
+//    simulator.run(context);
 //    w.show_trace();
 
-
+    qDebug() << fixed << start.toJulianDay();
     std::chrono::time_point<std::chrono::system_clock> startC, endC;
     startC = std::chrono::system_clock::now();
 
+    SamaraParameters * paramsSam = new SamaraParameters();
+    PSQLLoader loader(paramsSam);
+    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
+    qDebug() << fixed << paramsSam->doubles["datedebut"].first;
 //    for (int i = 0; i < 1000; ++i) {
-        run_samara_2_1(/*parameters*/);
+//        run_samara_2_1(paramsSam);
 //    }
 
 //    endC = std::chrono::system_clock::now();
@@ -84,9 +88,9 @@ int main(int argc, char *argv[]) {
 
 
     std::string dirName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
-    w.displayData(view, QString::fromStdString(dirName), &parameters,
-                  QString::fromStdString(parameters.get < std::string >("datedebut")),
-                  QString::fromStdString(parameters.get < std::string >("datefin")));
+//    w.displayData(view, QString::fromStdString(dirName), &parameters,
+//                  QString::fromStdString(parameters.get < std::string >("datedebut")),
+//                  QString::fromStdString(parameters.get < std::string >("datefin")));
 
 //    std::cout << "finished computation at " << std::ctime(&end_time)
 //              << "elapsed time: " << elapsed_seconds << "microsec\n";
