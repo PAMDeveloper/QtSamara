@@ -5,14 +5,11 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QSplineSeries>
 #include <QGridLayout>
-
-#include <artis/utils/DateTime.hpp>
-#include <ModelParameters.hpp>
-#include <observer/GlobalView.hpp>
-#include <utils/ParametersReader.hpp>
-
 #include <QMouseEvent>
 #include <QDate>
+#include <qtapp/comparisondatamodel.h>
+
+#include <parameters.h>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -20,44 +17,55 @@ namespace Ui {
 class MainWindow;
 }
 
+
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
-  void displayData(observer::GlobalView *view, QString refFile,
-                   samara::ModelParameters *parameters,
-                   QString begin, QString end);
-  bool addChart(int row, int col, QLineSeries *series, QLineSeries *refseries,
-                QLineSeries *delphRefseries,
-                QGridLayout *lay, QString name);
+    void displayData(
+            SamaraParameters * parameters,
+            pair <vector <string>, vector < vector <double> > > results,
+            QString refFileName, bool showCharts = false);
 
-  QLineSeries *getSeries(QString fileName, QDate endDate);
+    bool addChart(int row, int col,
+                  QLineSeries *series,
+                  QLineSeries *refseries,
+                  QString name);
 
-  void show_trace();
+    serieCompare compareSeries(QLineSeries * src, QLineSeries * ref);
+
+    QMap < QString, QLineSeries * > getRefSeries(QString refFileName);
+    QMap < QString, QLineSeries * > getResultSeries(pair <vector <string>, vector < vector <double> > > results);
+
+
+//    QLineSeries *getSeries(QString fileName, QDate endDate);
+
+    void createChartsTab();
+    void show_trace();
 
 private slots:
-  void on_lineEdit_textChanged(const QString &arg1);
-  void on_lineEdit_2_textChanged(const QString &arg1);
-  void on_lineEdit_3_textChanged(const QString &arg1);
-  void on_lineEdit_4_textChanged(const QString &arg1);
+    void on_lineEdit_textChanged(const QString &arg1);
+    void on_lineEdit_2_textChanged(const QString &arg1);
+    void on_lineEdit_3_textChanged(const QString &arg1);
+    void on_lineEdit_4_textChanged(const QString &arg1);
 
 private:
-  Ui::MainWindow *ui;
-  QString _date;
-  QString _model_name;
-  QString _var_name;
-  int _type;
+    Ui::MainWindow *ui;
+    QString _date;
+    QString _model_name;
+    QString _var_name;
+    int _type;
 
 private:
-  samara::ModelParameters parameters;
-  utils::ParametersReader reader;
-  std::string simulation;
-  QString refFolder;
-  QDate currentDate;
-  QDate startDate;
+    SamaraParameters * parameters;
+    QList<serieCompare> comparisons;
+    QStringList headers;
+    std::string simulation;
+    QDate startDate;
+    QGridLayout *lay;
 };
 
 #endif // MAINWINDOW_H

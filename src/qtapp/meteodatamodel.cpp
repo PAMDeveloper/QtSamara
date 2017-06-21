@@ -1,7 +1,7 @@
 #include "meteodatamodel.h"
 #include <QDebug>
 
-MeteoDataModel::MeteoDataModel(samara::ModelParameters * params, QObject *parent)
+MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
 {
 //    for(auto it = params.getRawParameters().begin(); it != params.getRawParameters().end(); ++it) {
@@ -11,7 +11,7 @@ MeteoDataModel::MeteoDataModel(samara::ModelParameters * params, QObject *parent
 }
 
 int MeteoDataModel::rowCount(const QModelIndex &parent) const {
-    return  parameters->getMeteoValues()->size();
+    return  parameters->climatics.size();
 }
 int MeteoDataModel::columnCount(const QModelIndex &parent) const {
     return 12;
@@ -21,17 +21,17 @@ QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
     if(role == Qt::DisplayRole){
         switch(index.column()){
             case 0: return index.row(); break;
-            case 1: return parameters->getMeteoValues()->at(index.row()).TMax; break;
-            case 2: return parameters->getMeteoValues()->at(index.row()).TMin; break;
-            case 3: return parameters->getMeteoValues()->at(index.row()).TMoy; break;
-            case 4: return parameters->getMeteoValues()->at(index.row()).HMax; break;
-            case 5: return parameters->getMeteoValues()->at(index.row()).HMin; break;
-            case 6: return parameters->getMeteoValues()->at(index.row()).HMoy; break;
-            case 7: return parameters->getMeteoValues()->at(index.row()).Vt; break;
-            case 8: return parameters->getMeteoValues()->at(index.row()).Ins; break;
-            case 9: return parameters->getMeteoValues()->at(index.row()).Rg; break;
-            case 10: return parameters->getMeteoValues()->at(index.row()).ETP; break;
-            case 11: return parameters->getMeteoValues()->at(index.row()).Rain; break;
+            case 1: return parameters->climatics.at(index.row()).TMax; break;
+            case 2: return parameters->climatics.at(index.row()).TMin; break;
+            case 3: return parameters->climatics.at(index.row()).TMoy; break;
+            case 4: return parameters->climatics.at(index.row()).HMax; break;
+            case 5: return parameters->climatics.at(index.row()).HMin; break;
+            case 6: return parameters->climatics.at(index.row()).HMoy; break;
+            case 7: return parameters->climatics.at(index.row()).Vt; break;
+            case 8: return parameters->climatics.at(index.row()).Ins; break;
+            case 9: return parameters->climatics.at(index.row()).Rg; break;
+            case 10: return parameters->climatics.at(index.row()).ETP; break;
+            case 11: return parameters->climatics.at(index.row()).Rain; break;
         }
     }
 

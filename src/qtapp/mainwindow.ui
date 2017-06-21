@@ -82,7 +82,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="parametersTab">
        <attribute name="title">
@@ -131,9 +131,19 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextEdit" name="textEdit"/>
+           <widget class="QTableView" name="resultsTableView"/>
           </item>
          </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QTableView" name="comparisonTableView"/>
         </item>
        </layout>
       </widget>

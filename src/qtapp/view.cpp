@@ -40,11 +40,11 @@
 
 #include <qtapp/callout.h>
 
-ChartView::ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QLineSeries *delphRefseries, QWidget *parent)
+ChartView::ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QWidget *parent)
   : QGraphicsView(new QGraphicsScene, parent),
     m_coordX(0), m_coordY(0), m_coordRefY(0),
     m_chart(0), m_tooltip(0),
-    series(series), refseries(refseries), delphrefseries(delphRefseries) {
+    series(series), refseries(refseries) {
   setDragMode(QGraphicsView::NoDrag);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -110,10 +110,6 @@ void ChartView::mouseMoveEvent(QMouseEvent *event) {
     if (serieIdx >= 0 && serieIdx < refseries->points().size()) {
       txt = QString("Ref: %1").arg(refseries->at(serieIdx).y());
     }
-    if (delphrefseries != NULL)
-      if (serieIdx >= 0 && serieIdx < delphrefseries->points().size()) {
-        txt += QString(" DRf: %1").arg(delphrefseries->at(serieIdx).y());
-      }
     m_coordRefY->setText(txt);
   }
 

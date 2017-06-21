@@ -1,10 +1,10 @@
 #include "parametersdatamodel.h"
 #include <QDebug>
-ParametersDataModel::ParametersDataModel(samara::ModelParameters * params, QObject *parent)
+ParametersDataModel::ParametersDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
 {
-    for(auto it = params->getRawParameters()->begin(); it != params->getRawParameters()->end(); ++it) {
-        keys << QString::fromStdString(it->first);
+    for(auto const& token: params->doubles) {
+        keys << QString::fromStdString(token.first);
     }
 }
 
@@ -23,11 +23,11 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
     if(index.column() == 1 && role == Qt::DisplayRole) {
         try
         {
-          return parameters->get<double>(keys[index.row()].toStdString());
+          return parameters->getDouble(keys[index.row()].toStdString());
 
         }
         catch(...) {
-            return QString::fromStdString(parameters->get<std::string>(keys[index.row()].toStdString()));
+            return QString::fromStdString(parameters->getString(keys[index.row()].toStdString()));
         }
 
     }

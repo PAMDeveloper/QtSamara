@@ -2,13 +2,13 @@
 #define METEODATAMODEL_H
 
 #include <QAbstractTableModel>
-#include <ModelParameters.hpp>
+#include <parameters.h>
 
 class MeteoDataModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    MeteoDataModel(samara::ModelParameters * parameters, QObject *parent=0);
+    MeteoDataModel(SamaraParameters * parameters, QObject *parent=0);
 
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
@@ -21,7 +21,7 @@ public:
 //     samara::ModelParameters getParameters();
 
 private:
-    samara::ModelParameters * parameters;
+    SamaraParameters * parameters;
     QStringList keys;
 };
 

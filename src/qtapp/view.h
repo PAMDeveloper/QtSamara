@@ -49,7 +49,7 @@ class ChartView: public QGraphicsView {
   Q_OBJECT
 
 public:
-  ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QLineSeries *delphRefseries, QWidget *parent = 0);
+  ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QWidget *parent = 0);
 
 protected:
   void resizeEvent(QResizeEvent *event);
@@ -68,7 +68,6 @@ private:
   QList<Callout *> m_callouts;
   QLineSeries *series;
   QLineSeries *refseries;
-  QLineSeries *delphrefseries;
 };
 
 #endif
