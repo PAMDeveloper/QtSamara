@@ -44,7 +44,7 @@ QVariant ComparisonDataModel::data(const QModelIndex &index, int role) const{
         return result;
     }
 
-    if(role == Qt::BackgroundColorRole) {
+    if(role == Qt::BackgroundColorRole || role == Qt::UserRole) {
         if(!resultsSeries.contains(header) || !refSeries.contains(header))
             return QColor(Qt::lightGray);
         double valRes = -1;
@@ -55,8 +55,16 @@ QVariant ComparisonDataModel::data(const QModelIndex &index, int role) const{
         if( refSeries.contains(header) )
             valRef = refSeries[header]->at(index.row()).y();
 
-        if( std::abs((valRes-valRef)/valRef) > 0.0001 ) return QColor(Qt::red).lighter(150);
-        else return QColor(Qt::white);
+        bool different = false;
+        if( std::abs((valRes-valRef)/valRef) > 0.0001 && std::abs(valRes) > 1e-12 && std::abs(valRef)>1e-12) different = true;
+
+        if(role == Qt::BackgroundColorRole) {
+            return different ? QColor(Qt::red).lighter(150) : QColor(Qt::white);
+        }
+
+        if(role == Qt::UserRole) {
+            return different ? true : false;
+        }
     }
 
     if(role == Qt::TextAlignmentRole)

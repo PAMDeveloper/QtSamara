@@ -139,7 +139,7 @@
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Page</string>
+        <string>Comparison</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>

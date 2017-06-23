@@ -17,9 +17,7 @@
 #include <QDebug>
 
 #include <qtapp/view.h>
-#include <qtapp/meteodatamodel.h>
-#include <qtapp/parametersdatamodel.h>
-#include <qtapp/resultsdatamodel.h>
+
 
 #include <cmath>
 
@@ -148,8 +146,8 @@ bool MainWindow::addChart(int row, int col,
     chart->setTitle(titleName);
 
     QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("dd-MM");
+//    axisX->setTickCount(10);
+    axisX->setFormat("dd MM");
     chart->addAxis(axisX, Qt::AlignBottom);
     resultsSeries->attachAxis(axisX);
     refSeries->attachAxis(axisX);
@@ -202,10 +200,8 @@ QMap < QString, QLineSeries * > MainWindow::getRefSeries(QString refFileName) {
         foreach (QString header, headers) {
             refSeries.insert(header, new QLineSeries());
         }
-
         QDateTime date;
         date.setDate(startDate);
-        date = date.addDays(0);
         int l = 0;
         while (!in.atEnd()) {
             l++;
@@ -229,7 +225,6 @@ QMap < QString, QLineSeries * > MainWindow::getResultSeries(pair <vector <string
         QLineSeries * serie = new QLineSeries();
         QDateTime date;
         date.setDate(startDate);
-        date = date.addDays(0);
         for (int d = 0; d < results.second[i].size(); ++d) {
             serie->append(date.toMSecsSinceEpoch(),
                           results.second[i][d]);
@@ -247,22 +242,21 @@ void MainWindow::displayData(
         bool showCharts) {
 
 
-        ParametersDataModel *paramModel = new ParametersDataModel(parameters);
-        ui->parametersTableView->setModel(paramModel);
+    ParametersDataModel *paramModel = new ParametersDataModel(parameters);
+    ui->parametersTableView->setModel(paramModel);
 
-        MeteoDataModel *meteoModel = new MeteoDataModel(parameters);
-        ui->meteoTableView->setModel(meteoModel);
+    MeteoDataModel *meteoModel = new MeteoDataModel(parameters);
+    ui->meteoTableView->setModel(meteoModel);
 
-        ResultsDataModel *resultsModel = new ResultsDataModel(results);
-        ui->resultsTableView->setModel(resultsModel);
-
-    QMap < QString, QLineSeries * > refSeries = getRefSeries(refFileName);
-    QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
+    ResultsDataModel *resultsModel = new ResultsDataModel(results);
+    ui->resultsTableView->setModel(resultsModel);
 
     startDate = QDate::fromString(
                 QString::fromStdString(parameters->getString("datedebut")),
                 "yyyy-MM-dd");
 
+    QMap < QString, QLineSeries * > refSeries = getRefSeries(refFileName);
+    QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
 
     headers << refSeries.keys() << resultsSeries.keys();
     headers = headers.toSet().toList();
@@ -276,6 +270,28 @@ void MainWindow::displayData(
                 j++;
     }
 
-    ComparisonDataModel *comparisonModel = new ComparisonDataModel(resultsSeries, refSeries, comparisons, headers, startDate, true);
+    ui->comparisonTableView->verticalHeader()->setSectionsClickable(true);
+    connect(ui->comparisonTableView->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
+
+    comparisonModel = new ComparisonDataModel(resultsSeries, refSeries, comparisons, headers, startDate, true);
     ui->comparisonTableView->setModel(comparisonModel);
+
+}
+
+void MainWindow::sectionClicked(int row) {
+    bool all_good = true;
+    for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
+        if(!comparisonModel->index(row, i).data(Qt::UserRole).toBool()) {
+            ui->comparisonTableView->hideColumn(i);
+        } else {
+            ui->comparisonTableView->showColumn(i);
+            all_good = false;
+        }
+    }
+
+    if(all_good) {
+        for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
+            ui->comparisonTableView->showColumn(i);
+        }
+    }
 }

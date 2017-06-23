@@ -10,6 +10,9 @@
 #include <qtapp/comparisondatamodel.h>
 
 #include <parameters.h>
+#include <qtapp/meteodatamodel.h>
+#include <qtapp/parametersdatamodel.h>
+#include <qtapp/resultsdatamodel.h>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -51,6 +54,7 @@ private slots:
     void on_lineEdit_2_textChanged(const QString &arg1);
     void on_lineEdit_3_textChanged(const QString &arg1);
     void on_lineEdit_4_textChanged(const QString &arg1);
+    void sectionClicked(int);
 
 private:
     Ui::MainWindow *ui;
@@ -60,6 +64,7 @@ private:
     int _type;
 
 private:
+    ComparisonDataModel *comparisonModel;
     SamaraParameters * parameters;
     QList<serieCompare> comparisons;
     QStringList headers;
