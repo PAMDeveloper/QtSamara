@@ -6,20 +6,22 @@
 
 #include <samara.h>
 #include <utils/psqlloader.h>
+#include <utils/fileloader.h>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-
+//    load_file_parameters("Z:/Downloads/SMK2013/Variete_SMK2013.txt", "");
     SamaraParameters * paramsSam = new SamaraParameters();
     PSQLLoader loader(paramsSam);
-    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
-    auto results = run_samara_2_1(paramsSam);
+//    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
+//    auto results = run_samara_2_1(paramsSam);
 
-    QString refFileName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
-    w.displayData(paramsSam, results, refFileName, true);
+    MainWindow w(&loader);
+    w.show();
+
+//    QString refFileName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
+//    w.displayData(paramsSam, results, refFileName, true);
 
     return a.exec();
 

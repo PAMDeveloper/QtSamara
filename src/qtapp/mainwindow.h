@@ -13,6 +13,7 @@
 #include <qtapp/meteodatamodel.h>
 #include <qtapp/parametersdatamodel.h>
 #include <qtapp/resultsdatamodel.h>
+#include <utils/psqlloader.h>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -25,7 +26,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(PSQLLoader * loader, QWidget *parent = 0);
     ~MainWindow();
 
     void displayData(
@@ -48,6 +49,7 @@ public:
 
     void createChartsTab();
     void show_trace();
+    void fillCombos();
 
 private slots:
     void on_lineEdit_textChanged(const QString &arg1);
@@ -64,6 +66,7 @@ private:
     int _type;
 
 private:
+    PSQLLoader * loader;
     ComparisonDataModel *comparisonModel;
     SamaraParameters * parameters;
     QList<serieCompare> comparisons;

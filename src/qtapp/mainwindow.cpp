@@ -26,17 +26,35 @@ static const int numCol = 2;
 
 QT_CHARTS_USE_NAMESPACE
 
-MainWindow::MainWindow(QWidget *parent) :
+QStringList fromVector(vector<string> list) {
+    QStringList r;
+    for (int i = 0; i < list.size(); ++i) {
+        r << QString::fromStdString(list[i]);
+    }
+    return r;
+}
+
+MainWindow::MainWindow(PSQLLoader * loader, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+    ui(new Ui::MainWindow), loader(loader)
+{
     ui->setupUi(this);
     ui->splitter->setStretchFactor(0, 0);
     ui->splitter->setStretchFactor(1, 1);
     createChartsTab();
+    fillCombos();
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::fillCombos() {
+    ui->simComboBox->addItems(fromVector(loader->load_simulations_list()));
+    ui->varComboBox->addItems(fromVector(loader->load_variety_list()));
+    ui->plotComboBox->addItems(fromVector(loader->load_plot_list()));
+    ui->stationComboBox->addItems(fromVector(loader->load_station_list()));
+    ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
 }
 
 void MainWindow::show_trace() {
