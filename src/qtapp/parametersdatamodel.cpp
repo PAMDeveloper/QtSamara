@@ -20,11 +20,11 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
         return keys[index.row()];
 
 
-    if(index.column() == 1 && role == Qt::DisplayRole) {
+    if(index.column() == 1 && (role == Qt::DisplayRole || role == Qt::EditRole)) {
         try
         {
-          return parameters->getDouble(keys[index.row()].toStdString());
-
+            double r = parameters->getDouble(keys[index.row()].toStdString());
+            return QString::number(r, 'f', 6);
         }
         catch(...) {
             return QString::fromStdString(parameters->getString(keys[index.row()].toStdString()));
@@ -48,4 +48,22 @@ QVariant ParametersDataModel::headerData(int section, Qt::Orientation orientatio
     }
 
     return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+Qt::ItemFlags ParametersDataModel::flags(const QModelIndex &index) const {
+    if(index.column() == 1)
+        return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
+
+    return QAbstractTableModel::flags(index);
+}
+
+bool ParametersDataModel::setData(const QModelIndex &idx, const QVariant &value, int role) {
+    if(role != Qt::EditRole)
+        return false;
+    string key = data(index(idx.row(),0), Qt::DisplayRole).toString().toStdString();
+    bool ok;
+    double d = value.toDouble(&ok);
+    if(ok)
+        parameters->doubles[key].first = d;
+    return ok;
 }
