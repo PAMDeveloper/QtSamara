@@ -29,10 +29,7 @@ public:
     explicit MainWindow(PSQLLoader * loader, QWidget *parent = 0);
     ~MainWindow();
 
-    void displayData(
-            SamaraParameters * parameters,
-            pair <vector <string>, vector < vector <double> > > results,
-            QString refFileName, bool showCharts = false);
+    void displayData( pair <vector <string>, vector < vector <double> > > results );
 
     bool addChart(int row, int col,
                   QLineSeries *series,
@@ -53,10 +50,6 @@ public:
     void showParameters(SamaraParameters * parameters);
 
 private slots:
-    void on_lineEdit_textChanged(const QString &arg1);
-    void on_lineEdit_2_textChanged(const QString &arg1);
-    void on_lineEdit_3_textChanged(const QString &arg1);
-    void on_lineEdit_4_textChanged(const QString &arg1);
     void sectionClicked(int);
     void on_simComboBox_currentTextChanged(const QString &arg1);
     void on_varComboBox_currentTextChanged(const QString &arg1);
@@ -68,8 +61,13 @@ private slots:
 
     void on_endDateEdit_dateChanged(const QDate &date);
 
+    void on_launchButton_clicked();
+
+    void chartClicked(bool);
+
 private:
     Ui::MainWindow *ui;
+    QStringList chartVisibles;
     QString _date;
     QString _model_name;
     QString _var_name;

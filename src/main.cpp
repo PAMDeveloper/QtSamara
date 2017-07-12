@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
 //    load_file_parameters("Z:/Downloads/SMK2013/Variete_SMK2013.txt", "");
     SamaraParameters * paramsSam = new SamaraParameters();
     PSQLLoader loader(paramsSam);
-//    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
-//    auto results = run_samara_2_1(paramsSam);
+    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
+    auto results = run_samara_2_1(paramsSam);
 
     MainWindow w(&loader);
     w.show();
