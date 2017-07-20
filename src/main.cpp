@@ -17,8 +17,14 @@ int main(int argc, char *argv[]) {
     loader.load_complete_simulation("06SB15-fev13-D1_SV21");
     auto results = run_samara_2_1(paramsSam);
 
+
+    ResultsDataModel *resultsModel = new ResultsDataModel(results);
+//    ui->resultsTableView->setModel(resultsModel);
+
     MainWindow w(&loader);
     w.show();
+
+    w.showResults(resultsModel);
 
 //    QString refFileName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
 //    w.displayData(paramsSam, results, refFileName, true);

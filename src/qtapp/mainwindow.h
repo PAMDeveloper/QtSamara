@@ -49,6 +49,8 @@ public:
     void fillCombos();
     void showParameters(SamaraParameters * parameters);
 
+    void showResults(QAbstractTableModel * model);
+
 private slots:
     void sectionClicked(int);
     void on_simComboBox_currentTextChanged(const QString &arg1);
@@ -73,10 +75,10 @@ private:
     QString _var_name;
     int _type;
 
-private:
     PSQLLoader * loader;
     ComparisonDataModel *comparisonModel;
     SamaraParameters * parameters;
+    pair <vector <string>, vector < vector <double> > > results;
     QList<serieCompare> comparisons;
     QStringList headers;
     std::string simulation;

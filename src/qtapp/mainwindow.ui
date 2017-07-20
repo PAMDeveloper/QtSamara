@@ -325,7 +325,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,7">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,7">
           <item>
            <widget class="QScrollArea" name="scrollArea">
             <property name="widgetResizable">
@@ -336,7 +336,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>79</width>
+               <width>142</width>
                <height>594</height>
               </rect>
              </property>
@@ -354,7 +354,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>563</width>
+               <width>500</width>
                <height>594</height>
               </rect>
              </property>

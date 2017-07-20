@@ -34,6 +34,7 @@ QStringList fromVector(vector<string> list) {
     for (int i = 0; i < list.size(); ++i) {
         r << QString::fromStdString(list[i]);
     }
+    r.sort();
     return r;
 }
 
@@ -58,7 +59,7 @@ void MainWindow::fillCombos() {
     ui->plotComboBox->addItems(fromVector(loader->load_plot_list()));
     ui->stationComboBox->addItems(fromVector(loader->load_station_list()));
     ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
-    ui->simComboBox->addItems(fromVector(loader->load_simulations_list()));
+    ui->simComboBox->addItems(fromVector(loader->load_simulation_list()));
 }
 
 void MainWindow::show_trace() {
@@ -205,6 +206,8 @@ void MainWindow::chartClicked(bool clicked) {
     else
         chartVisibles.removeAll(chartBox->text());
 
+    displayData(results);
+
 }
 
 void MainWindow::createChartsTab() {
@@ -312,16 +315,7 @@ void MainWindow::displayData(pair <vector <string>, vector < vector <double> > >
         if(chartVisibles.contains(key))
             if( addChart(j / numCol, j % numCol, resultsSeries[key], /*refSeries[key]*/NULL, key) )
                 j++;
-
-//            if(j>10)return;
     }
-
-//    ui->comparisonTableView->verticalHeader()->setSectionsClickable(true);
-//    connect(ui->comparisonTableView->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
-
-//    comparisonModel = new ComparisonDataModel(resultsSeries, refSeries, comparisons, headers, startDate, true);
-//    ui->comparisonTableView->setModel(comparisonModel);
-
 }
 
 void MainWindow::sectionClicked(int row) {
@@ -387,9 +381,11 @@ void MainWindow::on_itinComboBox_currentTextChanged(const QString &arg1)
 }
 
 void MainWindow::showParameters(SamaraParameters *parameters) {
+    delete ui->parametersTableView->model();
     ParametersDataModel *paramModel = new ParametersDataModel(parameters);
     ui->parametersTableView->setModel(paramModel);
 
+    delete ui->meteoTableView->model();
     MeteoDataModel *meteoModel = new MeteoDataModel(parameters);
     ui->meteoTableView->setModel(meteoModel);
 }
@@ -412,10 +408,14 @@ void MainWindow::on_endDateEdit_dateChanged(const QDate &date)
 
 void MainWindow::on_launchButton_clicked()
 {
-    auto results = run_samara_2_1(loader->parameters);
+    results = run_samara_2_1(loader->parameters);
     ResultsDataModel *resultsModel = new ResultsDataModel(results);
     ui->resultsTableView->setModel(resultsModel);
 
     displayData(results);
 }
 
+
+void MainWindow::showResults(QAbstractTableModel *model){
+    ui->resultsTableView->setModel(model);
+}
