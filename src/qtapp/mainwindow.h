@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(PSQLLoader * loader, QWidget *parent = 0);
+    explicit MainWindow(AbstractSimulationLoader * loader, QWidget *parent = 0);
     ~MainWindow();
 
     void displayData( pair <vector <string>, vector < vector <double> > > results );
@@ -75,9 +75,8 @@ private:
     QString _var_name;
     int _type;
 
-    PSQLLoader * loader;
+    AbstractSimulationLoader * loader;
     ComparisonDataModel *comparisonModel;
-    SamaraParameters * parameters;
     pair <vector <string>, vector < vector <double> > > results;
     QList<serieCompare> comparisons;
     QStringList headers;

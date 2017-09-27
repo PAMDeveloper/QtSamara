@@ -34,11 +34,11 @@ QStringList fromVector(vector<string> list) {
     for (int i = 0; i < list.size(); ++i) {
         r << QString::fromStdString(list[i]);
     }
-    r.sort();
+//    r.sort();
     return r;
 }
 
-MainWindow::MainWindow(PSQLLoader * loader, QWidget *parent) :
+MainWindow::MainWindow(AbstractSimulationLoader * loader, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow), loader(loader)
 {
@@ -47,7 +47,7 @@ MainWindow::MainWindow(PSQLLoader * loader, QWidget *parent) :
     ui->splitter->setStretchFactor(1, 1);
     createChartsTab();
     fillCombos();
-    showParameters(loader->parameters);
+//    showParameters(loader->parameters);
 }
 
 MainWindow::~MainWindow() {
@@ -338,15 +338,25 @@ void MainWindow::sectionClicked(int row) {
 
 void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->load_complete_simulation(arg1.toStdString());
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("idparcelle")));
-    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("codestation")));
-    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("idvariete")));
-    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("iditinerairetechnique")));
-    QDate start = QDate::fromJulianDay(loader->parameters->getDouble("datedebut"));
-    QDate end = QDate::fromJulianDay(loader->parameters->getDouble("datefin"));
+    loader->parameters->clearParameters();
+//    loader->load_complete_simulation(arg1.toStdString());
+    loader->load_simulation(arg1.toStdString());
+
+    QDate start = QDate::fromJulianDay(loader->parameters->getDouble("Debutsimul"));
+    QDate end = QDate::fromJulianDay(loader->parameters->getDouble("FinSimul"));
+    ui->startDateEdit->blockSignals(true);
     ui->startDateEdit->setDate(start);
+    ui->startDateEdit->blockSignals(false);
+    ui->endDateEdit->blockSignals(true);
     ui->endDateEdit->setDate(end);
+    ui->endDateEdit->blockSignals(false);
+
+    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdVariete")));
+    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdParcelle")));
+    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdItineraireTechnique")));
+    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdSite")));
+//    qDebug() << loader->parameters->getDouble("Debutsimul");
+
 }
 
 void MainWindow::on_varComboBox_currentTextChanged(const QString &arg1)
@@ -359,16 +369,18 @@ void MainWindow::on_varComboBox_currentTextChanged(const QString &arg1)
 void MainWindow::on_stationComboBox_currentTextChanged(const QString &arg1)
 {
     loader->parameters->clearParameters("station");
+    loader->parameters->clearParameters("site");
     loader->load_station(arg1.toStdString());
-    double startDate = ui->startDateEdit->date().toJulianDay();
-    double endDate = ui->endDateEdit->date().toJulianDay();
-    loader->load_meteo(arg1.toStdString(), startDate, endDate);
+//    double startDate = ui->startDateEdit->date().toJulianDay();
+//    double endDate = ui->endDateEdit->date().toJulianDay();
+    loader->load_meteo(arg1.toStdString(), loader->parameters->getString("Debutsimul"), loader->parameters->getString("FinSimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_plotComboBox_currentTextChanged(const QString &arg1)
 {
     loader->parameters->clearParameters("parcelle");
+    loader->parameters->clearParameters("soil");
     loader->load_plot(arg1.toStdString());
     showParameters(loader->parameters);
 }
@@ -392,23 +404,27 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
 
 void MainWindow::on_startDateEdit_dateChanged(const QDate &date)
 {
-    double startDate = date.toJulianDay();
-    double endDate = ui->endDateEdit->date().toJulianDay();
-    loader->load_meteo(ui->stationComboBox->currentText().toStdString(), startDate, endDate);
+    loader->parameters->doubles["Debutsimul"].first = date.toJulianDay();
+    loader->parameters->strings["Debutsimul"].first = date.toString("dd/MM/yyyy").toStdString();
+    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
+                       loader->parameters->getString("Debutsimul"),
+                       loader->parameters->getString("FinSimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_endDateEdit_dateChanged(const QDate &date)
 {
-    double startDate = ui->startDateEdit->date().toJulianDay();
-    double endDate = date.toJulianDay();
-    loader->load_meteo(ui->stationComboBox->currentText().toStdString(), startDate, endDate);
+    loader->parameters->doubles["FinSimul"].first = date.toJulianDay();
+    loader->parameters->strings["FinSimul"].first = date.toString("dd/MM/yyyy").toStdString();
+    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
+                       loader->parameters->getString("Debutsimul"),
+                       loader->parameters->getString("FinSimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_launchButton_clicked()
 {
-    results = run_samara_2_1(loader->parameters);
+    results = run_samara_2_3(loader->parameters);
     ResultsDataModel *resultsModel = new ResultsDataModel(results);
     ui->resultsTableView->setModel(resultsModel);
 

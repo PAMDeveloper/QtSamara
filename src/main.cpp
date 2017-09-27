@@ -6,25 +6,29 @@
 
 #include <samara.h>
 #include <utils/psqlloader.h>
-#include <utils/fileloader.h>
+#include <utils/paradoxloader.h>
+//#include <utils/fileloader.h>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
 //    load_file_parameters("Z:/Downloads/SMK2013/Variete_SMK2013.txt", "");
     SamaraParameters * paramsSam = new SamaraParameters();
-    PSQLLoader loader(paramsSam);
-    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
-    auto results = run_samara_2_1(paramsSam);
+//    PSQLLoader loader(paramsSam);
+//    ParadoxLoader loader(paramsSam, "D:/Samples/michael/DBEcosys");
+    ParadoxLoader loader(paramsSam, "D:/Samples/michael/DBEcosys");
+
+//    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
+//    auto results = run_samara_2_1(paramsSam);
 
 
-    ResultsDataModel *resultsModel = new ResultsDataModel(results);
+//    ResultsDataModel *resultsModel = new ResultsDataModel(results);
 //    ui->resultsTableView->setModel(resultsModel);
 
     MainWindow w(&loader);
     w.show();
 
-    w.showResults(resultsModel);
+//    w.showResults(resultsModel);
 
 //    QString refFileName = "D:/PAMStudio_dev/data/samara/06SB15-fev13-D1_SV21.txt";
 //    w.displayData(paramsSam, results, refFileName, true);
