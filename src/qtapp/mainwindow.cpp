@@ -17,6 +17,8 @@
 #include <QDir>
 #include <QCheckBox>
 #include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <qtapp/view.h>
 #include <samara.h>
@@ -34,7 +36,7 @@ QStringList fromVector(vector<string> list) {
     for (int i = 0; i < list.size(); ++i) {
         r << QString::fromStdString(list[i]);
     }
-//    r.sort();
+    //    r.sort();
     return r;
 }
 
@@ -47,7 +49,7 @@ MainWindow::MainWindow(AbstractSimulationLoader * loader, QWidget *parent) :
     ui->splitter->setStretchFactor(1, 1);
     createChartsTab();
     fillCombos();
-//    showParameters(loader->parameters);
+    //    showParameters(loader->parameters);
 }
 
 MainWindow::~MainWindow() {
@@ -107,26 +109,26 @@ serieCompare MainWindow::compareSeries(QLineSeries * src, QLineSeries * ref) {
     comparison.diffPercent = 1;
     comparison.valid = true;
 
-//    if(src == NULL || ref == NULL) {
-//        comparison.valid = false;
-//        return comparison;
-//    }
+    //    if(src == NULL || ref == NULL) {
+    //        comparison.valid = false;
+    //        return comparison;
+    //    }
 
     int serieSize = src->count();
 
     for (int i = 0; i < serieSize; ++i) {
         double srcVal = src != NULL ? src->at(i).y() : 0;
-//        double refVal = ref != NULL ? ref->at(i).y() : 0;
+        //        double refVal = ref != NULL ? ref->at(i).y() : 0;
         if (srcVal > comparison.maxVal) comparison.maxVal = srcVal;
         if (srcVal < comparison.minVal) comparison.minVal = srcVal;
         comparison.sumSrc += srcVal;
-//        if (refVal > comparison.maxVal) comparison.maxVal = refVal;
-//        if (refVal < comparison.minVal) comparison.minVal = refVal;
-//        comparison.sumRef += refVal;
+        //        if (refVal > comparison.maxVal) comparison.maxVal = refVal;
+        //        if (refVal < comparison.minVal) comparison.minVal = refVal;
+        //        comparison.sumRef += refVal;
 
-//        if( std::abs((srcVal-refVal)/refVal) > 0.0001 && comparison.diffStep == -1 ) comparison.diffStep = i;
+        //        if( std::abs((srcVal-refVal)/refVal) > 0.0001 && comparison.diffStep == -1 ) comparison.diffStep = i;
     }
-//    comparison.diffPercent = ((comparison.sumRef-comparison.sumSrc)/comparison.sumRef) * 100;
+    //    comparison.diffPercent = ((comparison.sumRef-comparison.sumSrc)/comparison.sumRef) * 100;
     return comparison;
 }
 
@@ -151,13 +153,13 @@ bool MainWindow::addChart(int row, int col,
     QChart *chart = new QChart();
     QColor color = getColor(row * numCol + col);
 
-//    refSeries->setColor(color);
+    //    refSeries->setColor(color);
     QPen pen;
-//    pen.setWidth(3);
-//    pen.setColor(color);
-//    refSeries->setPen(pen);
-//    titleName += " + ref";
-//    chart->addSeries(refSeries);
+    //    pen.setWidth(3);
+    //    pen.setColor(color);
+    //    refSeries->setPen(pen);
+    //    titleName += " + ref";
+    //    chart->addSeries(refSeries);
 
     resultsSeries->setColor(color/*.darker(250)*/);
     pen.setWidth(1);
@@ -169,19 +171,19 @@ bool MainWindow::addChart(int row, int col,
     chart->setTitle(titleName);
 
     QDateTimeAxis *axisX = new QDateTimeAxis;
-//    axisX->setTickCount(10);
+    //    axisX->setTickCount(10);
     axisX->setFormat("dd MM");
     chart->addAxis(axisX, Qt::AlignBottom);
     resultsSeries->attachAxis(axisX);
-//    refSeries->attachAxis(axisX);
+    //    refSeries->attachAxis(axisX);
 
-//    if(/*std::abs(comparison.diffPercent) <= 0.00001 ||*/ std::abs(comparison.sumSrc/*sumRef*/) <= 0.00001) {
-//        return false;
-//    }
-//    QDateTime date;
-//    date.setDate(startDate);
-//    date = date.addDays(comparison.diffStep);
-//    qDebug() << name << ":"  << comparison.diffPercent << "% at step: " << comparison.diffStep << ":" << date.toString("dd-MM");
+    //    if(/*std::abs(comparison.diffPercent) <= 0.00001 ||*/ std::abs(comparison.sumSrc/*sumRef*/) <= 0.00001) {
+    //        return false;
+    //    }
+    //    QDateTime date;
+    //    date.setDate(startDate);
+    //    date = date.addDays(comparison.diffStep);
+    //    qDebug() << name << ":"  << comparison.diffPercent << "% at step: " << comparison.diffStep << ":" << date.toString("dd-MM");
 
     QValueAxis *axisY = new QValueAxis;
     axisY->setLabelFormat("%i");
@@ -192,7 +194,7 @@ bool MainWindow::addChart(int row, int col,
     //    if(resultsSeries != NULL)
     resultsSeries->attachAxis(axisY);
     //    if (refSeries != NULL)
-//    refSeries->attachAxis(axisY);
+    //    refSeries->attachAxis(axisY);
 
     ChartView *chartView = new ChartView(chart, resultsSeries, refSeries, this);
     lay->addWidget(chartView, row, col);
@@ -211,7 +213,7 @@ void MainWindow::chartClicked(bool clicked) {
 }
 
 void MainWindow::createChartsTab() {
-//    QScrollArea *scrollArea = new QScrollArea;
+    //    QScrollArea *scrollArea = new QScrollArea;
     QWidget *client = new QWidget();
     ui->scrollArea_2->setWidget(client);
     ui->scrollArea_2->setWidgetResizable(true);
@@ -219,8 +221,8 @@ void MainWindow::createChartsTab() {
     lay = new QGridLayout();
     client->setLayout(lay);
     lay->setSpacing(0);
-//    ui->tabWidget->addTab(scrollArea, "Variables");
-//    ui->tabWidget->setCurrentIndex(2);
+    //    ui->tabWidget->addTab(scrollArea, "Variables");
+    //    ui->tabWidget->setCurrentIndex(2);
 
 
     QWidget *client2 = new QWidget();
@@ -290,7 +292,7 @@ void MainWindow::displayData(pair <vector <string>, vector < vector <double> > >
                 QString::fromStdString(loader->parameters->getString("datedebut")),
                 "yyyy-MM-dd");
 
-//    QMap < QString, QLineSeries * > refSeries = getRefSeries(refFileName);
+    //    QMap < QString, QLineSeries * > refSeries = getRefSeries(refFileName);
     QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
 
     headers << /*refSeries.keys() <<*/ resultsSeries.keys();
@@ -311,7 +313,7 @@ void MainWindow::displayData(pair <vector <string>, vector < vector <double> > >
     int j = 0;
     foreach (QString key, headers) {
         comparisons.push_back(compareSeries(resultsSeries[key], /*refSeries[key]*/NULL));
-//        if(showCharts)
+        //        if(showCharts)
         if(chartVisibles.contains(key))
             if( addChart(j / numCol, j % numCol, resultsSeries[key], /*refSeries[key]*/NULL, key) )
                 j++;
@@ -319,9 +321,10 @@ void MainWindow::displayData(pair <vector <string>, vector < vector <double> > >
 }
 
 void MainWindow::sectionClicked(int row) {
+//    QMessageBox::information(this, "Clicked", QString::number(row));
     bool all_good = true;
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
-        if(!comparisonModel->index(row, i).data(Qt::UserRole).toBool()) {
+        if(comparisonModel->index(row, i).data(Qt::UserRole).toBool()) {
             ui->comparisonTableView->hideColumn(i);
         } else {
             ui->comparisonTableView->showColumn(i);
@@ -336,14 +339,22 @@ void MainWindow::sectionClicked(int row) {
     }
 }
 
+void MainWindow::on_pushButton_2_clicked()
+{
+    for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
+        ui->comparisonTableView->showColumn(i);
+    }
+}
+
+
 void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->parameters->clearParameters();
-//    loader->load_complete_simulation(arg1.toStdString());
+//    loader->parameters->clearParameters();
+    //    loader->load_complete_simulation(arg1.toStdString());
     loader->load_simulation(arg1.toStdString());
 
-    QDate start = QDate::fromJulianDay(loader->parameters->getDouble("Debutsimul"));
-    QDate end = QDate::fromJulianDay(loader->parameters->getDouble("FinSimul"));
+    QDate start = QDate::fromJulianDay(loader->parameters->getDouble("debutsimul"));
+    QDate end = QDate::fromJulianDay(loader->parameters->getDouble("finsimul"));
     ui->startDateEdit->blockSignals(true);
     ui->startDateEdit->setDate(start);
     ui->startDateEdit->blockSignals(false);
@@ -351,43 +362,38 @@ void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1)
     ui->endDateEdit->setDate(end);
     ui->endDateEdit->blockSignals(false);
 
-    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdVariete")));
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdParcelle")));
-    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdItineraireTechnique")));
-    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("IdSite")));
-//    qDebug() << loader->parameters->getDouble("Debutsimul");
+    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("idvariete")));
+    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("idparcelle")));
+    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("iditinerairetechnique")));
+    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("idsite")));
+    //    qDebug() << loader->parameters->getDouble("Debutsimul");
 
 }
 
 void MainWindow::on_varComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->parameters->clearParameters("variete");
     loader->load_variety(arg1.toStdString());
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_stationComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->parameters->clearParameters("station");
-    loader->parameters->clearParameters("site");
+//    qDebug() << "Load site:" << arg1;
     loader->load_station(arg1.toStdString());
-//    double startDate = ui->startDateEdit->date().toJulianDay();
-//    double endDate = ui->endDateEdit->date().toJulianDay();
-    loader->load_meteo(arg1.toStdString(), loader->parameters->getString("Debutsimul"), loader->parameters->getString("FinSimul"));
+    //    double startDate = ui->startDateEdit->date().toJulianDay();
+    //    double endDate = ui->endDateEdit->date().toJulianDay();
+    loader->load_meteo(arg1.toStdString(), loader->parameters->getDouble("debutsimul"), loader->parameters->getDouble("finsimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_plotComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->parameters->clearParameters("parcelle");
-    loader->parameters->clearParameters("soil");
     loader->load_plot(arg1.toStdString());
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_itinComboBox_currentTextChanged(const QString &arg1)
 {
-    loader->parameters->clearParameters("itinerairetechnique");
     loader->load_itinerary(arg1.toStdString());
     showParameters(loader->parameters);
 }
@@ -404,34 +410,82 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
 
 void MainWindow::on_startDateEdit_dateChanged(const QDate &date)
 {
-    loader->parameters->doubles["Debutsimul"].first = date.toJulianDay();
-    loader->parameters->strings["Debutsimul"].first = date.toString("dd/MM/yyyy").toStdString();
+    loader->parameters->doubles["debutsimul"].first = date.toJulianDay();
+    loader->parameters->strings["debutsimul"].first = date.toString("dd/MM/yyyy").toStdString();
     loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
-                       loader->parameters->getString("Debutsimul"),
-                       loader->parameters->getString("FinSimul"));
+                       loader->parameters->getDouble("debutsimul"),
+                       loader->parameters->getDouble("finsimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_endDateEdit_dateChanged(const QDate &date)
 {
-    loader->parameters->doubles["FinSimul"].first = date.toJulianDay();
-    loader->parameters->strings["FinSimul"].first = date.toString("dd/MM/yyyy").toStdString();
+    loader->parameters->doubles["finsimul"].first = date.toJulianDay();
+    loader->parameters->strings["finsimul"].first = date.toString("dd/MM/yyyy").toStdString();
     loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
-                       loader->parameters->getString("Debutsimul"),
-                       loader->parameters->getString("FinSimul"));
+                       loader->parameters->getDouble("debutsimul"),
+                       loader->parameters->getDouble("finsimul"));
     showParameters(loader->parameters);
 }
 
 void MainWindow::on_launchButton_clicked()
 {
     results = run_samara_2_3(loader->parameters);
-    ResultsDataModel *resultsModel = new ResultsDataModel(results);
+    resultsModel = new ResultsDataModel(results);
     ui->resultsTableView->setModel(resultsModel);
-
-    displayData(results);
 }
 
 
-void MainWindow::showResults(QAbstractTableModel *model){
-    ui->resultsTableView->setModel(model);
+
+void MainWindow::on_oldResButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open results");
+    QFile inputFile(fileName);
+    vector < vector <double> > values;
+    vector <string> names;
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+        QTextStream in(&inputFile);
+        QStringList list = in.readLine().split('\t');
+        for(QString header: list) {
+            names.push_back(header.toLower().toStdString());
+            values.push_back(vector<double>());
+        }
+
+        while (!in.atEnd())
+        {
+            list = in.readLine().split('\t');
+            for (int i = 0; i < list.size(); ++i) {
+                values[i].push_back(list[i].replace(',','.').toDouble());
+            }
+        }
+        inputFile.close();
+    }
+    comparisonModel = new ComparisonDataModel2(
+                results,
+                pair <vector <string>, vector < vector <double> > > (names, values)
+                );
+    ui->comparisonTableView->setModel(comparisonModel);
+    connect(ui->comparisonTableView->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
 }
+
+void MainWindow::on_headerFilter_textChanged(const QString &head)
+{
+    if(head.isEmpty()) {
+        for(int i = resultsModel->columnCount() - 1; i >= 0 ; i--){
+            ui->resultsTableView->horizontalHeader()->showSection(i);
+        }
+        return;
+    }
+
+    for(int i = resultsModel->columnCount() - 1; i >= 0 ; i--){
+        if(!resultsModel->headerData(i).toString().startsWith(head)) {
+            ui->resultsTableView->horizontalHeader()->hideSection(i);
+        } else {
+            ui->resultsTableView->horizontalHeader()->showSection(i);
+        }
+    }
+
+
+}
+

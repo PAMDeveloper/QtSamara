@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QDate>
 #include <qtapp/comparisondatamodel.h>
+#include <qtapp/comparisondatamodel2.h>
 
 #include <parameters.h>
 #include <qtapp/meteodatamodel.h>
@@ -41,15 +42,12 @@ public:
     QMap < QString, QLineSeries * > getRefSeries(QString refFileName);
     QMap < QString, QLineSeries * > getResultSeries(pair <vector <string>, vector < vector <double> > > results);
 
-
 //    QLineSeries *getSeries(QString fileName, QDate endDate);
 
     void createChartsTab();
     void show_trace();
     void fillCombos();
     void showParameters(SamaraParameters * parameters);
-
-    void showResults(QAbstractTableModel * model);
 
 private slots:
     void sectionClicked(int);
@@ -58,14 +56,15 @@ private slots:
     void on_stationComboBox_currentTextChanged(const QString &arg1);
     void on_plotComboBox_currentTextChanged(const QString &arg1);
     void on_itinComboBox_currentTextChanged(const QString &arg1);
-
     void on_startDateEdit_dateChanged(const QDate &date);
-
     void on_endDateEdit_dateChanged(const QDate &date);
-
     void on_launchButton_clicked();
-
     void chartClicked(bool);
+    void on_oldResButton_clicked();
+
+    void on_headerFilter_textChanged(const QString &arg1);
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -75,8 +74,9 @@ private:
     QString _var_name;
     int _type;
 
+    ResultsDataModel *resultsModel;
     AbstractSimulationLoader * loader;
-    ComparisonDataModel *comparisonModel;
+    ComparisonDataModel2 *comparisonModel;
     pair <vector <string>, vector < vector <double> > > results;
     QList<serieCompare> comparisons;
     QStringList headers;

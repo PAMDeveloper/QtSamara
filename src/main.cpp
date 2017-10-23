@@ -6,7 +6,7 @@
 
 #include <samara.h>
 #include <utils/psqlloader.h>
-#include <utils/paradoxloader.h>
+#include <utils/DBEcosysloader.h>
 //#include <utils/fileloader.h>
 
 int main(int argc, char *argv[]) {
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     SamaraParameters * paramsSam = new SamaraParameters();
 //    PSQLLoader loader(paramsSam);
 //    ParadoxLoader loader(paramsSam, "D:/Samples/michael/DBEcosys");
-    ParadoxLoader loader(paramsSam, "D:/Samples/michael/DBEcosys");
+    DBEcosysLoader loader(paramsSam, "D:/Samples/michael/DBEcosys");
 
 //    loader.load_complete_simulation("06SB15-fev13-D1_SV21");
 //    auto results = run_samara_2_1(paramsSam);
