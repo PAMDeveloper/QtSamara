@@ -32,6 +32,7 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCharts/QChartGlobal>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QScatterSeries>
 
 class QGraphicsScene;
 class QMouseEvent;
@@ -49,7 +50,7 @@ class ChartView: public QGraphicsView {
   Q_OBJECT
 
 public:
-  ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QWidget *parent = 0);
+  ChartView(QChart *chart, QLineSeries *series, QScatterSeries *refseries, QWidget *parent = 0);
 
 protected:
   void resizeEvent(QResizeEvent *event);
@@ -67,7 +68,7 @@ private:
   Callout *m_tooltip;
   QList<Callout *> m_callouts;
   QLineSeries *series;
-  QLineSeries *refseries;
+  QScatterSeries *refseries;
 };
 
 #endif

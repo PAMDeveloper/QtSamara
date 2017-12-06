@@ -1,5 +1,5 @@
 #include "meteodatamodel.h"
-#include <QDate>
+#include <utils/juliancalculator.h>
 
 MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
@@ -11,17 +11,21 @@ MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
 }
 
 int MeteoDataModel::rowCount(const QModelIndex &parent) const {
-    return  parameters->climatics.size() - 1;
+    return  parameters->climatics.size();
 }
 int MeteoDataModel::columnCount(const QModelIndex &parent) const {
     return 12;
 }
 
 QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
-    int row = index.row()+1;
+    int row = index.row();
     if(role == Qt::DisplayRole){
         switch(index.column()){
-            case 0: return QDate::fromJulianDay(parameters->climatics.at(row).JulianDay).toString("dd/MM/yyyy"); break;
+            case 0: return QString::fromStdString(
+                        JulianCalculator::toStringDate(
+                            parameters->getDouble("startingdate")+row-1,
+                            JulianCalculator::YMD, '-'
+                            )); break;
             case 1: return parameters->climatics.at(row).TMax; break;
             case 2: return parameters->climatics.at(row).TMin; break;
             case 3: return parameters->climatics.at(row).TMoy; break;

@@ -1,5 +1,5 @@
 #include "parametersdatamodel.h"
-#include <QDebug>
+//#include <QDebug>
 ParametersDataModel::ParametersDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
 {
@@ -24,7 +24,10 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
         try
         {
             double r = parameters->getDouble(keys[index.row()].toStdString());
+            if(r == -999 && role == Qt::DisplayRole)
+                return "Null value";
             return QString::number(r, 'f', 6);
+
         }
         catch(...) {
             return QString::fromStdString(parameters->getString(keys[index.row()].toStdString()));

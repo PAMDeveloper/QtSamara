@@ -36,11 +36,11 @@
 #include <QtGui/QMouseEvent>
 #include <QtCharts/QDateTimeAxis>
 #include <QDate>
-#include <QDebug>
+//#include <QDebug>
 
 #include <qtapp/callout.h>
 
-ChartView::ChartView(QChart *chart, QLineSeries *series, QLineSeries *refseries, QWidget *parent)
+ChartView::ChartView(QChart *chart, QLineSeries *series, QScatterSeries *refseries, QWidget *parent)
   : QGraphicsView(new QGraphicsScene, parent),
     m_coordX(0), m_coordY(0), m_coordRefY(0),
     m_chart(0), m_tooltip(0),

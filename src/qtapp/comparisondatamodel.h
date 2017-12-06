@@ -1,9 +1,10 @@
-#ifndef COMPARISON_DATA_MODEL_H
-#define COMPARISON_DATA_MODEL_H
+#ifndef COMPARISON_DATA_MODEL2_H
+#define COMPARISON_DATA_MODEL2_H
 
 #include <QAbstractTableModel>
 #include <QDateTime>
 #include <QtCharts/QLineSeries>
+
 
 using namespace std;
 
@@ -17,28 +18,26 @@ struct serieCompare {
     bool valid;
 };
 
-class ComparisonDataModel : public QAbstractTableModel
+class ComparisonDataModel2 : public QAbstractTableModel
 {
      Q_OBJECT
 public:
-    ComparisonDataModel(QMap < QString, QtCharts::QLineSeries * > resultsSeries, QMap < QString, QtCharts::QLineSeries * > refSeries,
-                        QList<serieCompare> comparisons, QStringList headers, QDate startDate,
-                        bool clean = false, QObject *parent=0);
-
-
+    ComparisonDataModel2(const pair <vector <string>, vector < vector <double> > > & results,
+                         const pair <vector <string>, vector < vector <double> > > & refs,
+                         QObject *parent=0);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    void save();
 
 private:
-    QMap < QString, QtCharts::QLineSeries * > refSeries;
-    QMap < QString, QtCharts::QLineSeries * > resultsSeries;
-    QStringList headers;
-    QList<int> cleanSeries;
-    QList<serieCompare> comparisons;
-    bool clean;
-    QDate startDate;
+    pair <vector <string>, vector < vector <double> > > results;
+    pair <vector <string>, vector < vector <double> > > refs;
+    QList<QPair<int,int>> visibleHeaders;
+//    QList<serieCompare> comparisons;
+//    bool clean;
+//    QDate startDate;
 };
 
-#endif // COMPARISON_DATA_MODEL_H
+#endif // COMPARISON_DATA_MODEL2_H
