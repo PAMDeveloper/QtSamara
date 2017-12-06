@@ -50,7 +50,14 @@ class ChartView: public QGraphicsView {
   Q_OBJECT
 
 public:
-  ChartView(QChart *chart, QLineSeries *series, QScatterSeries *refseries, QWidget *parent = 0);
+  ChartView(QChart *chart, QWidget *parent = 0);
+
+  void setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
+      this->series = series;
+      this->obsSeries = obsSeries;
+  }
+
+  QChart *m_chart;
 
 protected:
   void resizeEvent(QResizeEvent *event);
@@ -64,11 +71,10 @@ private:
   QGraphicsSimpleTextItem *m_coordX;
   QGraphicsSimpleTextItem *m_coordY;
   QGraphicsSimpleTextItem *m_coordRefY;
-  QChart *m_chart;
   Callout *m_tooltip;
   QList<Callout *> m_callouts;
   QLineSeries *series;
-  QScatterSeries *refseries;
+  QScatterSeries *obsSeries;
 };
 
 #endif

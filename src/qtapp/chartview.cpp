@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "view.h"
+#include "chartview.h"
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QGraphicsScene>
 #include <QtCharts/QChart>
@@ -40,22 +40,16 @@
 
 #include <qtapp/callout.h>
 
-ChartView::ChartView(QChart *chart, QLineSeries *series, QScatterSeries *refseries, QWidget *parent)
+ChartView::ChartView(QChart *chart, QWidget *parent)
   : QGraphicsView(new QGraphicsScene, parent),
     m_coordX(0), m_coordY(0), m_coordRefY(0),
-    m_chart(0), m_tooltip(0),
-    series(series), refseries(refseries) {
+    m_chart(0), m_tooltip(0) {
   setDragMode(QGraphicsView::NoDrag);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setMinimumHeight(250);
-
-  // chart
   m_chart = chart;
-
-  //    m_chart->createDefaultAxes();
   m_chart->setAcceptHoverEvents(true);
-
   setRenderHint(QPainter::Antialiasing);
   scene()->addItem(m_chart);
 
@@ -67,12 +61,10 @@ ChartView::ChartView(QChart *chart, QLineSeries *series, QScatterSeries *refseri
   m_coordY->setText("Y: ");
   m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
   m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
-  m_coordRefY->setText("Ref: ");
-
+  m_coordRefY->setText("Obs: ");
 
   //    m_coordrefY->setPos(m_chart->size().width()/2 + 100, m_chart->size().height());
   //    m_coordrefY->setText("refY: ");
-
   //    connect(series, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
   //    connect(series, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
   //    connect(series2, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
@@ -95,20 +87,22 @@ void ChartView::resizeEvent(QResizeEvent *event) {
 }
 
 void ChartView::mouseMoveEvent(QMouseEvent *event) {
-
   double startX = ((QDateTimeAxis *)(m_chart->axisX(series)))->min().toMSecsSinceEpoch();
   double endX = ((QDateTimeAxis *)(m_chart->axisX(series)))->max().toMSecsSinceEpoch();
   double xValue = m_chart->mapToValue(event->pos()).x();
   double xPos = (startX - xValue) / (startX - endX);
-  double serieIdx = qRound(xPos * series->points().size());
-
+  double serieIdx = -1;
   m_coordX->setText(QString("X: %1").arg(QDateTime::fromMSecsSinceEpoch(xValue).toString("dd-MM")));
-  if (serieIdx >= 0 && serieIdx < series->points().size())
-    m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));
-  if (refseries != NULL) {
+  if (obsSeries != nullptr) {
+      serieIdx = qRound(xPos * series->points().size());
+      if (serieIdx >= 0 && serieIdx < series->points().size())
+        m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));
+  }
+
+  if (obsSeries != nullptr) {
     QString txt = "";
-    if (serieIdx >= 0 && serieIdx < refseries->points().size()) {
-      txt = QString("Ref: %1").arg(refseries->at(serieIdx).y());
+    if (serieIdx >= 0 && serieIdx < obsSeries->points().size()) {
+      txt = QString("Obs: %1").arg(obsSeries->at(serieIdx).y());
     }
     m_coordRefY->setText(txt);
   }

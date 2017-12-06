@@ -44,8 +44,6 @@ public:
     serieCompare compareSeries(QLineSeries * src, QScatterSeries * ref);
 
     QMap < QString, QLineSeries * > getRefSeries(QString refFileName);
-    QMap < QString, QScatterSeries * > getObsSeries(map<string, vector<double>> observations);
-    QMap < QString, QLineSeries * > getResultSeries(pair <vector <string>, vector < vector <double> > > results);
 
 //    QLineSeries *getSeries(QString fileName, QDate endDate);
 
@@ -109,7 +107,8 @@ private:
     pair <vector <string>, vector < vector <double> > > results;
     map<string, vector<double>> observations;
 
-    QGridLayout *lay;
+    QGridLayout *chartLayout;
+    QVBoxLayout * chartListLayout;
 
     QList<serieCompare> comparisons;
     QStringList headers;

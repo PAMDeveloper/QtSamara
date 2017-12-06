@@ -4,10 +4,10 @@
 #include <QtCharts/QChartView>
 #include <QtCore/QDateTime>
 #include <QtCharts/QDateTimeAxis>
+#include <QtCharts/QValueAxis>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QDebug>
-#include <QtCharts/QValueAxis>
 
 #include <QtCore/qmath.h>
 #include <QMap>
@@ -20,7 +20,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <qtapp/view.h>
+#include <qtapp/chartview.h>
 #include <samara.h>
 #include <utils/juliancalculator.h>
 
@@ -62,12 +62,12 @@ MainWindow::MainWindow(QWidget *parent) :
     loader = new DBAccessLoader(paramsSam);
     loadDB(settings->value("SamaraDB_path").toString());
 
-    chartManager = new ChartManager();
+    createChartsTab();
+    chartManager = new ChartManager(chartLayout, chartListLayout);
 
 
     comparisonManager = new ComparisonManager();
 
-    createChartsTab();
 }
 
 MainWindow::~MainWindow() {
@@ -122,6 +122,7 @@ void MainWindow::on_launchButton_clicked() {
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
+    chartManager->setResults(results, observations);
 }
 
 
@@ -214,13 +215,150 @@ void MainWindow::on_saveResultButton_clicked() {
 }
 
 
+void MainWindow::createChartsTab() {
+    QWidget *client = new QWidget();
+    ui->scrollArea_2->setWidget(client);
+    ui->scrollArea_2->setWidgetResizable(true);
+    chartLayout = new QGridLayout();
+    client->setLayout(chartLayout);
+    chartLayout->setSpacing(0);
+    QWidget *client2 = new QWidget();
+    ui->scrollArea->setWidget(client2);
+    ui->scrollArea->setWidgetResizable(true);
+    chartListLayout = new QVBoxLayout();
+    client2->setLayout(chartListLayout);
+    chartListLayout->setSpacing(0);
+}
 
 
 
 
 
 
+void MainWindow::displayData(pair <vector <string>, vector < vector <double> > > results) {
+    startDate = QDate::fromString(
+                QString::fromStdString(loader->parameters->getString("startingdate"/*"datedebut"*/)).split("T")[0],
+            "yyyy-MM-dd");
 
+//    QMap < QString, QScatterSeries * > obsSeries = getObsSeries(observations);
+//    QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
+
+//    headers << /*obsSeries.keys() << */resultsSeries.keys();
+//    headers = headers.toSet().toList();
+//    headers.sort(Qt::CaseInsensitive);
+
+//    QLayoutItem *item;
+//    while((item = chartLayout->takeAt(0))) {
+//        if (item->layout()) {
+//            delete item->layout();
+//        }
+//        if (item->widget()) {
+//            delete item->widget();
+//        }
+//        delete item;
+//    }
+
+//    int j = 0;
+//    foreach (QString key, headers) {
+//        comparisons.push_back(compareSeries(resultsSeries[key], obsSeries[key]));
+//        //        if(showCharts)
+//        if(chartVisibles.contains(key))
+//            if( addChart(j / numCol, j % numCol, resultsSeries[key], obsSeries[key], key) )
+//                j++;
+//    }
+}
+
+
+
+
+
+
+QColor getColor(int i) {
+    double PHI = (1 + qSqrt(5)) / 2;
+    double n = i * PHI - floor(i * PHI);
+    int h = qFloor(n * 256);
+    return QColor::fromHsv(h, 245, 245, 255);
+}
+
+bool MainWindow::addChart(int row, int col,
+                          QLineSeries *resultsSeries,
+                          QScatterSeries *refSeries,
+                          QString name) {
+
+//    serieCompare comparison = comparisons[headers.indexOf(name)];
+//    if(!comparison.valid)
+//        return false;
+
+//    QString titleName = name;
+//    QChart *chart = new QChart();
+//    QColor color = getColor(row * numCol + col);
+//    QPen pen;
+//    if(refSeries != NULL) {
+//        refSeries->setColor(color.darker(150));
+////        pen.setWidth(1);
+//        pen.setColor(color);
+//        refSeries->setMarkerSize(5);
+////        refSeries->setMarkerSize(1);
+//        refSeries->setPen(pen);
+//        titleName += " + ref";
+//        chart->addSeries(refSeries);
+//    }
+
+//    resultsSeries->setColor(color/*.darker(250)*/);
+//    pen.setWidth(1);
+//    pen.setColor(color/*.darker(250)*/);
+//    resultsSeries->setPen(pen);
+//    chart->addSeries(resultsSeries);
+
+//    chart->legend()->hide();
+//    chart->setTitle(titleName);
+
+//    QDateTimeAxis *axisX = new QDateTimeAxis;
+//    //    axisX->setTickCount(10);
+//    axisX->setFormat("dd MM");
+//    chart->addAxis(axisX, Qt::AlignBottom);
+//    resultsSeries->attachAxis(axisX);
+//    if(refSeries != NULL)
+//        refSeries->attachAxis(axisX);
+
+//    //    if(/*std::abs(comparison.diffPercent) <= 0.00001 ||*/ std::abs(comparison.sumSrc/*sumRef*/) <= 0.00001) {
+//    //        return false;
+//    //    }
+//    //    QDateTime date;
+//    //    date.setDate(startDate);
+//    //    date = date.addDays(comparison.diffStep);
+//    //    qDebug() << name << ":"  << comparison.diffPercent << "% at step: " << comparison.diffStep << ":" << date.toString("dd-MM");
+
+//    QValueAxis *axisY = new QValueAxis;
+//    axisY->setLabelFormat("%i");
+//    chart->addAxis(axisY, Qt::AlignLeft);
+//    axisY->setMax(comparison.maxVal * 1.1 + 0.001);
+////    axisY->setMin(qMin<double>(-0.001, comparison.minVal - (comparison.maxVal - comparison.minVal) * 0.1));
+//    axisY->setMin(comparison.minVal);
+//    //    if(resultsSeries != NULL)
+//    resultsSeries->attachAxis(axisY);
+
+//    if (refSeries != NULL)
+//        refSeries->attachAxis(axisY);
+
+
+//    ChartView *chartView = new ChartView(chart, resultsSeries, refSeries, this);
+//    chartLayout->addWidget(chartView, row, col);
+    return true;
+}
+
+void MainWindow::chartClicked(bool clicked) {
+    QCheckBox * chartBox = (QCheckBox *)sender();
+    if(clicked)
+        chartVisibles.append(chartBox->text().toLower());
+    else
+        chartVisibles.removeAll(chartBox->text().toLower());
+
+    displayData(results);
+
+}
+
+/************* COMPARISON ***************/
 
 
 
@@ -255,218 +393,6 @@ serieCompare MainWindow::compareSeries(QLineSeries * src, QScatterSeries * ref) 
     }
     //    comparison.diffPercent = ((comparison.sumRef-comparison.sumSrc)/comparison.sumRef) * 100;
     return comparison;
-}
-
-
-QColor getColor(int i) {
-    double PHI = (1 + qSqrt(5)) / 2;
-    double n = i * PHI - floor(i * PHI);
-    int h = qFloor(n * 256);
-    return QColor::fromHsv(h, 245, 245, 255);
-}
-
-bool MainWindow::addChart(int row, int col,
-                          QLineSeries *resultsSeries,
-                          QScatterSeries *refSeries,
-                          QString name) {
-
-    serieCompare comparison = comparisons[headers.indexOf(name)];
-    if(!comparison.valid)
-        return false;
-
-    QString titleName = name;
-    QChart *chart = new QChart();
-    QColor color = getColor(row * numCol + col);
-    QPen pen;
-    if(refSeries != NULL) {
-        refSeries->setColor(color.darker(150));
-//        pen.setWidth(1);
-        pen.setColor(color);
-        refSeries->setMarkerSize(5);
-//        refSeries->setMarkerSize(1);
-        refSeries->setPen(pen);
-        titleName += " + ref";
-        chart->addSeries(refSeries);
-    }
-
-    resultsSeries->setColor(color/*.darker(250)*/);
-    pen.setWidth(1);
-    pen.setColor(color/*.darker(250)*/);
-    resultsSeries->setPen(pen);
-    chart->addSeries(resultsSeries);
-
-    chart->legend()->hide();
-    chart->setTitle(titleName);
-
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    //    axisX->setTickCount(10);
-    axisX->setFormat("dd MM");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    resultsSeries->attachAxis(axisX);
-    if(refSeries != NULL)
-        refSeries->attachAxis(axisX);
-
-    //    if(/*std::abs(comparison.diffPercent) <= 0.00001 ||*/ std::abs(comparison.sumSrc/*sumRef*/) <= 0.00001) {
-    //        return false;
-    //    }
-    //    QDateTime date;
-    //    date.setDate(startDate);
-    //    date = date.addDays(comparison.diffStep);
-    //    qDebug() << name << ":"  << comparison.diffPercent << "% at step: " << comparison.diffStep << ":" << date.toString("dd-MM");
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    axisY->setMax(comparison.maxVal * 1.1 + 0.001);
-//    axisY->setMin(qMin<double>(-0.001, comparison.minVal - (comparison.maxVal - comparison.minVal) * 0.1));
-    axisY->setMin(comparison.minVal);
-    //    if(resultsSeries != NULL)
-    resultsSeries->attachAxis(axisY);
-
-    if (refSeries != NULL)
-        refSeries->attachAxis(axisY);
-
-    ChartView *chartView = new ChartView(chart, resultsSeries, refSeries, this);
-    lay->addWidget(chartView, row, col);
-    return true;
-}
-
-void MainWindow::chartClicked(bool clicked) {
-    QCheckBox * chartBox = (QCheckBox *)sender();
-    if(clicked)
-        chartVisibles.append(chartBox->text().toLower());
-    else
-        chartVisibles.removeAll(chartBox->text().toLower());
-
-    displayData(results);
-
-}
-
-void MainWindow::createChartsTab() {
-    //    QScrollArea *scrollArea = new QScrollArea;
-    QWidget *client = new QWidget();
-    ui->scrollArea_2->setWidget(client);
-    ui->scrollArea_2->setWidgetResizable(true);
-
-    lay = new QGridLayout();
-    client->setLayout(lay);
-    lay->setSpacing(0);
-    //    ui->tabWidget->addTab(scrollArea, "Variables");
-    //    ui->tabWidget->setCurrentIndex(2);
-
-
-    QWidget *client2 = new QWidget();
-    ui->scrollArea->setWidget(client2);
-    ui->scrollArea->setWidgetResizable(true);
-
-    QVBoxLayout * lay2 = new QVBoxLayout();
-    client2->setLayout(lay2);
-    lay2->setSpacing(0);
-    vector <string> names {"ObsPlantDate","ApexHeight","ApexHeightGain","Assim","AssimNotUsed","AssimNotUsedCum","AssimPot","AssimSurplus","A_AssimSurplus","A_DemStructLeaf","A_DemStructTot","A_GrowthStructLeaf","A_GrowthStructTot","A_IncreaseResInternodePop","A_ResInternodeMobiliDay","CapaRDE","CapaREvap","CapaRFE","ChangeNurseryStatus","ChangePhase","ChangeSsPhase","CoeffCO2Assim","CoeffCO2Tr","CoeffStressLogging","Conversion","ConversionEff","CounterNursery","Cstr","CstrAssim","CstrCum","CstrMean","CstrPhase2","CstrPhase3","CstrPhase4","CstrPhase5","CstrPhase6","CulmsPerHill","CulmsPerHillFin","CulmsPerHillMax","CulmsPerPlant","CulmsPerPlantFin","CulmsPerPlantMax","CulmsPop","CumCarbonUsedPop","CumCstrPhase2","CumCstrPhase3","CumCstrPhase4","CumCstrPhase5","CumCstrPhase6","CumDr","CumEt","CumFTSWPhase2","CumFTSWPhase3","CumFTSWPhase4","CumFTSWPhase5","CumFTSWPhase6","CumGrowthPop","CumIcPhase2","CumIcPhase3","CumIcPhase4","CumIcPhase5","CumIcPhase6","CumIrrig","CumIrrigFin","CumLr","CumPAR","CumSupplyTot","CumTr","CumWReceived","CumWUse","CumWUseFin","DAF","DayLength","DeadLeafdrywtPop","Decli","DegresDuJour","DegresDuJourCor","DemLeafAreaPlant","DemPanicleFillPop","DemResInternodePop","DemStructInternodePlant","DemStructInternodePop","DemStructLeafPlant","DemStructLeafPop","DemStructPaniclePlant","DemStructPaniclePop","DemStructRootPlant","DemStructRootPop","DemStructSheathPop","DemStructTotPop","Density","Dr","DryMatAboveGroundPop","DryMatAboveGroundPopFin","DryMatAboveGroundTotPop","DryMatPanicleTotPop","DryMatResInternodePop","DryMatResInternodePopOld","DryMatStructInternodePop","DryMatStructLeafPop","DryMatStructPaniclePop","DryMatStructRootPop","DryMatStructSheathPop","DryMatStructStemPop","DryMatStructTotPop","DryMatTotPop","DryMatTotPopFin","DryMatVegeTotPop","DurGermFlow","DurGermMat","DurPhase1","DurPhase2","DurPhase3","DurPhase4","DurPhase5","DurPhase6","EauDispo","ETM","ETo","ETR","Evap","EvapPot","FertSpikeNumPop","FloodwaterDepth","FloodwaterGain","FractionPlantHeightSubmer","FractionRootsLogged","FTSW","FtswMoy","FtswPhase2","FtswPhase3","FtswPhase4","FtswPhase5","FtswPhase6","GainRootSystSoilSurfPop","GainRootSystVolPop","GrainFillingStatus","GrainFillingStatusFin","GrainYieldPanicle","GrainYieldPop","GrainYieldPopFin","GrowthDryMatPop","GrowthPop","GrowthResInternodePop","GrowthStructDeficit","GrowthStructInternodePop","GrowthStructLeafPop","GrowthStructPaniclePop","GrowthStructRootPop","GrowthStructSheathPop","GrowthStructTotPop","HarvestIndex","HaunGain","HaunIndex","HMoyCalc","Hum","Ic","IcCum","IcMean","IcPhase2","IcPhase3","IcPhase4","IcPhase5","IcPhase6","IncreaseResInternodePop","InternodeResStatus","Irrigation","IrrigAutoDay","IrrigTotDay","Kce","KceReal","Kcl","Kcp","KcTot","Kr","KRolling","Lai","LaiDead","LaiFin","LastLeafLength","LastLeafLengthPot","LatRad","LeafDeathPop","LIRkdf","LIRkdfcl","Lr","LTRkdf","LTRkdfcl","MaxLai","MobiliLeafDeath","NumPhase","NumSsPhase","NurseryStatus","PanicleFilDeficit","PanicleFilPop","PanicleNumPlant","PanicleNumPop","PanicleSinkPop","PanStructMass","Par","PARIntercepte","PhaseStemElongation","PlantHeight","PlantLeafNumNew","PlantLeafNumTot","PlantWidth","ProfRu","RayExtra","RelPotLeafLength","ResCapacityInternodePop","ReservePopFin","ResInternodeMobiliDay","ResInternodeMobiliDayPot","RespMaintDebt","RespMaintTot","ResUtil","RgCalc","RgMax","RootFront","RootFrontOld","RootMassPerVol","RootShootRatio","RootSystSoilSurfPop","RootSystSoilSurfPopOld","RootSystVolPop","RootSystVolPopOld","RUE","RuRac","RuSurf","SDJCorPhase4","SeuilCstrMortality","SeuilTemp","SeuilTempSsPhase","SimAnthesis50","SimEmergence","SimEndCycle","SimPanIni","SimStartGermin","SimStartMatu2","SimStartPSP","Sla","SlaMitch","SlaNew","SommeDegresJourMax","SpikeNumPanicle","SpikeNumPop","SterilityCold","SterilityDrought","SterilityHeat","SterilityTot","SterilityTotFin","StockMacropores","StockRac","StockSurface","StockTotal","StressCold","StRuMax","SumDDPhasePrec","SumDegreDayCor","SumDegresDay","SumPP","SunDistance","SunPosi","SupplyTot","TempLai","TillerDeathPop","TmaxMoy","TminMoy","TMoyCalc","TMoyPrec","Tr","TrEff","TrEffInst","TrPot","ValRDE","ValRFE","ValRSurf","VPDCalc","VitesseRacinaire","VitesseRacinaireDay","VolMacropores","VolRelMacropores","WueEt","WueTot"};
-//    for (int i = 0; i < names.size(); ++i) {
-//        std::transform(names[i].begin(), names[i].end(), names[i].begin(), ::tolower);
-//    }
-    //    vector <string> names {"Jour","NbJas","NumPhase","DegresDuJour","DegresDuJourCor","Lai","MaxLai","FTSW","Cstr","RootFront","Eto","ETM","ETR","RUE","ConversionEff","Ic","CulmsPerPlant","CulmsPop","CulmsPerHill","GrainYieldPop","DryMatStructLeafPop","DryMatStructSheathPop","DryMatStructRootPop","DryMatStructInternodePop","DryMatResInternodePop","DryMatStructPaniclePop","DryMatStructTotPop","DryMatVegeTotPop","DryMatPanicleTotPop","DryMatStemPop","DryMatAboveGroundPop","DryMatTotPop","SterilityCold","SterilityHeat","SterilityDrought","SterilityTot","HarvestIndex","PanicleNumPop","PanicleNumPlant","GrainYieldPanicle","SpikeNumPop","SpikeNumPanicle","FertSpikeNumPop","GrainFillingStatus","PhaseStemElongation","Sla","HaunIndex","ApexHeight","PlantHeight","PlantWidth","VitesseRacinaireDay","Kcl","KRolling","LIRkdfcl","LTRkdfcl","AssimPot","Assim","RespMaintTot","SupplyTot","AssimSurplus","AssimNotUsed","AssimNotUsedCum","IcMean","CstrMean","TillerDeathPop","PlantLeafNumTot","DeadLeafdrywtPop","LaiDead","ResCapacityInternodePop","InternodeResStatus","DayLength","Par","RgCalc","VDPCalc","TMoyCalc","HMoyCalc","KceReal","StockTotal","EauDispo","StockSurface","StockRac","RURac","Kcp","Kce","EvapPot","Evap","TrPot","Tr","Lr","Dr","ParIntercepte","SumDegresDay","VitesseRacinaire","CstrAssim","RayExtra","CumPAR","SumDegreDayCor","SumPP","SumDDPhasePrec","SeuilTemp","RespMaintDebt","TMinMoy","TMaxMoy","FtswMoy","ResInternodeMobiliDay","RootShootRatio","TrEffInst","TrEff","WueEt","WueTot","SlaMitch","FloodwaterDepth","IrrigAutoDay","IrrigTotDay","FractionPlantHeightSubmer","Density","RootMassPerVol","CumTr","CumEt","CumWUse","CumWReceived","CumIrrig","CumDr","CumLr","VolMacropores","StockMacropores","IcCum","CstrCum","SlaNew","LTRkdf","LIRkdf","RelPotLeafLength","ApexHeightGain","Haungain","Conversion","RootFrontOld","SimStartGermin","SimEmergence","SimStartPSP","SimPanIni","SimAnthesis50","SimStartMatu2","SimEndCycle","StressCold","CulmsPerPlantMax","CulmsPerHillMax","DurGermFlow","DurGermMat","LaiFin","CulmsPerHillFin","CulmsPerPlantFin","GrainYieldPopFin","DryMatAboveGroundPopFin","ReservePopFin","FractionRootsLogged","ResUtil","KcTot","DryMatAboveGroundTotPop","DemResInternodePop","LastLeafLengthPot","LastLeafLength","CumSupplyTot","DryMatResInternodePopOld","CumGrowthPop","GrowthPop","A_DemStructLeaf","A_GrowthStructLeaf","A_DemStructTot","A_GrowthStructTot","CoeffCO2Tr","CoeffCO2Assim","A_AssimSurplus","A_IncreaseResInternodePop","A_ResInternodeMobiliDay","CumCarbonUsedPop","DryMatTotPopFin","GrainFillingStatusFin","SterilityTotFin","CumIrrigFin","CumWUseFin","GrowthDryMatPop_V2_1","RUEgreen"};
-    for (int i = 0; i < names.size(); ++i) {
-        QCheckBox * chartBox = new QCheckBox(QString::fromStdString(names[i]));
-        lay2->addWidget(chartBox);
-        connect(chartBox, SIGNAL(clicked(bool)), this, SLOT(chartClicked(bool)));
-    }
-}
-
-QMap < QString, QLineSeries * > MainWindow::getRefSeries(QString refFileName) {
-    QMap < QString, QLineSeries * > refSeries;
-    if (!refFileName.isNull() && !refFileName.isEmpty() && QFileInfo(refFileName).exists()) {
-        QFile file(refFileName);
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream in(&file);
-        QStringList headers = in.readLine().split('\t');
-        foreach (QString header, headers) {
-            refSeries.insert(header, new QLineSeries());
-        }
-        QDateTime date;
-        date.setDate(startDate);
-        int l = 0;
-        while (!in.atEnd()) {
-            l++;
-            QStringList vals = in.readLine().split('\t');
-            for (int i = 0; i < vals.size(); ++i) {
-                refSeries[headers[i]]
-                        ->append(date.toMSecsSinceEpoch(),
-                                 vals[i].replace(",", ".")
-                                 .toDouble());
-            }
-            date = date.addDays(1);
-        }
-        file.close();
-    }
-    return refSeries;
-}
-
-QMap < QString, QLineSeries * > MainWindow::getResultSeries(pair <vector <string>, vector < vector <double> > > results) {
-    QMap < QString, QLineSeries * > resultsSeries;
-    for (int i = 0; i < results.first.size(); ++i) {
-        QLineSeries * serie = new QLineSeries();
-        QDateTime date;
-        date.setDate(startDate);
-        for (int d = 0; d < results.second[i].size(); ++d) {
-            serie->append(date.toMSecsSinceEpoch(), results.second[i][d]);
-            date = date.addDays(1);
-        }
-        resultsSeries.insert(QString::fromStdString(results.first[i]), serie);
-    }
-    return resultsSeries;
-}
-
-QMap < QString, QScatterSeries * > MainWindow::getObsSeries(map<string, vector<double>> observations){
-    QMap < QString, QScatterSeries * > resultsSeries;
-
-    for (auto token: observations) {
-        QScatterSeries * serie = new QScatterSeries();
-        QDateTime date;
-        for (int d = 0; d < token.second.size(); ++d) {
-            date.setDate(QDate::fromJulianDay(observations["Jour"][d]));
-//            qDebug() << date.toString("MM-dd") << token.second[d];
-            if(token.second[d] != -999)
-                serie->append(date.toMSecsSinceEpoch(), token.second[d]);
-        }
-//        qDebug() << "APPEND " << QString::fromStdString(token.first);
-        resultsSeries.insert(QString::fromStdString(token.first).toLower(), serie);
-    }
-    return resultsSeries;
-}
-
-void MainWindow::displayData(pair <vector <string>, vector < vector <double> > > results) {
-    startDate = QDate::fromString(
-                QString::fromStdString(loader->parameters->getString("startingdate"/*"datedebut"*/)).split("T")[0],
-            "yyyy-MM-dd");
-
-    QMap < QString, QScatterSeries * > obsSeries = getObsSeries(observations);
-    QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
-
-    headers << /*obsSeries.keys() << */resultsSeries.keys();
-    headers = headers.toSet().toList();
-    headers.sort(Qt::CaseInsensitive);
-
-    QLayoutItem *item;
-    while((item = lay->takeAt(0))) {
-        if (item->layout()) {
-            delete item->layout();
-        }
-        if (item->widget()) {
-            delete item->widget();
-        }
-        delete item;
-    }
-
-    int j = 0;
-    foreach (QString key, headers) {
-        comparisons.push_back(compareSeries(resultsSeries[key], obsSeries[key]));
-        //        if(showCharts)
-        if(chartVisibles.contains(key))
-            if( addChart(j / numCol, j % numCol, resultsSeries[key], obsSeries[key], key) )
-                j++;
-    }
 }
 
 void MainWindow::sectionClicked(int row) {

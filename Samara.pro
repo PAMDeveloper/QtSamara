@@ -31,7 +31,6 @@ HEADERS += \
     src/qtapp/parametersdatamodel.h \
     src/qtapp/resultsdatamodel.h \
     src/qtapp/resultview.h \
-    src/qtapp/view.h \
     ../rSamara/src/utils/juliancalculator.h \
     ../rSamara/src/utils/resultparser.h \
     ../rSamara/src/utils/simulationloader.h \
@@ -44,7 +43,8 @@ HEADERS += \
     src/qtapp/chartmanager.h \
     src/qtapp/resultsmanager.h \
     src/qtapp/comparisonmanager.h \
-    src/qtapp/DBAccessLoader.h
+    src/qtapp/DBAccessLoader.h \
+    src/qtapp/chartview.h
 
 SOURCES += \
     src/qtapp/callout.cpp \
@@ -54,13 +54,13 @@ SOURCES += \
     src/qtapp/parametersdatamodel.cpp \
     src/qtapp/resultsdatamodel.cpp \
     src/qtapp/resultview.cpp \
-    src/qtapp/view.cpp \
     src/main.cpp \
     ../rSamara/src/samara.cpp \
     src/qtapp/comparisondatamodel.cpp \
     src/qtapp/chartmanager.cpp \
     src/qtapp/resultsmanager.cpp \
-    src/qtapp/comparisonmanager.cpp
+    src/qtapp/comparisonmanager.cpp \
+    src/qtapp/chartview.cpp
 
 FORMS += \
     src/qtapp/mainwindow.ui
