@@ -58,6 +58,8 @@ public:
   }
 
   QChart *m_chart;
+  QLineSeries *series;
+  QScatterSeries *obsSeries;
 
 protected:
   void resizeEvent(QResizeEvent *event);
@@ -73,8 +75,6 @@ private:
   QGraphicsSimpleTextItem *m_coordRefY;
   Callout *m_tooltip;
   QList<Callout *> m_callouts;
-  QLineSeries *series;
-  QScatterSeries *obsSeries;
 };
 
 #endif

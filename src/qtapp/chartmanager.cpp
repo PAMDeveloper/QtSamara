@@ -78,23 +78,25 @@ void ChartManager::setResults(pair<vector<string>, vector<vector<double> > > res
         QDateTimeAxis *axisX = new QDateTimeAxis;
         axisX->setTickCount(10);
         axisX->setFormat("dd MM");
+        chart->addAxis(axisX, Qt::AlignBottom);
         QValueAxis *axisY = new QValueAxis;
         axisY->setLabelFormat("%i");
+        chart->addAxis(axisY, Qt::AlignLeft);
 
         if(resultSeries[name] != nullptr) {
             resultSeries[name]->attachAxis(axisX);
             resultSeries[name]->attachAxis(axisY);
             chart->addSeries(resultSeries[name]);
+//            charts[name]->series = static_cast<QLineSeries*>(resultSeries[name]);
         }
 
         if(obsSeries[name] != nullptr) {
             obsSeries[name]->attachAxis(axisX);
             obsSeries[name]->attachAxis(axisY);
             chart->addSeries(obsSeries[name]);
+//            charts[name]->obsSeries = static_cast<QScatterSeries*>(obsSeries[name]);
         }
 
-        chart->addAxis(axisX, Qt::AlignBottom);
-        chart->addAxis(axisY, Qt::AlignLeft);
     }
 
     displayCharts();
@@ -145,8 +147,8 @@ void ChartManager::generateObsSeries(map<string, vector<double> > observations) 
     for (auto token: observations) {
         QString name = QString::fromStdString(token.first);
         QScatterSeries * serie = new QScatterSeries();
-        serie->setColor(getColor(name).darker(100));
-        serie->setMarkerSize(5);
+        serie->setColor(getColor(name).darker(200));
+        serie->setMarkerSize(7);
         for (int d = 0; d < token.second.size(); ++d) {
             string dateStr = JulianCalculator::toStringDate(observations["Jour"][d], JulianCalculator::YMD, '-');
             date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));

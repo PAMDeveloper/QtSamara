@@ -123,6 +123,7 @@ void MainWindow::on_launchButton_clicked() {
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
     chartManager->setResults(results, observations);
+    QMessageBox::information(this, "Simulation", "Simulation and charting done.");
 }
 
 
@@ -229,6 +230,8 @@ void MainWindow::createChartsTab() {
     client2->setLayout(chartListLayout);
     chartListLayout->setSpacing(0);
 }
+
+
 
 /************* COMPARISON ***************/
 
