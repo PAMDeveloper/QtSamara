@@ -64,10 +64,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createChartsTab();
     chartManager = new ChartManager(chartLayout, chartListLayout);
-
+    connect(ui->selectAllBox, SIGNAL(clicked(bool)), chartManager, SLOT(selectAll(bool)));
+    connect(ui->selectDefaultBox, SIGNAL(clicked(bool)), chartManager, SLOT(selectDefault(bool)));
 
     comparisonManager = new ComparisonManager();
-
 }
 
 MainWindow::~MainWindow() {
@@ -228,134 +228,6 @@ void MainWindow::createChartsTab() {
     chartListLayout = new QVBoxLayout();
     client2->setLayout(chartListLayout);
     chartListLayout->setSpacing(0);
-}
-
-
-
-
-
-
-void MainWindow::displayData(pair <vector <string>, vector < vector <double> > > results) {
-    startDate = QDate::fromString(
-                QString::fromStdString(loader->parameters->getString("startingdate"/*"datedebut"*/)).split("T")[0],
-            "yyyy-MM-dd");
-
-//    QMap < QString, QScatterSeries * > obsSeries = getObsSeries(observations);
-//    QMap < QString, QLineSeries * > resultsSeries = getResultSeries(results);
-
-//    headers << /*obsSeries.keys() << */resultsSeries.keys();
-//    headers = headers.toSet().toList();
-//    headers.sort(Qt::CaseInsensitive);
-
-//    QLayoutItem *item;
-//    while((item = chartLayout->takeAt(0))) {
-//        if (item->layout()) {
-//            delete item->layout();
-//        }
-//        if (item->widget()) {
-//            delete item->widget();
-//        }
-//        delete item;
-//    }
-
-//    int j = 0;
-//    foreach (QString key, headers) {
-//        comparisons.push_back(compareSeries(resultsSeries[key], obsSeries[key]));
-//        //        if(showCharts)
-//        if(chartVisibles.contains(key))
-//            if( addChart(j / numCol, j % numCol, resultsSeries[key], obsSeries[key], key) )
-//                j++;
-//    }
-}
-
-
-
-
-
-
-QColor getColor(int i) {
-    double PHI = (1 + qSqrt(5)) / 2;
-    double n = i * PHI - floor(i * PHI);
-    int h = qFloor(n * 256);
-    return QColor::fromHsv(h, 245, 245, 255);
-}
-
-bool MainWindow::addChart(int row, int col,
-                          QLineSeries *resultsSeries,
-                          QScatterSeries *refSeries,
-                          QString name) {
-
-//    serieCompare comparison = comparisons[headers.indexOf(name)];
-//    if(!comparison.valid)
-//        return false;
-
-//    QString titleName = name;
-//    QChart *chart = new QChart();
-//    QColor color = getColor(row * numCol + col);
-//    QPen pen;
-//    if(refSeries != NULL) {
-//        refSeries->setColor(color.darker(150));
-////        pen.setWidth(1);
-//        pen.setColor(color);
-//        refSeries->setMarkerSize(5);
-////        refSeries->setMarkerSize(1);
-//        refSeries->setPen(pen);
-//        titleName += " + ref";
-//        chart->addSeries(refSeries);
-//    }
-
-//    resultsSeries->setColor(color/*.darker(250)*/);
-//    pen.setWidth(1);
-//    pen.setColor(color/*.darker(250)*/);
-//    resultsSeries->setPen(pen);
-//    chart->addSeries(resultsSeries);
-
-//    chart->legend()->hide();
-//    chart->setTitle(titleName);
-
-//    QDateTimeAxis *axisX = new QDateTimeAxis;
-//    //    axisX->setTickCount(10);
-//    axisX->setFormat("dd MM");
-//    chart->addAxis(axisX, Qt::AlignBottom);
-//    resultsSeries->attachAxis(axisX);
-//    if(refSeries != NULL)
-//        refSeries->attachAxis(axisX);
-
-//    //    if(/*std::abs(comparison.diffPercent) <= 0.00001 ||*/ std::abs(comparison.sumSrc/*sumRef*/) <= 0.00001) {
-//    //        return false;
-//    //    }
-//    //    QDateTime date;
-//    //    date.setDate(startDate);
-//    //    date = date.addDays(comparison.diffStep);
-//    //    qDebug() << name << ":"  << comparison.diffPercent << "% at step: " << comparison.diffStep << ":" << date.toString("dd-MM");
-
-//    QValueAxis *axisY = new QValueAxis;
-//    axisY->setLabelFormat("%i");
-//    chart->addAxis(axisY, Qt::AlignLeft);
-//    axisY->setMax(comparison.maxVal * 1.1 + 0.001);
-////    axisY->setMin(qMin<double>(-0.001, comparison.minVal - (comparison.maxVal - comparison.minVal) * 0.1));
-//    axisY->setMin(comparison.minVal);
-//    //    if(resultsSeries != NULL)
-//    resultsSeries->attachAxis(axisY);
-
-//    if (refSeries != NULL)
-//        refSeries->attachAxis(axisY);
-
-
-//    ChartView *chartView = new ChartView(chart, resultsSeries, refSeries, this);
-//    chartLayout->addWidget(chartView, row, col);
-    return true;
-}
-
-void MainWindow::chartClicked(bool clicked) {
-    QCheckBox * chartBox = (QCheckBox *)sender();
-    if(clicked)
-        chartVisibles.append(chartBox->text().toLower());
-    else
-        chartVisibles.removeAll(chartBox->text().toLower());
-
-    displayData(results);
-
 }
 
 /************* COMPARISON ***************/

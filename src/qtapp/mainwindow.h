@@ -43,24 +43,17 @@ public:
 
     serieCompare compareSeries(QLineSeries * src, QScatterSeries * ref);
 
-    QMap < QString, QLineSeries * > getRefSeries(QString refFileName);
-
-//    QLineSeries *getSeries(QString fileName, QDate endDate);
-
     void loadDB(QString filePath);
     void clearDBContext();
-
     void createChartsTab();
     void fillDBCombos();
     void showParameters(SamaraParameters * parameters);
     void loadRefFile(QString path);
 
-
 private slots:
     void on_loadDbButton_clicked();
     void on_launchButton_clicked();
     void on_saveResultButton_clicked();
-
 
     void sectionClicked(int);
     void on_simComboBox_currentTextChanged(const QString &arg1);
@@ -70,21 +63,11 @@ private slots:
     void on_itinComboBox_currentTextChanged(const QString &arg1);
     void on_startDateEdit_dateChanged(const QDate &date);
     void on_endDateEdit_dateChanged(const QDate &date);
-    void chartClicked(bool);
+
     void on_oldResButton_clicked();
-
-
     void on_pushButton_2_clicked();
-
     void on_lineEdit_textChanged(const QString &arg1);
-
     void on_pushButton_3_clicked();
-
-
-
-
-
-
 private:
     Ui::MainWindow *ui;
     QSettings * settings;

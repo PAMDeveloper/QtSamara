@@ -43,9 +43,14 @@ public:
     QStringList defaultList;
     QStringList checkedList;
 
+    bool defaultChecked;
+
 signals:
 
 public slots:
+    void check(bool);
+    void selectAll(bool);
+    void selectDefault(bool);
 };
 
 #endif // CHARTMANAGER_H

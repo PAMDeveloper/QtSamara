@@ -59,9 +59,9 @@ ChartView::ChartView(QChart *chart, QWidget *parent)
   m_coordY = new QGraphicsSimpleTextItem(m_chart);
   m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height());
   m_coordY->setText("Y: ");
-  m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
-  m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
-  m_coordRefY->setText("Obs: ");
+//  m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
+//  m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
+//  m_coordRefY->setText("Obs: ");
 
   //    m_coordrefY->setPos(m_chart->size().width()/2 + 100, m_chart->size().height());
   //    m_coordrefY->setText("refY: ");
@@ -79,7 +79,7 @@ void ChartView::resizeEvent(QResizeEvent *event) {
     m_chart->resize(event->size());
     m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height() - 20);
     m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height() - 20);
-    m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height() - 20);
+//    m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height() - 20);
     foreach (Callout *callout, m_callouts)
       callout->updateGeometry();
   }
@@ -93,7 +93,7 @@ void ChartView::mouseMoveEvent(QMouseEvent *event) {
   double xPos = (startX - xValue) / (startX - endX);
   double serieIdx = -1;
   m_coordX->setText(QString("X: %1").arg(QDateTime::fromMSecsSinceEpoch(xValue).toString("dd-MM")));
-  if (obsSeries != nullptr) {
+  if (series != nullptr) {
       serieIdx = qRound(xPos * series->points().size());
       if (serieIdx >= 0 && serieIdx < series->points().size())
         m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));

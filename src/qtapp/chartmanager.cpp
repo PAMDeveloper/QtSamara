@@ -22,41 +22,48 @@ ChartManager::ChartManager(QGridLayout *chartLayout, QVBoxLayout *chartListLayou
 }
 
 void ChartManager::fillList() {
+    defaultChecked = false;
     for(QString name: chartList) {
         QCheckBox * chartBox = new QCheckBox(name);
-        if(defaultList.contains(name)) {
-            chartBox->setChecked(true);
-            checkedList.append(name);
-        }
+        chartBox->setObjectName(name + "box");
         charts.insert(name, createChart(name));
         chartListLayout->addWidget(chartBox);
-//        connect(chartBox, SIGNAL(clicked(bool)), this, SLOT(chartClicked(bool)));
+        connect(chartBox, SIGNAL(clicked(bool)), this, SLOT(check(bool)));
     }
 }
 
+void ChartManager::check(bool checked) {
+    QString name = static_cast<QCheckBox *>(sender())->text();
+    if(checked && !checkedList.contains(name))
+        checkedList.append(name);
+
+    if(!checked && checkedList.contains(name))
+        checkedList.removeAll(name);
+
+    displayCharts();
+}
+
 ChartView * ChartManager::createChart(QString name) {
-    QChart *chart = new QChart();
+    QChart * chart = new QChart();
     chart->legend()->hide();
     chart->setTitle(name);
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("dd MM");
-    chart->addAxis(axisX, Qt::AlignBottom);
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    chart->addAxis(axisY, Qt::AlignLeft);
-
     ChartView * chartView = new ChartView(chart);
     chartView->setObjectName(name);
+
+    return chartView;
 }
 
 void ChartManager::displayCharts() {
     for(QString name: chartList) {
-//        chartLayout->removeWidget();
-//        if(checkedList.contains(name) && chartLayout->parent()->findChild<QWidget*>(name) == 0) {
-//            chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);
-//        }
+        charts[name]->setVisible(false);
+        chartLayout->removeWidget(chartLayout->parent()->findChild<QWidget*>(name));
+    }
+
+    for(QString name: chartList) {
+        if(checkedList.contains(name)) {
+            charts[name]->setVisible(true);
+            chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);
+        }
     }
 }
 
@@ -65,22 +72,32 @@ void ChartManager::setResults(pair<vector<string>, vector<vector<double> > > res
     generateResultSeries(results);
     generateObsSeries(observations);
 
-    for(QString checked: checkedList) {
-        QChart * chart = charts[checked]->m_chart;
-        if(resultSeries[checked] != nullptr) {
-            resultSeries[checked]->attachAxis(chart->axisX());
-            resultSeries[checked]->attachAxis(chart->axisY());
-            chart->addSeries(resultSeries[checked]);
+
+    for(QString name: chartList) {
+        QChart * chart = charts[name]->m_chart;
+        QDateTimeAxis *axisX = new QDateTimeAxis;
+        axisX->setTickCount(10);
+        axisX->setFormat("dd MM");
+        QValueAxis *axisY = new QValueAxis;
+        axisY->setLabelFormat("%i");
+
+        if(resultSeries[name] != nullptr) {
+            resultSeries[name]->attachAxis(axisX);
+            resultSeries[name]->attachAxis(axisY);
+            chart->addSeries(resultSeries[name]);
         }
 
-        if(obsSeries[checked] != nullptr) {
-            obsSeries[checked]->attachAxis(chart->axisX());
-            obsSeries[checked]->attachAxis(chart->axisY());
-            chart->addSeries(obsSeries[checked]);
+        if(obsSeries[name] != nullptr) {
+            obsSeries[name]->attachAxis(axisX);
+            obsSeries[name]->attachAxis(axisY);
+            chart->addSeries(obsSeries[name]);
         }
 
-        chartLayout->addWidget(charts[checked], chartLayout->count() / 2, chartLayout->count() % 2);
+        chart->addAxis(axisX, Qt::AlignBottom);
+        chart->addAxis(axisY, Qt::AlignLeft);
     }
+
+    displayCharts();
 }
 
 void ChartManager::clearSeries() {
@@ -94,6 +111,9 @@ void ChartManager::clearSeries() {
 
     resultSeries.clear();
     obsSeries.clear();
+
+    for(QString name: chartList)
+        charts[name]->m_chart->removeAllSeries();
 }
 
 
@@ -135,4 +155,46 @@ void ChartManager::generateObsSeries(map<string, vector<double> > observations) 
         }
         obsSeries.insert(name, serie);
     }
+}
+
+void ChartManager::selectAll(bool checked) {
+    if(!checked) {
+        for(QString name: chartList) {
+            if(!defaultChecked || !defaultList.contains(name)) {
+                checkedList.removeAll(name);
+                chartListLayout->parent()->findChild<QCheckBox*>(name + "box")->setChecked(false);
+            }
+        }
+    } else {
+        checkedList.clear();
+        for(QString name: chartList) {
+            if(!checkedList.contains(name)) {
+                checkedList.append(name);
+                chartListLayout->parent()->findChild<QCheckBox*>(name + "box")->setChecked(true);
+            }
+        }
+    }
+
+    displayCharts();
+}
+
+void ChartManager::selectDefault(bool checked) {
+    defaultChecked = checked;
+    if(checked) {
+        for(QString name: defaultList) {
+            if(!checkedList.contains(name)) {
+                checkedList.append(name);
+                chartListLayout->parent()->findChild<QCheckBox*>(name + "box")->setChecked(true);
+            }
+        }
+    } else {
+        for(QString name: defaultList) {
+            if(checkedList.contains(name)) {
+                checkedList.removeAll(name);
+                chartListLayout->parent()->findChild<QCheckBox*>(name + "box")->setChecked(false);
+            }
+        }
+    }
+
+    displayCharts();
 }

@@ -82,7 +82,7 @@
     <item>
      <widget class="QTabWidget" name="graphTab">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="parametersTab">
        <attribute name="title">
@@ -382,22 +382,40 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,7">
           <item>
-           <widget class="QScrollArea" name="scrollArea">
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>142</width>
-               <height>594</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_6"/>
-            </widget>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QCheckBox" name="selectAllBox">
+              <property name="text">
+               <string>Select all</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="selectDefaultBox">
+              <property name="text">
+               <string>Select default</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollArea">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>140</width>
+                 <height>546</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_6"/>
+              </widget>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QScrollArea" name="scrollArea_2">
