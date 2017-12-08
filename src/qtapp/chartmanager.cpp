@@ -10,14 +10,15 @@
 
 #include "utils/juliancalculator.h"
 
-const QString chartDefaultList = "Cstr,CulmsPerHill,DryMatAboveGroundTotPop,DryMatResInternodePop,DryMatStructStemPop,FTSW,GrainYieldPop,Ic,Lai,LeafDeathPop,NumPhase";
-const QString chartCompleteList = "ApexHeight,Assim,AssimNotUsed,AssimNotUsedCum,AssimPot,AssimSurplus,CapaREvap,CapaRFE,Conversion,ConversionEff,Cstr,CstrAssim,CstrMean,CstrPhase2,CstrPhase3,CstrPhase4,CstrPhase5,CumRain,CulmsPerHill,CulmsPerHillMax,CulmsPerPlant,CulmsPerPlantMax,CulmsPop,CumCarbonUsedPop,CumDr,CumEt,CumIrrig,CumLr,CumPAR,CumTr,CumWReceived,CumWUse,DayLength,DeadLeafdrywtPop,DegresDuJour,DegresDuJourCor,Density,Dr,DryMatAboveGroundPop,DryMatAboveGroundTotPop,DryMatPanicleTotPop,DryMatResInternodePop,DryMatStructInternodePop,DryMatStructLeafPop,DryMatStructPaniclePop,DryMatStructRootPop,DryMatStructSheathPop,DryMatStructStemPop,DryMatStructTotPop,DryMatTotPop,DryMatVegeTotPop,DurGermFlow,DurGermMat,DurPhase1,DurPhase2,DurPhase3,DurPhase4,DurPhase5,DurPhase6,EauDispo,ETM,ETo,ETP,ETR,Evap,EvapPot,FertSpikeNumPop,FloodwaterDepth,FractionPlantHeightSubmer,FractionRootsLogged,FTSW,FtswPhase2,FtswPhase3,FtswPhase4,FtswPhase5,FtswPhase6,GrainFillingStatus,GrainYieldPanicle,GrainYieldPop,HarvestIndex,HaunIndex,HMax,HMin,HMoy,Hum,Ic,IcMean,IcPhase2,IcPhase3,IcPhase4,IcPhase5,IcPhase6,Ins,InternodeResStatus,Irrigation,IrrigTotDay,Kce,KceReal,Kcl,Kcp,KcTot,Kr,KRolling,Lai,LaiDead,LastLeafLength,LastLeafLengthPot,LeafDeathPop,LIRkdfcl,Lr,LTRkdfcl,MaxLai,MobiliLeafDeath,NumPhase,NurseryStatus,PanicleNumPlant,PanicleNumPop,PanicleSinkPop,PanStructMass,Par,PARIntercepte,PlantHeight,PlantLeafNumTot,PlantWidth,Pluie,ProfRu,ResCapacityInternodePop,ReservePopFin,ResInternodeMobiliDay,ResInternodeMobiliDayPot,RespMaintDebt,RespMaintTot,ResUtil,Rg,RgCalc,RgMax,RootFront,RootMassPerVol,RootShootRatio,RUE,RUEGreen,RuRac,RuSurf,Sla,SpikeNumPanicle,SpikeNumPop,SterilityCold,SterilityDrought,SterilityHeat,SterilityTot,StockMacropores,StockRac,StockSurface,StockTotal,StressCold,SumDegreDayCor,SumDegresDay,SupplyTot,TillerDeathPop,TMax,TMin,TMoy,Tr,TrEff,TrEffInst,TrPot,VitesseRacinaire,VolMacropores,VolRelMacropores,VPDCalc,Vt,WueEt,WueTot";
+const QString chartDefaultList = "Cstr,CulmsPerHill,DryMatAboveGroundTotPop,DryMatResInternodePop,DryMatStemPop,FTSW,GrainYieldPop,Ic,Lai,LeafDeathPop,NumPhase";
+const QString chartCompleteList = "ApexHeight,Assim,AssimNotUsed,AssimNotUsedCum,AssimPot,AssimSurplus,CapaREvap,CapaRFE,Conversion,ConversionEff,Cstr,CstrAssim,CstrMean,CstrPhase2,CstrPhase3,CstrPhase4,CstrPhase5,CumRain,CulmsPerHill,CulmsPerHillMax,CulmsPerPlant,CulmsPerPlantMax,CulmsPop,CumCarbonUsedPop,CumDr,CumEt,CumIrrig,CumLr,CumPAR,CumTr,CumWReceived,CumWUse,DayLength,DeadLeafdrywtPop,DegresDuJour,DegresDuJourCor,Density,Dr,DryMatAboveGroundPop,DryMatAboveGroundTotPop,DryMatPanicleTotPop,DryMatResInternodePop,DryMatStructInternodePop,DryMatStructLeafPop,DryMatStructPaniclePop,DryMatStructRootPop,DryMatStructSheathPop,DryMatStemPop,DryMatStructTotPop,DryMatTotPop,DryMatVegeTotPop,DurGermFlow,DurGermMat,DurPhase1,DurPhase2,DurPhase3,DurPhase4,DurPhase5,DurPhase6,EauDispo,ETM,ETo,ETP,ETR,Evap,EvapPot,FertSpikeNumPop,FloodwaterDepth,FractionPlantHeightSubmer,FractionRootsLogged,FTSW,FtswPhase2,FtswPhase3,FtswPhase4,FtswPhase5,FtswPhase6,GrainFillingStatus,GrainYieldPanicle,GrainYieldPop,HarvestIndex,HaunIndex,HMax,HMin,HMoy,Hum,Ic,IcMean,IcPhase2,IcPhase3,IcPhase4,IcPhase5,IcPhase6,Ins,InternodeResStatus,Irrigation,IrrigTotDay,Kce,KceReal,Kcl,Kcp,KcTot,Kr,KRolling,Lai,LaiDead,LastLeafLength,LastLeafLengthPot,LeafDeathPop,LIRkdfcl,Lr,LTRkdfcl,MaxLai,MobiliLeafDeath,NumPhase,NurseryStatus,PanicleNumPlant,PanicleNumPop,PanicleSinkPop,PanStructMass,Par,PARIntercepte,PlantHeight,PlantLeafNumTot,PlantWidth,Pluie,ProfRu,ResCapacityInternodePop,ReservePopFin,ResInternodeMobiliDay,ResInternodeMobiliDayPot,RespMaintDebt,RespMaintTot,ResUtil,Rg,RgCalc,RgMax,RootFront,RootMassPerVol,RootShootRatio,RUE,RUEGreen,RuRac,RuSurf,Sla,SpikeNumPanicle,SpikeNumPop,SterilityCold,SterilityDrought,SterilityHeat,SterilityTot,StockMacropores,StockRac,StockSurface,StockTotal,StressCold,SumDegreDayCor,SumDegresDay,SupplyTot,TillerDeathPop,TMax,TMin,TMoy,Tr,TrEff,TrEffInst,TrPot,VitesseRacinaire,VolMacropores,VolRelMacropores,VPDCalc,Vt,WueEt,WueTot";
 
 ChartManager::ChartManager(QGridLayout *chartLayout, QVBoxLayout *chartListLayout, QObject *parent)
     : QObject(parent), chartLayout(chartLayout), chartListLayout(chartListLayout)
 {
     chartList = chartCompleteList.split(",");
     defaultList = chartDefaultList.split(",");
+    sowingChecked = false;
     fillList();
 }
 
@@ -44,10 +45,7 @@ void ChartManager::check(bool checked) {
 }
 
 ChartView * ChartManager::createChart(QString name) {
-    QChart * chart = new QChart();
-    chart->legend()->hide();
-    chart->setTitle(name);
-    ChartView * chartView = new ChartView(chart);
+    ChartView * chartView = new ChartView(name);
     chartView->setObjectName(name);
 
     return chartView;
@@ -59,46 +57,25 @@ void ChartManager::displayCharts() {
         chartLayout->removeWidget(chartLayout->parent()->findChild<QWidget*>(name));
     }
 
-    for(QString name: chartList) {
-        if(checkedList.contains(name)) {
-            charts[name]->setVisible(true);
-            chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);
-        }
+    for(QString name: checkedList) {
+        if(charts[name]->series == nullptr)
+            charts[name]->setSeries(resultSeries[name], obsSeries[name]);
+        chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);
+        charts[name]->setSowing(sowingChecked);
+        charts[name]->setVisible(true);
     }
 }
 
-void ChartManager::setResults(pair<vector<string>, vector<vector<double> > > results, map<string, vector<double> > observations) {
+void ChartManager::fromSowing(bool checked) {
+    sowingChecked = checked;
+    displayCharts();
+}
+
+void ChartManager::setResults(pair<vector<string>, vector<vector<double> > > results, map<string, vector<double> > observations,
+                              double startDate, double sowingDate) {
     clearSeries();
-    generateResultSeries(results);
-    generateObsSeries(observations);
-
-
-    for(QString name: chartList) {
-        QChart * chart = charts[name]->m_chart;
-        QDateTimeAxis *axisX = new QDateTimeAxis;
-        axisX->setTickCount(10);
-        axisX->setFormat("dd MM");
-        chart->addAxis(axisX, Qt::AlignBottom);
-        QValueAxis *axisY = new QValueAxis;
-        axisY->setLabelFormat("%i");
-        chart->addAxis(axisY, Qt::AlignLeft);
-
-        if(resultSeries[name] != nullptr) {
-            resultSeries[name]->attachAxis(axisX);
-            resultSeries[name]->attachAxis(axisY);
-            chart->addSeries(resultSeries[name]);
-//            charts[name]->series = static_cast<QLineSeries*>(resultSeries[name]);
-        }
-
-        if(obsSeries[name] != nullptr) {
-            obsSeries[name]->attachAxis(axisX);
-            obsSeries[name]->attachAxis(axisY);
-            chart->addSeries(obsSeries[name]);
-//            charts[name]->obsSeries = static_cast<QScatterSeries*>(obsSeries[name]);
-        }
-
-    }
-
+    generateResultSeries(results, sowingDate);
+    generateObsSeries(observations, sowingDate);
     displayCharts();
 }
 
@@ -115,7 +92,7 @@ void ChartManager::clearSeries() {
     obsSeries.clear();
 
     for(QString name: chartList)
-        charts[name]->m_chart->removeAllSeries();
+        charts[name]->clear();
 }
 
 
@@ -127,22 +104,24 @@ QColor getColor(QString s) {
     return QColor::fromHsv(h, 245, 245, 255);
 }
 
-void ChartManager::generateResultSeries(pair <vector <string>, vector < vector <double> > > results) {
+//#include <QDebug>
+void ChartManager::generateResultSeries(pair <vector <string>, vector < vector <double> > > results, double sowing) {
     QDateTime date;
     for (int i = 0; i < results.first.size(); ++i) {
         QString name = QString::fromStdString(results.first[i]);
         QLineSeries * serie = new QLineSeries();
         serie->setColor(getColor(name));
         for (int d = 0; d < results.second[i].size(); ++d) {
-            string dateStr = JulianCalculator::toStringDate(results.second[0][d], JulianCalculator::YMD, '-');
-            date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));
-            serie->append(date.toMSecsSinceEpoch(), results.second[i][d]);
+            serie->append(results.second[0][d] - sowing, results.second[i][d]);
+//            string dateStr = JulianCalculator::toStringDate(results.second[0][d], JulianCalculator::YMD, '-');
+//            date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));
+//            serie->append(date.toMSecsSinceEpoch(), results.second[i][d]);
         }
         resultSeries.insert(name, serie);
     }
 }
 
-void ChartManager::generateObsSeries(map<string, vector<double> > observations) {
+void ChartManager::generateObsSeries(map<string, vector<double> > observations, double sowing) {
     QDateTime date;
     for (auto token: observations) {
         QString name = QString::fromStdString(token.first);
@@ -150,10 +129,10 @@ void ChartManager::generateObsSeries(map<string, vector<double> > observations) 
         serie->setColor(getColor(name).darker(200));
         serie->setMarkerSize(7);
         for (int d = 0; d < token.second.size(); ++d) {
-            string dateStr = JulianCalculator::toStringDate(observations["Jour"][d], JulianCalculator::YMD, '-');
-            date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));
+//            string dateStr = JulianCalculator::toStringDate(observations["Jour"][d], JulianCalculator::YMD, '-');
+//            date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));
             if(token.second[d] != -999)
-                serie->append(date.toMSecsSinceEpoch(), token.second[d]);
+                serie->append(observations["Jour"][d] - sowing, token.second[d]);
         }
         obsSeries.insert(name, serie);
     }
@@ -200,3 +179,5 @@ void ChartManager::selectDefault(bool checked) {
 
     displayCharts();
 }
+
+

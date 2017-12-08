@@ -1,18 +1,48 @@
 #include "parametersdatamodel.h"
-//#include <QDebug>
+#include <QHash>
+#include <QtCore/qmath.h>
+
+
+class KeyLessThan
+{
+public:
+    KeyLessThan( SamaraParameters * params):params(params){}
+    bool operator()(const QString &v1, const QString &v2) const{
+        QString v1cat = QString::fromStdString(params->doubles[v1.toStdString()].second);
+        QString v2cat = QString::fromStdString(params->doubles[v2.toStdString()].second);
+
+        if(v1cat == v2cat)
+            return v1 < v2;
+        return v1cat < v2cat;
+    }
+
+private:
+SamaraParameters * params;
+};
+
 ParametersDataModel::ParametersDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
 {
     for(auto const& token: params->doubles) {
         keys << QString::fromStdString(token.first);
     }
+    qSort(keys.begin(), keys.end(), KeyLessThan(params));
 }
+
 
 int ParametersDataModel::rowCount(const QModelIndex &parent) const {
     return keys.size();
 }
 int ParametersDataModel::columnCount(const QModelIndex &parent) const {
     return 2;
+}
+
+QColor ParametersDataModel::getColor(QString s) {
+    int i = qHash(s) % 350;
+    double PHI = (1 + qSqrt(5)) / 2;
+    double n = i * PHI - floor(i * PHI);
+    int h = qFloor(n * 256);
+    return QColor::fromHsv(h, 245, 245, 255);
 }
 
 QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
@@ -32,8 +62,10 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
         catch(...) {
             return QString::fromStdString(parameters->getString(keys[index.row()].toStdString()));
         }
-
     }
+
+    if(role == Qt::BackgroundColorRole)
+        return getColor(QString::fromStdString(parameters->doubles[keys[index.row()].toStdString()].second)).lighter();
 
     if(role == Qt::TextAlignmentRole)
         return Qt::AlignCenter;

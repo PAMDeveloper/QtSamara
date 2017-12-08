@@ -47,34 +47,37 @@ class Callout;
 QT_CHARTS_USE_NAMESPACE
 
 class ChartView: public QGraphicsView {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  ChartView(QChart *chart, QWidget *parent = 0);
+    ChartView(QString name, QWidget *parent = 0);
 
-  void setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
-      this->series = series;
-      this->obsSeries = obsSeries;
-  }
+    void setSeries(QLineSeries *series, QScatterSeries *obsSeries);
+    void setSowing(bool);
+    void clear();
 
-  QChart *m_chart;
-  QLineSeries *series;
-  QScatterSeries *obsSeries;
+    QChart *m_chart;
+    QLineSeries *series;
+    QScatterSeries *obsSeries;
+    int sowing;
+    double xMax;
+    double xMin;
+
 
 protected:
-  void resizeEvent(QResizeEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 public slots:
-  void keepCallout();
-  void tooltip(QPointF point, bool state);
+    void keepCallout();
+    void tooltip(QPointF point, bool state);
 
 private:
-  QGraphicsSimpleTextItem *m_coordX;
-  QGraphicsSimpleTextItem *m_coordY;
-  QGraphicsSimpleTextItem *m_coordRefY;
-  Callout *m_tooltip;
-  QList<Callout *> m_callouts;
+    QGraphicsSimpleTextItem *m_coordX;
+    QGraphicsSimpleTextItem *m_coordY;
+    QGraphicsSimpleTextItem *m_coordRefY;
+    Callout *m_tooltip;
+    QList<Callout *> m_callouts;
 };
 
 #endif

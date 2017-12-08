@@ -31,101 +31,175 @@
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QGraphicsScene>
 #include <QtCharts/QChart>
-#include <QtCharts/QSplineSeries>
 #include <QtWidgets/QGraphicsTextItem>
 #include <QtGui/QMouseEvent>
-#include <QtCharts/QDateTimeAxis>
-#include <QDate>
-//#include <QDebug>
 
+#include <QtCharts/QDateTimeAxis>
+#include <QtCharts/QValueAxis>
+
+#include <QDate>
 #include <qtapp/callout.h>
 
-ChartView::ChartView(QChart *chart, QWidget *parent)
-  : QGraphicsView(new QGraphicsScene, parent),
-    m_coordX(0), m_coordY(0), m_coordRefY(0),
-    m_chart(0), m_tooltip(0) {
-  setDragMode(QGraphicsView::NoDrag);
-  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setMinimumHeight(250);
-  m_chart = chart;
-  m_chart->setAcceptHoverEvents(true);
-  setRenderHint(QPainter::Antialiasing);
-  scene()->addItem(m_chart);
+ChartView::ChartView(QString name, QWidget *parent)
+    : QGraphicsView(new QGraphicsScene, parent),
+      m_coordX(0), m_coordY(0), m_coordRefY(0),
+      m_chart(0), m_tooltip(0) {
+    series = nullptr;
+    obsSeries = nullptr;
+    setDragMode(QGraphicsView::NoDrag);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setMinimumHeight(250);
 
-  m_coordX = new QGraphicsSimpleTextItem(m_chart);
-  m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height());
-  m_coordX->setText("X: ");
-  m_coordY = new QGraphicsSimpleTextItem(m_chart);
-  m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height());
-  m_coordY->setText("Y: ");
-//  m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
-//  m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
-//  m_coordRefY->setText("Obs: ");
+    m_chart = new QChart();
+    m_chart->legend()->hide();
+    m_chart->setTitle(name);
 
-  //    m_coordrefY->setPos(m_chart->size().width()/2 + 100, m_chart->size().height());
-  //    m_coordrefY->setText("refY: ");
-  //    connect(series, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
-  //    connect(series, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
-  //    connect(series2, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
-  //    connect(series2, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setLabelFormat("%i");
+    m_chart->addAxis(axisX, Qt::AlignBottom);
 
-  this->setMouseTracking(true);
+    QValueAxis *axisY = new QValueAxis;
+    m_chart->addAxis(axisY, Qt::AlignLeft);
+
+    m_chart->setAcceptHoverEvents(true);
+    scene()->addItem(m_chart);
+
+    m_coordX = new QGraphicsSimpleTextItem(m_chart);
+    m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height());
+    m_coordX->setText("X: ");
+    m_coordY = new QGraphicsSimpleTextItem(m_chart);
+    m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height());
+    m_coordY->setText("Y: ");
+    //  m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
+    //  m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
+    //  m_coordRefY->setText("Obs: ");
+
+    //    m_coordrefY->setPos(m_chart->size().width()/2 + 100, m_chart->size().height());
+    //    m_coordrefY->setText("refY: ");
+    //    connect(series, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
+    //    connect(series, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
+    //    connect(series2, SIGNAL(clicked(QPointF)), this, SLOT(keepCallout()));
+    //    connect(series2, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
+
+    this->setMouseTracking(true);
+}
+
+void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
+    double yMax = -qInf();
+    double yMin = qInf();
+    xMax = -qInf();
+    xMin = qInf();
+
+    if(series != nullptr) {
+        series->attachAxis(m_chart->axisX());
+        series->attachAxis(m_chart->axisY());
+        m_chart->addSeries(series);
+        this->series = series;
+        for (int i = 0; i < series->count(); ++i) {
+            double y = series->at(i).y();
+            double x = series->at(i).x();
+            if(x == 0)
+                sowing = i;
+            yMax = qMax(yMax, y);
+            yMin = qMin(yMin, y);
+            xMax = qMax(xMax, x);
+            xMin = qMin(xMin, x);
+        }
+    }
+
+    if(obsSeries != nullptr) {
+        obsSeries->attachAxis(m_chart->axisX());
+        obsSeries->attachAxis(m_chart->axisY());
+        m_chart->addSeries(obsSeries);
+        this->obsSeries = obsSeries;
+        for (int i = 0; i < obsSeries->count(); ++i) {
+            double y = obsSeries->at(i).y();
+            yMax = qMax(yMax, y);
+            yMin = qMin(yMin, y);
+        }
+    }
+    m_chart->axisY()->setMin(yMin);
+    m_chart->axisY()->setMax(yMax);
+    m_chart->axisX()->setMin(xMin);
+    m_chart->axisX()->setMax(xMax);
+}
+
+
+void ChartView::clear() {
+    m_chart->removeAllSeries();
+    series = nullptr;
+    obsSeries = nullptr;
+}
+
+void ChartView::setSowing(bool sowing){
+    if(sowing) {
+        QRectF rect = m_chart->plotArea();
+        rect.adjust(m_chart->mapToPosition(QPoint(0,0)).x(),0,0,0);
+        m_chart->zoomIn(rect);
+        m_chart->axisX()->setRange(0,xMax);
+    } else {
+        m_chart->zoomReset();
+        m_chart->axisX()->setRange(xMin,xMax);
+    }
 }
 
 void ChartView::resizeEvent(QResizeEvent *event) {
-  if (scene()) {
-    scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
-    m_chart->resize(event->size());
-    m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height() - 20);
-    m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height() - 20);
-//    m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height() - 20);
-    foreach (Callout *callout, m_callouts)
-      callout->updateGeometry();
-  }
-  QGraphicsView::resizeEvent(event);
+    if (scene()) {
+        scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+        m_chart->resize(event->size());
+        m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height() - 20);
+        m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height() - 20);
+        //    m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height() - 20);
+        foreach (Callout *callout, m_callouts)
+            callout->updateGeometry();
+    }
+    QGraphicsView::resizeEvent(event);
 }
 
 void ChartView::mouseMoveEvent(QMouseEvent *event) {
-  double startX = ((QDateTimeAxis *)(m_chart->axisX(series)))->min().toMSecsSinceEpoch();
-  double endX = ((QDateTimeAxis *)(m_chart->axisX(series)))->max().toMSecsSinceEpoch();
-  double xValue = m_chart->mapToValue(event->pos()).x();
-  double xPos = (startX - xValue) / (startX - endX);
-  double serieIdx = -1;
-  m_coordX->setText(QString("X: %1").arg(QDateTime::fromMSecsSinceEpoch(xValue).toString("dd-MM")));
-  if (series != nullptr) {
-      serieIdx = qRound(xPos * series->points().size());
-      if (serieIdx >= 0 && serieIdx < series->points().size())
+    if (series != nullptr) {
+//        double startX = ((QDateTimeAxis *)(m_chart->axisX(series)))->min().toMSecsSinceEpoch();
+//        double endX = ((QDateTimeAxis *)(m_chart->axisX(series)))->max().toMSecsSinceEpoch();
+        double xValue = m_chart->mapToValue(event->pos()).x();
+//        double xPos = (xMin - xValue) / (xMax - xMin);
+//        double serieIdx = -1;
+//        m_coordX->setText(QString("X: %1").arg(QDateTime::fromMSecsSinceEpoch(xValue).toString("dd-MM")));
+        m_coordX->setText(QString("X: %1").arg(xValue));
+//        double yValue = m_chart->mapToValue(event->pos()).y();
+        int serieIdx = (int)xValue-xMin;
+        if (serieIdx >= 0 && serieIdx < series->points().size())
         m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));
-  }
+//        m_coordY->setText(QString("Y: %1").arg(yValue));
 
-  if (obsSeries != nullptr) {
-    QString txt = "";
-    if (serieIdx >= 0 && serieIdx < obsSeries->points().size()) {
-      txt = QString("Obs: %1").arg(obsSeries->at(serieIdx).y());
+//        if (obsSeries != nullptr) {
+//            QString txt = "";
+//            if (serieIdx >= 0 && serieIdx < obsSeries->points().size()) {
+//                txt = QString("Obs: %1").arg(obsSeries->at(serieIdx).y());
+//            }
+//            m_coordRefY->setText(txt);
+//        }
     }
-    m_coordRefY->setText(txt);
-  }
 
-  QGraphicsView::mouseMoveEvent(event);
+    QGraphicsView::mouseMoveEvent(event);
 }
 
 void ChartView::keepCallout() {
-  m_callouts.append(m_tooltip);
-  m_tooltip = new Callout(m_chart);
+    m_callouts.append(m_tooltip);
+    m_tooltip = new Callout(m_chart);
 }
 
 void ChartView::tooltip(QPointF point, bool state) {
-  if (m_tooltip == 0)
-    m_tooltip = new Callout(m_chart);
+    if (m_tooltip == 0)
+        m_tooltip = new Callout(m_chart);
 
-  if (state) {
-    m_tooltip->setText(QString("%1").arg(point.y()));
-    m_tooltip->setAnchor(point);
-    m_tooltip->setZValue(11);
-    m_tooltip->updateGeometry();
-    m_tooltip->show();
-  } else {
-    m_tooltip->hide();
-  }
+    if (state) {
+        m_tooltip->setText(QString("%1").arg(point.y()));
+        m_tooltip->setAnchor(point);
+        m_tooltip->setZValue(11);
+        m_tooltip->updateGeometry();
+        m_tooltip->show();
+    } else {
+        m_tooltip->hide();
+    }
 }

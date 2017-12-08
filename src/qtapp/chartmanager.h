@@ -25,16 +25,17 @@ public:
     explicit ChartManager(QGridLayout *chartLayout, QVBoxLayout *chartListLayout, QObject *parent = nullptr);
 
     void fillList();
-    void setResults(pair <vector <string>, vector < vector <double> > > results, map<string, vector<double>> observations);
-    void generateObsSeries(map<string, vector<double>> observations);
-    void generateResultSeries(pair <vector <string>, vector < vector <double> > > results);
+    void setResults(pair <vector <string>, vector < vector <double> > > results, map<string, vector<double>> observations,
+                    double startDate, double sowingDate);
+    void generateObsSeries(map<string, vector<double>> observations, double sowing);
+    void generateResultSeries(pair <vector <string>, vector < vector <double> > > results, double sowing);
     void clearSeries();
     ChartView * createChart(QString name);
 
     void displayCharts();
 
-    QMap <QString, QAbstractSeries*> resultSeries;
-    QMap <QString, QAbstractSeries*> obsSeries;
+    QMap <QString, QLineSeries*> resultSeries;
+    QMap <QString, QScatterSeries*> obsSeries;
     QMap <QString, ChartView *> charts;
 
     QGridLayout *chartLayout;
@@ -44,6 +45,7 @@ public:
     QStringList checkedList;
 
     bool defaultChecked;
+    bool sowingChecked;
 
 signals:
 
@@ -51,6 +53,7 @@ public slots:
     void check(bool);
     void selectAll(bool);
     void selectDefault(bool);
+    void fromSowing(bool);
 };
 
 #endif // CHARTMANAGER_H

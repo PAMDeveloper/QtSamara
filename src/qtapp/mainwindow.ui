@@ -384,6 +384,13 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <item>
+             <widget class="QRadioButton" name="sowingButton">
+              <property name="text">
+               <string>From sowing</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QCheckBox" name="selectAllBox">
               <property name="text">
                <string>Select all</string>
@@ -408,7 +415,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>140</width>
-                 <height>546</height>
+                 <height>523</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6"/>

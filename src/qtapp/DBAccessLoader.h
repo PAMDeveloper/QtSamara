@@ -293,7 +293,7 @@ public:
                 "[Observation_resultat]![leafDM]*10+IIf(IsNull([Observation_resultat]![PanicleDM]*10),0," \
                 "[Observation_resultat]![PanicleDM]*10) AS DryMatAboveGroundPop, [Observation_resultat]" \
                 "![lai]/([Observation_resultat]![leafDM]*10) AS Sla, [Observation_resultat.leafDM]*10 as DryMatStructLeafPop, " \
-                "[Observation_resultat.StemDM]*10 as DryMatStructStemPop, " \
+                "[Observation_resultat.StemDM]*10 as DryMatStemPop, " \
                 "[Observation_resultat.PanicleDM]*10 as DryMatStructPaniclePop FROM Observation_resultat " \
                 " WHERE id='" + trialCode + "'" \
                 " AND Observation_resultat.obsplantdate > (#" + start + "#)-1" +

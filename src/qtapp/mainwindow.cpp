@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     chartManager = new ChartManager(chartLayout, chartListLayout);
     connect(ui->selectAllBox, SIGNAL(clicked(bool)), chartManager, SLOT(selectAll(bool)));
     connect(ui->selectDefaultBox, SIGNAL(clicked(bool)), chartManager, SLOT(selectDefault(bool)));
+    connect(ui->sowingButton, SIGNAL(clicked(bool)), chartManager, SLOT(fromSowing(bool)));
 
     comparisonManager = new ComparisonManager();
 }
@@ -122,7 +123,7 @@ void MainWindow::on_launchButton_clicked() {
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
-    chartManager->setResults(results, observations);
+    chartManager->setResults(results, observations, loader->parameters->getDouble("startingdate"), loader->parameters->getDouble("sowing"));
     QMessageBox::information(this, "Simulation", "Simulation and charting done.");
 }
 
