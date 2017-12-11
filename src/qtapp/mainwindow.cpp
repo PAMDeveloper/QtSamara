@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     SamaraParameters * paramsSam = new SamaraParameters();
     loader = new DBAccessLoader(paramsSam);
     loadDB(settings->value("SamaraDB_path").toString());
+    ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
 
     createChartsTab();
     chartManager = new ChartManager(chartLayout, chartListLayout);
@@ -119,6 +120,7 @@ void MainWindow::clearDBContext() {
 }
 
 void MainWindow::on_launchButton_clicked() {
+    settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
     results = run_samara_2_1(loader->parameters);
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
