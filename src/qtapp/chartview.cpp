@@ -86,25 +86,15 @@ ChartView::ChartView(QString name, QWidget *parent)
 }
 
 void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
-    double yMax = -qInf();
-    double yMin = qInf();
-    xMax = -qInf();
-    xMin = qInf();
-
     if(series != nullptr) {
         series->attachAxis(m_chart->axisX());
         series->attachAxis(m_chart->axisY());
         m_chart->addSeries(series);
         this->series = series;
         for (int i = 0; i < series->count(); ++i) {
-            double y = series->at(i).y();
             double x = series->at(i).x();
             if(x == 0)
                 sowing = i;
-            yMax = qMax(yMax, y);
-            yMin = qMin(yMin, y);
-            xMax = qMax(xMax, x);
-            xMin = qMin(xMin, x);
         }
     }
 
@@ -113,16 +103,8 @@ void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
         obsSeries->attachAxis(m_chart->axisY());
         m_chart->addSeries(obsSeries);
         this->obsSeries = obsSeries;
-        for (int i = 0; i < obsSeries->count(); ++i) {
-            double y = obsSeries->at(i).y();
-            yMax = qMax(yMax, y);
-            yMin = qMin(yMin, y);
-        }
     }
-    m_chart->axisY()->setMin(yMin);
-    m_chart->axisY()->setMax(yMax);
-    m_chart->axisX()->setMin(xMin);
-    m_chart->axisX()->setMax(xMax);
+    m_chart->createDefaultAxes();
 }
 
 
@@ -135,12 +117,12 @@ void ChartView::clear() {
 void ChartView::setSowing(bool sowing){
     if(sowing) {
         QRectF rect = m_chart->plotArea();
-        rect.adjust(m_chart->mapToPosition(QPoint(0,0)).x(),0,0,0);
+        double duration = series->at(series->count()-1).x() - series->at(0).x();
+        double zeroPos = -series->at(0).x() / duration;
+        rect.adjust(zeroPos*rect.width(),0,0,0);
         m_chart->zoomIn(rect);
-        m_chart->axisX()->setRange(0,xMax);
     } else {
         m_chart->zoomReset();
-        m_chart->axisX()->setRange(xMin,xMax);
     }
 }
 
@@ -150,7 +132,6 @@ void ChartView::resizeEvent(QResizeEvent *event) {
         m_chart->resize(event->size());
         m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height() - 20);
         m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height() - 20);
-        //    m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height() - 20);
         foreach (Callout *callout, m_callouts)
             callout->updateGeometry();
     }
@@ -159,28 +140,12 @@ void ChartView::resizeEvent(QResizeEvent *event) {
 
 void ChartView::mouseMoveEvent(QMouseEvent *event) {
     if (series != nullptr) {
-//        double startX = ((QDateTimeAxis *)(m_chart->axisX(series)))->min().toMSecsSinceEpoch();
-//        double endX = ((QDateTimeAxis *)(m_chart->axisX(series)))->max().toMSecsSinceEpoch();
         double xValue = m_chart->mapToValue(event->pos()).x();
-//        double xPos = (xMin - xValue) / (xMax - xMin);
-//        double serieIdx = -1;
-//        m_coordX->setText(QString("X: %1").arg(QDateTime::fromMSecsSinceEpoch(xValue).toString("dd-MM")));
         m_coordX->setText(QString("X: %1").arg(xValue));
-//        double yValue = m_chart->mapToValue(event->pos()).y();
-        int serieIdx = (int)xValue-xMin;
+        int serieIdx = (int)(xValue - series->at(0).x());
         if (serieIdx >= 0 && serieIdx < series->points().size())
-        m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));
-//        m_coordY->setText(QString("Y: %1").arg(yValue));
-
-//        if (obsSeries != nullptr) {
-//            QString txt = "";
-//            if (serieIdx >= 0 && serieIdx < obsSeries->points().size()) {
-//                txt = QString("Obs: %1").arg(obsSeries->at(serieIdx).y());
-//            }
-//            m_coordRefY->setText(txt);
-//        }
+            m_coordY->setText(QString("Y: %1").arg(series->at(serieIdx).y()));
     }
-
     QGraphicsView::mouseMoveEvent(event);
 }
 

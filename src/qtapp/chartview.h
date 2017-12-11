@@ -60,8 +60,6 @@ public:
     QLineSeries *series;
     QScatterSeries *obsSeries;
     int sowing;
-    double xMax;
-    double xMin;
 
 
 protected:
