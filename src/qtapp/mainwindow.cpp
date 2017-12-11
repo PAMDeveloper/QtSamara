@@ -30,7 +30,8 @@
 
 static const int numCol = 2;
 
-QT_CHARTS_USE_NAMESPACE
+
+const QString shortParamList = "BundHeight,Ca,CoeffInternodeMass,CoeffLeafDeath,CoeffLeafWLRatio,CoeffPanicleMass,CoeffTillerDeath,CoeffTransplantingShock,DatesSemis,DensityField,DensityNursery,DurationNursery,EpaisseurProf,EpaisseurSurf,FtswIrrig,HumCR,HumFC,HumPF,HumSat,InternodeLengthMax,IrrigAuto,IrrigAutoResume,IrrigAutoStop,IrrigAutoTarget,KcMax,LeafLengthMax,LifeSavingDarainage,Mulch,PercolationMax,PEvap,PFactor,Phyllo,PlantsPerHill,PlotDrainageDAF,PoidsSecGrain,PourcRuiss,PPSens,ProfRacIni,RootFrontMax,RU,SDJBVP,SeuilRuiss,StockIniProf,StockIniSurf,TilAbility,Transplanting,TransplantingDepth,TxConversion";
 
 QStringList fromVector(vector<string> list) {
     QStringList r;
@@ -61,7 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     SamaraParameters * paramsSam = new SamaraParameters();
     loader = new DBAccessLoader(paramsSam);
     loadDB(settings->value("SamaraDB_path").toString());
-    ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
 
     createChartsTab();
     chartManager = new ChartManager(chartLayout, chartListLayout);
@@ -76,7 +76,8 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_loadDbButton_clicked() {
+void MainWindow::on_actionLoad_database_triggered()
+{
     QString dirPath = settings->value("SamaraDB_folder", QDir::currentPath()).toString();
     QString filePath = QFileDialog::getOpenFileName(this, "Open database", dirPath , "Access DB (*.mdb *.accdb)");
     if(filePath.isEmpty()) return;
@@ -96,11 +97,26 @@ void MainWindow::loadDB(QString filePath) {
 }
 
 void MainWindow::fillDBCombos() {
+    ui->varComboBox->blockSignals(true);
+    ui->plotComboBox->blockSignals(true);
+    ui->stationComboBox->blockSignals(true);
+    ui->itinComboBox->blockSignals(true);
+    ui->simComboBox->blockSignals(true);
     ui->varComboBox->addItems(fromVector(loader->load_variety_list()));
     ui->plotComboBox->addItems(fromVector(loader->load_plot_list()));
     ui->stationComboBox->addItems(fromVector(loader->load_station_list()));
     ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
     ui->simComboBox->addItems(fromVector(loader->load_simulation_list()));
+    ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
+    ui->varComboBox->blockSignals(false);
+    ui->plotComboBox->blockSignals(false);
+    ui->stationComboBox->blockSignals(false);
+    ui->itinComboBox->blockSignals(false);
+    ui->simComboBox->blockSignals(false);
+
+    loader->load_complete_simulation(ui->simComboBox->currentText().toStdString());
+    showDates();
+    showParameters(loader->parameters);
 }
 
 
@@ -121,7 +137,7 @@ void MainWindow::clearDBContext() {
 
 void MainWindow::on_launchButton_clicked() {
     settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
-    results = run_samara_2_1(loader->parameters);
+    results = run_samara_2_3(loader->parameters);
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
@@ -129,9 +145,7 @@ void MainWindow::on_launchButton_clicked() {
     QMessageBox::information(this, "Simulation", "Simulation and charting done.");
 }
 
-
-void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_simulation(arg1.toStdString());
+void MainWindow::showDates() {
     string sStart = JulianCalculator::toStringDate(loader->parameters->getDouble("startingdate"),
                                                    JulianCalculator::YMD, '-');
     string sEnd = JulianCalculator::toStringDate(loader->parameters->getDouble("endingdate"),
@@ -145,7 +159,11 @@ void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1) {
     ui->endDateEdit->blockSignals(true);
     ui->endDateEdit->setDate(end);
     ui->endDateEdit->blockSignals(false);
+}
 
+void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1) {
+    loader->load_simulation(arg1.toStdString());
+    showDates();
     ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
     ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
     ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
@@ -359,3 +377,17 @@ void MainWindow::on_pushButton_3_clicked()
 }
 
 
+
+
+
+void MainWindow::on_filterParamButton_clicked(bool checked)
+{
+    QAbstractItemModel * model = ui->parametersTableView->model();
+    for(int i = model->rowCount() - 1; i >= 0 ; i--){
+        if(checked && !shortParamList.contains(model->index(i,0).data().toString(), Qt::CaseInsensitive)) {
+            ui->parametersTableView->verticalHeader()->hideSection(i);
+        } else {
+            ui->parametersTableView->verticalHeader()->showSection(i);
+        }
+    }
+}

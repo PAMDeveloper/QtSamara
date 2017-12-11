@@ -64,3 +64,6 @@ SOURCES += \
 
 FORMS += \
     src/qtapp/mainwindow.ui
+
+RESOURCES += \
+    resources.qrc

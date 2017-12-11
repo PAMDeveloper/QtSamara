@@ -48,10 +48,11 @@ public:
     void createChartsTab();
     void fillDBCombos();
     void showParameters(SamaraParameters * parameters);
+    void showDates();
     void loadRefFile(QString path);
 
 private slots:
-    void on_loadDbButton_clicked();
+    void on_actionLoad_database_triggered();
     void on_launchButton_clicked();
     void on_saveResultButton_clicked();
 
@@ -68,6 +69,9 @@ private slots:
     void on_pushButton_2_clicked();
     void on_lineEdit_textChanged(const QString &arg1);
     void on_pushButton_3_clicked();
+
+    void on_filterParamButton_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QSettings * settings;

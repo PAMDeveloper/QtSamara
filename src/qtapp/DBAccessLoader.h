@@ -1,5 +1,5 @@
-#ifndef PARADOX_LOADER_H
-#define PARADOX_LOADER_H
+#ifndef DBACCESS_LOADER_H
+#define DBACCESS_LOADER_H
 
 #include <iostream>
 #include <libpq-fe.h>
@@ -32,7 +32,7 @@ public:
         db.setDatabaseName(conStr);
 
         if(!db.open())
-            qDebug() <<"Error: " << db.lastError() << "\n" << conStr;
+            qDebug() <<"Error opening: " << db.lastError() << "\n" << conStr;
     }
 
     double toJulianDay(QString date) {
@@ -40,7 +40,6 @@ public:
             date = date.split("T")[0];
         if(date.contains("/"))
             date = date.replace("/","-");
-//        qDebug() << "***********" << date;
         return JulianCalculator::toJulianDay(date.toStdString(), JulianCalculator::YMD, '-');
     }
 
@@ -89,6 +88,8 @@ public:
             qDebug() << query << " >\n " << result.lastError().text();
         result.first();
         do {
+            if(result.lastError().isValid())
+                qDebug() << query << " >\n " << result.lastError().text();
             parameters->climatics.push_back(
                         Climate(
 //                            result.value(1).toDate().toJulianDay(),
@@ -105,6 +106,8 @@ public:
                             result.value(12).toDouble()
                             )
                         );
+            if(result.lastError().isValid())
+                qDebug() << query << " >\n " << result.lastError().text();
         } while(result.next());
     }
 
@@ -119,17 +122,11 @@ public:
             qDebug() << query << " >\n " << result.lastError().text();
 ;        result.first();
         do {
+            if(result.lastError().isValid())
+                qDebug() << query << " >\n " << result.lastError().text();
             for (int col = 0; col < rec.count(); ++col) {
                 QVariant::Type type = rec.field(col).type();
                 QString key = rec.fieldName(col);
-//                if(category == "variete") {
-//                    if(     key == "IrrigAutoStop" ||
-//                            key == "IrrigAutoResume" ||
-//                            key == "FTSWIrrig" ||
-//                            key == "TransplantingDepth" ||
-//                            key == "Ca")
-//                        continue;
-//                }
                 if(parameters->doubles.find(key.toLower().toStdString()) != parameters->doubles.end() && key != "Edit") {
                     qDebug() << key << "already exists !!!!" ;
                     qDebug() << "from" << parameters->doubles[key.toLower().toStdString()].first << "to" << result.value(col).toString();
@@ -138,51 +135,31 @@ public:
                     parameters->strings[key.toLower().toStdString()] =
                             pair <string, string> (
                                 result.value(col).toString().toStdString(), category.toStdString());
+                    if(result.lastError().isValid())
+                        qDebug() << query << " >\n " << result.lastError().text();
                 } else if (type == QVariant::Date || type == QVariant::DateTime) {
-//                    qDebug() << key << result.value(col).toString() << QVariant::typeToName(type);
                     QString val = result.value(col).toDate().toString("yyyy-MM-dd");
                     parameters->strings[key.toLower().toStdString()] =
                             pair <string, string> (
                                 val.toStdString(), category.toStdString());
-//                    qDebug() << result.value(col).toString();
                     parameters->doubles[key.toLower().toStdString()] =
                             pair <double, string> (
                                 toJulianDay(val), category.toStdString());
                 } else {
-//                    qDebug() << key << result.value(col) << QVariant::typeToName(type);
                     parameters->doubles[key.toLower().toStdString()] =
                             pair <double, string> (
                                 result.value(col).toDouble(), category.toStdString());
+                    if(result.lastError().isValid())
+                        qDebug() << query << " >\n " << result.lastError().text();
                 }
 
             }
         } while (result.next());
-
-//        PGresult* result = PQexec(db, query.c_str());
-//        if (PQresultStatus(result) != PGRES_TUPLES_OK){
-//            cout << "Error: " << PQerrorMessage(db) << endl;
-//        }
-
-//        for (int col = 0; col < PQnfields(result); ++col) {
-//            string key = string(PQfname(result,col));
-//            if( PQftype(result,col) == PSQLTYPE_STRING ){
-//                parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
-//            } else if( PQftype(result,col) == PSQLTYPE_DATE ){
-//                parameters->strings[key] =  pair <string, string> (string(PQgetvalue(result,0,col)), category);
-//                parameters->doubles[key] =  pair <double, string> (JulianDayConverter::toJulianDayNumber(string(PQgetvalue(result,0,col))), category);
-
-//            } else {
-//                parameters->doubles[key] =  pair <double, string> ( atof(PQgetvalue(result,0,col)), category);
-//            }
-//        }
     }
 
 
     void load_complete_simulation(string idsimulation) {
         load_simulation(idsimulation);
-//        for(auto pair: parameters->strings) {
-//            qDebug() << QString::fromStdString(pair.first) << QString::fromStdString(pair.second.first);
-//        }
         load_variety(parameters->getString("variety"));
         load_station(parameters->getString("wscode"));
         load_plot(parameters->getString("fieldcode"));
@@ -272,14 +249,16 @@ public:
     }
 
     map<string, vector<double>> load_obs(string plot, string variety, string itinerary, string codestation, double startJulian, double endJulian) {
+        map<string, vector<double>> resultMap;
         QString gQuery = "SELECT DISTINCT variety, varcode FROM plotcrop WHERE variety = '"
                 + QString::fromStdString(variety) + "'";
         QSqlQuery gResult(gQuery, db);
         if(gResult.lastError().isValid())
             qDebug() << gQuery << " >\n " << gResult.lastError().text();
         gResult.first();
-        map<string, vector<double>> resultMap;
         QString varCode = gResult.value(1).toString();
+        if(gResult.lastError().isValid())
+            qDebug() << gQuery << " >\n " << gResult.lastError().text();
         QString trialCode = QString::fromStdString(itinerary) + varCode;
         QString start = QString::fromStdString(fromJulianDay(startJulian));
         QString end = QString::fromStdString(fromJulianDay(endJulian));
@@ -311,6 +290,8 @@ public:
         }
 
         do {
+            if(result.lastError().isValid())
+                qDebug() << query << " >\n " << result.lastError().text();
             for (int col = 0; col < rec.count(); ++col) {
                 QVariant::Type type = rec.field(col).type();
                 string key = rec.fieldName(col).toStdString();
