@@ -145,7 +145,7 @@ void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1) {
     ui->endDateEdit->blockSignals(false);
 
     ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("plotcode")));
+    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
     ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
     ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
 }

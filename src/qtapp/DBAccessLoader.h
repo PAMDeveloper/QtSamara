@@ -185,7 +185,7 @@ public:
 //        }
         load_variety(parameters->getString("variety"));
         load_station(parameters->getString("wscode"));
-        load_plot(parameters->getString("plotcode"));
+        load_plot(parameters->getString("fieldcode"));
         load_itinerary(parameters->getString("itkcode"));
         load_meteo(parameters->getString("wscode"),
                    parameters->getDouble("startingdate"),
@@ -205,7 +205,7 @@ public:
     }
 
     vector<string> load_plot_list() {
-        return load_list(db, list_query("plotsim","plotcode"));
+        return load_list(db, list_query("plotsim","fieldcode"));
     }
 
     vector<string>  load_itinerary_list() {
@@ -234,7 +234,7 @@ public:
     void load_plot(string idparcelle) {
         parameters->clearParameters("parcelle");
         parameters->clearParameters("soil");
-        load_record(db, query("plotsim","plotcode",QString::fromStdString(idparcelle)), "parcelle");
+        load_record(db, query("plotsim","fieldcode",QString::fromStdString(idparcelle)), "parcelle");
         load_record(db, query("genesoil","soilcode",QString::fromStdString(parameters->getString("soilcode"))), "soil");
     }
 
@@ -263,7 +263,7 @@ public:
 
     map<string, vector<double>> load_obs(string idsimulation) {
 //        load_simulation(idsimulation);
-        return load_obs(parameters->getString("plotcode"),
+        return load_obs(parameters->getString("fieldcode"),
                         parameters->getString("variety"),
                         parameters->getString("itkcode"),
                         parameters->getString("wscode"),
