@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     settings = new QSettings("PAM Cirad", "Samara");
     ui->setupUi(this);
+    setWindowTitle( QCoreApplication::applicationName() );
     ui->splitter->setStretchFactor(0, 0);
     ui->splitter->setStretchFactor(1, 1);
 

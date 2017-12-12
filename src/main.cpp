@@ -15,6 +15,9 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon(":/img/ressources/samara.ico"));
+    a.setApplicationName("SAMARA");
+
 
 //    load_file_parameters("Z:/Downloads/SMK2013/Variete_SMK2013.txt", "");
 //    PSQLLoader loader(paramsSam);

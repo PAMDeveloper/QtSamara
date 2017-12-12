@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/img">
         <file>ressources/Start-icon.png</file>
+        <file>ressources/samara.ico</file>
     </qresource>
 </RCC>

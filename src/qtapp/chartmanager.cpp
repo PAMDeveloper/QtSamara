@@ -63,6 +63,8 @@ void ChartManager::displayCharts() {
         chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);
         charts[name]->setSowing(sowingChecked);
         charts[name]->setVisible(true);
+
+        chartLayout->invalidate();
     }
 }
 

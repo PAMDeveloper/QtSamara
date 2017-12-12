@@ -1,7 +1,7 @@
 QT     += core gui charts sql widgets
 CONFIG += c++11
 
-
+win32:RC_ICONS += samara.ico
 TEMPLATE = app
 NAME = samara
 
