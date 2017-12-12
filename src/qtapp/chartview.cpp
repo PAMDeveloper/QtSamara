@@ -47,7 +47,6 @@ ChartView::ChartView(QString name, QWidget *parent)
     series = nullptr;
     obsSeries = nullptr;
     setDragMode(QGraphicsView::NoDrag);
-//    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMinimumHeight(250);
     setMaximumHeight(250);
@@ -55,23 +54,16 @@ ChartView::ChartView(QString name, QWidget *parent)
     m_chart = new QChart();
     m_chart->legend()->hide();
     m_chart->setTitle(name);
-
-    QValueAxis *axisX = new QValueAxis;
-    axisX->setLabelFormat("%i");
-    m_chart->addAxis(axisX, Qt::AlignBottom);
-
-    QValueAxis *axisY = new QValueAxis;
-    m_chart->addAxis(axisY, Qt::AlignLeft);
-
     m_chart->setAcceptHoverEvents(true);
     scene()->addItem(m_chart);
 
     m_coordX = new QGraphicsSimpleTextItem(m_chart);
-    m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height());
+    m_coordX->setPos(m_chart->size().width() / 2 - 40, m_chart->size().height());
     m_coordX->setText("X: ");
     m_coordY = new QGraphicsSimpleTextItem(m_chart);
-    m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height());
+    m_coordY->setPos(m_chart->size().width() / 2 + 20, m_chart->size().height());
     m_coordY->setText("Y: ");
+
     //  m_coordRefY = new QGraphicsSimpleTextItem(m_chart);
     //  m_coordRefY->setPos(m_chart->size().width() / 2 + 50, m_chart->size().height());
     //  m_coordRefY->setText("Obs: ");
@@ -106,6 +98,8 @@ void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
         this->obsSeries = obsSeries;
     }
     m_chart->createDefaultAxes();
+    qobject_cast<QValueAxis*>(m_chart->axisY())->applyNiceNumbers();
+//    m_chart->axisX()->setTitleText("DAS");
 }
 
 
@@ -131,8 +125,8 @@ void ChartView::resizeEvent(QResizeEvent *event) {
     if (scene()) {
         scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
         m_chart->resize(event->size());
-        m_coordX->setPos(m_chart->size().width() / 2 - 100, m_chart->size().height() - 20);
-        m_coordY->setPos(m_chart->size().width() / 2 - 30, m_chart->size().height() - 20);
+        m_coordX->setPos(m_chart->size().width() / 2 - 40, m_chart->size().height() - 20);
+        m_coordY->setPos(m_chart->size().width() / 2 + 20, m_chart->size().height() - 20);
         foreach (Callout *callout, m_callouts)
             callout->updateGeometry();
     }

@@ -47,7 +47,6 @@ void ChartManager::check(bool checked) {
 ChartView * ChartManager::createChart(QString name) {
     ChartView * chartView = new ChartView(name);
     chartView->setObjectName(name);
-
     return chartView;
 }
 
