@@ -47,8 +47,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     settings = new QSettings("PAM Cirad", "Samara");
+
     ui->setupUi(this);
     setWindowTitle( QCoreApplication::applicationName() );
+    ui->modelCombo->addItem("Samara 2.1");
+    ui->modelCombo->addItem("Samara 2.3");
+    ui->modelCombo->setCurrentText(settings->value("Samara_version","Samara 2.3").toString());
+
     ui->splitter->setStretchFactor(0, 0);
     ui->splitter->setStretchFactor(1, 1);
 
@@ -72,10 +77,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     comparisonManager = new ComparisonManager();
 
+    int log = settings->value("SamaraSimulation_LOG", 0).toInt();
+    if(log == 0) ui->smallRadio->setChecked(true);
+    else if(log == 1) ui->completeRadio->setChecked(true);
+    else ui->ecotropRadio->setChecked(true);
+
     //**//
-    ui->samaraTabs->removeTab(2);
+//    ui->samaraTabs->removeTab(2);
     //**//
-//    on_launchButton_clicked();
+    on_launchButton_clicked();
 }
 
 MainWindow::~MainWindow() {
@@ -114,13 +124,16 @@ void MainWindow::fillDBCombos() {
     ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
     ui->simComboBox->addItems(fromVector(loader->load_simulation_list()));
     ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
+    loader->load_complete_simulation(ui->simComboBox->currentText().toStdString());
+    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
+    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
+    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
+    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
     ui->varComboBox->blockSignals(false);
     ui->plotComboBox->blockSignals(false);
     ui->stationComboBox->blockSignals(false);
     ui->itinComboBox->blockSignals(false);
     ui->simComboBox->blockSignals(false);
-
-    loader->load_complete_simulation(ui->simComboBox->currentText().toStdString());
     showDates();
     showParameters(loader->parameters);
 }
@@ -143,7 +156,15 @@ void MainWindow::clearDBContext() {
 
 void MainWindow::on_launchButton_clicked() {
     settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
-    results = run_samara_2_3(loader->parameters);
+    SamaraLogType log = (SamaraLogType)(ui->smallRadio->isChecked() ? 0 : ui->completeRadio->isChecked() ? 1 : 2);
+    settings->setValue("SamaraSimulation_LOG", log);
+    QString version = ui->modelCombo->currentText();
+    settings->setValue("Samara_version", version);
+    if(version == "Samara 2.1")
+        results = run_samara_2_1(loader->parameters, log);
+    else if(version == "Samara 2.3")
+        results = run_samara_2_3(loader->parameters, log);
+
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
@@ -337,7 +358,7 @@ void MainWindow::loadRefFile(QString fileName){
         QTextStream in(&inputFile);
         QStringList list = in.readLine().split('\t');
         for(QString header: list) {
-            names.push_back(header./*toLower().*/toStdString());
+            names.push_back(header.toLower().toStdString());
             values.push_back(vector<double>());
         }
 
@@ -369,7 +390,7 @@ void MainWindow::on_oldResButton_clicked()
 void MainWindow::on_lineEdit_textChanged(const QString &arg1)
 {
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
-        if(!comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().startsWith(arg1)) {
+        if(!comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().toLower().startsWith(arg1.toLower())) {
             ui->comparisonTableView->hideColumn(i);
         } else {
             ui->comparisonTableView->showColumn(i);

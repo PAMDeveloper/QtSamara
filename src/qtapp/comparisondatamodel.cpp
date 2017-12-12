@@ -13,10 +13,13 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
 {
     for (int i = 0; i < results.first.size(); ++i) {
         for (int j = 0; j < refs.first.size(); ++j) {
-            qDebug() << QString::fromStdString(results.first[i]) << QString::fromStdString(refs.first[j]);
             string refName = refs.first[j];
+            string resName = results.first[i];
             std::transform(refName.begin(), refName.end(), refName.begin(), ::tolower);
-            if( results.first[i] == refName/*refs.first[j]*/){
+            std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
+//            qDebug() << QString::fromStdString(refName) << QString::fromStdString(resName);
+            if( resName == refName ){
+                qDebug() << "*****************" << QString::fromStdString(refName) << QString::fromStdString(refs.first[j]);
                 double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
                 double sumRef = accumulate(refs.second[j].begin(), refs.second[j].end(), 0.0000);
                 double diff = qAbs((sumRes - sumRef)/sumRes);
