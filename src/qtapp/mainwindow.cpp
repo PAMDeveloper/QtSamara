@@ -72,7 +72,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     comparisonManager = new ComparisonManager();
 
-    on_launchButton_clicked();
+    //**//
+    ui->samaraTabs->removeTab(2);
+    //**//
+//    on_launchButton_clicked();
 }
 
 MainWindow::~MainWindow() {

@@ -80,9 +80,9 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTabWidget" name="graphTab">
+     <widget class="QTabWidget" name="samaraTabs">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="parametersTab">
        <attribute name="title">
@@ -283,7 +283,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="resultTab">
        <attribute name="title">
         <string>Results</string>
        </attribute>
@@ -345,7 +345,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="comparisonTab">
        <attribute name="title">
         <string>Comparison</string>
        </attribute>
@@ -399,7 +399,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="chartTab">
        <attribute name="title">
         <string>Charts</string>
        </attribute>

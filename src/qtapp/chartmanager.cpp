@@ -34,6 +34,11 @@ void ChartManager::fillList() {
 }
 
 void ChartManager::check(bool checked) {
+    if(resultSeries.empty()) {
+        static_cast<QCheckBox *>(sender())->setChecked(false);
+        return;
+    }
+
     QString name = static_cast<QCheckBox *>(sender())->text();
     if(checked && !checkedList.contains(name))
         checkedList.append(name);
@@ -142,6 +147,10 @@ void ChartManager::generateObsSeries(map<string, vector<double> > observations, 
 }
 
 void ChartManager::selectAll(bool checked) {
+    if(resultSeries.empty()) {
+        static_cast<QCheckBox *>(sender())->setChecked(false);
+        return;
+    }
     if(!checked) {
         for(QString name: chartList) {
             if(!defaultChecked || !defaultList.contains(name)) {
@@ -163,6 +172,10 @@ void ChartManager::selectAll(bool checked) {
 }
 
 void ChartManager::selectDefault(bool checked) {
+    if(resultSeries.empty()) {
+        static_cast<QCheckBox *>(sender())->setChecked(false);
+        return;
+    }
     defaultChecked = checked;
     if(checked) {
         for(QString name: defaultList) {

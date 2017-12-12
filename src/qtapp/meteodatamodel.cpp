@@ -20,24 +20,29 @@ int MeteoDataModel::columnCount(const QModelIndex &parent) const {
 QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
     int row = index.row();
     if(role == Qt::DisplayRole){
+        double val;
         switch(index.column()){
             case 0: return QString::fromStdString(
                         JulianCalculator::toStringDate(
                             parameters->getDouble("startingdate")+row-1,
                             JulianCalculator::YMD, '-'
                             )); break;
-            case 1: return parameters->climatics.at(row).TMax; break;
-            case 2: return parameters->climatics.at(row).TMin; break;
-            case 3: return parameters->climatics.at(row).TMoy; break;
-            case 4: return parameters->climatics.at(row).HMax; break;
-            case 5: return parameters->climatics.at(row).HMin; break;
-            case 6: return parameters->climatics.at(row).HMoy; break;
-            case 7: return parameters->climatics.at(row).Vt; break;
-            case 8: return parameters->climatics.at(row).Ins; break;
-            case 9: return parameters->climatics.at(row).Rg; break;
-            case 10: return parameters->climatics.at(row).ETP; break;
-            case 11: return parameters->climatics.at(row).Rain; break;
+            case 1: val = parameters->climatics.at(row).TMax; break;
+            case 2: val = parameters->climatics.at(row).TMin; break;
+            case 3: val = parameters->climatics.at(row).TMoy; break;
+            case 4: val = parameters->climatics.at(row).HMax; break;
+            case 5: val = parameters->climatics.at(row).HMin; break;
+            case 6: val = parameters->climatics.at(row).HMoy; break;
+            case 7: val = parameters->climatics.at(row).Vt; break;
+            case 8: val = parameters->climatics.at(row).Ins; break;
+            case 9: val = parameters->climatics.at(row).Rg; break;
+            case 10: val = parameters->climatics.at(row).ETP; break;
+            case 11: val = parameters->climatics.at(row).Rain; break;
         }
+
+        if(val == -999)
+            return "No Value";
+        return val;
     }
 
     if(role == Qt::TextAlignmentRole)
