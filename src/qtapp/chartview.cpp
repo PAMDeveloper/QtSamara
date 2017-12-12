@@ -47,9 +47,10 @@ ChartView::ChartView(QString name, QWidget *parent)
     series = nullptr;
     obsSeries = nullptr;
     setDragMode(QGraphicsView::NoDrag);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMinimumHeight(250);
+    setMaximumHeight(250);
 
     m_chart = new QChart();
     m_chart->legend()->hide();
