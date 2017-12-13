@@ -79,6 +79,8 @@ ChartView::ChartView(QString name, QWidget *parent)
 }
 
 void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
+    double yMin = qInf();
+    double yMax = -qInf();
     if(series != nullptr) {
         series->attachAxis(m_chart->axisX());
         series->attachAxis(m_chart->axisY());
@@ -86,6 +88,9 @@ void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
         this->series = series;
         for (int i = 0; i < series->count(); ++i) {
             double x = series->at(i).x();
+            double y = series->at(i).y();
+            yMin = qMin(y,yMin);
+            yMax = qMax(y,yMax);
             if(x == 0)
                 sowing = i;
         }
@@ -98,6 +103,10 @@ void ChartView::setSeries(QLineSeries *series, QScatterSeries *obsSeries) {
         this->obsSeries = obsSeries;
     }
     m_chart->createDefaultAxes();
+    if(yMax < 0.5) {
+        m_chart->axisY()->setMin(yMin);
+        m_chart->axisY()->setMax(yMax * 1.1);
+    }
     qobject_cast<QValueAxis*>(m_chart->axisY())->applyNiceNumbers();
 //    m_chart->axisX()->setTitleText("DAS");
 }

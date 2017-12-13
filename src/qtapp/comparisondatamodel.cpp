@@ -19,7 +19,7 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
             std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
 //            qDebug() << QString::fromStdString(refName) << QString::fromStdString(resName);
             if( resName == refName ){
-                qDebug() << "*****************" << QString::fromStdString(refName) << QString::fromStdString(refs.first[j]);
+//                qDebug() << "*****************" << QString::fromStdString(refName) << QString::fromStdString(refs.first[j]);
                 double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
                 double sumRef = accumulate(refs.second[j].begin(), refs.second[j].end(), 0.0000);
                 double diff = qAbs((sumRes - sumRef)/sumRes);
@@ -52,12 +52,13 @@ int ComparisonDataModel2::columnCount(const QModelIndex &parent) const {
 
 QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
 
+    if(index.column() > visibleHeaders.count() - 1)
+        return QVariant();
 //    QString header = clean ? visibleHeaders[cleanSeries[index.column()]] : visibleHeaders[index.column()];
 
     if(role == Qt::DisplayRole) {
         QString result = QString::number(results.second[ visibleHeaders[index.column()].first][index.row()]);
         QString ref = QString::number(refs.second[visibleHeaders[index.column()].second][index.row()]);
-
         return result + " - " + ref;
     }
 
@@ -89,7 +90,7 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
             double res = results.second[ visibleHeaders[index.column()].first][index.row()];
             if( ref!=ref || res != res )
                 return false;
-            return qAbs(ref-res) < 0.00001;
+            return qAbs(ref-res) < 0.0000001;
         }
 //    }
 

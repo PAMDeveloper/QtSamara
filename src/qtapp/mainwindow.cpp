@@ -85,7 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //**//
 //    ui->samaraTabs->removeTab(2);
     //**//
-    on_launchButton_clicked();
+//    on_launchButton_clicked();
+//    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/Sortie Ecotrop.txt");
 }
 
 MainWindow::~MainWindow() {
@@ -319,26 +320,17 @@ serieCompare MainWindow::compareSeries(QLineSeries * src, QScatterSeries * ref) 
 }
 
 void MainWindow::sectionClicked(int row) {
-    //    QMessageBox::information(this, "Clicked", QString::number(row));
-    bool all_good = true;
     QString arg1 = ui->lineEdit->text();
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
-        if(comparisonModel->index(row, i).data(Qt::UserRole).toBool()) {
+        bool isInStrFilter = !arg1.isEmpty() &&
+                comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().startsWith(arg1, Qt::CaseInsensitive);
+        if(comparisonModel->index(row, i).data(Qt::UserRole).toBool() && !isInStrFilter) {
             ui->comparisonTableView->hideColumn(i);
         } else {
-            ui->comparisonTableView->showColumn(i);
-            all_good = false;
-        }
-        if(comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().startsWith(arg1) && !arg1.isEmpty()) {
             ui->comparisonTableView->showColumn(i);
         }
     }
 
-    if(all_good) {
-        for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
-            ui->comparisonTableView->showColumn(i);
-        }
-    }
 }
 
 void MainWindow::on_pushButton_2_clicked()
