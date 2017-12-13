@@ -79,7 +79,9 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
             double ref = refs.second[visibleHeaders[index.column()].second][index.row()];
             double res = results.second[ visibleHeaders[index.column()].first][index.row()];
             if(ref==res) return QColor(Qt::white);
-            return QColor(Qt::red).lighter( 256*(1-qMax(qAbs(res-ref)/res, qAbs(ref-res)/ref)));
+            double variation = qAbs(res-ref)/((ref+res)/3);
+
+            return QColor(/*variation < 2 ? 255 : (int)(255-qMin(variation*50.,255.))*/255,(int)(255-qMin(variation*100.,255.)),(int)(255-qMin(variation*100.,255.)));
         }
 
         if(role == Qt::UserRole) {

@@ -387,10 +387,18 @@ void MainWindow::on_oldResButton_clicked()
 }
 
 
+bool startWithFrom(QString str, QStringList l) {
+    for(QString s:l)
+        if(str.startsWith(s, Qt::CaseInsensitive))
+            return true;
+    return false;
+}
+
 void MainWindow::on_lineEdit_textChanged(const QString &arg1)
 {
+    QStringList filters = arg1.split(QRegExp(",|;"));
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
-        if(!comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().toLower().startsWith(arg1.toLower())) {
+        if(!startWithFrom(comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(),filters)) {
             ui->comparisonTableView->hideColumn(i);
         } else {
             ui->comparisonTableView->showColumn(i);
