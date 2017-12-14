@@ -5,6 +5,25 @@ win32:RC_ICONS += samara.ico
 TEMPLATE = app
 NAME = samara
 
+
+SAMARA_GIT_COMMIT = $$system(git log -n 1 --pretty="%h")
+SAMARA_GIT_VERSION = $$system(git describe --abbrev=0 --tags)
+RSAMARA_GIT_COMMIT = $$system(cd ..\\rSamara && git log -n 1 --pretty="%h")
+RSAMARA_GIT_VERSION = $$system(cd ..\\rSamara && git describe --abbrev=0 --tags)
+message(SAMARA_GIT_COMMIT: $$SAMARA_GIT_COMMIT)
+message(SAMARA_GIT_VERSION: $$SAMARA_GIT_VERSION)
+message(RSAMARA_GIT_COMMIT: $$RSAMARA_GIT_COMMIT)
+message(RSAMARA_GIT_VERSION: $$RSAMARA_GIT_VERSION)
+
+QMAKE_TARGET = SAMARA
+QMAKE_TARGET_COMPANY = "CIRAD - UMR AGAP - PAM TEAM"
+QMAKE_TARGET_DESCRIPTION = UI:$$SAMARA_GIT_VERSION-$$SAMARA_GIT_COMMIT Core:$$RSAMARA_GIT_VERSION-$$RSAMARA_GIT_COMMIT Qt:$$QT_VERSION
+QMAKE_TARGET_COPYRIGHT = "Copyright 2017 by CIRAD"
+QMAKE_TARGET_PRODUCT = "Samara simulation engine"
+VERSION = $$RSAMARA_GIT_VERSION
+#SHORT_VERSION = $$split(VERSION, ".")
+#VERSION_PE_HEADER = $$member(SHORT_VERSION, 0).$$member(SHORT_VERSION, 1)
+
 CONFIG(debug, debug|release) {
     TARGET = $${NAME}d
 } else {

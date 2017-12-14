@@ -11,14 +11,16 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
                                          QObject *parent)
  : QAbstractTableModel(parent), results(results), refs(refs)
 {
-    for (int i = 0; i < results.first.size(); ++i) {
-        for (int j = 0; j < refs.first.size(); ++j) {
-            string refName = refs.first[j];
+    for (int j = 0; j < refs.first.size(); ++j) {
+        bool paired = false;
+        string refName = refs.first[j];
+        for (int i = 0; i < results.first.size(); ++i) {
             string resName = results.first[i];
             std::transform(refName.begin(), refName.end(), refName.begin(), ::tolower);
             std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
 //            qDebug() << QString::fromStdString(refName) << QString::fromStdString(resName);
             if( resName == refName ){
+                paired = true;
 //                qDebug() << "*****************" << QString::fromStdString(refName) << QString::fromStdString(refs.first[j]);
                 double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
                 double sumRef = accumulate(refs.second[j].begin(), refs.second[j].end(), 0.0000);
@@ -30,7 +32,13 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
 //                        )
                 if(sumRef != 0)
                     visibleHeaders.push_back(QPair<int,int>(i,j));
+                else {
+                    qDebug() << QString::fromStdString(refName) << " equals 0";
+                }
             }
+        }
+        if(!paired) {
+            qDebug() << QString::fromStdString(refName) << " not paired";
         }
     }
 //    for (int i = 0; i < headers.size(); ++i) {
@@ -80,7 +88,7 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
             double ref = refs.second[visibleHeaders[index.column()].second][index.row()];
             double res = results.second[ visibleHeaders[index.column()].first][index.row()];
             if(ref==res) return QColor(Qt::white);
-            double variation = qAbs(res-ref)/((ref+res)/3);
+            double variation = qAbs(res-ref)/qAbs((ref+res)/3);
 
             return QColor(/*variation < 2 ? 255 : (int)(255-qMin(variation*50.,255.))*/255,(int)(255-qMin(variation*100.,255.)),(int)(255-qMin(variation*100.,255.)));
         }
@@ -88,8 +96,8 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
         if(role == Qt::UserRole) {
             double ref = refs.second[visibleHeaders[index.column()].second][index.row()];
             double res = results.second[ visibleHeaders[index.column()].first][index.row()];
-            if( ref!=ref || res != res )
-                return false;
+//            if( ref!=ref || res != res )
+//                return false;
             return qAbs(ref-res) < 0.0000001;
         }
 //    }
