@@ -14,6 +14,7 @@
 #include <qtapp/DBAccessLoader.h>
 
 int main(int argc, char *argv[]) {
+
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/img/ressources/samara.ico"));
     a.setApplicationName("SAMARA");

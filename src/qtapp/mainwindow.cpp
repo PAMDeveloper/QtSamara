@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle( QCoreApplication::applicationName() );
     ui->modelCombo->addItem("Samara 2.1");
+    ui->modelCombo->addItem("Samara 2.1 michael");
     ui->modelCombo->addItem("Samara 2.3");
     ui->modelCombo->setCurrentText(settings->value("Samara_version","Samara 2.3").toString());
 
@@ -85,8 +86,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //**//
 //    ui->samaraTabs->removeTab(2);
     //**//
-//    on_launchButton_clicked();
-//    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/Sortie Ecotrop.txt");
+    on_launchButton_clicked();
+    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/Sortie Ecotrop.txt");
 }
 
 MainWindow::~MainWindow() {
@@ -163,6 +164,8 @@ void MainWindow::on_launchButton_clicked() {
     settings->setValue("Samara_version", version);
     if(version == "Samara 2.1")
         results = run_samara_2_1(loader->parameters, log);
+    else if(version == "Samara 2.1 michael")
+        results = run_samara_2_1_micha(loader->parameters, log);
     else if(version == "Samara 2.3")
         results = run_samara_2_3(loader->parameters, log);
 
