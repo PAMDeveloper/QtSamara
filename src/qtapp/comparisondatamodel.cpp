@@ -3,14 +3,33 @@
 #include <numeric>
 #include <algorithm>
 #include <string>
+#include <QFile>
+#include <QTextStream>
 using namespace std;
 
 #include <QDebug>
+
+class ColLessThan
+{
+public:
+    ColLessThan( const vector <string> & names ):names(names){}
+    bool operator()(const QPair<int,int> & v1, const QPair<int,int> & v2) const{
+        QString v1Name = QString::fromStdString(names[v1.first]);
+        QString v2Name = QString::fromStdString(names[v2.first]);
+        return v1Name < v2Name;
+    }
+
+private:
+vector <string> names;
+};
+
+
 ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector < vector <double> > > & results,
                                          const pair <vector <string>, vector < vector <double> > > & refs,
                                          QObject *parent)
  : QAbstractTableModel(parent), results(results), refs(refs)
 {
+    precision = 10;
     for (int j = 0; j < refs.first.size(); ++j) {
         bool paired = false;
         string refName = refs.first[j];
@@ -18,18 +37,11 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
             string resName = results.first[i];
             std::transform(refName.begin(), refName.end(), refName.begin(), ::tolower);
             std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
-//            qDebug() << QString::fromStdString(refName) << QString::fromStdString(resName);
             if( resName == refName ){
                 paired = true;
-//                qDebug() << "*****************" << QString::fromStdString(refName) << QString::fromStdString(refs.first[j]);
                 double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
                 double sumRef = accumulate(refs.second[j].begin(), refs.second[j].end(), 0.0000);
-                double diff = qAbs((sumRes - sumRef)/sumRes);
-//                if(sumRef != 0 && sumRes != 0
-////                        && diff > 0.0001
-////                        || refs.first[j] == "degresdujour"
-////                        || refs.first[j] == "daylength"
-//                        )
+//                double diff = qAbs((sumRes - sumRef)/ (qAbs(sumRes+sumRef)/2));
                 if(sumRef != 0)
                     visibleHeaders.push_back(QPair<int,int>(i,j));
                 else {
@@ -41,18 +53,12 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
             qDebug() << QString::fromStdString(refName) << " not paired";
         }
     }
-//    for (int i = 0; i < headers.size(); ++i) {
-//        if(     comparisons[i].valid &&
-//                std::abs(comparisons[i].sumSrc) > 0.00001 &&
-//                std::abs(comparisons[i].sumRef) > 0.00001 &&
-//                std::abs(comparisons[i].diffPercent) > 0.0001)
-//            cleanSeries.push_back(i);
-//    }
+    qSort(visibleHeaders.begin(), visibleHeaders.end(), ColLessThan(results.first));
 }
 
 
 int ComparisonDataModel2::rowCount(const QModelIndex &parent) const {
-    return refs.second[ visibleHeaders[0].first].size();
+    return qMin(refs.second[ visibleHeaders[0].first].size(),results.second[ visibleHeaders[0].first].size());
 }
 int ComparisonDataModel2::columnCount(const QModelIndex &parent) const {
     return /*clean ? cleanSeries.size() : */visibleHeaders.size();
@@ -65,8 +71,8 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
 //    QString header = clean ? visibleHeaders[cleanSeries[index.column()]] : visibleHeaders[index.column()];
 
     if(role == Qt::DisplayRole) {
-        QString result = QString::number(results.second[ visibleHeaders[index.column()].first][index.row()]);
-        QString ref = QString::number(refs.second[visibleHeaders[index.column()].second][index.row()]);
+        QString result = QString::number(results.second[ visibleHeaders[index.column()].first][index.row()],'g',precision);
+        QString ref = QString::number(refs.second[visibleHeaders[index.column()].second][index.row()],'g',precision);
         return result + " - " + ref;
     }
 
@@ -98,7 +104,13 @@ QVariant ComparisonDataModel2::data(const QModelIndex &index, int role) const{
             double res = results.second[ visibleHeaders[index.column()].first][index.row()];
 //            if( ref!=ref || res != res )
 //                return false;
-            return qAbs(ref-res) < 0.0000001;
+//            if(ref == res)
+//                return 0;
+//            return qAbs((res - ref)/ (qAbs(res+ref)/2));
+             if(res == ref)
+                 return true;
+             return qAbs((res - ref)/ (qAbs(res+ref)/2)) < 1/(pow(10,precision/2));//0.000001;
+//             return qAbs(res - ref) < 1/(pow(10,precision/2));//0.000001;
         }
 //    }
 
@@ -126,8 +138,6 @@ QVariant ComparisonDataModel2::headerData(int section, Qt::Orientation orientati
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
-#include <QFile>
-#include <QTextStream>
 void ComparisonDataModel2::save() {
     QFile file("exportComparison.csv");
     file.open(QIODevice::WriteOnly | QIODevice::Text);

@@ -86,8 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //**//
 //    ui->samaraTabs->removeTab(2);
     //**//
-    on_launchButton_clicked();
-    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/Sortie Ecotrop.txt");
+//    on_launchButton_clicked();
+//    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/Sortie Ecotrop.txt");
+//    loadRefFile("D:/PAMStudio/dev/git/build-Samara-Desktop_Qt_5_9_1_MSVC2015_64bit-Release/test_621b.txt");
 }
 
 MainWindow::~MainWindow() {
@@ -323,17 +324,23 @@ serieCompare MainWindow::compareSeries(QLineSeries * src, QScatterSeries * ref) 
 }
 
 void MainWindow::sectionClicked(int row) {
+    int count = 0;
     QString arg1 = ui->lineEdit->text();
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
         bool isInStrFilter = !arg1.isEmpty() &&
                 comparisonModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString().startsWith(arg1, Qt::CaseInsensitive);
-        if(comparisonModel->index(row, i).data(Qt::UserRole).toBool() && !isInStrFilter) {
+        if(
+//                comparisonModel->index(row, i).data(Qt::UserRole).toDouble() < 10/comparisonModel->precision
+                comparisonModel->index(row, i).data(Qt::UserRole).toBool()
+                && !isInStrFilter) {
             ui->comparisonTableView->hideColumn(i);
         } else {
             ui->comparisonTableView->showColumn(i);
+            count++;
         }
     }
-
+    ui->comparisonTableView->resizeColumnsToContents();
+    ui->diffCountLabel->setText(QString::number(count) + " diffs.");
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -341,6 +348,7 @@ void MainWindow::on_pushButton_2_clicked()
     for(int i = comparisonModel->columnCount() - 1; i >= 0 ; i--){
         ui->comparisonTableView->showColumn(i);
     }
+    ui->diffCountLabel->setText("");
 }
 
 
@@ -371,6 +379,7 @@ void MainWindow::loadRefFile(QString fileName){
                 pair <vector <string>, vector < vector <double> > > (names, values)
                 );
     ui->comparisonTableView->setModel(comparisonModel);
+//    ui->comparisonTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 //    ui->comparisonTableView->
     connect(ui->comparisonTableView->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
 }
@@ -407,9 +416,6 @@ void MainWindow::on_pushButton_3_clicked()
 }
 
 
-
-
-
 void MainWindow::on_filterParamButton_clicked(bool checked)
 {
     QAbstractItemModel * model = ui->parametersTableView->model();
@@ -420,4 +426,10 @@ void MainWindow::on_filterParamButton_clicked(bool checked)
             ui->parametersTableView->verticalHeader()->showSection(i);
         }
     }
+}
+
+void MainWindow::on_precisionSpinBox_valueChanged(int arg1)
+{
+    comparisonModel->precision = arg1;
+    ui->comparisonTableView->reset();
 }

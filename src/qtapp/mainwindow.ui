@@ -82,7 +82,7 @@
     <item>
      <widget class="QTabWidget" name="samaraTabs">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="parametersTab">
        <attribute name="title">
@@ -424,6 +424,26 @@
            <widget class="QLineEdit" name="lineEdit"/>
           </item>
           <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="diffCountLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -435,6 +455,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="precisionSpinBox">
+            <property name="value">
+             <number>10</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

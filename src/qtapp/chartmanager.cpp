@@ -63,6 +63,10 @@ void ChartManager::displayCharts() {
     }
 
     for(QString name: checkedList) {
+        if(resultSeries.find(name) == resultSeries.end()) {
+            chartListLayout->parent()->findChild<QCheckBox*>(name+"box")->setChecked(false);
+            continue;
+        }
         if(charts[name]->series == nullptr)
             charts[name]->setSeries(resultSeries[name], obsSeries[name]);
         chartLayout->addWidget(charts[name], chartLayout->count() / 2, chartLayout->count() % 2);

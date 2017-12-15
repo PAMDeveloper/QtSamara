@@ -1,0 +1,65 @@
+RS_EvalSupplyTot_V2_1_micha:
+retrait du - max(0., RespMaintDebt); dans
+SupplyTot = Assim + MobiliLeafDeath - RespMaintTot;// - max(0., RespMaintDebt);
+
+
+De nombreux set à 0 selon la phase de la simu (reset_variables et kill_crops)
+
+PROBLEM Vent:
+************
+Dans SarraH pas de valeur dans le vent,
+le calcul du Eto diffère
+
+
+PROBLEM 3:
+**********
+All wrong after Harvest
+DryMatResInternodePop skyrocket in C++ after phase 5 
+(ie csm613e) 599,82 - 303.19
+
+Correction: 
+dans RS_EvolGrowthReserveInternode_V2_1
+le premier DryMatResInternodePop = DryMatResInternodePop + GrowthResInternodePop; n'est plus
+calculé à partir de la phase 5
+
+PROBLEME Vars 0:
+****************
+TillerDeathPop in RS_EvolMobiliTillerDeath_V2_1 ajout de else {TillerDeathPop = 0}
+FractionRootsLogged set to 0 after each step
+
+PROBLEME 2: CumWuse explose au step 11 et inversion variable
+**************************************
+Permutation des sorties:
+Ecotrop CumTr	CumEt	CumWUse	CumIrrig	CumDr	CumLr		TrEffInst	TrEff	WueEt	WueTot
+C++		CumEt	CumWUse	CumRain	CumDr		CumLr	TrEffInst	TrEff		WueEt	WueTot	ConversionEff
+
+CumIrrigFinal Ecotrop = CumDrFinal C++
+CumWReceived = CumIrrig
+=======================================================================================================
+PROBLEME 1: start simu
+***********************
+
+Original:
+Step 1: 
+ETo EvapPot StockTotal <     
+ETR ETM KCEReal Evap Not Null
+
+Si précalcul Meteo + EToFao:
+StockTotal <   
+ETR ETM KCEReal Evap Not Null
+
+Si StockIniProf n'est pas set à 0 dans initParameters
+StockTotal >
+
+
+Ordre d'évaluation
+
+Kce > EvapPot > KCEReal/Evap > ETR ETM
+RS_EvolKcpKceBilhy > RS_EvalEvapPot > RS_EvolEvapSurfRFE_RDE_V2_1 > EvalETRETM
+
+CORRECTION QUI FONCTIONNE:
+- calcule EToFAO avant le début de la simulation sur les données météo du jour de démarrage -1
+- RS_EvalEvapPot au premier tour est calculé après RS_EvolEvapSurfRFE_RDE_V2_1
+et avant RS_EvolEvapSurfRFE_RDE_V2_1 après le premier tour
+- StockIniProf est initialisé de force à 0
+
