@@ -64,6 +64,7 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
             else if(key.contains("date") || key == "sowing") {
                 return QString::fromStdString(JulianCalculator::toStringDate(r, JulianCalculator::YMD, '-'));
             }
+            return QString::number(r, 'g', 10);
             return r;
 
         }
