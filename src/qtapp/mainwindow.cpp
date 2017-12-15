@@ -31,7 +31,7 @@
 static const int numCol = 2;
 
 
-const QString shortParamList = "BundHeight,Ca,CoeffInternodeMass,CoeffLeafDeath,CoeffLeafWLRatio,CoeffPanicleMass,CoeffTillerDeath,CoeffTransplantingShock,DatesSemis,DensityField,DensityNursery,DurationNursery,EpaisseurProf,EpaisseurSurf,FtswIrrig,HumCR,HumFC,HumPF,HumSat,InternodeLengthMax,IrrigAuto,IrrigAutoResume,IrrigAutoStop,IrrigAutoTarget,KcMax,LeafLengthMax,LifeSavingDarainage,Mulch,PercolationMax,PEvap,PFactor,Phyllo,PlantsPerHill,PlotDrainageDAF,PoidsSecGrain,PourcRuiss,PPSens,ProfRacIni,RootFrontMax,RU,SDJBVP,SeuilRuiss,StockIniProf,StockIniSurf,TilAbility,Transplanting,TransplantingDepth,TxConversion";
+const QString shortParamList = "CoeffLodging,BundHeight,Ca,CoeffInternodeMass,CoeffLeafDeath,CoeffLeafWLRatio,CoeffPanicleMass,CoeffTillerDeath,CoeffTransplantingShock,DatesSemis,DensityField,DensityNursery,DurationNursery,EpaisseurProf,EpaisseurSurf,FtswIrrig,HumCR,HumFC,HumPF,HumSat,InternodeLengthMax,IrrigAuto,IrrigAutoResume,IrrigAutoStop,IrrigAutoTarget,KcMax,LeafLengthMax,LifeSavingDarainage,Mulch,PARCritSLA,PercolationMax,PEvap,PFactor,Phyllo,PlantsPerHill,PlotDrainageDAF,PoidsSecGrain,PourcRuiss,PPSens,ProfRacIni,RootFrontMax,RU,SDJBVP,SeuilRuiss,StockIniProf,StockIniSurf,TilAbility,Transplanting,TransplantingDepth,TxConversion";
 
 QStringList fromVector(vector<string> list) {
     QStringList r;
@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->modelCombo->addItem("Samara 2.1");
     ui->modelCombo->addItem("Samara 2.1 michael");
     ui->modelCombo->addItem("Samara 2.3");
+    ui->modelCombo->addItem("Samara 2.3 lodging");
     ui->modelCombo->setCurrentText(settings->value("Samara_version","Samara 2.3").toString());
 
     ui->splitter->setStretchFactor(0, 0);
@@ -169,6 +170,8 @@ void MainWindow::on_launchButton_clicked() {
         results = run_samara_2_1_micha(loader->parameters, log);
     else if(version == "Samara 2.3")
         results = run_samara_2_3(loader->parameters, log);
+    else if(version == "Samara 2.3 lodging")
+        results = run_samara_2_3_lodging(loader->parameters, log);
 
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
