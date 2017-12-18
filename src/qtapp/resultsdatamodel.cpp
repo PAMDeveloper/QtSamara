@@ -19,11 +19,11 @@ void ResultsDataModel::setResults(const pair <vector <string>, vector < vector <
 int ResultsDataModel::rowCount(const QModelIndex &/*parent*/) const {
     if(columnCount() == 0)
         return 0;
-    return results.second[0].size();
+    return (int)results.second[0].size();
 }
 
 int ResultsDataModel::columnCount(const QModelIndex &/*parent*/) const {
-    return results.first.size();
+    return (int)results.first.size();
 }
 
 QVariant ResultsDataModel::data(const QModelIndex &index, int role) const{

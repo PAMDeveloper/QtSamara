@@ -293,7 +293,7 @@ void MainWindow::createChartsTab() {
 
 
 
-serieCompare MainWindow::compareSeries(QLineSeries * src, QScatterSeries * ref) {
+serieCompare MainWindow::compareSeries(QLineSeries * src, QScatterSeries * /*ref*/) {
     serieCompare comparison;
     comparison.maxVal = -999999999999999;
     comparison.minVal = 999999999999999;

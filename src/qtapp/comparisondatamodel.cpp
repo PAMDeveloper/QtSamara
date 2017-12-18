@@ -39,7 +39,7 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
             std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
             if( resName == refName ){
                 paired = true;
-                double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
+//                double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);
                 double sumRef = accumulate(refs.second[j].begin(), refs.second[j].end(), 0.0000);
 //                double diff = qAbs((sumRes - sumRef)/ (qAbs(sumRes+sumRef)/2));
                 if(sumRef != 0)
@@ -57,10 +57,10 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
 }
 
 
-int ComparisonDataModel2::rowCount(const QModelIndex &parent) const {
-    return qMin(refs.second[ visibleHeaders[0].first].size(),results.second[ visibleHeaders[0].first].size());
+int ComparisonDataModel2::rowCount(const QModelIndex &/*parent*/) const {
+    return (int)qMin(refs.second[ visibleHeaders[0].first].size(),results.second[ visibleHeaders[0].first].size());
 }
-int ComparisonDataModel2::columnCount(const QModelIndex &parent) const {
+int ComparisonDataModel2::columnCount(const QModelIndex &/*parent*/) const {
     return /*clean ? cleanSeries.size() : */visibleHeaders.size();
 }
 
