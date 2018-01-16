@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->modelCombo->addItem("Samara 2.1 michael");
     ui->modelCombo->addItem("Samara 2.3");
     ui->modelCombo->addItem("Samara 2.3 lodging");
+    ui->modelCombo->addItem("Samara 2.3 lodging test");
     ui->modelCombo->setCurrentText(settings->value("Samara_version","Samara 2.3").toString());
 
     ui->splitter->setStretchFactor(0, 0);
@@ -172,6 +173,8 @@ void MainWindow::on_launchButton_clicked() {
         results = run_samara_2_3(loader->parameters, log);
     else if(version == "Samara 2.3 lodging")
         results = run_samara_2_3_lodging(loader->parameters, log);
+    else if(version == "Samara 2.3 lodging test")
+        results = run_samara_2_3_lodging_test(loader->parameters, log);
 
     resultsModel->setResults(results);
     ui->resultsTableView->reset();

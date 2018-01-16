@@ -1,3 +1,5 @@
+Added SimulationFinished
+
 RS_EvalSupplyTot_V2_1_micha:
 retrait du - max(0., RespMaintDebt); dans
 SupplyTot = Assim + MobiliLeafDeath - RespMaintTot;// - max(0., RespMaintDebt);
