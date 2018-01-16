@@ -86,7 +86,7 @@ void ChartManager::fromSowing(bool checked) {
 }
 
 void ChartManager::setResults(pair<vector<string>, vector<vector<double> > > results, map<string, vector<double> > observations,
-                              double startDate, double sowingDate) {
+                              double /*startDate*/, double sowingDate) {
     clearSeries();
     generateResultSeries(results, sowingDate);
     generateObsSeries(observations, sowingDate);

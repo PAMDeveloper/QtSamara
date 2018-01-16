@@ -34,10 +34,10 @@ ParametersDataModel::ParametersDataModel(SamaraParameters * params, QObject *par
 }
 
 
-int ParametersDataModel::rowCount(const QModelIndex &parent) const {
+int ParametersDataModel::rowCount(const QModelIndex &/*parent*/) const {
     return keys.size();
 }
-int ParametersDataModel::columnCount(const QModelIndex &parent) const {
+int ParametersDataModel::columnCount(const QModelIndex &/*parent*/) const {
     return 2;
 }
 

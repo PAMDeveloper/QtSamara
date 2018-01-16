@@ -10,10 +10,10 @@ MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
 //    qDebug() << keys;
 }
 
-int MeteoDataModel::rowCount(const QModelIndex &parent) const {
-    return  parameters->climatics.size();
+int MeteoDataModel::rowCount(const QModelIndex &/*parent*/) const {
+    return  (int)parameters->climatics.size();
 }
-int MeteoDataModel::columnCount(const QModelIndex &parent) const {
+int MeteoDataModel::columnCount(const QModelIndex &/*parent*/) const {
     return 12;
 }
 
