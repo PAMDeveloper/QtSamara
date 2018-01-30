@@ -3,7 +3,10 @@
 #include <QtCore/qmath.h>
 #include "utils/juliancalculator.h"
 
-const QString paramList = "coefflodging,asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefficientq10,coeffinternodemass,coeffinternodenum,coeffleafdeath,coeffleafwlratio,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,devcstr,durationnursery,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,ictillering,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,ktempmaint,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,sowing,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txresgrain,txrusurfgermi,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath";
+#include <QFile>
+#include <QTextStream>
+
+const QString paramList = "startingdate,endingdate,coefflodging,asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefficientq10,coeffinternodemass,coeffinternodenum,coeffleafdeath,coeffleafwlratio,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,devcstr,durationnursery,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,ictillering,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,ktempmaint,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,sowing,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txresgrain,txrusurfgermi,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath";
 
 class KeyLessThan
 {
@@ -65,7 +68,7 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
                 return QString::fromStdString(JulianCalculator::toStringDate(r, JulianCalculator::YMD, '-'));
             }
             return QString::number(r, 'g', 10);
-            return r;
+//            return r;
 
         }
         catch(...) {
@@ -109,6 +112,7 @@ bool ParametersDataModel::setData(const QModelIndex &idx, const QVariant &value,
         QRegExp dateValidator("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]");
         if(dateValidator.exactMatch(value.toString())) {
             parameters->doubles[key].first = JulianCalculator::toJulianDay(value.toString().toStdString(), JulianCalculator::YMD, '-');
+            parameters->strings[key].first = value.toString().toStdString();
             return true;
         }
         return false;
@@ -119,4 +123,66 @@ bool ParametersDataModel::setData(const QModelIndex &idx, const QVariant &value,
     if(ok)
         parameters->doubles[key].first = d;
     return ok;
+}
+
+
+bool ParametersDataModel::save(QString path, QString sep) {
+    QFile file(path);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << parameters->strings.size() << "\n";
+        for (auto const& token : parameters->strings) {
+            out << QString::fromStdString(token.first) << sep << QString::fromStdString(token.second.first) << "\n";
+        }
+
+        out << parameters->doubles.size() << "\n";
+        for (auto const& token : parameters->doubles) {
+            out << QString::fromStdString(token.first) << sep << QString::number(token.second.first) << "\n";
+        }
+
+//        for (int row = 0; row < rowCount(); ++row) {
+//            for (int col = 0; col < columnCount(); ++col) {
+//                    out << index(row,col).data().toString() << sep;
+//            }
+//            out << "\n";
+//        }
+
+        file.close();
+        return true;
+    }
+    return false;
+}
+
+
+bool ParametersDataModel::load(QString path, QString sep) {
+    QFile file(path);
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        int rowCt = in.readLine().toInt();
+        for (int row = 0; row < rowCt; ++row) {
+            QString line = in.readLine();
+            QStringList lstLine = line.split(sep);
+            parameters->strings[ lstLine[0].toStdString() ].first = lstLine[1].toStdString();
+        }
+
+        rowCt = in.readLine().toInt();
+        for (int row = 0; row < rowCt; ++row) {
+            QString line = in.readLine();
+            QStringList lstLine = line.split(sep);
+            parameters->doubles[ lstLine[0].toStdString() ].first = lstLine[1].toDouble();
+        }
+
+//        int row = 0;
+//        while (!in.atEnd()) {
+//            QString line = in.readLine();
+//            QStringList lstLine = line.split(sep);
+//            setData(index(row,0), lstLine[0], Qt::EditRole);
+//            setData(index(row,1), lstLine[1], Qt::EditRole);
+//            row++;
+//        }
+        file.close();
+        dataChanged(index(0,0),index(rowCount()-1,1));
+        return true;
+    }
+    return false;
 }

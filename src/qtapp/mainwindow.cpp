@@ -253,8 +253,12 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
     if(ui->parametersTableView->model() != nullptr)
         delete ui->parametersTableView->model();
 
-    ParametersDataModel *paramModel = new ParametersDataModel(parameters);
+    paramModel = new ParametersDataModel(parameters);
     ui->parametersTableView->setModel(paramModel);
+    for (int row = 0; row < paramModel->rowCount(); ++row) {
+        if(paramModel->index(row, 0).data().toString().contains("date"))
+            ui->parametersTableView->hideRow(row);
+    }
 
     if(ui->meteoTableView->model() != nullptr)
         delete ui->meteoTableView->model();
@@ -289,6 +293,62 @@ void MainWindow::createChartsTab() {
     client2->setLayout(chartListLayout);
     chartListLayout->setSpacing(0);
 }
+
+void MainWindow::on_actionSave_Parameters_triggered()
+{
+    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString selectedFilter;
+    QString filePath = QFileDialog::getSaveFileName(
+                this, "Save parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+    if(filePath.isEmpty()) return;
+    settings->setValue("SamaraParams_folder", filePath);
+    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    paramModel->save(filePath, sep);
+}
+
+void MainWindow::on_actionLoad_Parameters_triggered()
+{
+    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString selectedFilter;
+    QString filePath = QFileDialog::getOpenFileName(
+                this, "Save parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+    if(filePath.isEmpty()) return;
+    settings->setValue("SamaraParams_folder", filePath);
+    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    paramModel->load(filePath, sep);
+//    for (int row = 0; row < paramModel->rowCount(); ++row) {
+//        QString key = paramModel->index(row, 0).data().toString();
+//        if(key.contains("date")) {
+//            QString val = paramModel->index(row, 1).data().toString();
+//            QDate d = QDate::fromString(val,"yyyy-MM-dd");
+//            if(key == "startingdate") ui->startDateEdit->setDate(d);
+//            else if(key == "endingdate") ui->endDateEdit->setDate(d);
+//            ui->parametersTableView->hideRow(row);
+//        }
+//    }
+
+    showDates();
+    ui->varComboBox->blockSignals(true);
+    ui->plotComboBox->blockSignals(true);
+    ui->stationComboBox->blockSignals(true);
+    ui->itinComboBox->blockSignals(true);
+    ui->simComboBox->blockSignals(true);
+    ui->simComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("simcode")));
+    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
+    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
+    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
+    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
+    ui->varComboBox->blockSignals(false);
+    ui->plotComboBox->blockSignals(false);
+    ui->stationComboBox->blockSignals(false);
+    ui->itinComboBox->blockSignals(false);
+    ui->simComboBox->blockSignals(false);
+    loader->load_meteo(loader->parameters->getString("wscode"),
+                       loader->parameters->getDouble("startingdate"),
+                       loader->parameters->getDouble("endingdate"));
+    showParameters(loader->parameters);
+}
+
 
 
 
@@ -439,3 +499,4 @@ void MainWindow::on_precisionSpinBox_valueChanged(int arg1)
     comparisonModel->precision = arg1;
     ui->comparisonTableView->reset();
 }
+

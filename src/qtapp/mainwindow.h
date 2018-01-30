@@ -74,6 +74,10 @@ private slots:
 
     void on_precisionSpinBox_valueChanged(int arg1);
 
+    void on_actionSave_Parameters_triggered();
+
+    void on_actionLoad_Parameters_triggered();
+
 private:
     Ui::MainWindow *ui;
     QSettings * settings;
@@ -88,6 +92,7 @@ private:
     ChartManager * chartManager;
     ResultsManager * resultsManager;
     ComparisonManager * comparisonManager;
+    ParametersDataModel *paramModel;
 
     ResultsDataModel *resultsModel;
     ComparisonDataModel2 *comparisonModel = nullptr;
