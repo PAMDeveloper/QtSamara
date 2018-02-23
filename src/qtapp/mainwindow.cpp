@@ -31,7 +31,7 @@
 static const int numCol = 2;
 
 
-const QString shortParamList = "CoeffLodging,BundHeight,Ca,CoeffInternodeMass,CoeffLeafDeath,CoeffLeafWLRatio,CoeffPanicleMass,CoeffTillerDeath,CoeffTransplantingShock,DatesSemis,DensityField,DensityNursery,DurationNursery,EpaisseurProf,EpaisseurSurf,FtswIrrig,HumCR,HumFC,HumPF,HumSat,InternodeLengthMax,IrrigAuto,IrrigAutoResume,IrrigAutoStop,IrrigAutoTarget,KcMax,LeafLengthMax,LifeSavingDarainage,Mulch,PARCritSLA,PercolationMax,PEvap,PFactor,Phyllo,PlantsPerHill,PlotDrainageDAF,PoidsSecGrain,PourcRuiss,PPSens,ProfRacIni,RootFrontMax,RU,SDJBVP,SeuilRuiss,StockIniProf,StockIniSurf,TilAbility,Transplanting,TransplantingDepth,TxConversion";
+const QString shortParamList = "CoeffLodging,StemPorosity,BundHeight,Ca,CoeffInternodeMass,CoeffLeafDeath,CoeffLeafWLRatio,CoeffPanicleMass,CoeffTillerDeath,CoeffTransplantingShock,DatesSemis,DensityField,DensityNursery,DurationNursery,EpaisseurProf,EpaisseurSurf,FtswIrrig,HumCR,HumFC,HumPF,HumSat,InternodeLengthMax,IrrigAuto,IrrigAutoResume,IrrigAutoStop,IrrigAutoTarget,KcMax,LeafLengthMax,LifeSavingDarainage,Mulch,PARCritSLA,PercolationMax,PEvap,PFactor,Phyllo,PlantsPerHill,PlotDrainageDAF,PoidsSecGrain,PourcRuiss,PPSens,ProfRacIni,RootFrontMax,RU,SDJBVP,SeuilRuiss,StockIniProf,StockIniSurf,TilAbility,Transplanting,TransplantingDepth,TxConversion";
 
 QStringList fromVector(vector<string> list) {
     QStringList r;
@@ -85,6 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
     else if(log == 1) ui->completeRadio->setChecked(true);
     else ui->ecotropRadio->setChecked(true);
 
+
+    ui->meteoTableView->horizontalHeader()->setSectionsMovable(true);
     //**//
 //    ui->samaraTabs->removeTab(2);
     //**//
@@ -311,7 +313,7 @@ void MainWindow::on_actionLoad_Parameters_triggered()
     QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getOpenFileName(
-                this, "Save parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+                this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
     settings->setValue("SamaraParams_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
