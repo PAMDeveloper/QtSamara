@@ -162,21 +162,43 @@ void MainWindow::clearDBContext() {
 }
 
 void MainWindow::on_launchButton_clicked() {
+
+//    SamaraFitness evol(loader->parameters);
+//    de::DifferentialEvolution de(evol, 150, std::time(nullptr));
+//    de.Optimize(10000, true);
+
+
+//    settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
+//    Samara::SamaraLogType log = (Samara::SamaraLogType)(ui->smallRadio->isChecked() ? 0 : ui->completeRadio->isChecked() ? 1 : 2);
+//    settings->setValue("SamaraSimulation_LOG", log);
+//    QString version = ui->modelCombo->currentText();
+//    settings->setValue("Samara_version", version);
+//    for (int i = 0; i < 10000000; ++i) {
+//        Samara samara;
+//        results = samara.run_samara_2_1(loader->parameters, log);
+//        if(i%100 == 0)
+//            qDebug() << i;
+
+//    }
+//    return;
+
+
+    Samara samara;
     settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
-    SamaraLogType log = (SamaraLogType)(ui->smallRadio->isChecked() ? 0 : ui->completeRadio->isChecked() ? 1 : 2);
+    Samara::SamaraLogType log = (Samara::SamaraLogType)(ui->smallRadio->isChecked() ? 0 : ui->completeRadio->isChecked() ? 1 : 2);
     settings->setValue("SamaraSimulation_LOG", log);
     QString version = ui->modelCombo->currentText();
     settings->setValue("Samara_version", version);
     if(version == "Samara 2.1")
-        results = run_samara_2_1(loader->parameters, log);
+        results = samara.run_samara_2_1(loader->parameters, log);
     else if(version == "Samara 2.1 michael")
-        results = run_samara_2_1_micha(loader->parameters, log);
+        results = samara.run_samara_2_1_micha(loader->parameters, log);
     else if(version == "Samara 2.3")
-        results = run_samara_2_3(loader->parameters, log);
+        results = samara.run_samara_2_3(loader->parameters, log);
     else if(version == "Samara 2.3 lodging")
-        results = run_samara_2_3_lodging(loader->parameters, log);
+        results = samara.run_samara_2_3_lodging(loader->parameters, log);
     else if(version == "Samara 2.3 lodging test")
-        results = run_samara_2_3_lodging_test(loader->parameters, log);
+        results = samara.run_samara_2_3_lodging_test(loader->parameters, log);
 
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
@@ -264,7 +286,7 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
 
     if(ui->meteoTableView->model() != nullptr)
         delete ui->meteoTableView->model();
-    MeteoDataModel *meteoModel = new MeteoDataModel(parameters);
+    meteoModel = new MeteoDataModel(parameters);
     ui->meteoTableView->setModel(meteoModel);
 }
 
@@ -307,6 +329,19 @@ void MainWindow::on_actionSave_Parameters_triggered()
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     paramModel->save(filePath, sep);
 }
+
+void MainWindow::on_actionSave_Meteo_triggered()
+{
+    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString selectedFilter;
+    QString filePath = QFileDialog::getSaveFileName(
+                this, "Save meteo as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+    if(filePath.isEmpty()) return;
+    settings->setValue("SamaraParams_folder", filePath);
+    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    meteoModel->save(filePath, sep);
+}
+
 
 void MainWindow::on_actionLoad_Parameters_triggered()
 {
@@ -501,4 +536,5 @@ void MainWindow::on_precisionSpinBox_valueChanged(int arg1)
     comparisonModel->precision = arg1;
     ui->comparisonTableView->reset();
 }
+
 

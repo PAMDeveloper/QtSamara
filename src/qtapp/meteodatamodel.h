@@ -20,6 +20,8 @@ public:
 //    bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
 //     samara::ModelParameters getParameters();
 
+    bool save(QString path, QString sep = ";");
+//    bool load(QString path, QString sep = ";");
 private:
     SamaraParameters * parameters;
     QStringList keys;

@@ -1,6 +1,9 @@
 #include "meteodatamodel.h"
 #include <utils/juliancalculator.h>
 
+#include <QFile>
+#include <QTextStream>
+
 MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
 {
@@ -71,3 +74,22 @@ QVariant MeteoDataModel::headerData(int section, Qt::Orientation orientation, in
 
     return QAbstractTableModel::headerData(section, orientation, role);
 }
+
+bool MeteoDataModel::save(QString path, QString sep) {
+    QFile file(path);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        for (auto const& token : parameters->climatics) {
+            out << token.TMax << sep << token.TMin << sep << token.TMoy << sep << token.HMax
+                << sep << token.HMin<< sep << token.HMoy << sep << token.Vt << sep <<
+                   token.Ins << sep << token.Rg << sep << token.Rain << sep << token.ETP << "\n";
+        }
+        file.close();
+        return true;
+    }
+    return false;
+}
+
+//bool MeteoDataModel::load(QString path, QString sep) {
+
+//}

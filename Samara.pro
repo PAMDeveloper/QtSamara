@@ -5,6 +5,13 @@ win32:RC_ICONS += samara.ico
 TEMPLATE = app
 NAME = samara
 
+# remove possible other optimization flags
+QMAKE_CXXFLAGS_RELEASE -= -O
+QMAKE_CXXFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+
+# add the desired -O3 if not present
+QMAKE_CXXFLAGS_RELEASE *= -Ox
 
 SAMARA_GIT_COMMIT = $$system(git log -n 1 --pretty="%h")
 SAMARA_GIT_VERSION = $$system(git describe --abbrev=0 --tags)
@@ -48,7 +55,6 @@ HEADERS += \
     ../rSamara/src/parameters.h \
     ../rSamara/src/samara.h \
     ../rSamara/src/samara_defines.h \
-    ../rSamara/src/variables.h \
     ../rSamara/src/processes/processes.h \
     src/qtapp/callout.h \
     src/qtapp/DBEcosysloader.h \
