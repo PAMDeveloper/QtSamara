@@ -20,9 +20,12 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <qtapp/chartview.h>
 #include <samara.h>
+#include <qtapp/chartview.h>
 #include <utils/juliancalculator.h>
+#include <utils/de.h>
+#include <utils/samarafitness.h>
+
 
 #include <cmath>
 
@@ -85,6 +88,8 @@ MainWindow::MainWindow(QWidget *parent) :
     else if(log == 1) ui->completeRadio->setChecked(true);
     else ui->ecotropRadio->setChecked(true);
 
+    obsmodel = new ObsDataModel();
+//    ui->obsTable->setModel(obsmodel);
 
     ui->meteoTableView->horizontalHeader()->setSectionsMovable(true);
     //**//
@@ -163,11 +168,6 @@ void MainWindow::clearDBContext() {
 
 void MainWindow::on_launchButton_clicked() {
 
-//    SamaraFitness evol(loader->parameters);
-//    de::DifferentialEvolution de(evol, 150, std::time(nullptr));
-//    de.Optimize(10000, true);
-
-
 //    settings->setValue("SamaraSimulation_Text", ui->simComboBox->currentText());
 //    Samara::SamaraLogType log = (Samara::SamaraLogType)(ui->smallRadio->isChecked() ? 0 : ui->completeRadio->isChecked() ? 1 : 2);
 //    settings->setValue("SamaraSimulation_LOG", log);
@@ -203,6 +203,7 @@ void MainWindow::on_launchButton_clicked() {
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
     observations = loader->load_obs("");
+    obsmodel->setObs(observations);
     chartManager->setResults(results, observations, loader->parameters->getDouble("startingdate"), loader->parameters->getDouble("sowing"));
 //    QMessageBox::information(this, "Simulation", "Simulation and charting done.");
 }
@@ -284,10 +285,19 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
             ui->parametersTableView->hideRow(row);
     }
 
+    estimModel = new EstimParamDataModel(parameters);
+    ui->paramToEstimList->setModel(estimModel);
+    for (int row = 0; row < estimModel->rowCount(); ++row) {
+        if(estimModel->index(row, 0).data().toString().contains("date"))
+            ui->paramToEstimList->hideRow(row);
+    }
+
     if(ui->meteoTableView->model() != nullptr)
         delete ui->meteoTableView->model();
     meteoModel = new MeteoDataModel(parameters);
     ui->meteoTableView->setModel(meteoModel);
+
+
 }
 
 
@@ -537,4 +547,53 @@ void MainWindow::on_precisionSpinBox_valueChanged(int arg1)
     ui->comparisonTableView->reset();
 }
 
+void MainWindow::on_estimButton_clicked()
+{
+    SamaraFitness fitness(
+                        estimModel->context,
+                        estimModel->params(),
+                        estimModel->bounds(),
+                        estimModel->observations);
+    de::DifferentialEvolution de(fitness, 100, std::time(nullptr));
+    de.Optimize(1000, true);
+}
 
+void MainWindow::on_loadObsFromDB_clicked()
+{
+//    observations = loader->load_obs("");
+//    obsmodel->setObs(observations);
+}
+
+void MainWindow::on_actionLoad_Meteo_triggered()
+{
+    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString selectedFilter;
+    QString filePath = QFileDialog::getOpenFileName(
+                this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+    if(filePath.isEmpty()) return;
+    settings->setValue("SamaraParams_folder", filePath);
+    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    meteoModel->load(filePath, sep);
+    ui->meteoTableView->reset();
+}
+
+void MainWindow::on_loadEstimContext_clicked()
+{
+        QString dirPath = settings->value("SamaraEstim_folder", QDir::currentPath()).toString();
+        QString dirSelected = QFileDialog::getExistingDirectory(this, "Open estimation folder", dirPath);
+        if(dirSelected.isEmpty()) return;
+        settings->setValue("SamaraEstim_folder", dirSelected);
+        estimModel->load(dirSelected);
+}
+
+void MainWindow::on_actionSave_Observations_triggered()
+{
+    QString dirPath = settings->value("SamaraResult_folder", QDir::currentPath()).toString();
+    QString selectedFilter;
+    QString filePath = QFileDialog::getSaveFileName(
+                this, "Save observations as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+    if(filePath.isEmpty()) return;
+    settings->setValue("SamaraResult_folder", filePath);
+    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    obsmodel->save(filePath, sep);
+}

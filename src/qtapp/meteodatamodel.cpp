@@ -6,14 +6,9 @@
 
 MeteoDataModel::MeteoDataModel(SamaraParameters * params, QObject *parent)
     : QAbstractTableModel(parent), parameters(params)
-{
-//    for(auto it = params.getRawParameters().begin(); it != params.getRawParameters().end(); ++it) {
-//        keys << QString::fromStdString(it->first);
-//    }
-//    qDebug() << keys;
-}
+{}
 
-int MeteoDataModel::rowCount(const QModelIndex &/*parent*/) const {
+int MeteoDataModel::rowCount(const QModelIndex &/*parent*/ = QModelIndex()) const {
     return  (int)parameters->climatics.size();
 }
 int MeteoDataModel::columnCount(const QModelIndex &/*parent*/) const {
@@ -90,6 +85,37 @@ bool MeteoDataModel::save(QString path, QString sep) {
     return false;
 }
 
-//bool MeteoDataModel::load(QString path, QString sep) {
-
-//}
+bool MeteoDataModel::load(QString path, QString sep) {
+    QFile file(path);
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString line = in.readLine();
+        if(sep.isEmpty())
+            sep = line.contains(";") ? ";" : "\t";
+        parameters->climatics.clear();
+        beginResetModel();
+        while(!line.isEmpty()) {
+            QStringList lstLine = line.split(sep);
+            Climate c;
+            int i = -1;
+            c.TMax = lstLine[++i].toDouble();
+            c.TMin = lstLine[++i].toDouble();
+            c.TMoy = lstLine[++i].toDouble();
+            c.HMax = lstLine[++i].toDouble();
+            c.HMin = lstLine[++i].toDouble();
+            c.HMoy = lstLine[++i].toDouble();
+            c.Vt = lstLine[++i].toDouble();
+            c.Ins = lstLine[++i].toDouble();
+            c.Rg = lstLine[++i].toDouble();
+            c.Rain = lstLine[++i].toDouble();
+            c.ETP  = lstLine[++i].toDouble();
+            parameters->climatics.push_back(c);
+            line = in.readLine();
+        }
+        file.close();
+//        dataChanged(index(0,0),index(this->rowCount()-1,1));
+        endResetModel();
+        return true;
+    }
+    return false;
+}

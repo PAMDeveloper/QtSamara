@@ -262,21 +262,27 @@ public:
         QString trialCode = QString::fromStdString(itinerary) + varCode;
         QString start = QString::fromStdString(fromJulianDay(startJulian));
         QString end = QString::fromStdString(fromJulianDay(endJulian));
-        QString query =
-                "SELECT Observation_resultat.Id as id, Observation_resultat.obsplantdate as Jour, " \
-                "Observation_resultat.DAP as NbJas, [Observation_resultat]![Pl_Height]*10 AS PlantHeight, " \
-                "Observation_resultat.lai as Lai, Observation_resultat.GrainYield as GrainYieldPop, " \
-                "Observation_resultat.AppLeaves as AppLeaves, Observation_resultat.AppTill as CulmsPerPlant, " \
-                "[Observation_resultat]![GrainYield]/[Observation_resultat]![TotBiom] AS HaunIndex, " \
-                "Observation_resultat.PanGrainNb as PanGrainNb,  [Observation_resultat]![StemDM]*10+" \
-                "[Observation_resultat]![leafDM]*10+IIf(IsNull([Observation_resultat]![PanicleDM]*10),0," \
-                "[Observation_resultat]![PanicleDM]*10) AS DryMatAboveGroundPop, [Observation_resultat]" \
-                "![lai]/([Observation_resultat]![leafDM]*10) AS Sla, [Observation_resultat.leafDM]*10 as DryMatStructLeafPop, " \
-                "[Observation_resultat.StemDM]*10 as DryMatStemPop, " \
-                "[Observation_resultat.PanicleDM]*10 as DryMatStructPaniclePop FROM Observation_resultat " \
-                " WHERE id='" + trialCode + "'" \
-                " AND Observation_resultat.obsplantdate > (#" + start + "#)-1" +
-                " AND Observation_resultat.obsplantdate < (#" + end + "#)";
+
+        QString query = "SELECT " \
+                        "Observation_resultat.obsplantdate as ObsPlantDate," \
+                        "Observation_resultat.DAP as NbJas," \
+                        "[Observation_resultat]![Pl_Height]*10 AS PlantHeight," \
+                        "Observation_resultat.lai as Lai," \
+                        "Observation_resultat.GrainYieldPopFin as GrainYieldPopFin," \
+                        "Observation_resultat.AppLeaves as HaunIndex," \
+                        "([Observation_resultat]![AppTill]+1) as CulmsPerPlant," \
+                        "Observation_resultat.PanGrainNb as SpikeNumPanicle," \
+                        "Observation_resultat.NumPhase as NumPhase," \
+                        "[Observation_resultat]![StemDM]*10+[Observation_resultat]![leafDM]*10+IIf(IsNull([Observation_resultat]![PanicleDM]*10),0,[Observation_resultat]![PanicleDM]*10) AS DryMatAboveGroundPop," \
+                        "[Observation_resultat]![lai]/([Observation_resultat]![leafDM]*10) AS Sla," \
+                        "[Observation_resultat.leafDM]*10 as DryMatStructLeafPop," \
+                        "[Observation_resultat.StemDM]*10 as DryMatStemPop," \
+                        "[Observation_resultat.PanicleDM]*10 as DryMatPanicleTotPop," \
+                        "Observation_resultat.TotBiom as DryMatAboveGroundPopFin " \
+                        "FROM Observation_resultat " \
+                        "WHERE id='"+ trialCode + "'" \
+                        " AND Observation_resultat.obsplantdate > (#" + start + "#)-1" \
+                        " AND Observation_resultat.obsplantdate < (#" + end + "#)";
 
         QSqlQuery result(query, db);
         QSqlRecord rec = result.record();

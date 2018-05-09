@@ -147,7 +147,7 @@ void ChartManager::generateObsSeries(map<string, vector<double> > observations, 
 //            string dateStr = JulianCalculator::toStringDate(observations["Jour"][d], JulianCalculator::YMD, '-');
 //            date.setDate(QDate::fromString(QString::fromStdString(dateStr),"yyyy-MM-dd"));
             if(token.second[d] != -999)
-                serie->append(observations["Jour"][d] - sowing, token.second[d]);
+                serie->append(observations["ObsPlantDate"][d] - sowing, token.second[d]);
         }
         obsSeries.insert(name, serie);
     }
