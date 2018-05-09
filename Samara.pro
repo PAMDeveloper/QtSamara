@@ -49,13 +49,17 @@ INCLUDEPATH +=  ../../ext_libs/include \
                 ../rsamara/src
 
 HEADERS += \
+    ../rSamara/src/samara.h \
+    ../rSamara/src/samara_defines.h \
+    ../rSamara/src/parameters.h \
+    ../rSamara/src/processes/processes.h \
+    \
     ../rSamara/src/utils/juliancalculator.h \
     ../rSamara/src/utils/resultparser.h \
     ../rSamara/src/utils/simulationloader.h \
-    ../rSamara/src/parameters.h \
-    ../rSamara/src/samara.h \
-    ../rSamara/src/samara_defines.h \
-    ../rSamara/src/processes/processes.h \
+    ../rSamara/src/utils/de.h \
+    ../rSamara/src/utils/samarafitness.h \
+    \
     src/qtapp/callout.h \
     src/qtapp/DBEcosysloader.h \
     src/qtapp/loaderview.h \
@@ -69,10 +73,14 @@ HEADERS += \
     src/qtapp/resultsmanager.h \
     src/qtapp/comparisonmanager.h \
     src/qtapp/DBAccessLoader.h \
-    src/qtapp/chartview.h
+    src/qtapp/chartview.h \
+    src/qtapp/estimparamdatamodel.h \
+    src/qtapp/obsdatamodel.h
+
 
 SOURCES += \
     ../rSamara/src/samara.cpp \
+    \
     src/qtapp/callout.cpp \
     src/qtapp/loaderview.cpp \
     src/qtapp/mainwindow.cpp \
@@ -80,12 +88,14 @@ SOURCES += \
     src/qtapp/parametersdatamodel.cpp \
     src/qtapp/resultsdatamodel.cpp \
     src/qtapp/resultview.cpp \
-    src/main.cpp \
     src/qtapp/comparisondatamodel.cpp \
     src/qtapp/chartmanager.cpp \
     src/qtapp/resultsmanager.cpp \
     src/qtapp/comparisonmanager.cpp \
-    src/qtapp/chartview.cpp
+    src/qtapp/chartview.cpp \
+    src/main.cpp \
+    src/qtapp/estimparamdatamodel.cpp \
+    src/qtapp/obsdatamodel.cpp
 
 FORMS += \
     src/qtapp/mainwindow.ui
