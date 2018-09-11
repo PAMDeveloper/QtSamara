@@ -21,7 +21,7 @@ public:
 //     samara::ModelParameters getParameters();
 
     bool save(QString path, QString sep = ";");
-//    bool load(QString path, QString sep = ";");
+    bool load(QString path, QString sep = "");
 private:
     SamaraParameters * parameters;
     QStringList keys;

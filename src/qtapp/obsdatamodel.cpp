@@ -84,3 +84,25 @@ void ObsDataModel::load(QString fileName, QString sep) {
 
     dataChanged(index(0,0),index(rowCount()-1,1));
 }
+
+bool ObsDataModel::save(QString path, QString sep) {
+    QFile file(path);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        for (auto const& token : obs) {
+            out << QString::fromStdString(token.first) << sep;
+        }
+        out << "\n";
+
+        for (int i = 0; i < obs.begin()->second.size(); ++i) {
+            for (auto const& token : obs) {
+                out << fixed << QString::number(token.second[i]) << sep;
+            }
+            out << "\n";
+        }
+
+        file.close();
+        return true;
+    }
+    return false;
+}

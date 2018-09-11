@@ -21,7 +21,11 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
 
     bool save(QString path, QString sep = ";");
-    bool load(QString path, QString sep = ";");
+    bool load(QString path);
+
+    void addEstimationContext(QString path);
+    map<string,vector<double>> loadObs(QString fileName);
+    vector < Climate > loadMeteo(QString path);
 
     vector<pair<double, double> > bounds();
     vector<string> params();
@@ -29,6 +33,8 @@ public:
     static QColor getColor(QString s);
 
     QStringList keys;
+    vector <SamaraParameters *> context;
+    vector < map<string,vector<double>> > observations;
 private:
     QSettings * settings;
     QStringList checked;

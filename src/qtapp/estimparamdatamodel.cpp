@@ -5,6 +5,8 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
+#include <QDirIterator>
 
 const QString paramList = "startingdate,endingdate,coefflodging,stemporosity,asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefficientq10,coeffinternodemass,coeffinternodenum,coeffleafdeath,coeffleafwlratio,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,devcstr,durationnursery,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,ictillering,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,ktempmaint,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,sowing,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txresgrain,txrusurfgermi,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath";
 
@@ -170,37 +172,79 @@ bool EstimParamDataModel::save(QString path, QString sep) {
     return false;
 }
 
+vector < Climate > EstimParamDataModel::loadMeteo(QString path) {
+    vector < Climate > climatics;
+    QFile file(path);
+    QString sep = "";
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString line = in.readLine();
+        if(sep.isEmpty())
+            sep = line.contains(";") ? ";" : "\t";
+        while(!line.isEmpty()) {
+            QStringList lstLine = line.split(sep);
+            Climate c;
+            int i = -1;
+            c.TMax = lstLine[++i].toDouble();
+            c.TMin = lstLine[++i].toDouble();
+            c.TMoy = lstLine[++i].toDouble();
+            c.HMax = lstLine[++i].toDouble();
+            c.HMin = lstLine[++i].toDouble();
+            c.HMoy = lstLine[++i].toDouble();
+            c.Vt = lstLine[++i].toDouble();
+            c.Ins = lstLine[++i].toDouble();
+            c.Rg = lstLine[++i].toDouble();
+            c.Rain = lstLine[++i].toDouble();
+            c.ETP  = lstLine[++i].toDouble();
+           climatics.push_back(c);
+            line = in.readLine();
+        }
+        file.close();
+    }
+    return climatics;
+}
 
-bool EstimParamDataModel::load(QString path, QString sep) {
-//    QFile file(path);
-//    if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//        QTextStream in(&file);
-//        int rowCt = in.readLine().toInt();
-//        for (int row = 0; row < rowCt; ++row) {
-//            QString line = in.readLine();
-//            QStringList lstLine = line.split(sep);
-//            parameters->strings[ lstLine[0].toStdString() ].first = lstLine[1].toStdString();
-//        }
+map<string,vector<double>> EstimParamDataModel::loadObs(QString fileName) {
+    QString sep = "";
+    vector<string> keys;
+    map<string, vector<double>> obs;
+    QFile inputFile(fileName);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+        QTextStream in(&inputFile);
+        QString line = in.readLine();
+        sep = line.contains(";") ? ";" : "\t";
+        QStringList list = line.split(sep);
+        for(QString header: list) {
+            keys.push_back(header.toLower().toStdString());
+            obs.insert(pair< string,vector<double> >(header.toLower().toStdString(),vector<double>()));
+        }
 
-//        rowCt = in.readLine().toInt();
-//        for (int row = 0; row < rowCt; ++row) {
-//            QString line = in.readLine();
-//            QStringList lstLine = line.split(sep);
-//            parameters->doubles[ lstLine[0].toStdString() ].first = lstLine[1].toDouble();
-//        }
+        while (!in.atEnd())
+        {
+            QStringList list = in.readLine().split(sep);
+            for (int i = 0; i < list.size(); ++i) {
+                obs[keys[i]].push_back(list[i].replace(',','.').toDouble());
+            }
+        }
+        inputFile.close();
+    }
+    return obs;
+}
 
-////        int row = 0;
-////        while (!in.atEnd()) {
-////            QString line = in.readLine();
-////            QStringList lstLine = line.split(sep);
-////            setData(index(row,0), lstLine[0], Qt::EditRole);
-////            setData(index(row,1), lstLine[1], Qt::EditRole);
-////            row++;
-////        }
-//        file.close();
-//        dataChanged(index(0,0),index(rowCount()-1,1));
-//        return true;
-//    }
+void EstimParamDataModel::addEstimationContext(QString path) {
+    observations.push_back(loadObs(path+"/obs.csv"));
+    SamaraParameters * param = new SamaraParameters();
+    param->doubles = parameters->doubles;
+    param->strings = parameters->strings;
+    param->climatics = loadMeteo(path+"/meteo.csv");
+    context.push_back(param);
+}
+
+bool EstimParamDataModel::load(QString path) {
+    QDirIterator it(path,QDir::AllEntries |QDir::NoDotAndDotDot);
+    while (it.hasNext())
+        addEstimationContext(it.next());
     return false;
 }
 

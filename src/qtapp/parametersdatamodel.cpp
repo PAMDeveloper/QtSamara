@@ -56,7 +56,6 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
     if(index.column() == 0 && role == Qt::DisplayRole)
         return keys[index.row()];
 
-
     if(index.column() == 1 && (role == Qt::DisplayRole || role == Qt::EditRole)) {
         try
         {
@@ -99,7 +98,7 @@ QVariant ParametersDataModel::headerData(int section, Qt::Orientation orientatio
 
 Qt::ItemFlags ParametersDataModel::flags(const QModelIndex &index) const {
     if(index.column() == 1)
-        return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
+        return Qt::ItemIsEditable |  QAbstractTableModel::flags(index);
 
     return QAbstractTableModel::flags(index);
 }
