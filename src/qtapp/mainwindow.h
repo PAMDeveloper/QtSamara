@@ -91,6 +91,8 @@ private slots:
 
     void on_actionSave_Observations_triggered();
 
+    void on_actionLoad_batch_triggered();
+
 private:
     Ui::MainWindow *ui;
     QSettings * settings;
