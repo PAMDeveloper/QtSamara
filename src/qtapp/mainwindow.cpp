@@ -549,13 +549,13 @@ void MainWindow::on_precisionSpinBox_valueChanged(int arg1)
 
 void MainWindow::on_estimButton_clicked()
 {
-    SamaraFitness fitness(
-                        estimModel->context,
-                        estimModel->params(),
-                        estimModel->bounds(),
-                        estimModel->observations);
-    de::DifferentialEvolution de(fitness, 100, std::time(nullptr));
-    de.Optimize(1000, true);
+    //SamaraFitness fitness(
+    //                    estimModel->context,
+    //                    estimModel->params(),
+    //                    estimModel->bounds(),
+    //                    estimModel->observations);
+    //de::DifferentialEvolution de(fitness, 100, std::time(nullptr));
+    //de.Optimize(1000, true);
 }
 
 void MainWindow::on_loadObsFromDB_clicked()
@@ -738,6 +738,7 @@ qDebug()<< dirSelected;
 
     qDebug() << "DONE";
 
+
     for (int i = 0; i < outputs.size(); ++i) {
         QString l = "";
         for (int j = 0; j < outputs[i].size(); ++j) {
@@ -747,4 +748,32 @@ qDebug()<< dirSelected;
     }
 
     //write results
+	QFile saveFile(dirPath + "/batch_results.csv");
+	if (saveFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		QTextStream out(&saveFile);
+
+		for (int i = 0; i < paramHeaders.size(); ++i) {
+			out << QString::fromStdString(paramHeaders[i]) << "\t";
+		}
+
+		for (int i = 0; i < varHeaders.size(); ++i) {
+			out << QString::fromStdString(varHeaders[i]) << "\t";
+		}
+		out << "\n";
+
+		
+		
+
+		for (int i = 0; i < outputs.size(); ++i) {
+			for (int j = 0; j < batch[i].size(); ++j) {
+				out << QString::number(batch[i][j]) + "\t";
+			}
+			for (int j = 0; j < outputs[i].size(); ++j) {
+				out << QString::number(outputs[i][j]) + "\t";
+			}
+			out << "\n";
+		}
+		saveFile.close();
+	}
+
 }
