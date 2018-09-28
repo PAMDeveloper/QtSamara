@@ -12,7 +12,7 @@ int MeteoDataModel::rowCount(const QModelIndex &/*parent*/ = QModelIndex()) cons
     return  (int)parameters->climatics.size();
 }
 int MeteoDataModel::columnCount(const QModelIndex &/*parent*/) const {
-    return 12;
+    return 13;
 }
 
 QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
@@ -36,6 +36,7 @@ QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
             case 9: val = parameters->climatics.at(row).Rg; break;
             case 10: val = parameters->climatics.at(row).ETP; break;
             case 11: val = parameters->climatics.at(row).Rain; break;
+			case 12: val = parameters->getIrrigation(row); break;
         }
 
         if(val == -999)
@@ -64,6 +65,7 @@ QVariant MeteoDataModel::headerData(int section, Qt::Orientation orientation, in
             case 9: return "Rg"; break;
             case 10: return "ETP"; break;
             case 11: return "Rain"; break;
+			case 12: return "Irrigation"; break;
         }
     }
 
@@ -118,4 +120,34 @@ bool MeteoDataModel::load(QString path, QString sep) {
         return true;
     }
     return false;
+}
+
+bool MeteoDataModel::loadIrrigation(QString path, QString sep) {
+	QFile file(path);
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QTextStream in(&file);
+		QString line = in.readLine();
+		//if (sep.isEmpty())
+			sep = line.contains(";") ? ";" : "\t";
+		parameters->irrigation.clear();
+		for (size_t i = 0; i < parameters->climatics.size(); i++) {
+			parameters->irrigation.push_back(-999.);
+		}
+
+		beginResetModel();
+		while (!line.isEmpty()) {
+			QStringList lstLine = line.split(sep);
+			double value = lstLine[1].toDouble();
+			double date = JulianCalculator::toJulianDay( lstLine[0].toStdString(),
+				JulianCalculator::YMD, '-');
+			double row = date - parameters->getDouble("startingdate") + 2;
+			if(row >=0 && row < parameters->irrigation.size())
+				parameters->irrigation[row] = value;
+			line = in.readLine();
+		}
+		file.close();
+		endResetModel();
+		return true;
+	}
+	return false;
 }

@@ -81,6 +81,9 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="samaraTabs">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -510,8 +513,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>140</width>
-                 <height>502</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6"/>
@@ -530,8 +533,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>500</width>
-               <height>573</height>
+               <width>98</width>
+               <height>28</height>
               </rect>
              </property>
             </widget>
@@ -542,6 +545,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Estim</string>
        </attribute>
@@ -634,6 +640,7 @@
     <addaction name="separator"/>
     <addaction name="actionSave_Meteo"/>
     <addaction name="actionLoad_Meteo"/>
+    <addaction name="actionLoad_Irrigation"/>
     <addaction name="separator"/>
     <addaction name="actionSave_Observations"/>
     <addaction name="separator"/>
@@ -681,6 +688,11 @@
   <action name="actionLoad_batch">
    <property name="text">
     <string>Load batch</string>
+   </property>
+  </action>
+  <action name="actionLoad_Irrigation">
+   <property name="text">
+    <string>Load Irrigation</string>
    </property>
   </action>
  </widget>

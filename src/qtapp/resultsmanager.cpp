@@ -1,6 +1,6 @@
 #include "resultsmanager.h"
 
-const QString subsetStr = "ApexHeight,CstrPhase2,CstrPhase3,CstrPhase4,CstrPhase5,CstrPhase6,CulmsPerHill,CumDr,CumEt,CumIrrig,CumLr,CumTr,CumWUse,DryMatAboveGroundTotPop,DryMatResInternodePop.,DryMatStructInternodePop,DryMatStructLeafPop,DryMatStructPaniclePop,DryMatStructRootPop,DryMatStructSheathPop,DryMatTotPop,DurGermFlow,DurGermMat,DurPhase1,DurPhase2,DurPhase3,DurPhase4,DurPhase5,DurPhase6,GrainFillingStatus,GrainYieldPop,HarvestIndex,HaunIndex,IcPhase2,IcPhase3,IcPhase4,IcPhase5,IcPhase6,Lai,LaiDead,LeafDeathPop,NumPhase,PanStructMass,PlantHeight,RootFront,RUE,Sla,SterilityTot,TrEff,WueTot";
+const QString subsetStr = "ApexHeight,CstrPhase2,CstrPhase3,CstrPhase4,CstrPhase5,CstrPhase6,CulmsPerHill,CumDr,CumEt,CumIrrig,CumLr,CumTr,CumWUse,DryMatAboveGroundTotPop,DryMatResInternodePop.,DryMatStructInternodePop,DryMatStructLeafPop,DryMatStructPaniclePop,DryMatStructRootPop,DryMatStructSheathPop,DryMatTotPop,DurGermFlow,DurGermMat,DurPhase1,DurPhase2,DurPhase3,DurPhase4,DurPhase5,DurPhase6,GrainFillingStatus,GrainYieldPop,HarvestIndex,HaunIndex,IcPhase2,IcPhase3,IcPhase4,IcPhase5,IcPhase6,Lai,LaiDead,LeafDeathPop,NumPhase,PanStructMass,PlantHeight,RootFront,RUE,Sla,SterilityTot,TrEff,WueTot,TmaxMoy";
 
 ResultsManager::ResultsManager(QTableView * resultView, ResultsDataModel * resultModel, QObject *parent)
     : QObject(parent), resultModel(resultModel), resultView(resultView) {

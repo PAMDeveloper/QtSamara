@@ -7,7 +7,7 @@
 #include <QtCharts/QValueAxis>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtCore/QDebug>
+//#include <QtCore/QDebug>
 
 #include <QtCore/qmath.h>
 #include <QMap>
@@ -28,8 +28,8 @@
 
 
 #include <cmath>
-
-#include <QDebug>
+#include <algorithm>
+//#include <QDebug>
 
 static const int numCol = 2;
 
@@ -600,8 +600,9 @@ void MainWindow::on_actionSave_Observations_triggered()
 
 vector<vector<double>> getNextBatch(vector<vector<double>> current, double min, double max, double step) {
     vector<vector<double>> batch;
-    qDebug() << min << max << step << current.size();
+    //qDebug() << min << max << step << current.size();
     for (double var = min; var <= max; var += step) {
+		//qDebug() << var;
         vector<vector<double>> batch_step;
         for (int i = 0; i < current.size(); ++i) {
             batch_step.push_back(vector<double>());
@@ -618,19 +619,37 @@ vector<vector<double>> getNextBatch(vector<vector<double>> current, double min, 
     return batch;
 }
 
+
+#include <QProgressDialog>
+#include <QProgressBar>
+
 void MainWindow::on_actionLoad_batch_triggered()
 {
+
     QString dirPath = settings->value("SamaraBatch_folder", QDir::currentPath()).toString();
     QString dirSelected = QFileDialog::getExistingDirectory(this, "Open batch folder", dirPath);
     if(dirSelected.isEmpty()) return;
     settings->setValue("SamaraBatch_folder", dirSelected);
-qDebug()<< dirSelected;
+	
+
+	QProgressDialog progress("Loading batch files...", "Abort", 0, 4, this);
+	QProgressBar bar;
+	bar.setFormat("%v-%m");
+	bar.setAlignment(Qt::AlignCenter);
+	progress.setBar(&bar);
+	progress.setWindowModality(Qt::WindowModal);
+	progress.show();
+	progress.repaint();
+
     //load parametres
     paramModel->load(dirSelected + "/params.csv", "\t");
+	progress.setValue(1);
+	progress.repaint();
+
     //load meteo
     meteoModel->load(dirSelected + "/meteo.csv", "\t");
+	progress.setValue(2);
 
-    qDebug() << "done params";
 
     //load batchparams
     vector<string> paramHeaders;
@@ -646,10 +665,9 @@ qDebug()<< dirSelected;
 
         while(!line.isEmpty()) {
             batch_steps.push_back(vector<double>());
-            qDebug() << "line read" << line;
             QStringList lstLine = line.split(sep);
             int i = -1;
-            qDebug() << lstLine << "\n" << lstLine[0] << lstLine[1]<< lstLine[2]<< lstLine[3];
+            //qDebug() << lstLine << "\n" << lstLine[0] << lstLine[1]<< lstLine[2]<< lstLine[3];
             paramHeaders.push_back(lstLine[++i].toStdString());
             batch_steps[step].push_back(lstLine[++i].toDouble());
             batch_steps[step].push_back(lstLine[++i].toDouble());
@@ -660,104 +678,130 @@ qDebug()<< dirSelected;
 
         file.close();
     }
-    qDebug() << batch_steps.size();
+	progress.setValue(3);
 
+	//load output list
+	vector<string> varHeaders;
+	QFile file_vars(dirPath + "/batch_variables.csv");
+	if (file_vars.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QTextStream in(&file_vars);
+		QString line = in.readLine();
+		while (!line.isEmpty()) {
+			varHeaders.push_back(line.toStdString());
+			line = in.readLine();
+		}
+		file_vars.close();
+	}
+	progress.setValue(4);
+
+
+	progress.setLabelText("Generating batch parameters...");
+	progress.setMaximum((int)batch_steps.size());
+	
     //generate batch
     vector< vector <double> > batch;
     batch.push_back(vector<double>());
     for (int i = 0; i < batch_steps.size(); ++i) {
+		progress.setValue(i);
         batch = getNextBatch(batch,
                              batch_steps[i][0],
                              batch_steps[i][1],
                              batch_steps[i][2]);
     }
 
-    for (int i = 0; i < batch.size(); ++i) {
+  /*  for (int i = 0; i < batch.size(); ++i) {
         QString l = "";
         for (int j = 0; j < batch[i].size(); ++j) {
             l += QString::number(batch[i][j]) + " ";
         }
-        qDebug() << l;
-    }
+    }*/
 
-    //load output list
-    vector<string> varHeaders;
-    QFile file_vars(dirPath + "/batch_variables.csv");
-    if(file_vars.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file_vars);
-        QString line = in.readLine();
-        while(!line.isEmpty()) {
-            varHeaders.push_back(line.toStdString());
-            qDebug() << line;
-            line = in.readLine();
-        }
-        file_vars.close();
-    }
-
-
+	progress.setLabelText("Running simulations...");
+	progress.setMaximum((int)batch.size());
+	
     //launch simulations
     vector< vector <double> > outputs;
-    Samara samara;
+    
     Samara::SamaraLogType log = Samara::COMPLETE;
     QString version = ui->modelCombo->currentText();
-
+	pair <vector <string>, vector < vector <double> > > bresults;
     for (int simu = 0; simu < batch.size(); ++simu) {
+		Samara samara;
+		progress.setValue(simu);
+
+		if (progress.wasCanceled())
+			break;
+
         vector <double> param2change = batch[simu];
         outputs.push_back(vector<double>());
         for (int i = 0; i < paramHeaders.size(); ++i) {
-            qDebug() << QString::fromStdString(paramHeaders[i]) << param2change[i];
-            loader->parameters->doubles[paramHeaders[i]].first = param2change[i];
+			std::string header = paramHeaders[i];
+			std::transform(header.begin(), header.end(), header.begin(), ::tolower);
+			//double tmp = loader->parameters->doubles[header].first;
+            loader->parameters->doubles[header].first = param2change[i];
+            //if(i == 0) qDebug() << QString::fromStdString(paramHeaders[i]) << tmp << loader->parameters->doubles[header].first;
         }
 
-        qDebug() << "Launching";
         if(version == "Samara 2.1")
-            results = samara.run_samara_2_1(loader->parameters, log);
+            bresults = samara.run_samara_2_1(loader->parameters, log);
         else if(version == "Samara 2.1 michael")
-            results = samara.run_samara_2_1_micha(loader->parameters, log);
+            bresults = samara.run_samara_2_1_micha(loader->parameters, log);
         else if(version == "Samara 2.3")
-            results = samara.run_samara_2_3(loader->parameters, log);
+            bresults = samara.run_samara_2_3(loader->parameters, log);
         else if(version == "Samara 2.3 lodging")
-            results = samara.run_samara_2_3_lodging(loader->parameters, log);
+            bresults = samara.run_samara_2_3_lodging(loader->parameters, log);
         else if(version == "Samara 2.3 lodging test")
-            results = samara.run_samara_2_3_lodging_test(loader->parameters, log);
+            bresults = samara.run_samara_2_3_lodging_test(loader->parameters, log);
 
-
+		//qDebug() << simu << bresults.second[146].back();
         QString ll = "";
         for (int i = 0; i < varHeaders.size(); ++i) {
-            auto it = std::find(results.first.begin(), results.first.end(), varHeaders[i]);
-            if (it == results.first.end()){
+            auto it = std::find(bresults.first.begin(), bresults.first.end(), varHeaders[i]);
+            if (it == bresults.first.end()){
                 outputs[simu].push_back(nan(""));
             } else {
-              auto index = std::distance(results.first.begin(), it);
-              ll += QString::number(results.second[index].back()) + " ";
-              outputs[simu].push_back(results.second[index].back());
+              auto index = std::distance(bresults.first.begin(), it);
+              ll += QString::number(bresults.second[index].back()) + " ";
+              outputs[simu].push_back(bresults.second[index].back());
+			  /*if (i == 0) 
+				  qDebug() << QString::fromStdString(varHeaders[i]) << bresults.second[index].back() << simu;*/
             }
         }
-        qDebug() << ll;
     }
 
-    qDebug() << "DONE";
-
+	progress.setValue((int)batch.size());
 
     for (int i = 0; i < outputs.size(); ++i) {
         QString l = "";
         for (int j = 0; j < outputs[i].size(); ++j) {
             l += QString::number(outputs[i][j]) + " ";
         }
-        qDebug() << l;
+        //qDebug() << l;
     }
 
+	QMessageBox::information(this, "Finished", QString::number(outputs.size()) + " simulations done.", QMessageBox::Ok);
+
     //write results
-	QFile saveFile(dirPath + "/batch_results.csv");
+	dirPath = settings->value("SamaraBatchResult_folder", QDir::currentPath()).toString();
+	QString selectedFilter;
+	QString filePath = QFileDialog::getSaveFileName(
+		this, "Save observations as csv", dirPath + "/batch_results.csv", "csv tab separated (*.csv);;csv semicolon separated (*.csv)", &selectedFilter);
+	if (filePath.isEmpty()) return;
+
+	settings->setValue("SamaraBatchResult_folder", QFileInfo(filePath).absoluteDir().absolutePath());
+	QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+
+
+	QFile saveFile(filePath);
 	if (saveFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream out(&saveFile);
 
 		for (int i = 0; i < paramHeaders.size(); ++i) {
-			out << QString::fromStdString(paramHeaders[i]) << "\t";
+			out << QString::fromStdString(paramHeaders[i]) << sep;
 		}
 
 		for (int i = 0; i < varHeaders.size(); ++i) {
-			out << QString::fromStdString(varHeaders[i]) << "\t";
+			out << QString::fromStdString(varHeaders[i]) << sep;
 		}
 		out << "\n";
 
@@ -766,14 +810,27 @@ qDebug()<< dirSelected;
 
 		for (int i = 0; i < outputs.size(); ++i) {
 			for (int j = 0; j < batch[i].size(); ++j) {
-				out << QString::number(batch[i][j]) + "\t";
+				out << QString::number(batch[i][j]) + sep;
 			}
 			for (int j = 0; j < outputs[i].size(); ++j) {
-				out << QString::number(outputs[i][j]) + "\t";
+				out << QString::number(outputs[i][j]) + sep;
 			}
 			out << "\n";
 		}
 		saveFile.close();
 	}
 
+}
+
+void MainWindow::on_actionLoad_Irrigation_triggered()
+{
+	QString dirPath = settings->value("SamaraIrrig_folder", QDir::currentPath()).toString();
+	QString selectedFilter;
+	QString filePath = QFileDialog::getOpenFileName(
+		this, "Load irrigation as csv", dirPath, "csv tab separated (*.csv);;csv semicolon separated (*.csv)", &selectedFilter);
+	if (filePath.isEmpty()) return;
+	settings->setValue("SamaraIrrig_folder", filePath);
+	QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+	meteoModel->loadIrrigation(filePath, sep);
+	ui->meteoTableView->reset();
 }

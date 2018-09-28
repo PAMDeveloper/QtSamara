@@ -93,6 +93,8 @@ private slots:
 
     void on_actionLoad_batch_triggered();
 
+    void on_actionLoad_Irrigation_triggered();
+
 private:
     Ui::MainWindow *ui;
     QSettings * settings;

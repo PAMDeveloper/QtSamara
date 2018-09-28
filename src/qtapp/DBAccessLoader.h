@@ -205,7 +205,7 @@ public:
 //        parameters->clearParameters("site");
         parameters->clearParameters("station");
 //        load_record(db, query("Site","Id",QString::fromStdString(idsite)), "site");
-        load_record(db, query("ws","wscode",QString::fromStdString(parameters->getString("wscode"))), "station");
+        load_record(db, query("ws","wscode",QString::fromStdString(idsite)), "station");
     }
 
     void load_plot(string idparcelle) {
@@ -222,6 +222,7 @@ public:
 
     void load_meteo(string codestation, double startJulian, double endJulian) {
         parameters->clearMeteo();
+		parameters->clearIrrigation();
 //        QString codeStationQuery = query("Site", "Id", QString::fromStdString(site));
 //        QSqlQuery result(codeStationQuery, db);
 //        result.first();

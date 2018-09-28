@@ -136,7 +136,7 @@ bool ParametersDataModel::save(QString path, QString sep) {
 
         out << parameters->doubles.size() << "\n";
         for (auto const& token : parameters->doubles) {
-            out << QString::fromStdString(token.first) << sep << QString::number(token.second.first) << "\n";
+            out << fixed << QString::fromStdString(token.first) << sep << QString::number(token.second.first, 'f') << "\n";
         }
 
 //        for (int row = 0; row < rowCount(); ++row) {
