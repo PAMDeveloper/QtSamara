@@ -44,7 +44,7 @@ win32 {
     }
 }
 
-INCLUDEPATH +=  ../../ext_libs/include \
+INCLUDEPATH +=  ../ext_libs/include \
                 ./src/ \
                 ../rsamara/src
 
