@@ -53,6 +53,8 @@ HEADERS += \
     ../rSamara/src/samara_defines.h \
     ../rSamara/src/parameters.h \
     ../rSamara/src/processes/processes.h \
+    ../rSamara/src/samara_parameters.h \
+    ../rSamara/src/samara_variables.h \
     \
     ../rSamara/src/utils/juliancalculator.h \
     ../rSamara/src/utils/resultparser.h \
