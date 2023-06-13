@@ -6,7 +6,9 @@
 #include <QFile>
 #include <QTextStream>
 
-const QString paramList = "startingdate,endingdate,coefflodging,coeffterminalleafdeath,coefffixedtillerdeath,stemporosity,asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefficientq10,coeffinternodemass,coeffleafdeath,coeffleafwlratio,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,devcstr,durationnursery,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,sowing,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txresgrain,txrusurfgermi,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath,rootlignin";
+#include <QDebug>
+
+const QString paramList = "startingdate,endingdate,coefflodging,coeffterminalleafdeath,coefffixedtillerdeath,stemporosity,asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefficientq10,coeffinternodemass,coeffleafdeath,coeffleafwlratio,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,devcstr,durationnursery,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,slaswitch,sowing,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txresgrain,txrusurfgermi,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath,rootlignin";
 
 class KeyLessThan
 {
@@ -61,11 +63,11 @@ QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
         {
             QString key = keys[index.row()];
             double r = parameters->getDouble(key.toStdString());
-            if(r == -999 && role == Qt::DisplayRole)
-                return "Null value";
-            else if(key.contains("date") || key == "sowing") {
-                return QString::fromStdString(JulianCalculator::toStringDate(r, JulianCalculator::YMD, '-'));
-            }
+//            if(r == -999 && role == Qt::DisplayRole)
+//                return "Null value";
+//            else if(key.contains("date") || key == "sowing") {
+//                return QString::fromStdString(JulianCalculator::toStringDate(r, JulianCalculator::YMD, '-'));
+//            }
             return QString::number(r, 'g', 10);
 //            return r;
 
@@ -154,21 +156,45 @@ bool ParametersDataModel::save(QString path, QString sep) {
 
 
 bool ParametersDataModel::load(QString path, QString sep) {
+    QStringList paramStrList = paramList.split(",");
     QFile file(path);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         int rowCt = in.readLine().toInt();
         for (int row = 0; row < rowCt; ++row) {
-            QString line = in.readLine();
+            QString line = in.readLine().remove("\\");
             QStringList lstLine = line.split(sep);
-            parameters->strings[ lstLine[0].toStdString() ].first = lstLine[1].toStdString();
+
+            std::string param_name = lstLine[0].toStdString();
+            if(parameters->doubles.find(param_name) == parameters->doubles.end() && paramStrList.contains(QString::fromStdString(param_name), Qt::CaseInsensitive)) {
+                parameters->strings[param_name] =
+                        pair <string, string> (
+                            lstLine[1].toStdString(), QString("unknown").toStdString());
+                keys << QString::fromStdString(param_name);
+            } else {
+                parameters->strings[ param_name ].first = lstLine[1].toStdString();
+            }
+
         }
 
         rowCt = in.readLine().toInt();
         for (int row = 0; row < rowCt; ++row) {
-            QString line = in.readLine();
+            QString line = in.readLine().remove("\\").remove('"');
             QStringList lstLine = line.split(sep);
-            parameters->doubles[ lstLine[0].toStdString() ].first = lstLine[1].toDouble();
+            qDebug() << line;
+            qDebug() << lstLine;
+            qDebug() << lstLine[0];
+            qDebug() << lstLine[1];
+
+            std::string param_name = lstLine[0].toStdString();
+            if(parameters->doubles.find(param_name) == parameters->doubles.end() && paramStrList.contains(QString::fromStdString(param_name), Qt::CaseInsensitive)) {
+                parameters->doubles[param_name] =
+                        pair <double, string> (
+                            lstLine[1].toDouble(), QString("unknown").toStdString());
+                keys << QString::fromStdString(param_name);
+            } else {
+                parameters->doubles[ lstLine[0].toStdString() ].first = lstLine[1].toDouble();
+            }
         }
 
 //        int row = 0;

@@ -65,3 +65,6 @@ test.csv
 Samara.vcxproj.user
 Makefile
 Makefile.Debug
+bin/
+*.autosave
+.vscode/
