@@ -23,10 +23,15 @@ public:
     bool load(QString path, QString sep = ";");
 
     static QColor getColor(QString s);
+    void changeDate(QString, QDate);
 
-private:
     SamaraParameters * parameters;
+private:
     QStringList keys;
+    std::multimap<std::string, std::pair<double, std::string>> local_map;
+
+signals:
+    void date_changed(QString, double);
 };
 
 #endif // PARAMETERSDATAMODEL_H

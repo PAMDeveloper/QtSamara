@@ -95,6 +95,7 @@ private slots:
 
     void on_actionLoad_Irrigation_triggered();
 
+    void param_date_changed(QString, double);
 private:
     Ui::MainWindow *ui;
     QSettings * settings;

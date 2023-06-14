@@ -24,9 +24,15 @@ public:
     bool load(QString path, QString sep = "");
 	bool loadIrrigation(QString path, QString sep = "");
 	
+    double starting_date;
+    double ending_date;
+    void set_starting_date(QDate date);
+    void set_ending_date(QDate date);
+    void populate(SamaraParameters * params);
 private:
     SamaraParameters * parameters;
     QStringList keys;
+    std::map<double, std::vector<double>> climate_data;
 };
 
 #endif // METEODATAMODEL_H
