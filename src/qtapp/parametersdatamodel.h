@@ -24,10 +24,11 @@ public:
 
     static QColor getColor(QString s);
     void changeDate(QString, QDate);
+    void addKey(QString);
 
     SamaraParameters * parameters;
-private:
     QStringList keys;
+private:
     std::multimap<std::string, std::pair<double, std::string>> local_map;
 
 signals:

@@ -78,6 +78,7 @@ private slots:
     void on_actionSave_Parameters_triggered();
 
     void on_actionLoad_Parameters_triggered();
+    void load_params(QString path);
 
     void on_actionSave_Meteo_triggered();
 

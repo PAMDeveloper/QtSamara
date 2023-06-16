@@ -134,7 +134,7 @@ void MeteoDataModel::set_ending_date(QDate date) {
 }
 
 void MeteoDataModel::populate(SamaraParameters * params) {
-    for (int row = 0; row < this->rowCount(); ++row) {
+    for (int row = 0; row <= this->rowCount(); ++row) {
         Climate c;
         for (int column = 0; column < this->columnCount(QModelIndex()); ++column) {
             QModelIndex index = this->index(row, column);
@@ -172,7 +172,7 @@ bool MeteoDataModel::load(QString path, QString sep) {
         sep = ";";
         line = in.readLine();
         QStringList lstLine = line.split(sep);
-        qDebug() << lstLine[1];
+//        qDebug() << lstLine[1];
 //        starting_climate = JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
 //                JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
 //        qDebug() << starting_climate;
@@ -185,17 +185,29 @@ bool MeteoDataModel::load(QString path, QString sep) {
 //            qDebug()<<fixed<<lstLine[i]<<"JDAY"<<jday;
             i++;
             std::vector<double> c;
-            c.push_back(lstLine[i].toDouble()); i++; //TMin
-            c.push_back(lstLine[i].toDouble()); i++; //TMax
-            c.push_back(lstLine[i].toDouble()); i++; //TMoy
-            c.push_back(lstLine[i].toDouble()); i++; //HMin
-            c.push_back(lstLine[i].toDouble()); i++; //HMax
-            c.push_back(lstLine[i].toDouble()); i++; //HMoy
-            c.push_back(lstLine[i].toDouble()); i++; //Rain
-            c.push_back(lstLine[i].toDouble()); i++; //Vt
-            c.push_back(lstLine[i].toDouble()); i++; //Rg
-            c.push_back(lstLine[i].toDouble()); i++; //Ins
-            c.push_back(lstLine[i].toDouble()); i++; //ETP
+            for (int j = 0; j < 11; ++j) {
+                QString val = lstLine[i];
+                bool ok;
+                double num = val.toDouble(&ok);
+                if (ok) {
+                    c.push_back(num);
+                } else {
+                    c.push_back(-999);
+                }
+
+                i++;
+            }
+//            c.push_back(lstLine[i].toDouble()); i++; //TMin
+//            c.push_back(lstLine[i].toDouble()); i++; //TMax
+//            c.push_back(lstLine[i].toDouble()); i++; //TMoy
+//            c.push_back(lstLine[i].toDouble()); i++; //HMin
+//            c.push_back(lstLine[i].toDouble()); i++; //HMax
+//            c.push_back(lstLine[i].toDouble()); i++; //HMoy
+//            c.push_back(lstLine[i].toDouble()); i++; //Rain
+//            c.push_back(lstLine[i].toDouble()); i++; //Vt
+//            c.push_back(lstLine[i].toDouble()); i++; //Rg
+//            c.push_back(lstLine[i].toDouble()); i++; //Ins
+//            c.push_back(lstLine[i].toDouble()); i++; //ETP
             climate_data[jday] = c;
 
 
