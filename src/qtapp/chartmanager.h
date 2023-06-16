@@ -43,6 +43,7 @@ public:
     QStringList chartList;
     QStringList defaultList;
     QStringList checkedList;
+    QStringList removeList;
 
     bool defaultChecked;
     bool sowingChecked;

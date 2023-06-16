@@ -449,6 +449,7 @@ bool ParametersDataModel::load(QString path, QString sep) {
         endResetModel();
         emit date_changed(QString::fromStdString("startingdate"), parameters->doubles["startingdate"].first);
         emit date_changed(QString::fromStdString("endingdate"), parameters->doubles["endingdate"].first);
+        file.close();
         return true;
     }
     return false;

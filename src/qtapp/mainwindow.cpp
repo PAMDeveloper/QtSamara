@@ -19,7 +19,7 @@
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QInputDialog>
+//#include <QInputDialog>
 
 #include <samara.h>
 #include <qtapp/chartview.h>
@@ -101,16 +101,31 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->meteoTableView->setModel(meteoModel);
     ui->startDateEdit->setDate(QDate(2014, 01, 01));
     ui->endDateEdit->setDate(QDate(2014, 10, 01));
-    QString m_path = settings->value("Samara_meteo_csv", "").toString();
-    if (m_path != "") {
-        meteoModel->load(m_path);
+    QString m_path = settings->value("Samara_meteofile_csv", "").toString();
+    try {
+        if (m_path != "") {
+            meteoModel->load(m_path);
+        }
+    } catch (...) {
+        meteoModel = new MeteoDataModel(nullptr);
+        ui->meteoTableView->horizontalHeader()->setSectionsMovable(true);
+        ui->meteoTableView->setModel(meteoModel);
+        ui->startDateEdit->setDate(QDate(2014, 01, 01));
+        ui->endDateEdit->setDate(QDate(2014, 10, 01));
     }
 
+
     connect(paramModel, SIGNAL(date_changed(QString,double)), this, SLOT(param_date_changed(QString,double)));
-    QString filePath = settings->value("SamaraParams_folder", "").toString();
-    if(!filePath.isEmpty()) {
-        load_params(filePath);
+    QString filePath = settings->value("Samara_Params_folder", "").toString();
+    try {
+        if(!filePath.isEmpty()) {
+            load_params(filePath);
+        }
+    } catch (...) {
+        paramModel = new ParametersDataModel(paramsSam);
+        ui->parametersTableView->setModel(paramModel);
     }
+
 
     //**//
 //    ui->samaraTabs->removeTab(2);
@@ -384,31 +399,31 @@ void MainWindow::createChartsTab() {
 
 void MainWindow::on_actionSave_Parameters_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getSaveFileName(
                 this, "Save parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
+    settings->setValue("Samara_Params_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     paramModel->save(filePath, sep);
 }
 
 void MainWindow::on_actionSave_Meteo_triggered()
 {
-//    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+//    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
 //    QString selectedFilter;
 //    QString filePath = QFileDialog::getSaveFileName(
 //                this, "Save meteo as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
 //    if(filePath.isEmpty()) return;
-//    settings->setValue("SamaraParams_folder", filePath);
+//    settings->setValue("Samara_Params_folder", filePath);
 //    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
 //    meteoModel->save(filePath, sep);
 }
 
 
 void MainWindow::load_params(QString filePath){
-    settings->setValue("SamaraParams_folder", filePath);
+    settings->setValue("Samara_Params_folder", filePath);
 //    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     paramModel->load(filePath, "\t");
 
@@ -417,14 +432,14 @@ void MainWindow::load_params(QString filePath){
     for (QString test : tests) {
         double val = paramModel->parameters->getDouble(test.toStdString());
         if(val == -999){
-//            QMessageBox::warning(this, "Parameter Error", test + " is missing.");
-            bool ok;
-            double d = QInputDialog::getDouble(this, "Please input " + test,
-                                               test + " value:", 0, -10000, 10000, 4, &ok);
-            if (ok) {
-                paramModel->parameters->doubles[test.toStdString()].first = d;
-                paramModel->addKey(test);
-            }
+            QMessageBox::warning(this, "Parameter Error", test + " is missing.");
+//            bool ok;
+//            double d = QInputDialog::getDouble(this, "Please input " + test,
+//                                               test + " value:", 0, -10000, 10000, 4, &ok);
+//            if (ok) {
+//                paramModel->parameters->doubles[test.toStdString()].first = d;
+//                paramModel->addKey(test);
+//            }
         }
 
     }
@@ -432,7 +447,7 @@ void MainWindow::load_params(QString filePath){
 
 void MainWindow::on_actionLoad_Parameters_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getOpenFileName(
                 this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
@@ -643,16 +658,16 @@ void MainWindow::on_loadObsFromDB_clicked()
 
 void MainWindow::on_actionLoad_Meteo_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("SamaraMeteo_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getOpenFileName(
                 this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
+    settings->setValue("SamaraMeteo_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     meteoModel->load(filePath, sep);
     ui->meteoTableView->reset();
-    settings->setValue("Samara_meteo_csv", filePath);
+    settings->setValue("Samara_meteofile_csv", filePath);
 }
 
 void MainWindow::on_loadEstimContext_clicked()
