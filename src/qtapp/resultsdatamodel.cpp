@@ -57,14 +57,16 @@ void ResultsDataModel::save(QString path, QString sep) {
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
     for (int col = 0; col < columnCount(); ++col) {
-            out << QString::fromStdString(results.first[col])
-                    << sep ;
+         QString header = this->headerData(col).toString();
+         out << header << sep ;
     }
     out<<"\n";
     for (int row = 0; row < rowCount(); ++row) {
         for (int col = 0; col < columnCount(); ++col) {
-                QString result = QString::number(results.second[col][row], 'f', 10);
-                out << result << sep;
+            QModelIndex index = this->index(row, col);
+            QString val = this->data(index, Qt::DisplayRole).toString();
+//                QString result = QString::number(results.second[col][row], 'f', 10);
+            out << val << sep;
         }
         out << "\n";
     }

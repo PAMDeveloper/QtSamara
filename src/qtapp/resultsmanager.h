@@ -18,13 +18,14 @@ private:
     ResultsDataModel * resultModel;
     QStringList subsetStrList;
     bool subsetFilter;
+    bool subsetInvFilter;
     bool phaseFilter;
     QString strFilter;
 
 signals:
 
 public slots:
-    void filterColumns(bool);
+    void filterColumns(QString);
     void filterPhases(bool);
     void filterColHeaders(QString);
 };

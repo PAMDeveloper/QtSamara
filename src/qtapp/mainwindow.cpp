@@ -20,6 +20,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 //#include <QInputDialog>
+#include <QTableWidgetItem>
 
 #include <samara.h>
 #include <qtapp/chartview.h>
@@ -68,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->resultsTableView->setModel(resultsModel);
 
     resultsManager = new ResultsManager(ui->resultsTableView, resultsModel);
-    connect(ui->colFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterColumns(bool)));
+//    connect(ui->colFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterColumns(bool)));
     connect(ui->phaseFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterPhases(bool)));
     connect(ui->filterColLineEdit, SIGNAL(textChanged(QString)), resultsManager, SLOT(filterColHeaders(QString)));
 
@@ -371,14 +372,59 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
 
 
 void MainWindow::on_saveResultButton_clicked() {
-    QString dirPath = settings->value("SamaraResult_folder", QDir::currentPath()).toString();
-    QString selectedFilter;
-    QString filePath = QFileDialog::getSaveFileName(
-                this, "Save results as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
-    if(filePath.isEmpty()) return;
-    settings->setValue("SamaraResult_folder", filePath);
-    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
-    resultsModel->save(filePath, sep);
+//    QString dirPath = settings->value("SamaraResult_folder", QDir::currentPath()).toString();
+//    QString selectedFilter;
+//    QString filePath = QFileDialog::getSaveFileName(
+//                this, "Save results as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+//    if(filePath.isEmpty()) return;
+//    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+//    resultsModel->save(filePath, sep);
+
+    QTableView * tableView = ui->resultsTableView;
+
+    // Prompt the user to choose a file location
+    QString filePath = QFileDialog::getSaveFileName(nullptr, "Save CSV File", "", "CSV Files (*.csv)");
+
+    if (!filePath.isEmpty()) {
+        QFile file(filePath);
+
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream stream(&file);
+
+            // Write headers
+            for (int column = 0; column < tableView->model()->columnCount(); ++column) {
+                if (tableView->isColumnHidden(column)) {
+                    continue;  // Skip hidden columns
+                }
+
+                QString header = tableView->model()->headerData(column, Qt::Horizontal, Qt::DisplayRole).toString();
+                stream << header << ",";
+            }
+            stream << endl;
+
+            // Write data
+            for (int row = 0; row < tableView->model()->rowCount(); ++row) {
+                if (tableView->isRowHidden(row))
+                    continue;
+                for (int column = 0; column < tableView->model()->columnCount(); ++column) {
+                    if (tableView->isColumnHidden(column)) {
+                        continue;  // Skip hidden columns
+                    }
+
+                    QModelIndex index = tableView->model()->index(row, column);
+                    QVariant data = tableView->model()->data(index, Qt::DisplayRole);
+                    stream << data.toString() << ",";
+                }
+                stream << endl;
+            }
+
+            file.close();
+            qDebug() << "CSV file saved successfully.";
+        } else {
+            qDebug() << "Failed to open file for writing.";
+        }
+    }
+
 }
 
 
@@ -927,3 +973,36 @@ void MainWindow::on_actionLoad_Irrigation_triggered()
 	meteoModel->loadIrrigation(filePath, sep);
 	ui->meteoTableView->reset();
 }
+
+void MainWindow::on_colFilterCheckbox_clicked(bool checked)
+{
+    qDebug() << "small" << checked;
+    resultsManager->filterColumns("small");
+}
+
+
+void MainWindow::on_radioButton_2_clicked()
+{
+
+}
+
+
+void MainWindow::on_radioButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_radioButton_clicked(bool checked)
+{
+     qDebug() << "all" << checked;
+     resultsManager->filterColumns("all");
+}
+
+
+void MainWindow::on_radioButton_2_clicked(bool checked)
+{
+    qDebug() << "mid" << checked;
+    resultsManager->filterColumns("mid");
+}
+
