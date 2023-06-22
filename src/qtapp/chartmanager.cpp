@@ -7,6 +7,7 @@
 
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
+#include <QDebug>
 
 #include "utils/juliancalculator.h"
 
@@ -25,15 +26,31 @@ ChartManager::ChartManager(QGridLayout *chartLayout, QVBoxLayout *chartListLayou
     removeList = chart_to_remove.split(", ");
     for (QString key: removeList) {
         for (QString srcKey: chartList) {
-            if (key.toLower() == srcKey.toLower())
+            if (key.toLower() == srcKey.toLower()){
                 chartList.removeAll(srcKey);
+                defaultList.removeAll(srcKey);
+            }
         }
     }
+    QStringList toRemove;
     for (QString srcKey: chartList) {
-        if (srcKey.startsWith("Growth", Qt::CaseInsensitive))
-            chartList.removeAll(srcKey);
-        if (srcKey.startsWith("Dem", Qt::CaseInsensitive))
-            chartList.removeAll(srcKey);
+        qDebug() << srcKey << srcKey.startsWith("Growth", Qt::CaseInsensitive);
+        if (srcKey.startsWith("Growth", Qt::CaseInsensitive)){
+            toRemove.append(srcKey);
+        }
+        if (srcKey.startsWith("Dem", Qt::CaseInsensitive)) {
+            toRemove.append(srcKey);
+        }
+        if (srcKey.startsWith("A_", Qt::CaseInsensitive)) {
+            toRemove.append(srcKey);
+        }
+    }
+    for (QString key: toRemove){
+        chartList.removeAll(key);
+        defaultList.removeAll(key);
+    }
+    for (QString srcKey: chartList) {
+        qDebug() << srcKey;
     }
     sowingChecked = false;
     fillList();
