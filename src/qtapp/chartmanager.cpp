@@ -23,8 +23,18 @@ ChartManager::ChartManager(QGridLayout *chartLayout, QVBoxLayout *chartListLayou
     chartList = chartCompleteList.split(",");
     defaultList = chartDefaultList.split(",");
     removeList = chart_to_remove.split(", ");
-    for (QString key: removeList)
-        chartList.removeAll(key);
+    for (QString key: removeList) {
+        for (QString srcKey: chartList) {
+            if (key.toLower() == srcKey.toLower())
+                chartList.removeAll(srcKey);
+        }
+    }
+    for (QString srcKey: chartList) {
+        if (srcKey.startsWith("Growth", Qt::CaseInsensitive))
+            chartList.removeAll(srcKey);
+        if (srcKey.startsWith("Dem", Qt::CaseInsensitive))
+            chartList.removeAll(srcKey);
+    }
     sowingChecked = false;
     fillList();
 }
