@@ -78,6 +78,7 @@ private slots:
     void on_actionSave_Parameters_triggered();
 
     void on_actionLoad_Parameters_triggered();
+    void load_params(QString path);
 
     void on_actionSave_Meteo_triggered();
 
@@ -96,6 +97,16 @@ private slots:
     void on_actionLoad_Irrigation_triggered();
 
     void param_date_changed(QString, double);
+    void on_colFilterCheckbox_clicked(bool checked);
+
+    void on_radioButton_2_clicked();
+
+    void on_radioButton_clicked();
+
+    void on_radioButton_clicked(bool checked);
+
+    void on_radioButton_2_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QSettings * settings;

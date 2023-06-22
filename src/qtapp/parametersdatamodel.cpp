@@ -285,7 +285,12 @@ bool compare(const std::pair<std::string, std::pair<double, std::string>>& pair1
 //    return finalMap;
 //}
 
-
+void ParametersDataModel::addKey(QString key){
+    beginResetModel();
+    keys.append(key);
+    qSort(keys.begin(), keys.end(), KeyLessThan(parameters));
+    endResetModel();
+}
 QVariant ParametersDataModel::data(const QModelIndex &index, int role) const{
     if(index.column() == 0 && role == Qt::DisplayRole)
         return keys[index.row()];
@@ -392,6 +397,9 @@ bool ParametersDataModel::save(QString path, QString sep) {
 
 bool ParametersDataModel::load(QString path, QString sep) {
     beginResetModel();
+    keys.clear();
+    parameters->doubles.clear();
+    parameters->strings.clear();
     QStringList paramStrList = paramList.split(",");
     QFile file(path);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -403,9 +411,8 @@ bool ParametersDataModel::load(QString path, QString sep) {
 
             std::string param_name = lstLine[0].toStdString();
             if(parameters->doubles.find(param_name) == parameters->doubles.end() && paramStrList.contains(QString::fromStdString(param_name), Qt::CaseInsensitive)) {
-                parameters->strings[param_name] =
-                        pair <string, string> (
-                            lstLine[1].toStdString(), QString("unknown").toStdString());
+                QString category = categories[lstLine[0]];
+                parameters->strings[param_name] = pair <string, string> ( lstLine[1].toStdString(), category.toStdString() );
 //                keys << QString::fromStdString(param_name);
             } else {
                 parameters->strings[ param_name ].first = lstLine[1].toStdString();
@@ -414,13 +421,14 @@ bool ParametersDataModel::load(QString path, QString sep) {
         }
 
         rowCt = in.readLine().toInt();
-        for (int row = 0; row < rowCt; ++row) {
+//        for (int row = 0; row < rowCt; ++row) {
+        while (!in.atEnd()){
             QString line = in.readLine().remove("\\").remove('"');
             QStringList lstLine = line.split(sep);
-            qDebug() << line;
-            qDebug() << lstLine;
-            qDebug() << lstLine[0];
-            qDebug() << lstLine[1];
+//            qDebug() << line;
+//            qDebug() << lstLine;
+//            qDebug() << lstLine[0];
+//            qDebug() << lstLine[1];
 
             std::string param_name = lstLine[0].toStdString();
             if(parameters->doubles.find(param_name) == parameters->doubles.end() && paramStrList.contains(QString::fromStdString(param_name), Qt::CaseInsensitive)) {
@@ -432,6 +440,7 @@ bool ParametersDataModel::load(QString path, QString sep) {
             } else {
                 parameters->doubles[ lstLine[0].toStdString() ].first = lstLine[1].toDouble();
             }
+//            line = in.readLine().strip();
         }
 
         qSort(keys.begin(), keys.end(), KeyLessThan(parameters));
@@ -440,6 +449,7 @@ bool ParametersDataModel::load(QString path, QString sep) {
         endResetModel();
         emit date_changed(QString::fromStdString("startingdate"), parameters->doubles["startingdate"].first);
         emit date_changed(QString::fromStdString("endingdate"), parameters->doubles["endingdate"].first);
+        file.close();
         return true;
     }
     return false;

@@ -19,6 +19,8 @@
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QMessageBox>
+//#include <QInputDialog>
+#include <QTableWidgetItem>
 
 #include <samara.h>
 #include <qtapp/chartview.h>
@@ -67,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->resultsTableView->setModel(resultsModel);
 
     resultsManager = new ResultsManager(ui->resultsTableView, resultsModel);
-    connect(ui->colFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterColumns(bool)));
+//    connect(ui->colFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterColumns(bool)));
     connect(ui->phaseFilterCheckbox, SIGNAL(toggled(bool)), resultsManager, SLOT(filterPhases(bool)));
     connect(ui->filterColLineEdit, SIGNAL(textChanged(QString)), resultsManager, SLOT(filterColHeaders(QString)));
 
@@ -100,16 +102,31 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->meteoTableView->setModel(meteoModel);
     ui->startDateEdit->setDate(QDate(2014, 01, 01));
     ui->endDateEdit->setDate(QDate(2014, 10, 01));
-    QString m_path = settings->value("Samara_meteo_csv", "").toString();
-    if (m_path != "") {
-        meteoModel->load(m_path);
+    QString m_path = settings->value("Samara_meteofile_csv", "").toString();
+    try {
+        if (m_path != "") {
+            meteoModel->load(m_path);
+        }
+    } catch (...) {
+        meteoModel = new MeteoDataModel(nullptr);
+        ui->meteoTableView->horizontalHeader()->setSectionsMovable(true);
+        ui->meteoTableView->setModel(meteoModel);
+        ui->startDateEdit->setDate(QDate(2014, 01, 01));
+        ui->endDateEdit->setDate(QDate(2014, 10, 01));
     }
 
+
     connect(paramModel, SIGNAL(date_changed(QString,double)), this, SLOT(param_date_changed(QString,double)));
-    QString filePath = settings->value("SamaraParams_folder", "").toString();
-    if(!filePath.isEmpty()) {
-        paramModel->load(filePath, "\t");
+    QString filePath = settings->value("Samara_Params_folder", "").toString();
+    try {
+        if(!filePath.isEmpty()) {
+            load_params(filePath);
+        }
+    } catch (...) {
+        paramModel = new ParametersDataModel(paramsSam);
+        ui->parametersTableView->setModel(paramModel);
     }
+
 
     //**//
 //    ui->samaraTabs->removeTab(2);
@@ -355,14 +372,59 @@ void MainWindow::showParameters(SamaraParameters *parameters) {
 
 
 void MainWindow::on_saveResultButton_clicked() {
-    QString dirPath = settings->value("SamaraResult_folder", QDir::currentPath()).toString();
-    QString selectedFilter;
-    QString filePath = QFileDialog::getSaveFileName(
-                this, "Save results as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
-    if(filePath.isEmpty()) return;
-    settings->setValue("SamaraResult_folder", filePath);
-    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
-    resultsModel->save(filePath, sep);
+//    QString dirPath = settings->value("SamaraResult_folder", QDir::currentPath()).toString();
+//    QString selectedFilter;
+//    QString filePath = QFileDialog::getSaveFileName(
+//                this, "Save results as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+//    if(filePath.isEmpty()) return;
+//    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+//    resultsModel->save(filePath, sep);
+
+    QTableView * tableView = ui->resultsTableView;
+
+    // Prompt the user to choose a file location
+    QString filePath = QFileDialog::getSaveFileName(nullptr, "Save CSV File", "", "CSV Files (*.csv)");
+
+    if (!filePath.isEmpty()) {
+        QFile file(filePath);
+
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream stream(&file);
+
+            // Write headers
+            for (int column = 0; column < tableView->model()->columnCount(); ++column) {
+                if (tableView->isColumnHidden(column)) {
+                    continue;  // Skip hidden columns
+                }
+
+                QString header = tableView->model()->headerData(column, Qt::Horizontal, Qt::DisplayRole).toString();
+                stream << header << ",";
+            }
+            stream << endl;
+
+            // Write data
+            for (int row = 0; row < tableView->model()->rowCount(); ++row) {
+                if (tableView->isRowHidden(row))
+                    continue;
+                for (int column = 0; column < tableView->model()->columnCount(); ++column) {
+                    if (tableView->isColumnHidden(column)) {
+                        continue;  // Skip hidden columns
+                    }
+
+                    QModelIndex index = tableView->model()->index(row, column);
+                    QVariant data = tableView->model()->data(index, Qt::DisplayRole);
+                    stream << data.toString() << ",";
+                }
+                stream << endl;
+            }
+
+            file.close();
+            qDebug() << "CSV file saved successfully.";
+        } else {
+            qDebug() << "Failed to open file for writing.";
+        }
+    }
+
 }
 
 
@@ -383,39 +445,62 @@ void MainWindow::createChartsTab() {
 
 void MainWindow::on_actionSave_Parameters_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getSaveFileName(
                 this, "Save parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
+    settings->setValue("Samara_Params_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     paramModel->save(filePath, sep);
 }
 
 void MainWindow::on_actionSave_Meteo_triggered()
 {
-//    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+//    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
 //    QString selectedFilter;
 //    QString filePath = QFileDialog::getSaveFileName(
 //                this, "Save meteo as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
 //    if(filePath.isEmpty()) return;
-//    settings->setValue("SamaraParams_folder", filePath);
+//    settings->setValue("Samara_Params_folder", filePath);
 //    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
 //    meteoModel->save(filePath, sep);
 }
 
 
+void MainWindow::load_params(QString filePath){
+    settings->setValue("Samara_Params_folder", filePath);
+//    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+    paramModel->load(filePath, "\t");
+
+    QString test_list = "asscstr, wsalt, attenmitch, bundheight, co2cp, co2exp, co2slopetr, ca, coeffassimsla, coeffinternodemass, coeffleafdeath, coeffleafwlratio, coefflodging, coeffpansinkpop, coeffpaniclemass, coeffrescapacityinternode, coeffreservesink, coeffrootmasspervolmax, coefftransplantingshock, coefficientq10, devcstr, densityfield, densitynursery, durationnursery, epaisseurprof, epaisseursurf, excessassimtoroot, ftswirrig, hauncrittillering, humfc, humpf, humsat, internodelengthmax, irrigauto, irrigautoresume, irrigautostop, irrigautotarget, kcritstercold1, kcritstercold2, kcritsterftsw1, kcritsterftsw2, kcritsterheat1, kcritsterheat2, kcritstresscold1, kcritstresscold2, kpar, krespinternode, krespmaintleaf, krespmaintroot, krespmaintsheath, kresppanicle, kcmax, kdf, wslat, leaflengthmax, lifesavingdrainage, mulch, parcritsla, pevap, pfactor, ppcrit, ppexp, ppsens, panstructmassmax, percolationmax, phyllo, plantsperhill, plotdrainagedaf, poidssecgrain, pourcruiss, prioritypan, profracini, ranklongestleaf, relmobiliinternodemax, relphyllophasestemelong, rollingbase, rollingsens, rootcstr, rootfrontmax, rootpartitmax, sdjbvp, sdjlevee, sdjmatu1, sdjmatu2, sdjrpr, seuilpp, seuilruiss, slamax, slamin, stemporosity, stockiniprof, stockinisurf, tbase, tlim, topt1, topt2, tempsla, tilability, transplanting, transplantingdepth, txassimbvp, txassimmatu1, txassimmatu2, txconversion, txresgrain, txrusurfgermi, vracbvp, vraclevee, vracmatu1, vracmatu2, vracpsp, vracrpr, waterloggingsens, wtratioleafsheath, slaswitch, rootlignin, coeffterminalleafdeath, coefftillerdeath, coefffixedtillerdeath";
+    QStringList tests = test_list.split(", ");
+    for (QString test : tests) {
+        double val = paramModel->parameters->getDouble(test.toStdString());
+        if(val == -999){
+            QMessageBox::warning(this, "Parameter Error", test + " is missing.");
+//            bool ok;
+//            double d = QInputDialog::getDouble(this, "Please input " + test,
+//                                               test + " value:", 0, -10000, 10000, 4, &ok);
+//            if (ok) {
+//                paramModel->parameters->doubles[test.toStdString()].first = d;
+//                paramModel->addKey(test);
+//            }
+        }
+
+    }
+}
+
 void MainWindow::on_actionLoad_Parameters_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("Samara_Params_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getOpenFileName(
                 this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
-    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
-    paramModel->load(filePath, "\t");
+    load_params(filePath);
+
+
 //    for (int row = 0; row < paramModel->rowCount(); ++row) {
 //        QString key = paramModel->index(row, 0).data().toString();
 //        if(key.contains("date")) {
@@ -619,16 +704,16 @@ void MainWindow::on_loadObsFromDB_clicked()
 
 void MainWindow::on_actionLoad_Meteo_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+    QString dirPath = settings->value("SamaraMeteo_folder", QDir::currentPath()).toString();
     QString selectedFilter;
     QString filePath = QFileDialog::getOpenFileName(
                 this, "Load parameters as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
     if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
+    settings->setValue("SamaraMeteo_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     meteoModel->load(filePath, sep);
     ui->meteoTableView->reset();
-    settings->setValue("Samara_meteo_csv", filePath);
+    settings->setValue("Samara_meteofile_csv", filePath);
 }
 
 void MainWindow::on_loadEstimContext_clicked()
@@ -888,3 +973,36 @@ void MainWindow::on_actionLoad_Irrigation_triggered()
 	meteoModel->loadIrrigation(filePath, sep);
 	ui->meteoTableView->reset();
 }
+
+void MainWindow::on_colFilterCheckbox_clicked(bool checked)
+{
+    qDebug() << "small" << checked;
+    resultsManager->filterColumns("small");
+}
+
+
+void MainWindow::on_radioButton_2_clicked()
+{
+
+}
+
+
+void MainWindow::on_radioButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_radioButton_clicked(bool checked)
+{
+     qDebug() << "all" << checked;
+     resultsManager->filterColumns("all");
+}
+
+
+void MainWindow::on_radioButton_2_clicked(bool checked)
+{
+    qDebug() << "mid" << checked;
+    resultsManager->filterColumns("mid");
+}
+

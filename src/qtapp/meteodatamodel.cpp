@@ -28,7 +28,7 @@ QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
     int row = index.row();
     double current_jday = starting_date + row;
 //    qDebug() << fixed << current_jday << starting_date << ending_date << starting_climate << ending_climate;
-    if(role == Qt::DisplayRole){
+    if(role == Qt::DisplayRole || role == Qt::UserRole){
         double val;
         if (climate_data.find( current_jday ) == climate_data.end())
             return "Out";
@@ -69,7 +69,7 @@ QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
     ////			case 12: val = parameters->getIrrigation(row); break;
             }
         }
-        if(val == -999)
+        if(val == -999 && role != Qt::UserRole)
             return "No Value";
         return val;
     }
@@ -134,11 +134,11 @@ void MeteoDataModel::set_ending_date(QDate date) {
 }
 
 void MeteoDataModel::populate(SamaraParameters * params) {
-    for (int row = 0; row < this->rowCount(); ++row) {
+    for (int row = 0; row <= this->rowCount(); ++row) {
         Climate c;
         for (int column = 0; column < this->columnCount(QModelIndex()); ++column) {
             QModelIndex index = this->index(row, column);
-            double val = this->data(index, Qt::DisplayRole).toDouble();
+            double val = this->data(index, Qt::UserRole).toDouble();
             switch (column) {
                 case 1: c.TMax = val; break;
                 case 2: c.TMin = val; break;
@@ -172,7 +172,7 @@ bool MeteoDataModel::load(QString path, QString sep) {
         sep = ";";
         line = in.readLine();
         QStringList lstLine = line.split(sep);
-        qDebug() << lstLine[1];
+//        qDebug() << lstLine[1];
 //        starting_climate = JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
 //                JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
 //        qDebug() << starting_climate;
@@ -185,17 +185,29 @@ bool MeteoDataModel::load(QString path, QString sep) {
 //            qDebug()<<fixed<<lstLine[i]<<"JDAY"<<jday;
             i++;
             std::vector<double> c;
-            c.push_back(lstLine[i].toDouble()); i++; //TMin
-            c.push_back(lstLine[i].toDouble()); i++; //TMax
-            c.push_back(lstLine[i].toDouble()); i++; //TMoy
-            c.push_back(lstLine[i].toDouble()); i++; //HMin
-            c.push_back(lstLine[i].toDouble()); i++; //HMax
-            c.push_back(lstLine[i].toDouble()); i++; //HMoy
-            c.push_back(lstLine[i].toDouble()); i++; //Rain
-            c.push_back(lstLine[i].toDouble()); i++; //Vt
-            c.push_back(lstLine[i].toDouble()); i++; //Rg
-            c.push_back(lstLine[i].toDouble()); i++; //Ins
-            c.push_back(lstLine[i].toDouble()); i++; //ETP
+            for (int j = 0; j < 11; ++j) {
+                QString val = lstLine[i];
+                bool ok;
+                double num = val.toDouble(&ok);
+                if (ok) {
+                    c.push_back(num);
+                } else {
+                    c.push_back(-999);
+                }
+
+                i++;
+            }
+//            c.push_back(lstLine[i].toDouble()); i++; //TMin
+//            c.push_back(lstLine[i].toDouble()); i++; //TMax
+//            c.push_back(lstLine[i].toDouble()); i++; //TMoy
+//            c.push_back(lstLine[i].toDouble()); i++; //HMin
+//            c.push_back(lstLine[i].toDouble()); i++; //HMax
+//            c.push_back(lstLine[i].toDouble()); i++; //HMoy
+//            c.push_back(lstLine[i].toDouble()); i++; //Rain
+//            c.push_back(lstLine[i].toDouble()); i++; //Vt
+//            c.push_back(lstLine[i].toDouble()); i++; //Rg
+//            c.push_back(lstLine[i].toDouble()); i++; //Ins
+//            c.push_back(lstLine[i].toDouble()); i++; //ETP
             climate_data[jday] = c;
 
 
@@ -225,10 +237,44 @@ bool MeteoDataModel::load(QString path, QString sep) {
             line= in.readLine();
         }
         file.close();
+
+
+        int vector_size = climate_data.begin()->second.size(); // Assuming all vectors have the same size
+        int num_keys = climate_data.size();
+
+        for (int index = 0; index < vector_size; ++index) {
+           int num_negative_999 = 0;
+
+           // Count the number of -999 values at the current index
+           for (const auto& entry : climate_data) {
+               if (entry.second[index] == -999.0) {
+                   num_negative_999++;
+               }
+           }
+
+           // Replace -999 values with 0 if necessary
+           if (num_negative_999 > 0 && num_negative_999 < num_keys) {
+               for (auto& entry : climate_data) {
+                   if (entry.second[index] == -999.0) {
+                       entry.second[index] = 0.0;
+                   }
+               }
+           }
+        }
+
+        // Print the updated climate_data map
+//        for (const auto& entry : climate_data) {
+//           std::cout << entry.first << ": ";
+//           for (double value : entry.second) {
+//               std::cout << value << " ";
+//           }
+//           std::cout << std::endl;
+//        }
+
 //        std::sort(climate_data.begin(), climate_data.end(), compareFirstCell);
 //        dataChanged(index(0,0),index(this->rowCount()-1,1));
         endResetModel();
-        qDebug() << "Meteo loaded";
+//        qDebug() << "Meteo loaded";
         return true;
     }
     return false;
@@ -243,7 +289,7 @@ bool MeteoDataModel::loadIrrigation(QString path, QString sep) {
             sep = line.contains(";") ? ";" : "\t";
         parameters->irrigation.clear();
         for (size_t i = 0; i < parameters->climatics.size(); i++) {
-            parameters->irrigation.push_back(-999.);
+            parameters->irrigation.push_back(-999);
         }
 
         beginResetModel();

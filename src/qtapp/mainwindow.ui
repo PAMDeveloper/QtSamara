@@ -340,9 +340,26 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="colFilterCheckbox">
+             <widget class="QRadioButton" name="colFilterCheckbox">
               <property name="text">
-               <string>Filter Column</string>
+               <string>Small</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton_2">
+              <property name="text">
+               <string>Standard</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton">
+              <property name="text">
+               <string>All</string>
               </property>
              </widget>
             </item>
