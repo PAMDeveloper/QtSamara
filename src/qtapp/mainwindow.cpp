@@ -72,8 +72,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->filterColLineEdit, SIGNAL(textChanged(QString)), resultsManager, SLOT(filterColHeaders(QString)));
 
     SamaraParameters * paramsSam = new SamaraParameters();
-    loader = new DBAccessLoader(paramsSam);
-    loadDB(settings->value("SamaraDB_path").toString());
+//    loader = new DBAccessLoader(paramsSam);
+//    loadDB(settings->value("SamaraDB_path").toString());
 
     createChartsTab();
     chartManager = new ChartManager(chartLayout, chartListLayout);
@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->selectDefaultBox, SIGNAL(clicked(bool)), chartManager, SLOT(selectDefault(bool)));
     connect(ui->sowingButton, SIGNAL(clicked(bool)), chartManager, SLOT(fromSowing(bool)));
 
-    comparisonManager = new ComparisonManager();
+//    comparisonManager = new ComparisonManager();
 
     int log = settings->value("SamaraSimulation_LOG", 0).toInt();
     if(log == 0) ui->smallRadio->setChecked(true);
@@ -91,7 +91,26 @@ MainWindow::MainWindow(QWidget *parent) :
     obsmodel = new ObsDataModel();
 //    ui->obsTable->setModel(obsmodel);
 
+    paramModel = new ParametersDataModel(paramsSam);
+    ui->parametersTableView->setModel(paramModel);
+
+
+    meteoModel = new MeteoDataModel(nullptr);
     ui->meteoTableView->horizontalHeader()->setSectionsMovable(true);
+    ui->meteoTableView->setModel(meteoModel);
+    ui->startDateEdit->setDate(QDate(2014, 01, 01));
+    ui->endDateEdit->setDate(QDate(2014, 10, 01));
+    QString m_path = settings->value("Samara_meteo_csv", "").toString();
+    if (m_path != "") {
+        meteoModel->load(m_path);
+    }
+
+    connect(paramModel, SIGNAL(date_changed(QString,double)), this, SLOT(param_date_changed(QString,double)));
+    QString filePath = settings->value("SamaraParams_folder", "").toString();
+    if(!filePath.isEmpty()) {
+        paramModel->load(filePath, "\t");
+    }
+
     //**//
 //    ui->samaraTabs->removeTab(2);
     //**//
@@ -104,66 +123,88 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+void MainWindow::param_date_changed(QString key, double jdate){
+    qDebug() << "param_date_changed" << key;
+    QDate date = QDate::fromJulianDay(jdate);
+    if (key == "startingdate") {
+//            ui->startDateEdit->blockSignals(true);
+            ui->startDateEdit->setDate(date);
+//            ui->startDateEdit->blockSignals(false);
+
+    } else if (key == "endingdate") {
+//            ui->endDateEdit->blockSignals(true);
+            ui->endDateEdit->setDate(date);
+//            ui->endDateEdit->blockSignals(false);
+    }
+    //    QDate end = QDate::fromString(QString::fromStdString(sEnd),"yyyy-MM-dd");
+    //    ui->startDateEdit->blockSignals(true);
+    //    ui->startDateEdit->setDate(start);
+    //    ui->startDateEdit->blockSignals(false);
+    //    ui->endDateEdit->blockSignals(true);
+    //    ui->endDateEdit->setDate(end);
+    //    ui->endDateEdit->blockSignals(false);
+}
+
 void MainWindow::on_actionLoad_database_triggered()
 {
-    QString dirPath = settings->value("SamaraDB_folder", QDir::currentPath()).toString();
-    QString filePath = QFileDialog::getOpenFileName(this, "Open database", dirPath , "Access DB (*.mdb *.accdb)");
-    if(filePath.isEmpty()) return;
+//    QString dirPath = settings->value("SamaraDB_folder", QDir::currentPath()).toString();
+//    QString filePath = QFileDialog::getOpenFileName(this, "Open database", dirPath , "Access DB (*.mdb *.accdb)");
+//    if(filePath.isEmpty()) return;
 
-    settings->setValue("SamaraDB_path", filePath);
-    settings->setValue("SamaraDB_folder", QFileInfo(filePath).absoluteDir().absolutePath());
-    loadDB(filePath);
+//    settings->setValue("SamaraDB_path", filePath);
+//    settings->setValue("SamaraDB_folder", QFileInfo(filePath).absoluteDir().absolutePath());
+//    loadDB(filePath);
 }
 
 void MainWindow::loadDB(QString filePath) {
-    if(filePath.isEmpty()) return;
-    if(!QFileInfo(filePath).exists()) return;
+//    if(filePath.isEmpty()) return;
+//    if(!QFileInfo(filePath).exists()) return;
 
-    clearDBContext();
-    loader->openDb(filePath);
-    fillDBCombos();
+//    clearDBContext();
+//    loader->openDb(filePath);
+//    fillDBCombos();
 }
 
 void MainWindow::fillDBCombos() {
-    ui->varComboBox->blockSignals(true);
-    ui->plotComboBox->blockSignals(true);
-    ui->stationComboBox->blockSignals(true);
-    ui->itinComboBox->blockSignals(true);
-    ui->simComboBox->blockSignals(true);
-    ui->varComboBox->addItems(fromVector(loader->load_variety_list()));
-    ui->plotComboBox->addItems(fromVector(loader->load_plot_list()));
-    ui->stationComboBox->addItems(fromVector(loader->load_station_list()));
-    ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
-    ui->simComboBox->addItems(fromVector(loader->load_simulation_list()));
-    ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
-    loader->load_complete_simulation(ui->simComboBox->currentText().toStdString());
-    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
-    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
-    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
-    ui->varComboBox->blockSignals(false);
-    ui->plotComboBox->blockSignals(false);
-    ui->stationComboBox->blockSignals(false);
-    ui->itinComboBox->blockSignals(false);
-    ui->simComboBox->blockSignals(false);
-    showDates();
-    showParameters(loader->parameters);
+//    ui->varComboBox->blockSignals(true);
+//    ui->plotComboBox->blockSignals(true);
+//    ui->stationComboBox->blockSignals(true);
+//    ui->itinComboBox->blockSignals(true);
+//    ui->simComboBox->blockSignals(true);
+//    ui->varComboBox->addItems(fromVector(loader->load_variety_list()));
+//    ui->plotComboBox->addItems(fromVector(loader->load_plot_list()));
+//    ui->stationComboBox->addItems(fromVector(loader->load_station_list()));
+//    ui->itinComboBox->addItems(fromVector(loader->load_itinerary_list()));
+//    ui->simComboBox->addItems(fromVector(loader->load_simulation_list()));
+//    ui->simComboBox->setCurrentText(settings->value("SamaraSimulation_Text", ui->simComboBox->itemText(0)).toString());
+//    loader->load_complete_simulation(ui->simComboBox->currentText().toStdString());
+//    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
+//    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
+//    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
+//    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
+//    ui->varComboBox->blockSignals(false);
+//    ui->plotComboBox->blockSignals(false);
+//    ui->stationComboBox->blockSignals(false);
+//    ui->itinComboBox->blockSignals(false);
+//    ui->simComboBox->blockSignals(false);
+//    showDates();
+//    showParameters(loader->parameters);
 }
 
 
 void MainWindow::clearDBContext() {
-    delete ui->parametersTableView->model();
-    delete ui->meteoTableView->model();
+//    delete ui->parametersTableView->model();
+//    delete ui->meteoTableView->model();
 
-    results.first.clear();
-    results.second.clear();
-    resultsModel->setResults(results);
+//    results.first.clear();
+//    results.second.clear();
+//    resultsModel->setResults(results);
 
-    ui->varComboBox->clear();
-    ui->plotComboBox->clear();
-    ui->stationComboBox->clear();
-    ui->itinComboBox->clear();
-    ui->simComboBox->clear();
+//    ui->varComboBox->clear();
+//    ui->plotComboBox->clear();
+//    ui->stationComboBox->clear();
+//    ui->itinComboBox->clear();
+//    ui->simComboBox->clear();
 }
 
 void MainWindow::on_launchButton_clicked() {
@@ -189,113 +230,125 @@ void MainWindow::on_launchButton_clicked() {
     settings->setValue("SamaraSimulation_LOG", log);
     QString version = ui->modelCombo->currentText();
     settings->setValue("Samara_version", version);
+    SamaraParameters * params = paramModel->parameters;
+    meteoModel->populate(params);
     if(version == "Samara 2.1")
-        results = samara.run_samara_2_1(loader->parameters, log);
+        results = samara.run_samara_2_1(params, log);
     else if(version == "Samara 2.1 michael")
-        results = samara.run_samara_2_1_micha(loader->parameters, log);
+        results = samara.run_samara_2_1_micha(params, log);
     else if(version == "Samara 2.3")
-        results = samara.run_samara_2_3(loader->parameters, log);
+        results = samara.run_samara_2_3(params, log);
     else if(version == "Samara 2.3 lodging")
-        results = samara.run_samara_2_3_lodging(loader->parameters, log);
+        results = samara.run_samara_2_3_lodging(params, log);
     else if(version == "Samara 2.3 lodging test")
-        results = samara.run_samara_2_3_lodging_test(loader->parameters, log);
+        results = samara.run_samara_2_3_lodging_test(params, log);
 
     resultsModel->setResults(results);
     ui->resultsTableView->reset();
-    observations = loader->load_obs("");
-    obsmodel->setObs(observations);
-    chartManager->setResults(results, observations, loader->parameters->getDouble("startingdate"), loader->parameters->getDouble("sowing"));
+//    observations = loader->load_obs("");
+//    obsmodel->setObs(observations);
+    chartManager->setResults(results, observations, params->getDouble("startingdate"), params->getDouble("sowing"));
 //    QMessageBox::information(this, "Simulation", "Simulation and charting done.");
 }
 
 void MainWindow::showDates() {
-    string sStart = JulianCalculator::toStringDate(loader->parameters->getDouble("startingdate"),
-                                                   JulianCalculator::YMD, '-');
-    string sEnd = JulianCalculator::toStringDate(loader->parameters->getDouble("endingdate"),
-                                                   JulianCalculator::YMD, '-');
+//    string sStart = JulianCalculator::toStringDate(loader->parameters->getDouble("startingdate"),
+//                                                   JulianCalculator::YMD, '-');
+//    string sEnd = JulianCalculator::toStringDate(loader->parameters->getDouble("endingdate"),
+//                                                   JulianCalculator::YMD, '-');
 
-    QDate start = QDate::fromString(QString::fromStdString(sStart),"yyyy-MM-dd");
-    QDate end = QDate::fromString(QString::fromStdString(sEnd),"yyyy-MM-dd");
-    ui->startDateEdit->blockSignals(true);
-    ui->startDateEdit->setDate(start);
-    ui->startDateEdit->blockSignals(false);
-    ui->endDateEdit->blockSignals(true);
-    ui->endDateEdit->setDate(end);
-    ui->endDateEdit->blockSignals(false);
+//    QDate start = QDate::fromString(QString::fromStdString(sStart),"yyyy-MM-dd");
+//    QDate end = QDate::fromString(QString::fromStdString(sEnd),"yyyy-MM-dd");
+//    ui->startDateEdit->blockSignals(true);
+//    ui->startDateEdit->setDate(start);
+//    ui->startDateEdit->blockSignals(false);
+//    ui->endDateEdit->blockSignals(true);
+//    ui->endDateEdit->setDate(end);
+//    ui->endDateEdit->blockSignals(false);
 }
 
 void MainWindow::on_simComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_simulation(arg1.toStdString());
-    showDates();
-    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
-    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
-    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
+//    loader->load_simulation(arg1.toStdString());
+//    showDates();
+//    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
+//    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
+//    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
+//    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
 }
 
 void MainWindow::on_varComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_variety(arg1.toStdString());
-    showParameters(loader->parameters);
+//    loader->load_variety(arg1.toStdString());
+//    showParameters(loader->parameters);
 }
 
 void MainWindow::on_stationComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_station(arg1.toStdString());
-    loader->load_meteo(arg1.toStdString(), loader->parameters->getDouble("startingdate"),
-                       loader->parameters->getDouble("endingdate"));
-    showParameters(loader->parameters);
+//    loader->load_station(arg1.toStdString());
+//    loader->load_meteo(arg1.toStdString(), loader->parameters->getDouble("startingdate"),
+//                       loader->parameters->getDouble("endingdate"));
+//    showParameters(loader->parameters);
 }
 
 void MainWindow::on_plotComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_plot(arg1.toStdString());
-    showParameters(loader->parameters);
+//    loader->load_plot(arg1.toStdString());
+//    showParameters(loader->parameters);
 }
 
 void MainWindow::on_itinComboBox_currentTextChanged(const QString &arg1) {
-    loader->load_itinerary(arg1.toStdString());
-    showParameters(loader->parameters);
+//    loader->load_itinerary(arg1.toStdString());
+//    showParameters(loader->parameters);
 }
 
 void MainWindow::on_startDateEdit_dateChanged(const QDate &date) {
-    loader->parameters->doubles["startingdate"].first = date.toJulianDay();
-    loader->parameters->strings["startingdate"].first = date.toString("yyyy-MM-dd").toStdString();
-    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
-                       loader->parameters->getDouble("startingdate"),
-                       loader->parameters->getDouble("endingdate"));
-    showParameters(loader->parameters);
+    meteoModel->set_starting_date(date);
+    paramModel->changeDate("startingdate", date);
+//    double jday = date.toJulianDay();
+//    meteoModel->starting_date = jday;
+//    ui->meteoTableView->reset();
+//    loader->parameters->doubles["startingdate"].first = date.toJulianDay();
+//    loader->parameters->strings["startingdate"].first = date.toString("yyyy-MM-dd").toStdString();
+//    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
+//                       loader->parameters->getDouble("startingdate"),
+//                       loader->parameters->getDouble("endingdate"));
+//    showParameters(loader->parameters);
 }
 
 void MainWindow::on_endDateEdit_dateChanged(const QDate &date) {
-    loader->parameters->doubles["endingdate"].first = date.toJulianDay();
-    loader->parameters->strings["endingdate"].first = date.toString("yyyy-MM-dd").toStdString();
-    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
-                       loader->parameters->getDouble("startingdate"),
-                       loader->parameters->getDouble("endingdate"));
-    showParameters(loader->parameters);
+    meteoModel->set_ending_date(date);
+    paramModel->changeDate("endingdate", date);
+//    double jday = date.toJulianDay();
+//    meteoModel->ending_date = jday;
+//    ui->meteoTableView->reset();
+//    loader->parameters->doubles["endingdate"].first = date.toJulianDay();
+//    loader->parameters->strings["endingdate"].first = date.toString("yyyy-MM-dd").toStdString();
+//    loader->load_meteo(ui->stationComboBox->currentText().toStdString(),
+//                       loader->parameters->getDouble("startingdate"),
+//                       loader->parameters->getDouble("endingdate"));
+//    showParameters(loader->parameters);
 }
 
 
 void MainWindow::showParameters(SamaraParameters *parameters) {
-    if(ui->parametersTableView->model() != nullptr)
-        delete ui->parametersTableView->model();
+//    if(ui->parametersTableView->model() != nullptr)
+//        delete ui->parametersTableView->model();
 
-    paramModel = new ParametersDataModel(parameters);
-    ui->parametersTableView->setModel(paramModel);
-    for (int row = 0; row < paramModel->rowCount(); ++row) {
-        if(paramModel->index(row, 0).data().toString().contains("date"))
-            ui->parametersTableView->hideRow(row);
-    }
+//    paramModel = new ParametersDataModel(parameters);
+//    ui->parametersTableView->setModel(paramModel);
+//    for (int row = 0; row < paramModel->rowCount(); ++row) {
+//        if(paramModel->index(row, 0).data().toString().contains("date"))
+//            ui->parametersTableView->hideRow(row);
+//    }
 
-    estimModel = new EstimParamDataModel(parameters);
-    ui->paramToEstimList->setModel(estimModel);
-    for (int row = 0; row < estimModel->rowCount(); ++row) {
-        if(estimModel->index(row, 0).data().toString().contains("date"))
-            ui->paramToEstimList->hideRow(row);
-    }
+//    estimModel = new EstimParamDataModel(parameters);
+//    ui->paramToEstimList->setModel(estimModel);
+//    for (int row = 0; row < estimModel->rowCount(); ++row) {
+//        if(estimModel->index(row, 0).data().toString().contains("date"))
+//            ui->paramToEstimList->hideRow(row);
+//    }
 
-    if(ui->meteoTableView->model() != nullptr)
-        delete ui->meteoTableView->model();
-    meteoModel = new MeteoDataModel(parameters);
-    ui->meteoTableView->setModel(meteoModel);
+//    if(ui->meteoTableView->model() != nullptr)
+//        delete ui->meteoTableView->model();
+//    meteoModel = new MeteoDataModel(parameters);
+//    ui->meteoTableView->setModel(meteoModel);
 
 
 }
@@ -342,14 +395,14 @@ void MainWindow::on_actionSave_Parameters_triggered()
 
 void MainWindow::on_actionSave_Meteo_triggered()
 {
-    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
-    QString selectedFilter;
-    QString filePath = QFileDialog::getSaveFileName(
-                this, "Save meteo as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
-    if(filePath.isEmpty()) return;
-    settings->setValue("SamaraParams_folder", filePath);
-    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
-    meteoModel->save(filePath, sep);
+//    QString dirPath = settings->value("SamaraParams_folder", QDir::currentPath()).toString();
+//    QString selectedFilter;
+//    QString filePath = QFileDialog::getSaveFileName(
+//                this, "Save meteo as csv", dirPath , "csv tab separated (*.csv);;csv semicolon separated (*.csv)",&selectedFilter);
+//    if(filePath.isEmpty()) return;
+//    settings->setValue("SamaraParams_folder", filePath);
+//    QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
+//    meteoModel->save(filePath, sep);
 }
 
 
@@ -362,7 +415,7 @@ void MainWindow::on_actionLoad_Parameters_triggered()
     if(filePath.isEmpty()) return;
     settings->setValue("SamaraParams_folder", filePath);
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
-    paramModel->load(filePath, sep);
+    paramModel->load(filePath, "\t");
 //    for (int row = 0; row < paramModel->rowCount(); ++row) {
 //        QString key = paramModel->index(row, 0).data().toString();
 //        if(key.contains("date")) {
@@ -374,26 +427,26 @@ void MainWindow::on_actionLoad_Parameters_triggered()
 //        }
 //    }
 
-    showDates();
-    ui->varComboBox->blockSignals(true);
-    ui->plotComboBox->blockSignals(true);
-    ui->stationComboBox->blockSignals(true);
-    ui->itinComboBox->blockSignals(true);
-    ui->simComboBox->blockSignals(true);
-    ui->simComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("simcode")));
-    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
-    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
-    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
-    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
-    ui->varComboBox->blockSignals(false);
-    ui->plotComboBox->blockSignals(false);
-    ui->stationComboBox->blockSignals(false);
-    ui->itinComboBox->blockSignals(false);
-    ui->simComboBox->blockSignals(false);
-    loader->load_meteo(loader->parameters->getString("wscode"),
-                       loader->parameters->getDouble("startingdate"),
-                       loader->parameters->getDouble("endingdate"));
-    showParameters(loader->parameters);
+//    showDates();
+//    ui->varComboBox->blockSignals(true);
+//    ui->plotComboBox->blockSignals(true);
+//    ui->stationComboBox->blockSignals(true);
+//    ui->itinComboBox->blockSignals(true);
+//    ui->simComboBox->blockSignals(true);
+//    ui->simComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("simcode")));
+//    ui->varComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("variety")));
+//    ui->plotComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("fieldcode")));
+//    ui->itinComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("itkcode")));
+//    ui->stationComboBox->setCurrentText(QString::fromStdString(loader->parameters->getString("wscode")));
+//    ui->varComboBox->blockSignals(false);
+//    ui->plotComboBox->blockSignals(false);
+//    ui->stationComboBox->blockSignals(false);
+//    ui->itinComboBox->blockSignals(false);
+//    ui->simComboBox->blockSignals(false);
+//    loader->load_meteo(loader->parameters->getString("wscode"),
+//                       loader->parameters->getDouble("startingdate"),
+//                       loader->parameters->getDouble("endingdate"));
+//    showParameters(loader->parameters);
 }
 
 
@@ -575,6 +628,7 @@ void MainWindow::on_actionLoad_Meteo_triggered()
     QString sep = (selectedFilter == "csv tab separated (*.csv)" ? "\t" : ";");
     meteoModel->load(filePath, sep);
     ui->meteoTableView->reset();
+    settings->setValue("Samara_meteo_csv", filePath);
 }
 
 void MainWindow::on_loadEstimContext_clicked()

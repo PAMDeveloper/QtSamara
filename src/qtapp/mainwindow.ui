@@ -13,15 +13,6 @@
   <property name="palette">
    <palette>
     <active>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
@@ -33,15 +24,6 @@
      </colorrole>
     </active>
     <inactive>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
@@ -53,15 +35,6 @@
      </colorrole>
     </inactive>
     <disabled>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
@@ -157,7 +130,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="simComboBox"/>
+             <widget class="QComboBox" name="simComboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -177,7 +154,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="varComboBox"/>
+             <widget class="QComboBox" name="varComboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -197,7 +178,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="stationComboBox"/>
+             <widget class="QComboBox" name="stationComboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -217,7 +202,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="plotComboBox"/>
+             <widget class="QComboBox" name="plotComboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -237,7 +226,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="itinComboBox"/>
+             <widget class="QComboBox" name="itinComboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -287,7 +280,7 @@
              <string>Launch</string>
             </property>
             <property name="icon">
-             <iconset resource="../../resources.qrc">
+             <iconset>
               <normaloff>:/img/ressources/Start-icon.png</normaloff>:/img/ressources/Start-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -513,8 +506,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>140</width>
+                 <height>489</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6"/>
@@ -533,8 +526,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>500</width>
+               <height>569</height>
               </rect>
              </property>
             </widget>
@@ -626,7 +619,7 @@
      <x>0</x>
      <y>0</y>
      <width>696</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -697,8 +690,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
