@@ -142,6 +142,8 @@ const QMap<QString,QString> categories = {
     {"coeffrescapacityinternode","variety"},
     {"tilability","variety"},
     {"coefftillerdeath","variety"},
+    {"coefffixedtillerdeath","variety"},
+    {"coeffterminalleafdeath","variety"},
     {"coeffpaniclemass","variety"},
     {"panstructmassmax","variety"},
     {"coeffpansinkpop","variety"},
