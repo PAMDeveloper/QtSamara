@@ -33,9 +33,13 @@ QVariant MeteoDataModel::data(const QModelIndex &index, int role) const{
 //    qDebug() << fixed << current_jday << starting_date << ending_date << starting_climate << ending_climate;
     if(role == Qt::DisplayRole || role == Qt::UserRole){
         double val;
-        if (climate_data.find( current_jday ) == climate_data.end())
-            return "Out";
-        else {
+        if (climate_data.find( current_jday ) == climate_data.end()) {
+            if (index.column() == 0) {
+                return QString::fromStdString(JulianCalculator::toStringDate(current_jday, JulianCalculator::YMD, '-'));
+            } else {
+                return "No data";
+            }
+        } else {
             std::vector<double> c = climate_data.at(current_jday);
             switch(index.column()){
 //                case 0: return QString::fromStdString(JulianCalculator::toStringDate(c[0], JulianCalculator::YMD, '-')); break;
@@ -137,6 +141,8 @@ void MeteoDataModel::set_ending_date(QDate date) {
 }
 
 void MeteoDataModel::populate(SamaraParameters * params) {
+    params->climatics.clear();
+
     for (int row = 0; row <= this->rowCount(); ++row) {
         Climate c;
         for (int column = 0; column < this->columnCount(QModelIndex()); ++column) {
@@ -315,6 +321,7 @@ bool MeteoDataModel::load(QString path, QString sep) {
         sep = ";";
         line = in.readLine();
         beginResetModel();
+        climate_data.clear();
         while(!line.isEmpty()){
             QStringList lstLine = line.split(sep);
             int i = 0;
