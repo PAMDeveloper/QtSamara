@@ -610,7 +610,7 @@ void MainWindow::loadRefFile(QString fileName){
     if (inputFile.open(QIODevice::ReadOnly))
     {
         QTextStream in(&inputFile);
-        QStringList list = in.readLine().split('\t');
+        QStringList list = in.readLine().split(',');
         for(QString header: list) {
             names.push_back(header.toLower().toStdString());
             values.push_back(vector<double>());
@@ -618,7 +618,7 @@ void MainWindow::loadRefFile(QString fileName){
 
         while (!in.atEnd())
         {
-            list = in.readLine().split('\t');
+            list = in.readLine().split(',');
             for (int i = 0; i < list.size(); ++i) {
                 values[i].push_back(list[i].replace(',','.').toDouble());
             }

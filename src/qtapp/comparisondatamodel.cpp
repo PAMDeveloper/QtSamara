@@ -37,6 +37,7 @@ ComparisonDataModel2::ComparisonDataModel2(const pair <vector <string>, vector <
             string resName = results.first[i];
             std::transform(refName.begin(), refName.end(), refName.begin(), ::tolower);
             std::transform(resName.begin(), resName.end(), resName.begin(), ::tolower);
+//            qDebug() << QString::fromStdString(refName) << QString::fromStdString(resName);
             if( resName == refName ){
                 paired = true;
 //                double sumRes = accumulate(results.second[i].begin(), results.second[i].end(), 0.0000);

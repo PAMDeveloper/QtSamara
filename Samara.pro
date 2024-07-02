@@ -5,6 +5,8 @@ win32:RC_ICONS += samara.ico
 TEMPLATE = app
 NAME = samara
 
+#DEFINES += ORIGINAL
+
 # remove possible other optimization flags
 QMAKE_CXXFLAGS_RELEASE -= -O
 QMAKE_CXXFLAGS_RELEASE -= -O1

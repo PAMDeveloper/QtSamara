@@ -2,6 +2,9 @@
 #include <utils/juliancalculator.h>
 
 #include <QFile>
+#include <QStringList>
+#include <QMap>
+#include <QRegExp>
 #include <QDebug>
 #include <QDate>
 #include <QTextStream>
@@ -161,6 +164,146 @@ bool compareFirstCell(const std::vector<int>& vec1, const std::vector<int>& vec2
     return vec1[0] < vec2[0];  // Compare the first cell of the second dimension
 }
 
+
+QString detectDateSeparator(const QStringList &dateList) {
+    QMap<QString, int> separatorCount;
+    QRegExp sepRegExp("(\\-|\\/|\\\\|\\s)");
+
+    int testCount = qMin(5, dateList.size()); // Check up to the first 5 dates
+    for (int i = 0; i < testCount; ++i) {
+        if (sepRegExp.indexIn(dateList.at(i)) != -1) {
+            QString separator = sepRegExp.cap(1);
+            separatorCount[separator]++;
+        }
+    }
+
+    QString mostCommonSeparator;
+    int maxCount = 0;
+    for (const QString &separator : separatorCount.keys()) {
+        if (separatorCount[separator] > maxCount) {
+            mostCommonSeparator = separator;
+            maxCount = separatorCount[separator];
+        }
+    }
+
+    if (mostCommonSeparator.isEmpty()) {
+        qDebug() << "No common date separator detected.";
+    }
+
+    return mostCommonSeparator;
+}
+
+QString detectDatePattern(const QStringList &dateList, const QString &separator) {
+    QMap<QString, int> patternCount;
+    // Define regex patterns for different date formats
+    QRegExp dmyRegExp(QString("^\\d{1,2}\\%1\\d{1,2}\\%1\\d{4}$").arg(separator));
+    QRegExp ymdRegExp(QString("^\\d{4}\\%1\\d{1,2}\\%1\\d{1,2}$").arg(separator));
+    QRegExp mdyRegExp(QString("^\\d{1,2}\\%1\\d{1,2}\\%1\\d{4}$").arg(separator));
+
+    int testCount = qMin(5, dateList.size()); // Check up to the first 5 dates
+    for (int i = 0; i < testCount; ++i) {
+        QString date = dateList.at(i);
+        if (dmyRegExp.exactMatch(date)) {
+            patternCount["DMY"]++;
+        } else if (ymdRegExp.exactMatch(date)) {
+            patternCount["YMD"]++;
+        } else if (mdyRegExp.exactMatch(date)) {
+            patternCount["MDY"]++;
+        }
+    }
+
+    QString mostCommonPattern;
+    int maxCount = 0;
+    for (const QString &pattern : patternCount.keys()) {
+        if (patternCount[pattern] > maxCount) {
+            mostCommonPattern = pattern;
+            maxCount = patternCount[pattern];
+        }
+    }
+
+    if (mostCommonPattern.isEmpty()) {
+        qDebug() << "No common date pattern detected.";
+    }
+
+    return mostCommonPattern;
+}
+
+
+// VERSION THAT INFER COLUMNS
+//bool MeteoDataModel::load(QString path, QString sep) {
+//    QFile file(path);
+//    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        QTextStream in(&file);
+//        QString headerLine = in.readLine();
+//        sep = headerLine.contains(";") ? ";" : "\t";
+//        QStringList headerList = headerLine.split(sep);
+
+//        // Create a map to hold the column names and their indices
+//        QMap<QString, int> columnIndexMap;
+//        for (int i = 0; i < headerList.size(); ++i) {
+//            columnIndexMap[headerList[i]] = i;
+//        }
+
+//        // Define the expected column names
+//        QStringList expectedColumns = {"weatherdate", "tmin", "tmax", "tmoy", "rhmin", "rhmax", "rhmoy", "rainfall", "windtot", "radiation", "sunshine", "eto"};
+
+//        // Verify that all expected columns are present
+//        for (const QString& col : expectedColumns) {
+//            if (!columnIndexMap.contains(col)) {
+//                qDebug() << "Missing column in CSV:" << col;
+//                file.close();
+//                return false;
+//            }
+//        }
+
+//        // Extract the next 5 lines to detect the date pattern
+//        QStringList dateLines;
+//        for (int i = 0; i < 5; ++i) {
+//            QString line = in.readLine();
+//            if (!line.isEmpty()) {
+//                dateLines << line.split(sep).at(columnIndexMap["weatherdate"]);
+//            }
+//        }
+
+//        // Call functions to detect date separator and pattern
+//        QString dateSeparator = detectDateSeparator(dateLines);
+//        QString datePattern = detectDatePattern(dateLines, dateSeparator);
+
+//        // Seek back to the beginning of the data lines
+////        in.seek(headerLine.length() + 1); // +1 for the newline character
+
+//        beginResetModel();
+//        QString line;
+//        while (!(line = in.readLine()).isEmpty()) {
+//            QStringList lstLine = line.split(sep);
+
+//            // Use the detected date pattern and separator here
+//            double jday = JulianCalculator::toJulianDay(lstLine[columnIndexMap["weatherdate"]].toStdString(), datePattern.toStdString(), dateSeparator.toStdString());
+
+//            std::vector<double> c;
+//            for (const QString& col : expectedColumns) {
+//                if(col == "weatherdate")
+//                    continue;
+//                QString val = lstLine[columnIndexMap[col]];
+//                bool ok;
+//                double num = val.toDouble(&ok);
+//                c.push_back(ok ? num : -999);
+//            }
+//            climate_data[jday] = c;
+//        }
+//        file.close();
+
+//        // ... Rest of your code to handle -999 values ...
+
+//        endResetModel();
+//        return true;
+//    }
+//    return false;
+//}
+
+
+
+// OLD VERSION
 bool MeteoDataModel::load(QString path, QString sep) {
     QFile file(path);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -168,21 +311,15 @@ bool MeteoDataModel::load(QString path, QString sep) {
         QString line = in.readLine();
         if(sep.isEmpty())
             sep = line.contains(";") ? ";" : "\t";
-//        parameters->climatics.clear();
+
         sep = ";";
         line = in.readLine();
-        QStringList lstLine = line.split(sep);
-//        qDebug() << lstLine[1];
-//        starting_climate = JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
-//                JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
-//        qDebug() << starting_climate;
         beginResetModel();
         while(!line.isEmpty()){
             QStringList lstLine = line.split(sep);
             int i = 0;
             i++; //wscode
             double jday = JulianCalculator::toJulianDay(lstLine[i].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
-//            qDebug()<<fixed<<lstLine[i]<<"JDAY"<<jday;
             i++;
             std::vector<double> c;
             for (int j = 0; j < 11; ++j) {
@@ -197,43 +334,7 @@ bool MeteoDataModel::load(QString path, QString sep) {
 
                 i++;
             }
-//            c.push_back(lstLine[i].toDouble()); i++; //TMin
-//            c.push_back(lstLine[i].toDouble()); i++; //TMax
-//            c.push_back(lstLine[i].toDouble()); i++; //TMoy
-//            c.push_back(lstLine[i].toDouble()); i++; //HMin
-//            c.push_back(lstLine[i].toDouble()); i++; //HMax
-//            c.push_back(lstLine[i].toDouble()); i++; //HMoy
-//            c.push_back(lstLine[i].toDouble()); i++; //Rain
-//            c.push_back(lstLine[i].toDouble()); i++; //Vt
-//            c.push_back(lstLine[i].toDouble()); i++; //Rg
-//            c.push_back(lstLine[i].toDouble()); i++; //Ins
-//            c.push_back(lstLine[i].toDouble()); i++; //ETP
             climate_data[jday] = c;
-
-
-//            for (const auto& element : c) {
-//                qDebug() << element;
-//            }
-
-//                Climate c;
-//            c.TMin = lstLine[++i].toDouble();
-//            c.TMax = lstLine[++i].toDouble();
-//            c.TMoy = lstLine[++i].toDouble();
-//            c.HMin = lstLine[++i].toDouble();
-//            c.HMax = lstLine[++i].toDouble();
-//            c.HMoy = lstLine[++i].toDouble();
-//            c.Rain = lstLine[++i].toDouble();
-//            c.Vt = lstLine[++i].toDouble();
-//            c.Rg = lstLine[++i].toDouble();
-//            c.Ins = lstLine[++i].toDouble();
-//            c.ETP  = lstLine[++i].toDouble();
-//            parameters->climatics.push_back(c);
-//            QString nextline = in.readLine();
-//            if (nextline.isEmpty()) {
-//                ending_climate = JulianCalculator::toJulianDay(lstLine[1].toStdString(), QString("DMY").toStdString(), QString("/").toStdString());
-//                qDebug() << ending_climate;
-//                break;
-//            }
             line= in.readLine();
         }
         file.close();
@@ -261,20 +362,7 @@ bool MeteoDataModel::load(QString path, QString sep) {
                }
            }
         }
-
-        // Print the updated climate_data map
-//        for (const auto& entry : climate_data) {
-//           std::cout << entry.first << ": ";
-//           for (double value : entry.second) {
-//               std::cout << value << " ";
-//           }
-//           std::cout << std::endl;
-//        }
-
-//        std::sort(climate_data.begin(), climate_data.end(), compareFirstCell);
-//        dataChanged(index(0,0),index(this->rowCount()-1,1));
         endResetModel();
-//        qDebug() << "Meteo loaded";
         return true;
     }
     return false;
