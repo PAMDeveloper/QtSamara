@@ -9,7 +9,7 @@
 
 #include <QDebug>
 
-const QString paramList = "asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefffixedtillerdeath,coefficientq10,coeffinternodemass,coeffinternodenum,coeffleafdeath,coeffleafwlratio,coefflodging,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coeffterminalleafdeath,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,depthsoil,devcstr,durationnursery,endingdate,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,humcr,humfc,humpf,humsat,ictillering,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,kpar,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,ktempmaint,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootlignin,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,slaswitch,sowing,startingdate,stemporosity,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txrealloc,txresgrain,txrusurfgermi,volrelmacropores,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath,dryseedingswitch";
+const QString paramList = "asscstr,attenmitch,bundheight,ca,co2cp,co2exp,co2slopetr,coeffassimsla,coefffixedtillerdeath,coefficientq10,coeffinternodemass,coeffinternodenum,coeffleafdeath,coeffleafwlratio,coefflodging,coeffpaniclemass,coeffpansinkpop,coeffrescapacityinternode,coeffreservesink,coeffrootmasspervolmax,coeffterminalleafdeath,coefftillerdeath,coefftransplantingshock,densityfield,densitynursery,depthsoil,devcstr,durationnursery,endingdate,epaisseurprof,epaisseursurf,excessassimtoroot,ftswirrig,hauncrittillering,hauncritstemelongation,humcr,humfc,humpf,humsat,ictillering,internodelengthmax,irrigauto,irrigautoresume,irrigautostop,irrigautotarget,kcmax,kcritstercold1,kcritstercold2,kcritsterftsw1,kcritsterftsw2,kcritsterheat1,kcritsterheat2,kcritstresscold1,kcritstresscold2,kdf,kpar,krespinternode,krespmaintleaf,krespmaintroot,krespmaintsheath,kresppanicle,ktempmaint,leaflengthmax,lifesavingdrainage,mulch,panstructmassmax,parcritsla,percolationmax,pevap,pfactor,phyllo,plantsperhill,plotdrainagedaf,poidssecgrain,pourcruiss,ppcrit,ppexp,ppsens,prioritypan,profracini,ranklongestleaf,relmobiliinternodemax,relphyllophasestemelong,rollingbase,rollingsens,rootcstr,rootfrontmax,rootlignin,rootpartitmax,ru,sdjbvp,sdjlevee,sdjmatu1,sdjmatu2,sdjrpr,seuilcstrmortality,seuilpp,seuilruiss,slamax,slamin,slaswitch,sowing,startingdate,stemporosity,stockiniprof,stockinisurf,tbase,tempsla,tilability,tlim,topt1,topt2,transplanting,transplantingdepth,txassimbvp,txassimmatu1,txassimmatu2,txconversion,txrealloc,txresgrain,txrusurfgermi,volrelmacropores,vracbvp,vraclevee,vracmatu1,vracmatu2,vracpsp,vracrpr,waterloggingsens,wsalt,wslat,wslong,wtratioleafsheath,dryseedingswitch";
 const QMap<QString,QString> categories = {
     {"BiomasseRacinaire","sarrah_observations"},
     {"BiomasseTiges","sarrah_observations"},
@@ -156,6 +156,7 @@ const QMap<QString,QString> categories = {
     {"kcritstresscold1","variety"},
     {"kcritstresscold2","variety"},
     {"hauncrittillering","variety"},
+    {"hauncritstemelongation", "variety"},
     {"ictillering","variety"},
     {"tempsla","variety"},
     {"relphyllophasestemelong","variety"},
@@ -448,9 +449,12 @@ bool ParametersDataModel::load(QString path, QString sep) {
 
         for (QString param_name: paramStrList){
             if(parameters->doubles.find(param_name.toStdString()) == parameters->doubles.end()) {
+                double default_value = 0.0;
+                if(param_name == "hauncritstemelongation")
+                    default_value = 20.0;
                 parameters->doubles[param_name.toStdString()] =
                         pair <double, string> (
-                            0.0, categories[param_name].toStdString());
+                            default_value, categories[param_name].toStdString());
                 keys << param_name;
             }
         }

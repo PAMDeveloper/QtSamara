@@ -110,17 +110,42 @@ QVariant MeteoDataModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 bool MeteoDataModel::save(QString path, QString sep) {
-    QFile file(path);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream out(&file);
-        for (auto const& token : parameters->climatics) {
-            out << token.TMax << sep << token.TMin << sep << token.TMoy << sep << token.HMax
-                << sep << token.HMin<< sep << token.HMoy << sep << token.Vt << sep <<
-                   token.Ins << sep << token.Rg << sep << token.Rain << sep << token.ETP << "\n";
-        }
-        file.close();
-        return true;
-    }
+//    QFile file(path);
+//    if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+//        QTextStream out(&file);
+
+//        for(int row = 0; row < this->rowCount(QModelIndex()); ++row) {
+//            for (int column = 0; column < this->columnCount(QModelIndex()); ++column) {
+//                QModelIndex index = this->index(row, column);
+//                out << this->data(index, Qt::UserRole).toDouble();
+//            }
+//        }
+
+
+//            double val =
+//            switch (column) {
+//                case 1: c.TMax = val; break;
+//                case 2: c.TMin = val; break;
+//                case 3: c.TMoy = val; break;
+//                case 4: c.HMax = val; break;
+//                case 5: c.HMin = val; break;
+//                case 6: c.HMoy = val; break;
+//                case 7: c.Vt = val; break;
+//                case 8: c.Ins = val; break;
+//                case 9: c.Rg = val; break;
+//                case 10: c.ETP = val; break;
+//                case 11: c.Rain = val; break;
+//            }
+//        }
+
+//        for (auto const& token : parameters->climatics) {
+//            out << token.TMax << sep << token.TMin << sep << token.TMoy << sep << token.HMax
+//                << sep << token.HMin<< sep << token.HMoy << sep << token.Vt << sep <<
+//                   token.Ins << sep << token.Rg << sep << token.Rain << sep << token.ETP << "\n";
+//        }
+//        file.close();
+//        return true;
+//    }
     return false;
 }
 
