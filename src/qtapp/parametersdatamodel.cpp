@@ -451,7 +451,7 @@ bool ParametersDataModel::load(QString path, QString sep) {
             if(parameters->doubles.find(param_name.toStdString()) == parameters->doubles.end()) {
                 double default_value = 0.0;
                 if(param_name == "hauncritstemelongation")
-                    default_value = 20.0;
+                    default_value = 10.0;
                 parameters->doubles[param_name.toStdString()] =
                         pair <double, string> (
                             default_value, categories[param_name].toStdString());
